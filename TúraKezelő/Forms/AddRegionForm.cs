@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace TúraKezelő
+namespace TúraKezelő.Forms
 {
-    public partial class Form1 : Form
+    public partial class AddRegionForm : Form
     {
-        public Form1()
+        public AddRegionForm()
         {
             InitializeComponent();
         }

@@ -46,14 +46,104 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="Forms\AddCountryForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Forms\AddCountryForm.Designer.cs">
+      <DependentUpon>AddCountryForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AddCPForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AddCPForm.Designer.cs">
+      <DependentUpon>AddCPForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AddHikeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AddHikeForm.Designer.cs">
+      <DependentUpon>AddHikeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AddRegionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AddRegionForm.Designer.cs">
+      <DependentUpon>AddRegionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\BaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\BaseForm.Designer.cs">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SearchCountryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SearchCountryForm.Designer.cs">
+      <DependentUpon>SearchCountryForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SearchCPForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SearchCPForm.Designer.cs">
+      <DependentUpon>SearchCPForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SearchHikeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SearchHikeForm.Designer.cs">
+      <DependentUpon>SearchHikeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SearchRegionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SearchRegionForm.Designer.cs">
+      <DependentUpon>SearchRegionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ViewCountryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ViewCountryForm.Designer.cs">
+      <DependentUpon>ViewCountryForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ViewCPForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ViewCPForm.Designer.cs">
+      <DependentUpon>ViewCPForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ViewHikeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ViewHikeForm.Designer.cs">
+      <DependentUpon>ViewHikeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ViewRegionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ViewRegionForm.Designer.cs">
+      <DependentUpon>ViewRegionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\AddCountryForm.resx">
+      <DependentUpon>AddCountryForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AddCPForm.resx">
+      <DependentUpon>AddCPForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AddHikeForm.resx">
+      <DependentUpon>AddHikeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AddRegionForm.resx">
+      <DependentUpon>AddRegionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\BaseForm.resx">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SearchCountryForm.resx">
+      <DependentUpon>SearchCountryForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

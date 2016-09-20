@@ -144,6 +144,15 @@
     <EmbeddedResource Include="Forms\SearchCountryForm.resx">
       <DependentUpon>SearchCountryForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SearchCPForm.resx">
+      <DependentUpon>SearchCPForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SearchHikeForm.resx">
+      <DependentUpon>SearchHikeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SearchRegionForm.resx">
+      <DependentUpon>SearchRegionForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

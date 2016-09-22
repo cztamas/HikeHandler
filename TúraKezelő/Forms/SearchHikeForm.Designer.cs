@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
@@ -45,13 +47,11 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.listView1 = new System.Windows.Forms.ListView();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.searchButton = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.listView2 = new System.Windows.Forms.ListView();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
+            this.clearButton = new System.Windows.Forms.Button();
+            this.closeButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -75,6 +75,20 @@
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Alapadatok";
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(71, 98);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(180, 20);
+            this.textBox2.TabIndex = 12;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(71, 72);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(57, 20);
+            this.textBox1.TabIndex = 11;
             // 
             // label5
             // 
@@ -220,30 +234,15 @@
             this.listView1.Size = new System.Drawing.Size(242, 104);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             // 
-            // textBox1
+            // searchButton
             // 
-            this.textBox1.Location = new System.Drawing.Point(71, 72);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(57, 20);
-            this.textBox1.TabIndex = 11;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(71, 98);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(180, 20);
-            this.textBox2.TabIndex = 12;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(12, 368);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(262, 23);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "Keresés";
-            this.button1.UseVisualStyleBackColor = true;
+            this.searchButton.Location = new System.Drawing.Point(12, 368);
+            this.searchButton.Name = "searchButton";
+            this.searchButton.Size = new System.Drawing.Size(262, 23);
+            this.searchButton.TabIndex = 5;
+            this.searchButton.Text = "Keresés";
+            this.searchButton.UseVisualStyleBackColor = true;
             // 
             // groupBox3
             // 
@@ -263,33 +262,35 @@
             this.listView2.TabIndex = 0;
             this.listView2.UseCompatibleStateImageBehavior = false;
             // 
-            // button2
+            // clearButton
             // 
-            this.button2.Location = new System.Drawing.Point(286, 368);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(175, 23);
-            this.button2.TabIndex = 7;
-            this.button2.Text = "Új keresés";
-            this.button2.UseVisualStyleBackColor = true;
+            this.clearButton.Location = new System.Drawing.Point(286, 368);
+            this.clearButton.Name = "clearButton";
+            this.clearButton.Size = new System.Drawing.Size(175, 23);
+            this.clearButton.TabIndex = 7;
+            this.clearButton.Text = "Új keresés";
+            this.clearButton.UseVisualStyleBackColor = true;
+            this.clearButton.Click += new System.EventHandler(this.clearButton_Click);
             // 
-            // button5
+            // closeButton
             // 
-            this.button5.Location = new System.Drawing.Point(467, 368);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(166, 23);
-            this.button5.TabIndex = 8;
-            this.button5.Text = "Bezárás";
-            this.button5.UseVisualStyleBackColor = true;
+            this.closeButton.Location = new System.Drawing.Point(467, 368);
+            this.closeButton.Name = "closeButton";
+            this.closeButton.Size = new System.Drawing.Size(166, 23);
+            this.closeButton.TabIndex = 8;
+            this.closeButton.Text = "Bezárás";
+            this.closeButton.UseVisualStyleBackColor = true;
+            this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
             // 
             // SearchHikeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(643, 399);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.closeButton);
+            this.Controls.Add(this.clearButton);
             this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.searchButton);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "SearchHikeForm";
@@ -324,10 +325,10 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button searchButton;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.ListView listView2;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button clearButton;
+        private System.Windows.Forms.Button closeButton;
     }
 }

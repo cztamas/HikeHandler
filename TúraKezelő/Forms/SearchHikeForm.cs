@@ -15,11 +15,19 @@ namespace TúraKezelő.Forms
         public SearchHikeForm()
         {
             InitializeComponent();
-        }
+        }        
 
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        private void closeButton_Click(object sender, EventArgs e)
         {
-
+            this.Close();
         }
+
+        private void clearButton_Click(object sender, EventArgs e)
+        {
+            this.Clear();
+        }
+
+        private void Clear()
+        { }
     }
 }

@@ -16,5 +16,18 @@ namespace TúraKezelő.Forms
         {
             InitializeComponent();
         }
+
+        private void Clear()
+        { }
+
+        private void closeButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void clearButton_Click(object sender, EventArgs e)
+        {
+            this.Clear();
+        }
     }
 }

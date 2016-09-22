@@ -1,3 +1,3 @@
 # HikeHandler
-Program in c# for registering and searching my hiking tours in a mysql database.
+Program in c# for registering and searching my hiking tours in a MySQL database.
 Not functional yet.

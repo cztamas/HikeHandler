@@ -153,6 +153,12 @@
     <EmbeddedResource Include="Forms\SearchRegionForm.resx">
       <DependentUpon>SearchRegionForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ViewCountryForm.resx">
+      <DependentUpon>ViewCountryForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ViewCPForm.resx">
+      <DependentUpon>ViewCPForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

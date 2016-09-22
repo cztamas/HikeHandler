@@ -1,1 +1,17 @@
 C:\prog\c#\TúraKezelő\TúraKezelő\bin\Debug\TúraKezelő.exe.config
+C:\prog\c#\TúraKezelő\TúraKezelő\bin\Debug\TúraKezelő.exe
+C:\prog\c#\TúraKezelő\TúraKezelő\bin\Debug\TúraKezelő.pdb
+C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\TúraKezelő.csprojResolveAssemblyReference.cache
+C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\TúraKezelő.Forms.AddCountryForm.resources
+C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\TúraKezelő.Forms.AddCPForm.resources
+C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\TúraKezelő.AddHikeForm.resources
+C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\TúraKezelő.Forms.AddRegionForm.resources
+C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\TúraKezelő.BaseForm.resources
+C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\TúraKezelő.Forms.SearchCountryForm.resources
+C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\TúraKezelő.Forms.SearchCPForm.resources
+C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\TúraKezelő.Forms.SearchHikeForm.resources
+C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\TúraKezelő.Forms.SearchRegionForm.resources
+C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\TúraKezelő.Properties.Resources.resources
+C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\TúraKezelő.csproj.GenerateResource.Cache
+C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\TúraKezelő.exe
+C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\TúraKezelő.pdb

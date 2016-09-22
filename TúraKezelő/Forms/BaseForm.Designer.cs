@@ -29,25 +29,25 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.searchCountryButton = new System.Windows.Forms.Button();
+            this.searchRegionButton = new System.Windows.Forms.Button();
+            this.searchCPButton = new System.Windows.Forms.Button();
+            this.searchHikeButton = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
+            this.addCountryButton = new System.Windows.Forms.Button();
+            this.addCPButton = new System.Windows.Forms.Button();
+            this.addHikeButton = new System.Windows.Forms.Button();
+            this.addRegionButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.button4);
-            this.groupBox1.Controls.Add(this.button3);
-            this.groupBox1.Controls.Add(this.button2);
-            this.groupBox1.Controls.Add(this.button1);
+            this.groupBox1.Controls.Add(this.searchCountryButton);
+            this.groupBox1.Controls.Add(this.searchRegionButton);
+            this.groupBox1.Controls.Add(this.searchCPButton);
+            this.groupBox1.Controls.Add(this.searchHikeButton);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(253, 94);
@@ -55,48 +55,52 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Keresés";
             // 
-            // button4
+            // searchCountryButton
             // 
-            this.button4.Location = new System.Drawing.Point(169, 58);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(72, 23);
-            this.button4.TabIndex = 3;
-            this.button4.Text = "Ország";
-            this.button4.UseVisualStyleBackColor = true;
+            this.searchCountryButton.Location = new System.Drawing.Point(169, 58);
+            this.searchCountryButton.Name = "searchCountryButton";
+            this.searchCountryButton.Size = new System.Drawing.Size(72, 23);
+            this.searchCountryButton.TabIndex = 3;
+            this.searchCountryButton.Text = "Ország";
+            this.searchCountryButton.UseVisualStyleBackColor = true;
+            this.searchCountryButton.Click += new System.EventHandler(this.searchCountryButton_Click);
             // 
-            // button3
+            // searchRegionButton
             // 
-            this.button3.Location = new System.Drawing.Point(88, 58);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "Tájegység";
-            this.button3.UseVisualStyleBackColor = true;
+            this.searchRegionButton.Location = new System.Drawing.Point(88, 58);
+            this.searchRegionButton.Name = "searchRegionButton";
+            this.searchRegionButton.Size = new System.Drawing.Size(75, 23);
+            this.searchRegionButton.TabIndex = 2;
+            this.searchRegionButton.Text = "Tájegység";
+            this.searchRegionButton.UseVisualStyleBackColor = true;
+            this.searchRegionButton.Click += new System.EventHandler(this.searchRegionButton_Click);
             // 
-            // button2
+            // searchCPButton
             // 
-            this.button2.Location = new System.Drawing.Point(6, 58);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(76, 23);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "CheckPoint";
-            this.button2.UseVisualStyleBackColor = true;
+            this.searchCPButton.Location = new System.Drawing.Point(6, 58);
+            this.searchCPButton.Name = "searchCPButton";
+            this.searchCPButton.Size = new System.Drawing.Size(76, 23);
+            this.searchCPButton.TabIndex = 1;
+            this.searchCPButton.Text = "CheckPoint";
+            this.searchCPButton.UseVisualStyleBackColor = true;
+            this.searchCPButton.Click += new System.EventHandler(this.searchCPButton_Click);
             // 
-            // button1
+            // searchHikeButton
             // 
-            this.button1.Location = new System.Drawing.Point(6, 29);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(235, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Túra keresése";
-            this.button1.UseVisualStyleBackColor = true;
+            this.searchHikeButton.Location = new System.Drawing.Point(6, 29);
+            this.searchHikeButton.Name = "searchHikeButton";
+            this.searchHikeButton.Size = new System.Drawing.Size(235, 23);
+            this.searchHikeButton.TabIndex = 0;
+            this.searchHikeButton.Text = "Túra keresése";
+            this.searchHikeButton.UseVisualStyleBackColor = true;
+            this.searchHikeButton.Click += new System.EventHandler(this.searchHikeButton_Click);
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.button8);
-            this.groupBox2.Controls.Add(this.button7);
-            this.groupBox2.Controls.Add(this.button6);
-            this.groupBox2.Controls.Add(this.button5);
+            this.groupBox2.Controls.Add(this.addCountryButton);
+            this.groupBox2.Controls.Add(this.addCPButton);
+            this.groupBox2.Controls.Add(this.addHikeButton);
+            this.groupBox2.Controls.Add(this.addRegionButton);
             this.groupBox2.Location = new System.Drawing.Point(12, 112);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(253, 92);
@@ -104,41 +108,45 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Hozzáadás";
             // 
-            // button8
+            // addCountryButton
             // 
-            this.button8.Location = new System.Drawing.Point(169, 57);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(72, 23);
-            this.button8.TabIndex = 3;
-            this.button8.Text = "Ország";
-            this.button8.UseVisualStyleBackColor = true;
+            this.addCountryButton.Location = new System.Drawing.Point(169, 57);
+            this.addCountryButton.Name = "addCountryButton";
+            this.addCountryButton.Size = new System.Drawing.Size(72, 23);
+            this.addCountryButton.TabIndex = 3;
+            this.addCountryButton.Text = "Ország";
+            this.addCountryButton.UseVisualStyleBackColor = true;
+            this.addCountryButton.Click += new System.EventHandler(this.addCountryButton_Click);
             // 
-            // button7
+            // addCPButton
             // 
-            this.button7.Location = new System.Drawing.Point(7, 57);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 23);
-            this.button7.TabIndex = 2;
-            this.button7.Text = "CheckPoint";
-            this.button7.UseVisualStyleBackColor = true;
+            this.addCPButton.Location = new System.Drawing.Point(7, 57);
+            this.addCPButton.Name = "addCPButton";
+            this.addCPButton.Size = new System.Drawing.Size(75, 23);
+            this.addCPButton.TabIndex = 2;
+            this.addCPButton.Text = "CheckPoint";
+            this.addCPButton.UseVisualStyleBackColor = true;
+            this.addCPButton.Click += new System.EventHandler(this.addCPButton_Click);
             // 
-            // button6
+            // addHikeButton
             // 
-            this.button6.Location = new System.Drawing.Point(6, 28);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(235, 23);
-            this.button6.TabIndex = 1;
-            this.button6.Text = "Túra hozzáadása";
-            this.button6.UseVisualStyleBackColor = true;
+            this.addHikeButton.Location = new System.Drawing.Point(6, 28);
+            this.addHikeButton.Name = "addHikeButton";
+            this.addHikeButton.Size = new System.Drawing.Size(235, 23);
+            this.addHikeButton.TabIndex = 1;
+            this.addHikeButton.Text = "Túra hozzáadása";
+            this.addHikeButton.UseVisualStyleBackColor = true;
+            this.addHikeButton.Click += new System.EventHandler(this.addHikeButton_Click);
             // 
-            // button5
+            // addRegionButton
             // 
-            this.button5.Location = new System.Drawing.Point(88, 57);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 0;
-            this.button5.Text = "Tájegység";
-            this.button5.UseVisualStyleBackColor = true;
+            this.addRegionButton.Location = new System.Drawing.Point(88, 57);
+            this.addRegionButton.Name = "addRegionButton";
+            this.addRegionButton.Size = new System.Drawing.Size(75, 23);
+            this.addRegionButton.TabIndex = 0;
+            this.addRegionButton.Text = "Tájegység";
+            this.addRegionButton.UseVisualStyleBackColor = true;
+            this.addRegionButton.Click += new System.EventHandler(this.addRegionButton_Click);
             // 
             // BaseForm
             // 
@@ -158,15 +166,15 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button searchCountryButton;
+        private System.Windows.Forms.Button searchRegionButton;
+        private System.Windows.Forms.Button searchCPButton;
+        private System.Windows.Forms.Button searchHikeButton;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button addCountryButton;
+        private System.Windows.Forms.Button addCPButton;
+        private System.Windows.Forms.Button addHikeButton;
+        private System.Windows.Forms.Button addRegionButton;
     }
 }
 

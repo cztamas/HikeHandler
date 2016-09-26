@@ -1,0 +1,40 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using TúraKezelő.Data_Containers;
+
+namespace TúraKezelő.Forms
+{
+    public partial class PasswordForm : Form
+    {
+        public PasswordForm()
+        {
+            InitializeComponent();
+        }
+
+        public delegate void LoginHandler(LoginData data);
+        public delegate void VoidHandler();
+
+        public event LoginHandler LoginPerformed;
+        public event VoidHandler LoginCancelled;
+
+        private void okButton_Click(object sender, EventArgs e)
+        {
+            LoginData data = new LoginData(userBox.Text, pwdBox.Text);
+            LoginPerformed(data);
+            Close();
+        }
+
+        private void cancelButton_Click(object sender, EventArgs e)
+        {
+            LoginCancelled();
+            Close();
+        }
+    }
+}

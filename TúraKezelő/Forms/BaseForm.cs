@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TúraKezelő.Forms;
+using TúraKezelő.Data_Containers;
+using MySql.Data.MySqlClient;
 
 namespace TúraKezelő
 {
@@ -16,6 +18,48 @@ namespace TúraKezelő
         public BaseForm()
         {
             InitializeComponent();
+            while (!isConnected && hasToRun)
+            {
+                GetLoginData();
+                if (hasToRun)
+                    ConnectToDB();
+            }
+        }
+        
+        private bool isConnected = false;
+        private bool hasToRun = true;
+        private LoginData loginData;
+        private MySqlConnection sqlConnection;        
+
+        private void ConnectToDB()
+        {
+            string connectionString = "server=localhost; database=test; uid=" + loginData.username + "; pwd=" + loginData.password + ";";
+            sqlConnection = new MySqlConnection(connectionString);
+            try
+            {
+                sqlConnection.Open();
+                isConnected = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Hiba: " + ex.Message);
+            }
+        }
+
+        private void GetLoginData()
+        {
+            PasswordForm pwdForm = new PasswordForm();
+            PasswordForm.LoginHandler handler = delegate (LoginData data)
+            {
+                loginData = data;
+            };
+            PasswordForm.VoidHandler cancelHandler = delegate ()
+            {
+                hasToRun = false;
+            };
+            pwdForm.LoginPerformed += handler;
+            pwdForm.LoginCancelled += cancelHandler;
+            pwdForm.ShowDialog();
         }
 
         private void searchHikeButton_Click(object sender, EventArgs e)

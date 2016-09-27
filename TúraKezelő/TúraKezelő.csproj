@@ -48,6 +48,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data Containers\Country.cs" />
+    <Compile Include="Data Containers\CP.cs" />
+    <Compile Include="Data Containers\Hike.cs" />
     <Compile Include="Data Containers\Misc.cs" />
     <Compile Include="Data Containers\Region.cs" />
     <Compile Include="Forms\AddCountryForm.cs">

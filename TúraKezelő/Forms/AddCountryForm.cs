@@ -34,6 +34,17 @@ namespace HikeHandler.Forms
 
         private void saveButton_Click(object sender, EventArgs e)
         {
+            if (sqlConnection == null)
+            {
+                MessageBox.Show(this, "Nincs kapcsolat az adatbázissal.");
+                return;
+            }
+            if (sqlConnection.State!=ConnectionState.Open)
+            {
+                MessageBox.Show(this, "Nincs kapcsolat az adatbázissal.");
+                return;
+            }
+
             Country country = new Country(nameBox.Text, descriptionBox.Text);
             MySqlCommand command = country.SaveCommand(sqlConnection);
             try

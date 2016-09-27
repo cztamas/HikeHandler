@@ -78,10 +78,9 @@
             // 
             // descriptionBox
             // 
-            this.descriptionBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.descriptionBox.Location = new System.Drawing.Point(3, 16);
             this.descriptionBox.Name = "descriptionBox";
-            this.descriptionBox.Size = new System.Drawing.Size(273, 71);
+            this.descriptionBox.Size = new System.Drawing.Size(276, 71);
             this.descriptionBox.TabIndex = 5;
             this.descriptionBox.Text = "";
             // 
@@ -100,10 +99,9 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.descriptionBox);
-            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox2.Location = new System.Drawing.Point(3, 39);
+            this.groupBox2.Location = new System.Drawing.Point(0, 39);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(279, 90);
+            this.groupBox2.Size = new System.Drawing.Size(285, 93);
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Leírás";

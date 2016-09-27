@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data Containers\Country.cs" />
     <Compile Include="Data Containers\Misc.cs" />
     <Compile Include="Forms\AddCountryForm.cs">
       <SubType>Form</SubType>

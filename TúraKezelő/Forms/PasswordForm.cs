@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TúraKezelő.Data_Containers;
+using HikeHandler.Data_Containers;
 
-namespace TúraKezelő.Forms
+namespace HikeHandler.Forms
 {
     public partial class PasswordForm : Form
     {

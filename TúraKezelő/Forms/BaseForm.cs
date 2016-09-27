@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TúraKezelő.Forms;
-using TúraKezelő.Data_Containers;
+using HikeHandler.Forms;
+using HikeHandler.Data_Containers;
 using MySql.Data.MySqlClient;
 
-namespace TúraKezelő
+namespace HikeHandler
 {
     public partial class BaseForm : Form
     {
@@ -87,50 +87,114 @@ namespace TúraKezelő
 
         private void searchHikeButton_Click(object sender, EventArgs e)
         {
-            SearchHikeForm sHForm = new SearchHikeForm();
-            sHForm.Show();
+            if (uiTestMode)
+            {
+                SearchHikeForm sHForm = new SearchHikeForm();
+                sHForm.Show();
+            }
+            if (!uiTestMode)
+            {
+                SearchHikeForm sHForm = new SearchHikeForm(sqlConnection);
+                sHForm.Show();
+            }
         }
 
         private void searchCPButton_Click(object sender, EventArgs e)
         {
-            SearchCPForm sCPForm = new SearchCPForm();
-            sCPForm.Show();
+            if (uiTestMode)
+            {
+                SearchCPForm sCPForm = new SearchCPForm();
+                sCPForm.Show();
+            }
+            if (!uiTestMode)
+            {
+                SearchCPForm sCPForm = new SearchCPForm(sqlConnection);
+                sCPForm.Show();
+            }            
         }
 
         private void searchRegionButton_Click(object sender, EventArgs e)
         {
-            SearchRegionForm sRForm = new SearchRegionForm();
-            sRForm.Show();
+            if (uiTestMode)
+            {
+                SearchRegionForm sRForm = new SearchRegionForm();
+                sRForm.Show();
+            }
+            if (!uiTestMode)
+            {
+                SearchRegionForm sRForm = new SearchRegionForm(sqlConnection);
+                sRForm.Show();
+            }            
         }
 
         private void searchCountryButton_Click(object sender, EventArgs e)
         {
-            SearchCountryForm sCForm = new SearchCountryForm();
-            sCForm.Show();
+            if (uiTestMode)
+            {
+                SearchCountryForm sCForm = new SearchCountryForm();
+                sCForm.Show();
+            }
+            if (!uiTestMode)
+            {
+                SearchCountryForm sCForm = new SearchCountryForm(sqlConnection);
+                sCForm.Show();
+            }            
         }
 
         private void addHikeButton_Click(object sender, EventArgs e)
         {
-            AddHikeForm aHForm = new AddHikeForm();
-            aHForm.Show();
+            if (uiTestMode)
+            {
+                AddHikeForm aHForm = new AddHikeForm();
+                aHForm.Show();
+            }
+            if (!uiTestMode)
+            {
+                AddHikeForm aHForm = new AddHikeForm(sqlConnection);
+                aHForm.Show();
+            }            
         }
 
         private void addCPButton_Click(object sender, EventArgs e)
         {
-            AddCPForm aCPForm = new AddCPForm();
-            aCPForm.Show();
+            if (uiTestMode)
+            {
+                AddCPForm aCPForm = new AddCPForm();
+                aCPForm.Show();
+            }
+            if (!uiTestMode)
+            {
+                AddCPForm aCPForm = new AddCPForm(sqlConnection);
+                aCPForm.Show();
+            }            
         }
 
         private void addRegionButton_Click(object sender, EventArgs e)
         {
-            AddRegionForm aRForm = new AddRegionForm();
-            aRForm.Show();
+            if (uiTestMode)
+            {
+                AddRegionForm aRForm = new AddRegionForm();
+                aRForm.Show();
+            }
+            if (!uiTestMode)
+            {
+                AddRegionForm aRForm = new AddRegionForm(sqlConnection);
+                aRForm.Show();
+            }            
         }
 
         private void addCountryButton_Click(object sender, EventArgs e)
         {
-            AddCountryForm aCForm = new AddCountryForm();
-            aCForm.Show();
+            if (uiTestMode)
+            {
+                AddCountryForm aCForm = new AddCountryForm();
+                aCForm.Show();
+            }
+            if (!uiTestMode)
+            {
+                AddCountryForm aCForm = new AddCountryForm(sqlConnection);
+                aCForm.Show();
+            }            
         }
 
         private void connectDBButton_Click(object sender, EventArgs e)

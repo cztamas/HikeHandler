@@ -7,8 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
-namespace TúraKezelő.Forms
+namespace HikeHandler.Forms
 {
     public partial class AddRegionForm : Form
     {
@@ -16,6 +17,14 @@ namespace TúraKezelő.Forms
         {
             InitializeComponent();
         }
+
+        public AddRegionForm(MySqlConnection connection)
+        {
+            InitializeComponent();
+            sqlConnection = connection;
+        }
+
+        private MySqlConnection sqlConnection;
 
         private void cancelButton_Click(object sender, EventArgs e)
         {

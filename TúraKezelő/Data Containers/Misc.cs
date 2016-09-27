@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TúraKezelő.Data_Containers
+namespace HikeHandler.Data_Containers
 {
     public struct LoginData
     {

@@ -1,4 +1,4 @@
-﻿namespace TúraKezelő
+﻿namespace HikeHandler
 {
     partial class BaseForm
     {

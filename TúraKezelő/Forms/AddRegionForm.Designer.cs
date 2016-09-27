@@ -1,4 +1,4 @@
-﻿namespace TúraKezelő.Forms
+﻿namespace HikeHandler.Forms
 {
     partial class AddRegionForm
     {

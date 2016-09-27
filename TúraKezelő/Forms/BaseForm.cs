@@ -18,27 +18,20 @@ namespace TúraKezelő
         public BaseForm()
         {
             InitializeComponent();
-            while (!isConnected && hasToRun)
-            {
-                GetLoginData();
-                if (hasToRun)
-                    ConnectToDB();
-            }
-        }
+            EnableButtons(false);
+            ConnectToDB();            
+        }        
         
-        private bool isConnected = false;
-        private bool hasToRun = true;
-        private LoginData loginData;
+        private bool uiTestMode = false;
         private MySqlConnection sqlConnection;        
 
-        private void ConnectToDB()
+        private void CreateConnection(LoginData loginData)
         {
             string connectionString = "server=localhost; database=test; uid=" + loginData.username + "; pwd=" + loginData.password + ";";
             sqlConnection = new MySqlConnection(connectionString);
             try
             {
                 sqlConnection.Open();
-                isConnected = true;
             }
             catch (Exception ex)
             {
@@ -46,19 +39,49 @@ namespace TúraKezelő
             }
         }
 
-        private void GetLoginData()
+        //if what=true, enables all button except connectDBButton
+        //if what=false, disables all button except connectDBButton
+        private void EnableButtons(bool what)
+        {
+            foreach (Control control in searchBox.Controls)
+            {
+                if (control is Button)
+                    control.Enabled = what;
+            }
+            foreach (Control control in addBox.Controls)
+            {
+                if (control is Button)
+                    control.Enabled = what;
+            }
+        }
+
+        private void ConnectToDB()
         {
             PasswordForm pwdForm = new PasswordForm();
             PasswordForm.LoginHandler handler = delegate (LoginData data)
             {
-                loginData = data;
+                CreateConnection(data);
+                if (sqlConnection.State==ConnectionState.Open)
+                {
+                    uiTestMode = false;
+                    connectionStateLabel.Text = "Kapcsolódva";
+                    connectDBButton.Enabled = false;
+                    connectDBButton.Visible = false;
+                    EnableButtons(true);
+                }
             };
             PasswordForm.VoidHandler cancelHandler = delegate ()
             {
-                hasToRun = false;
+                EnableButtons(false);
+            };
+            PasswordForm.VoidHandler testHandler = delegate ()
+            {
+                uiTestMode = true;
+                EnableButtons(true);
             };
             pwdForm.LoginPerformed += handler;
             pwdForm.LoginCancelled += cancelHandler;
+            pwdForm.TestModeSelected += testHandler;
             pwdForm.ShowDialog();
         }
 
@@ -108,6 +131,11 @@ namespace TúraKezelő
         {
             AddCountryForm aCForm = new AddCountryForm();
             aCForm.Show();
+        }
+
+        private void connectDBButton_Click(object sender, EventArgs e)
+        {
+            ConnectToDB();
         }
     }
 }

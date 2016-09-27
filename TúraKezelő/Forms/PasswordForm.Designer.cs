@@ -35,6 +35,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.pwdBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.testButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -52,7 +53,7 @@
             this.userBox.Enabled = false;
             this.userBox.Location = new System.Drawing.Point(78, 19);
             this.userBox.Name = "userBox";
-            this.userBox.Size = new System.Drawing.Size(110, 20);
+            this.userBox.Size = new System.Drawing.Size(145, 20);
             this.userBox.TabIndex = 1;
             this.userBox.Text = "SqlApp";
             // 
@@ -60,7 +61,7 @@
             // 
             this.okButton.Location = new System.Drawing.Point(9, 86);
             this.okButton.Name = "okButton";
-            this.okButton.Size = new System.Drawing.Size(98, 23);
+            this.okButton.Size = new System.Drawing.Size(71, 23);
             this.okButton.TabIndex = 2;
             this.okButton.Text = "OK";
             this.okButton.UseVisualStyleBackColor = true;
@@ -69,9 +70,9 @@
             // cancelButton
             // 
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(113, 86);
+            this.cancelButton.Location = new System.Drawing.Point(160, 86);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.Size = new System.Drawing.Size(63, 23);
             this.cancelButton.TabIndex = 3;
             this.cancelButton.Text = "Mégse";
             this.cancelButton.UseVisualStyleBackColor = true;
@@ -86,7 +87,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(194, 80);
+            this.groupBox1.Size = new System.Drawing.Size(231, 80);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             // 
@@ -95,7 +96,7 @@
             this.pwdBox.Location = new System.Drawing.Point(78, 45);
             this.pwdBox.Name = "pwdBox";
             this.pwdBox.PasswordChar = '#';
-            this.pwdBox.Size = new System.Drawing.Size(110, 20);
+            this.pwdBox.Size = new System.Drawing.Size(145, 20);
             this.pwdBox.TabIndex = 3;
             // 
             // label2
@@ -107,20 +108,32 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Jelszó:";
             // 
+            // testButton
+            // 
+            this.testButton.Location = new System.Drawing.Point(86, 86);
+            this.testButton.Name = "testButton";
+            this.testButton.Size = new System.Drawing.Size(68, 23);
+            this.testButton.TabIndex = 5;
+            this.testButton.Text = "Teszt";
+            this.testButton.UseVisualStyleBackColor = true;
+            this.testButton.Click += new System.EventHandler(this.testButton_Click);
+            // 
             // PasswordForm
             // 
             this.AcceptButton = this.okButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(194, 120);
+            this.ClientSize = new System.Drawing.Size(231, 120);
+            this.Controls.Add(this.testButton);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.okButton);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.Name = "PasswordForm";
             this.ShowIcon = false;
-            this.Text = "Jelszó megadása";
+            this.Text = "Bejelentkezés";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
@@ -136,5 +149,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox pwdBox;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button testButton;
     }
 }

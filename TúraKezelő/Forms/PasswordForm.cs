@@ -16,6 +16,7 @@ namespace TúraKezelő.Forms
         public PasswordForm()
         {
             InitializeComponent();
+            pwdBox.Select();
         }
 
         public delegate void LoginHandler(LoginData data);
@@ -23,6 +24,7 @@ namespace TúraKezelő.Forms
 
         public event LoginHandler LoginPerformed;
         public event VoidHandler LoginCancelled;
+        public event VoidHandler TestModeSelected;
 
         private void okButton_Click(object sender, EventArgs e)
         {
@@ -34,6 +36,12 @@ namespace TúraKezelő.Forms
         private void cancelButton_Click(object sender, EventArgs e)
         {
             LoginCancelled();
+            Close();
+        }
+
+        private void testButton_Click(object sender, EventArgs e)
+        {
+            TestModeSelected();
             Close();
         }
     }

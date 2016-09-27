@@ -7,7 +7,7 @@ using MySql.Data.MySqlClient;
 
 namespace HikeHandler.Data_Containers
 {
-    class Country
+    public class Country
     {
         public Country(int iD, int hC, string n, string d)
         {

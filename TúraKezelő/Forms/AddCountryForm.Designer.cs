@@ -52,7 +52,7 @@
             // 
             this.nameBox.Location = new System.Drawing.Point(73, 16);
             this.nameBox.Name = "nameBox";
-            this.nameBox.Size = new System.Drawing.Size(186, 20);
+            this.nameBox.Size = new System.Drawing.Size(206, 20);
             this.nameBox.TabIndex = 1;
             // 
             // saveButton
@@ -67,6 +67,7 @@
             // 
             // exitButton
             // 
+            this.exitButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.exitButton.Location = new System.Drawing.Point(185, 141);
             this.exitButton.Name = "exitButton";
             this.exitButton.Size = new System.Drawing.Size(92, 23);
@@ -80,7 +81,7 @@
             this.descriptionBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.descriptionBox.Location = new System.Drawing.Point(3, 16);
             this.descriptionBox.Name = "descriptionBox";
-            this.descriptionBox.Size = new System.Drawing.Size(259, 71);
+            this.descriptionBox.Size = new System.Drawing.Size(273, 71);
             this.descriptionBox.TabIndex = 5;
             this.descriptionBox.Text = "";
             // 
@@ -89,18 +90,20 @@
             this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Controls.Add(this.nameBox);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(12, 3);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(265, 132);
+            this.groupBox1.Size = new System.Drawing.Size(285, 132);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.descriptionBox);
-            this.groupBox2.Location = new System.Drawing.Point(0, 42);
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.groupBox2.Location = new System.Drawing.Point(3, 39);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(265, 90);
+            this.groupBox2.Size = new System.Drawing.Size(279, 90);
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Leírás";
@@ -109,10 +112,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(287, 170);
+            this.CancelButton = this.exitButton;
+            this.ClientSize = new System.Drawing.Size(285, 170);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.exitButton);
             this.Controls.Add(this.saveButton);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "AddCountryForm";
             this.Text = "Ország hozzáadása";
             this.groupBox1.ResumeLayout(false);

@@ -95,7 +95,7 @@
             // 
             this.pwdBox.Location = new System.Drawing.Point(78, 45);
             this.pwdBox.Name = "pwdBox";
-            this.pwdBox.PasswordChar = '#';
+            this.pwdBox.PasswordChar = '*';
             this.pwdBox.Size = new System.Drawing.Size(145, 20);
             this.pwdBox.TabIndex = 3;
             // 
@@ -129,7 +129,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.okButton);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "PasswordForm";
             this.ShowIcon = false;

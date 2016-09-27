@@ -35,9 +35,9 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.clearButton = new System.Windows.Forms.Button();
             this.closeButton = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -56,7 +56,7 @@
             // 
             this.textBox1.Location = new System.Drawing.Point(83, 19);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(145, 20);
+            this.textBox1.Size = new System.Drawing.Size(171, 20);
             this.textBox1.TabIndex = 3;
             // 
             // groupBox1
@@ -66,18 +66,18 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.textBox1);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Location = new System.Drawing.Point(3, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(239, 75);
+            this.groupBox1.Size = new System.Drawing.Size(263, 75);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Keresés";
             // 
             // searchButton
             // 
-            this.searchButton.Location = new System.Drawing.Point(161, 43);
+            this.searchButton.Location = new System.Drawing.Point(167, 43);
             this.searchButton.Name = "searchButton";
-            this.searchButton.Size = new System.Drawing.Size(67, 23);
+            this.searchButton.Size = new System.Drawing.Size(87, 23);
             this.searchButton.TabIndex = 6;
             this.searchButton.Text = "Keresés";
             this.searchButton.UseVisualStyleBackColor = true;
@@ -86,7 +86,7 @@
             // 
             this.textBox2.Location = new System.Drawing.Point(83, 45);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(72, 20);
+            this.textBox2.Size = new System.Drawing.Size(78, 20);
             this.textBox2.TabIndex = 5;
             // 
             // label2
@@ -101,32 +101,12 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.dataGridView1);
-            this.groupBox2.Location = new System.Drawing.Point(12, 93);
+            this.groupBox2.Location = new System.Drawing.Point(3, 93);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(239, 128);
+            this.groupBox2.Size = new System.Drawing.Size(263, 128);
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Találatok";
-            // 
-            // clearButton
-            // 
-            this.clearButton.Location = new System.Drawing.Point(12, 227);
-            this.clearButton.Name = "clearButton";
-            this.clearButton.Size = new System.Drawing.Size(116, 23);
-            this.clearButton.TabIndex = 7;
-            this.clearButton.Text = "Új keresés";
-            this.clearButton.UseVisualStyleBackColor = true;
-            this.clearButton.Click += new System.EventHandler(this.clearButton_Click);
-            // 
-            // closeButton
-            // 
-            this.closeButton.Location = new System.Drawing.Point(134, 227);
-            this.closeButton.Name = "closeButton";
-            this.closeButton.Size = new System.Drawing.Size(117, 23);
-            this.closeButton.TabIndex = 8;
-            this.closeButton.Text = "Bezárás";
-            this.closeButton.UseVisualStyleBackColor = true;
-            this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
             // 
             // dataGridView1
             // 
@@ -137,18 +117,39 @@
             this.dataGridView1.Location = new System.Drawing.Point(3, 16);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(233, 109);
+            this.dataGridView1.Size = new System.Drawing.Size(257, 109);
             this.dataGridView1.TabIndex = 0;
+            // 
+            // clearButton
+            // 
+            this.clearButton.Location = new System.Drawing.Point(6, 227);
+            this.clearButton.Name = "clearButton";
+            this.clearButton.Size = new System.Drawing.Size(158, 23);
+            this.clearButton.TabIndex = 7;
+            this.clearButton.Text = "Új keresés";
+            this.clearButton.UseVisualStyleBackColor = true;
+            this.clearButton.Click += new System.EventHandler(this.clearButton_Click);
+            // 
+            // closeButton
+            // 
+            this.closeButton.Location = new System.Drawing.Point(170, 227);
+            this.closeButton.Name = "closeButton";
+            this.closeButton.Size = new System.Drawing.Size(93, 23);
+            this.closeButton.TabIndex = 8;
+            this.closeButton.Text = "Bezárás";
+            this.closeButton.UseVisualStyleBackColor = true;
+            this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
             // 
             // SearchCountryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(260, 260);
+            this.ClientSize = new System.Drawing.Size(270, 258);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.clearButton);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "SearchCountryForm";
             this.Text = "Ország keresése";
             this.groupBox1.ResumeLayout(false);

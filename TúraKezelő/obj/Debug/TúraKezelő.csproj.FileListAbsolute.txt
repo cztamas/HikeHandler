@@ -46,3 +46,19 @@ C:\prog\c#\HikeHandler\TúraKezelő\obj\Debug\HikeHandler.Forms.ViewCPForm.resou
 C:\prog\c#\HikeHandler\TúraKezelő\obj\Debug\HikeHandler.Forms.ViewHikeForm.resources
 C:\prog\c#\HikeHandler\TúraKezelő\obj\Debug\HikeHandler.Forms.ViewRegionForm.resources
 >>>>>>> c030242430c3db6f8d4a9bd47b6dfd077d57713d
+C:\prog\c#\TúraKezelő\TúraKezelő\bin\Debug\MySql.Data.dll
+C:\prog\c#\TúraKezelő\TúraKezelő\bin\Debug\MySql.Data.xml
+C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\HikeHandler.Forms.AddCountryForm.resources
+C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\HikeHandler.Forms.AddCPForm.resources
+C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\HikeHandler.AddHikeForm.resources
+C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\HikeHandler.Forms.AddRegionForm.resources
+C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\HikeHandler.BaseForm.resources
+C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\HikeHandler.Forms.PasswordForm.resources
+C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\HikeHandler.Forms.SearchCountryForm.resources
+C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\HikeHandler.Forms.SearchCPForm.resources
+C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\HikeHandler.Forms.SearchHikeForm.resources
+C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\HikeHandler.Forms.SearchRegionForm.resources
+C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\HikeHandler.Forms.ViewCountryForm.resources
+C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\HikeHandler.Forms.ViewCPForm.resources
+C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\HikeHandler.Forms.ViewHikeForm.resources
+C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\HikeHandler.Forms.ViewRegionForm.resources

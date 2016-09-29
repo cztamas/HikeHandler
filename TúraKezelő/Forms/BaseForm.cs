@@ -27,7 +27,7 @@ namespace HikeHandler
 
         private void CreateConnection(LoginData loginData)
         {
-            string connectionString = "server=localhost; database=test; uid=" + loginData.username + "; pwd=" + loginData.password + ";";
+            string connectionString = "server=localhost; database=hikehandler; uid=" + loginData.username + "; pwd=" + loginData.password + ";";
             sqlConnection = new MySqlConnection(connectionString);
             try
             {

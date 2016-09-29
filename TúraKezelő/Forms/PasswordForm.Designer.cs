@@ -55,7 +55,7 @@
             this.userBox.Name = "userBox";
             this.userBox.Size = new System.Drawing.Size(145, 20);
             this.userBox.TabIndex = 1;
-            this.userBox.Text = "SqlApp";
+            this.userBox.Text = "HikeHandler";
             // 
             // okButton
             // 

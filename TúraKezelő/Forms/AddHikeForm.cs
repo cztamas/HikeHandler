@@ -7,8 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
-namespace TúraKezelő
+namespace HikeHandler
 {
     public partial class AddHikeForm : Form
     {
@@ -16,6 +17,14 @@ namespace TúraKezelő
         {
             InitializeComponent();
         }
+
+        public AddHikeForm(MySqlConnection connection)
+        {
+            InitializeComponent();
+            sqlConnection = connection;
+        }
+
+        private MySqlConnection sqlConnection;
 
         private void cancelButton_Click(object sender, EventArgs e)
         {

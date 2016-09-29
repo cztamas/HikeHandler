@@ -7,8 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
-namespace TúraKezelő.Forms
+namespace HikeHandler.Forms
 {
     public partial class SearchCPForm : Form
     {
@@ -16,6 +17,14 @@ namespace TúraKezelő.Forms
         {
             InitializeComponent();
         }
+
+        public SearchCPForm(MySqlConnection connection)
+        {
+            InitializeComponent();
+            sqlConnection = connection;
+        }
+
+        private MySqlConnection sqlConnection;
 
         private void Clear()
         { }

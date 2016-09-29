@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TúraKezelő.Properties
+namespace HikeHandler.Properties
 {
 
 

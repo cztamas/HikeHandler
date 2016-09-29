@@ -7,15 +7,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
-namespace TúraKezelő.Forms
+namespace HikeHandler.Forms
 {
     public partial class SearchHikeForm : Form
     {
         public SearchHikeForm()
         {
             InitializeComponent();
-        }        
+        }
+
+        public SearchHikeForm(MySqlConnection connection)
+        {
+            InitializeComponent();
+            sqlConnection = connection;
+        }
+
+        private MySqlConnection sqlConnection;
 
         private void closeButton_Click(object sender, EventArgs e)
         {

@@ -1,4 +1,4 @@
-﻿namespace TúraKezelő
+﻿namespace HikeHandler
 {
     partial class BaseForm
     {
@@ -28,32 +28,36 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.searchBox = new System.Windows.Forms.GroupBox();
             this.searchCountryButton = new System.Windows.Forms.Button();
             this.searchRegionButton = new System.Windows.Forms.Button();
             this.searchCPButton = new System.Windows.Forms.Button();
             this.searchHikeButton = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.addBox = new System.Windows.Forms.GroupBox();
             this.addCountryButton = new System.Windows.Forms.Button();
             this.addCPButton = new System.Windows.Forms.Button();
             this.addHikeButton = new System.Windows.Forms.Button();
             this.addRegionButton = new System.Windows.Forms.Button();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.connectionStateLabel = new System.Windows.Forms.Label();
+            this.connectDBButton = new System.Windows.Forms.Button();
+            this.closeButton = new System.Windows.Forms.Button();
+            this.searchBox.SuspendLayout();
+            this.addBox.SuspendLayout();
             this.SuspendLayout();
             // 
-            // groupBox1
+            // searchBox
             // 
-            this.groupBox1.Controls.Add(this.searchCountryButton);
-            this.groupBox1.Controls.Add(this.searchRegionButton);
-            this.groupBox1.Controls.Add(this.searchCPButton);
-            this.groupBox1.Controls.Add(this.searchHikeButton);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(253, 94);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Keresés";
+            this.searchBox.Controls.Add(this.searchCountryButton);
+            this.searchBox.Controls.Add(this.searchRegionButton);
+            this.searchBox.Controls.Add(this.searchCPButton);
+            this.searchBox.Controls.Add(this.searchHikeButton);
+            this.searchBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.searchBox.Location = new System.Drawing.Point(0, 0);
+            this.searchBox.Name = "searchBox";
+            this.searchBox.Size = new System.Drawing.Size(246, 94);
+            this.searchBox.TabIndex = 0;
+            this.searchBox.TabStop = false;
+            this.searchBox.Text = "Keresés";
             // 
             // searchCountryButton
             // 
@@ -89,24 +93,25 @@
             // 
             this.searchHikeButton.Location = new System.Drawing.Point(6, 29);
             this.searchHikeButton.Name = "searchHikeButton";
-            this.searchHikeButton.Size = new System.Drawing.Size(235, 23);
+            this.searchHikeButton.Size = new System.Drawing.Size(234, 23);
             this.searchHikeButton.TabIndex = 0;
             this.searchHikeButton.Text = "Túra keresése";
             this.searchHikeButton.UseVisualStyleBackColor = true;
             this.searchHikeButton.Click += new System.EventHandler(this.searchHikeButton_Click);
             // 
-            // groupBox2
+            // addBox
             // 
-            this.groupBox2.Controls.Add(this.addCountryButton);
-            this.groupBox2.Controls.Add(this.addCPButton);
-            this.groupBox2.Controls.Add(this.addHikeButton);
-            this.groupBox2.Controls.Add(this.addRegionButton);
-            this.groupBox2.Location = new System.Drawing.Point(12, 112);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(253, 92);
-            this.groupBox2.TabIndex = 1;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Hozzáadás";
+            this.addBox.Controls.Add(this.addCountryButton);
+            this.addBox.Controls.Add(this.addCPButton);
+            this.addBox.Controls.Add(this.addHikeButton);
+            this.addBox.Controls.Add(this.addRegionButton);
+            this.addBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.addBox.Location = new System.Drawing.Point(0, 94);
+            this.addBox.Name = "addBox";
+            this.addBox.Size = new System.Drawing.Size(246, 92);
+            this.addBox.TabIndex = 1;
+            this.addBox.TabStop = false;
+            this.addBox.Text = "Hozzáadás";
             // 
             // addCountryButton
             // 
@@ -130,7 +135,7 @@
             // 
             // addHikeButton
             // 
-            this.addHikeButton.Location = new System.Drawing.Point(6, 28);
+            this.addHikeButton.Location = new System.Drawing.Point(5, 28);
             this.addHikeButton.Name = "addHikeButton";
             this.addHikeButton.Size = new System.Drawing.Size(235, 23);
             this.addHikeButton.TabIndex = 1;
@@ -148,33 +153,73 @@
             this.addRegionButton.UseVisualStyleBackColor = true;
             this.addRegionButton.Click += new System.EventHandler(this.addRegionButton_Click);
             // 
+            // connectionStateLabel
+            // 
+            this.connectionStateLabel.AutoSize = true;
+            this.connectionStateLabel.Location = new System.Drawing.Point(3, 197);
+            this.connectionStateLabel.Name = "connectionStateLabel";
+            this.connectionStateLabel.Size = new System.Drawing.Size(83, 13);
+            this.connectionStateLabel.TabIndex = 2;
+            this.connectionStateLabel.Text = "Nincs kapcsolat";
+            // 
+            // connectDBButton
+            // 
+            this.connectDBButton.Location = new System.Drawing.Point(88, 192);
+            this.connectDBButton.Name = "connectDBButton";
+            this.connectDBButton.Size = new System.Drawing.Size(75, 23);
+            this.connectDBButton.TabIndex = 3;
+            this.connectDBButton.Text = "Csatlakozás";
+            this.connectDBButton.UseVisualStyleBackColor = true;
+            this.connectDBButton.Click += new System.EventHandler(this.connectDBButton_Click);
+            // 
+            // closeButton
+            // 
+            this.closeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.closeButton.Location = new System.Drawing.Point(169, 192);
+            this.closeButton.Name = "closeButton";
+            this.closeButton.Size = new System.Drawing.Size(72, 23);
+            this.closeButton.TabIndex = 4;
+            this.closeButton.Text = "Bezárás";
+            this.closeButton.UseVisualStyleBackColor = true;
+            this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
+            // 
             // BaseForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(275, 216);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
+            this.CancelButton = this.closeButton;
+            this.ClientSize = new System.Drawing.Size(246, 223);
+            this.Controls.Add(this.closeButton);
+            this.Controls.Add(this.connectDBButton);
+            this.Controls.Add(this.connectionStateLabel);
+            this.Controls.Add(this.addBox);
+            this.Controls.Add(this.searchBox);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "BaseForm";
+            this.ShowIcon = false;
             this.Text = "TúraKezelő";
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
+            this.searchBox.ResumeLayout(false);
+            this.addBox.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox searchBox;
         private System.Windows.Forms.Button searchCountryButton;
         private System.Windows.Forms.Button searchRegionButton;
         private System.Windows.Forms.Button searchCPButton;
         private System.Windows.Forms.Button searchHikeButton;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox addBox;
         private System.Windows.Forms.Button addCountryButton;
         private System.Windows.Forms.Button addCPButton;
         private System.Windows.Forms.Button addHikeButton;
         private System.Windows.Forms.Button addRegionButton;
+        private System.Windows.Forms.Label connectionStateLabel;
+        private System.Windows.Forms.Button connectDBButton;
+        private System.Windows.Forms.Button closeButton;
     }
 }
 

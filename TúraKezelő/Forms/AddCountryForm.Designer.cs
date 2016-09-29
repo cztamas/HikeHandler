@@ -1,4 +1,4 @@
-﻿namespace TúraKezelő.Forms
+﻿namespace HikeHandler.Forms
 {
     partial class AddCountryForm
     {
@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.nameBox = new System.Windows.Forms.TextBox();
             this.saveButton = new System.Windows.Forms.Button();
             this.exitButton = new System.Windows.Forms.Button();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.descriptionBox = new System.Windows.Forms.RichTextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
@@ -48,12 +48,12 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Országnév:";
             // 
-            // textBox1
+            // nameBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(73, 16);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(186, 20);
-            this.textBox1.TabIndex = 1;
+            this.nameBox.Location = new System.Drawing.Point(73, 16);
+            this.nameBox.Name = "nameBox";
+            this.nameBox.Size = new System.Drawing.Size(206, 20);
+            this.nameBox.TabIndex = 1;
             // 
             // saveButton
             // 
@@ -63,9 +63,11 @@
             this.saveButton.TabIndex = 2;
             this.saveButton.Text = "Ország mentése";
             this.saveButton.UseVisualStyleBackColor = true;
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
             // exitButton
             // 
+            this.exitButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.exitButton.Location = new System.Drawing.Point(185, 141);
             this.exitButton.Name = "exitButton";
             this.exitButton.Size = new System.Drawing.Size(92, 23);
@@ -74,31 +76,32 @@
             this.exitButton.UseVisualStyleBackColor = true;
             this.exitButton.Click += new System.EventHandler(this.exitButton_Click);
             // 
-            // richTextBox1
+            // descriptionBox
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(6, 19);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(253, 65);
-            this.richTextBox1.TabIndex = 5;
-            this.richTextBox1.Text = "";
+            this.descriptionBox.Location = new System.Drawing.Point(3, 16);
+            this.descriptionBox.Name = "descriptionBox";
+            this.descriptionBox.Size = new System.Drawing.Size(276, 71);
+            this.descriptionBox.TabIndex = 5;
+            this.descriptionBox.Text = "";
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.groupBox2);
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.nameBox);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(12, 3);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(265, 132);
+            this.groupBox1.Size = new System.Drawing.Size(285, 132);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.richTextBox1);
-            this.groupBox2.Location = new System.Drawing.Point(0, 42);
+            this.groupBox2.Controls.Add(this.descriptionBox);
+            this.groupBox2.Location = new System.Drawing.Point(0, 39);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(265, 90);
+            this.groupBox2.Size = new System.Drawing.Size(285, 93);
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Leírás";
@@ -107,10 +110,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(287, 170);
+            this.CancelButton = this.exitButton;
+            this.ClientSize = new System.Drawing.Size(285, 170);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.exitButton);
             this.Controls.Add(this.saveButton);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "AddCountryForm";
             this.Text = "Ország hozzáadása";
             this.groupBox1.ResumeLayout(false);
@@ -123,10 +128,10 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox nameBox;
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button exitButton;
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.RichTextBox descriptionBox;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
     }

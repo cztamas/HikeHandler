@@ -29,15 +29,15 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.searchButton = new System.Windows.Forms.Button();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.hikeNumberBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.clearButton = new System.Windows.Forms.Button();
             this.closeButton = new System.Windows.Forms.Button();
+            this.countryBox = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -52,19 +52,12 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Országnév:";
             // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(83, 19);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(171, 20);
-            this.textBox1.TabIndex = 3;
-            // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.countryBox);
             this.groupBox1.Controls.Add(this.searchButton);
-            this.groupBox1.Controls.Add(this.textBox2);
+            this.groupBox1.Controls.Add(this.hikeNumberBox);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.textBox1);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(3, 12);
             this.groupBox1.Name = "groupBox1";
@@ -82,12 +75,12 @@
             this.searchButton.Text = "Keresés";
             this.searchButton.UseVisualStyleBackColor = true;
             // 
-            // textBox2
+            // hikeNumberBox
             // 
-            this.textBox2.Location = new System.Drawing.Point(83, 45);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(78, 20);
-            this.textBox2.TabIndex = 5;
+            this.hikeNumberBox.Location = new System.Drawing.Point(83, 45);
+            this.hikeNumberBox.Name = "hikeNumberBox";
+            this.hikeNumberBox.Size = new System.Drawing.Size(78, 20);
+            this.hikeNumberBox.TabIndex = 5;
             // 
             // label2
             // 
@@ -140,6 +133,14 @@
             this.closeButton.UseVisualStyleBackColor = true;
             this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
             // 
+            // countryBox
+            // 
+            this.countryBox.FormattingEnabled = true;
+            this.countryBox.Location = new System.Drawing.Point(83, 18);
+            this.countryBox.Name = "countryBox";
+            this.countryBox.Size = new System.Drawing.Size(171, 21);
+            this.countryBox.TabIndex = 7;
+            // 
             // SearchCountryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -163,14 +164,14 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button searchButton;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox hikeNumberBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button clearButton;
         private System.Windows.Forms.Button closeButton;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.ComboBox countryBox;
     }
 }

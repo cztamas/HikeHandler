@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HikeHandler.Data_Containers
+namespace HikeHandler
 {
     public struct LoginData
     {
@@ -18,7 +18,7 @@ namespace HikeHandler.Data_Containers
         }
     }
 
-    public struct IntInterval
+    public class IntInterval
     {
         public int Min { get; set; }
         public int Max { get; set; }
@@ -29,19 +29,37 @@ namespace HikeHandler.Data_Containers
             Max = max;
         }
 
+        public IntInterval()
+        {
+            Min = 0;
+            Max = 0;
+        }
+
         public string SqlSnippet(string variable)
         {
-            return "(" + Min + "<=" + variable + ") AND (" + variable + "<=" + Max + ")";
+            if (Max > 0)
+                return "(" + variable + "BETWEEN " + Min + " AND " + Max + ")";
+            return "(" + variable + " >= " + Min + ")";
         }
     }
 
     public class IntPile
     {
-        private IntInterval[] intervals;
+        private List<IntInterval> intervals;
 
-        public IntPile(IntInterval[] intervalList)
+        public IntPile()
+        {
+            intervals = new List<IntInterval>();
+        }
+
+        public IntPile(List<IntInterval> intervalList)
         {
             intervals = intervalList;
+        }
+
+        public void Add(IntInterval interval)
+        {
+            intervals.Add(interval);
         }
 
         public string SqlSearchCondition(string variable)
@@ -50,11 +68,12 @@ namespace HikeHandler.Data_Containers
             foreach (IntInterval interval in intervals)
             {
                 if (condition != String.Empty)
-                    condition += " OR ";
-                string item = "(" + interval.SqlSnippet(variable) + ")";
-                condition += item;
+                    condition += " OR ";                
+                condition += interval.SqlSnippet(variable);
             }
-            return condition;
+            if (condition == String.Empty)
+                return String.Empty;
+            return "( " + condition + " )";
         }
     }
 }

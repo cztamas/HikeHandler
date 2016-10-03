@@ -22,3 +22,6 @@ C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\TúraKezelő.Properties.Resources
 C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\HikeHandler.csproj.GenerateResource.Cache
 C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\TúraKezelő.exe
 C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\TúraKezelő.pdb
+C:\prog\c#\HikeHandler\TúraKezelő\bin\Debug\TúraKezelő.exe.config
+C:\prog\c#\HikeHandler\TúraKezelő\obj\Debug\TúraKezelő.exe
+C:\prog\c#\HikeHandler\TúraKezelő\obj\Debug\TúraKezelő.pdb

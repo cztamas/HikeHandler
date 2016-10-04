@@ -20,26 +20,26 @@ namespace HikeHandler
 
     public class IntInterval
     {
-        public int Min { get; set; }
-        public int Max { get; set; }
+        private int min;
+        private int max;
 
-        public IntInterval(int min, int max)
+        public IntInterval(int minValue, int maxValue)
         {
-            Min = min;
-            Max = max;
+            min = minValue;
+            max = maxValue;
         }
 
         public IntInterval()
         {
-            Min = 0;
-            Max = 0;
+            min = 0;
+            max = 0;
         }
 
         public string SqlSnippet(string variable)
         {
-            if (Max > 0)
-                return "(" + variable + "BETWEEN " + Min + " AND " + Max + ")";
-            return "(" + variable + " >= " + Min + ")";
+            if (max > 0)
+                return "(" + variable + " BETWEEN " + min + " AND " + max + ")";
+            return "(" + variable + " >= " + min + ")";
         }
     }
 

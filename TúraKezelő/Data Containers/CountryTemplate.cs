@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
+using System.Windows.Forms;
 
 namespace HikeHandler.Data_Containers
 {
@@ -32,11 +33,13 @@ namespace HikeHandler.Data_Containers
         
         public MySqlCommand SearchCommand(MySqlConnection connection)
         {
-            string commandText = "SELECT countryid, name, hikecount FROM country WHERE name LIKE @name;";
+            string commandText = "SELECT idcountry, name, hikecount FROM country WHERE name LIKE @name";
             string countCondition = hikeCount.SqlSearchCondition("hikeCount");
             if (countCondition != String.Empty)
-                commandText += ("AND " + countCondition);
+                commandText += (" AND " + countCondition);
+            commandText += ";";
             MySqlCommand command = new MySqlCommand(commandText, connection);
+            //MessageBox.Show(commandText);
             command.Parameters.AddWithValue("@name", "%" + name + "%");
             return command;
         }

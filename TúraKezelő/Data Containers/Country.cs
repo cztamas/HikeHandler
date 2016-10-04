@@ -4,37 +4,44 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
+using System.Data;
+using System.Windows.Forms;
 
 namespace HikeHandler.Data_Containers
 {
     public class Country
     {
-        private int id;
-        private string name;
-        private int hikeCount;
-        private string description;
+        public int ID { get; }
+        public string Name { get; set; }
+        public int HikeCount { get; }
+        public string Description { get; set; }
 
         public Country(int countryID, int hikeNumber, string countryName, string countryDescription)
         {
-            id = countryID;
-            hikeCount = hikeNumber;
-            name = countryName;
-            description = countryDescription;
+            ID = countryID;
+            HikeCount = hikeNumber;
+            Name = countryName;
+            Description = countryDescription;
         }
 
         public Country(string countryName, string countryDescription)
         {
-            name = countryName;
-            description = countryDescription;
-            hikeCount = 0;
+            Name = countryName;
+            Description = countryDescription;
+            HikeCount = 0;
+        }
+
+        public Country(int countryID)
+        {
+            ID = countryID;
         }
         
         public MySqlCommand SaveCommand(MySqlConnection connection)
         {
             string commandText = "INSERT INTO country (NAME, HIKECOUNT, DESCRIPTION) VALUES (@name, 0, @description);";
             MySqlCommand command = new MySqlCommand(commandText, connection);
-            command.Parameters.AddWithValue("@name", name);
-            command.Parameters.AddWithValue("@description", description);
+            command.Parameters.AddWithValue("@name", Name);
+            command.Parameters.AddWithValue("@description", Description);
             return command;
         }
 
@@ -42,9 +49,17 @@ namespace HikeHandler.Data_Containers
         {
             string commandText = "UPDATE country SET NAME=@name, DESCRIPTION=@description WHERE IDCOUNTRY=@id;";
             MySqlCommand command = new MySqlCommand(commandText, connection);
-            command.Parameters.AddWithValue("@name", name);
-            command.Parameters.AddWithValue("@description", description);
-            command.Parameters.AddWithValue("@id", id);
+            command.Parameters.AddWithValue("@name", Name);
+            command.Parameters.AddWithValue("@description", Description);
+            command.Parameters.AddWithValue("@id", ID);
+            return command;
+        }
+
+        public MySqlCommand RefreshCommand(MySqlConnection connection)
+        {
+            string commandText = "SELECT name, description, hikecount FROM country WHERE IDCOUNTRY=@id;";
+            MySqlCommand command = new MySqlCommand(commandText, connection);
+            command.Parameters.AddWithValue("@id", ID);
             return command;
         }
     }

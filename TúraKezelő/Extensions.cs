@@ -28,25 +28,37 @@ namespace HikeHandler
             text = Regex.Replace(text, @"\s+", "");
             char[] separator = new char[] { '-' };
             string[] limits = text.Split(separator, StringSplitOptions.RemoveEmptyEntries);
-            if (limits.Length == 0) 
-            {
+            if (text == "-")
                 return null;
+            if (Regex.IsMatch(text, @"^\d*$"))
+            {
+                int a;
+                int.TryParse(limits[0], out a);
+                IntInterval interval = new IntInterval(a, a);
+                return interval;
             }
-            if (limits.Length == 1) 
+            if (Regex.IsMatch(text, @"^\d*-$"))
             {
                 int a;
                 int.TryParse(limits[0], out a);
                 IntInterval interval = new IntInterval(a, 0);
                 return interval;
             }
-            if (limits.Length == 2)
+            if (Regex.IsMatch(text, @"^-\d*$"))
+            {
+                int a;
+                int.TryParse(limits[0], out a);
+                IntInterval interval = new IntInterval(0, a);
+                return interval;
+            }
+            if (Regex.IsMatch(text, @"^\d*-\d*$"))
             {
                 int a, b;
                 int.TryParse(limits[0], out a);
                 int.TryParse(limits[1], out b);
                 IntInterval interval = new IntInterval(a, b);
                 return interval;
-            }
+            }            
             return null;
         }
 

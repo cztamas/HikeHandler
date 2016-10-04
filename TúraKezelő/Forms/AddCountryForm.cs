@@ -50,6 +50,7 @@ namespace HikeHandler.Forms
             try
             {
                 command.ExecuteNonQuery();
+                MessageBox.Show("Sikeresen elmentve.");
                 Close();
             }
             catch (Exception ex)

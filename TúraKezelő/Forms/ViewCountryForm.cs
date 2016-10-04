@@ -114,5 +114,33 @@ namespace HikeHandler.Forms
         {
             RefreshForm();
         }
+
+        private void saveEditButton_Click(object sender, EventArgs e)
+        {
+            if (sqlConnection == null)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
+            if (sqlConnection.State != ConnectionState.Open) 
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
+            countryData.Name = nameBox.Text;
+            countryData.Description = descriptionBox.Text;
+            using (MySqlCommand command = countryData.UpdateCommand(sqlConnection))
+            {
+                try
+                {
+                    command.ExecuteNonQuery();
+                    RefreshForm();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Hiba");
+                }
+            }
+        }
     }
 }

@@ -54,10 +54,13 @@ namespace HikeHandler.Forms
                 return;
             }
             if (sqlConnection == null)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
                 return;
+            }
             if (sqlConnection.State != ConnectionState.Open)
             {
-                MessageBox.Show("Nem lehet elérni az adatbázist.", "Hiba");
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
                 return;
             }
             CountryTemplate template = new CountryTemplate(countryBox.Text, hikeNumberBox.Text);

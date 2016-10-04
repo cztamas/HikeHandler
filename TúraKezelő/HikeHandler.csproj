@@ -36,6 +36,7 @@
     <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -51,9 +52,10 @@
     <Compile Include="Data Containers\Country.cs" />
     <Compile Include="Data Containers\CP.cs" />
     <Compile Include="Data Containers\Hike.cs" />
+    <Compile Include="Data Containers\HikeRegionTemplate.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Miscellaneous.cs" />
-    <Compile Include="Data Containers\Region.cs" />
+    <Compile Include="Data Containers\HikeRegion.cs" />
     <Compile Include="Forms\AddCountryForm.cs">
       <SubType>Form</SubType>
     </Compile>

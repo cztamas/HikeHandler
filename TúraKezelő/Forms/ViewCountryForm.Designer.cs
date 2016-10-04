@@ -29,20 +29,20 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.deleteCountryButton = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.descriptionBox = new System.Windows.Forms.RichTextBox();
             this.hikeCountBox = new System.Windows.Forms.TextBox();
             this.nameBox = new System.Windows.Forms.TextBox();
             this.hikesOfCountryButton = new System.Windows.Forms.Button();
             this.cpsOfCountryButton = new System.Windows.Forms.Button();
             this.regionsOfCountryButton = new System.Windows.Forms.Button();
-            this.descriptionBox = new System.Windows.Forms.RichTextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.saveEditButton = new System.Windows.Forms.Button();
             this.cancelEditButton = new System.Windows.Forms.Button();
             this.editButton = new System.Windows.Forms.Button();
             this.closeButton = new System.Windows.Forms.Button();
-            this.deleteCountryButton = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.refreshButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -65,6 +65,34 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Adatok";
+            // 
+            // deleteCountryButton
+            // 
+            this.deleteCountryButton.Location = new System.Drawing.Point(294, 103);
+            this.deleteCountryButton.Name = "deleteCountryButton";
+            this.deleteCountryButton.Size = new System.Drawing.Size(109, 23);
+            this.deleteCountryButton.TabIndex = 12;
+            this.deleteCountryButton.Text = "Ország törlése...";
+            this.deleteCountryButton.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.descriptionBox);
+            this.groupBox2.Location = new System.Drawing.Point(0, 45);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(281, 89);
+            this.groupBox2.TabIndex = 14;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Leírás";
+            // 
+            // descriptionBox
+            // 
+            this.descriptionBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.descriptionBox.Location = new System.Drawing.Point(3, 16);
+            this.descriptionBox.Name = "descriptionBox";
+            this.descriptionBox.Size = new System.Drawing.Size(275, 70);
+            this.descriptionBox.TabIndex = 5;
+            this.descriptionBox.Text = "";
             // 
             // hikeCountBox
             // 
@@ -108,15 +136,6 @@
             this.regionsOfCountryButton.Text = "Tájegységek...";
             this.regionsOfCountryButton.UseVisualStyleBackColor = true;
             // 
-            // descriptionBox
-            // 
-            this.descriptionBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.descriptionBox.Location = new System.Drawing.Point(3, 16);
-            this.descriptionBox.Name = "descriptionBox";
-            this.descriptionBox.Size = new System.Drawing.Size(275, 70);
-            this.descriptionBox.TabIndex = 5;
-            this.descriptionBox.Text = "";
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -143,6 +162,7 @@
             this.saveEditButton.TabIndex = 11;
             this.saveEditButton.Text = "Változások mentése";
             this.saveEditButton.UseVisualStyleBackColor = true;
+            this.saveEditButton.Click += new System.EventHandler(this.saveEditButton_Click);
             // 
             // cancelEditButton
             // 
@@ -174,25 +194,6 @@
             this.closeButton.Text = "Bezárás";
             this.closeButton.UseVisualStyleBackColor = true;
             this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
-            // 
-            // deleteCountryButton
-            // 
-            this.deleteCountryButton.Location = new System.Drawing.Point(294, 103);
-            this.deleteCountryButton.Name = "deleteCountryButton";
-            this.deleteCountryButton.Size = new System.Drawing.Size(109, 23);
-            this.deleteCountryButton.TabIndex = 12;
-            this.deleteCountryButton.Text = "Ország törlése...";
-            this.deleteCountryButton.UseVisualStyleBackColor = true;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.descriptionBox);
-            this.groupBox2.Location = new System.Drawing.Point(0, 45);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(281, 89);
-            this.groupBox2.TabIndex = 14;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Leírás";
             // 
             // refreshButton
             // 

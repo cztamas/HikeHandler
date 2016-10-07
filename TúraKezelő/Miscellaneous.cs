@@ -76,4 +76,9 @@ namespace HikeHandler
             return "( " + condition + " )";
         }
     }
+
+    public enum CPType
+    {
+        undefined = 0, település, turistaház, hegycsúcs, egyéb
+    }
 }

@@ -44,7 +44,6 @@ namespace HikeHandler.Forms
                 MessageBox.Show(this, "Nincs kapcsolat az adatbázissal.");
                 return;
             }
-
             Country country = new Country(nameBox.Text, descriptionBox.Text);
             MySqlCommand command = country.SaveCommand(sqlConnection);
             try

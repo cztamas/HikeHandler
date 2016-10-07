@@ -8,11 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using HikeHandler.Data_Containers;
 
 namespace HikeHandler.Forms
 {
     public partial class AddCPForm : Form
     {
+        private MySqlConnection sqlConnection;
+
         public AddCPForm()
         {
             InitializeComponent();
@@ -22,13 +25,135 @@ namespace HikeHandler.Forms
         {
             InitializeComponent();
             sqlConnection = connection;
+            GetTypes();
+            GetCountries();
+        } 
+
+        private void Open()
+        {
+            Show();
+            nameBox.Focus();
+        }
+        
+        private void GetTypes()
+        {
+            Array cpTypes = Enum.GetValues(typeof(CPType));
+            typeComboBox.DataSource = cpTypes;
         }
 
-        private MySqlConnection sqlConnection;               
+        private void GetCountries()
+        {
+            if (sqlConnection == null)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
+            string commandText = "SELECT idcountry, name FROM country;";
+            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
+            {
+                try
+                {
+                    DataTable table = new DataTable();
+                    adapter.Fill(table);
+                    countryComboBox.DataSource = table;
+                    countryComboBox.ValueMember = "idcountry";
+                    countryComboBox.DisplayMember = "name";
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Hiba");
+                }
+            }
+        }
+
+        private void GetRegions(int countryID)
+        {
+            if (sqlConnection == null)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
+            string commandText = "SELECT idregion, name FROM region WHERE idcountry="+countryID+";";
+            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
+            {
+                try
+                {
+                    DataTable table = new DataTable();
+                    adapter.Fill(table);
+                    regionComboBox.DataSource = table;
+                    regionComboBox.ValueMember = "idregion";
+                    regionComboBox.DisplayMember = "name";
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Hiba");
+                }
+            }
+        }
 
         private void cancelButton_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void descriptionBox_Enter(object sender, EventArgs e)
+        {
+            AcceptButton = null;
+        }
+
+        private void descriptionBox_Leave(object sender, EventArgs e)
+        {
+            AcceptButton = saveCPButton;
+        }
+
+        private void saveCPButton_Click(object sender, EventArgs e)
+        {
+            if (sqlConnection == null)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
+            CP checkPoint = new CP();
+            checkPoint.Name = nameBox.Text;
+            checkPoint.Description = descriptionBox.Text;
+            checkPoint.IDCountry = (int)countryComboBox.SelectedValue;
+            checkPoint.IDRegion = (int)regionComboBox.SelectedValue;
+            checkPoint.TypeOfCP = (CPType)typeComboBox.SelectedValue;
+            using (MySqlCommand command = checkPoint.SaveCommand(sqlConnection))
+            {
+                try
+                {
+                    command.ExecuteNonQuery();
+                    MessageBox.Show("Sikeresen elmentve.");
+                    Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Hiba");
+                }
+            }
+        }
+
+        private void countryComboBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (countryComboBox.SelectedValue.GetType() != typeof(int))
+                return;
+            GetRegions((int)countryComboBox.SelectedValue);
         }
     }
 }

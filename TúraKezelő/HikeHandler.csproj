@@ -51,8 +51,10 @@
     <Compile Include="Data Containers\CountryTemplate.cs" />
     <Compile Include="Data Containers\Country.cs" />
     <Compile Include="Data Containers\CP.cs" />
+    <Compile Include="Data Containers\CPTemplate.cs" />
     <Compile Include="Data Containers\Hike.cs" />
     <Compile Include="Data Containers\HikeRegionTemplate.cs" />
+    <Compile Include="Data Containers\HikeTemplate.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Miscellaneous.cs" />
     <Compile Include="Data Containers\HikeRegion.cs" />

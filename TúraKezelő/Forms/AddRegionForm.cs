@@ -26,8 +26,15 @@ namespace HikeHandler.Forms
         {
             InitializeComponent();
             sqlConnection = connection;
-            GetCountryList();
-        }        
+            GetCountryList();            
+        } 
+        
+        public void Open()
+        {
+            Show();
+            countryComboBox.Text = string.Empty;
+            nameBox.Focus();
+        }
 
         private void GetCountryList()
         {
@@ -90,6 +97,16 @@ namespace HikeHandler.Forms
                     MessageBox.Show(ex.Message, "Hiba");
                 }
             }
+        }
+
+        private void descriptionBox_Enter(object sender, EventArgs e)
+        {
+            AcceptButton = null;
+        }
+
+        private void descriptionBox_Leave(object sender, EventArgs e)
+        {
+            AcceptButton = saveRegionButton;
         }
     }
 }

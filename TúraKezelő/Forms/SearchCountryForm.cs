@@ -84,6 +84,18 @@ namespace HikeHandler.Forms
 
         private void resultView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex < 0)
+                return;
+            if (sqlConnection == null)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
             int index = (int)resultView.Rows[e.RowIndex].Cells[0].Value;
             ViewCountryForm vForm = new ViewCountryForm(index, sqlConnection);
             vForm.Show();
@@ -93,6 +105,16 @@ namespace HikeHandler.Forms
         {
             if (resultView.SelectedRows == null)
                 return;
+            if (sqlConnection == null)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
             foreach (DataGridViewRow row in resultView.SelectedRows)
             {
                 int index = (int)row.Cells[0].Value;

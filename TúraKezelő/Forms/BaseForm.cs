@@ -123,7 +123,7 @@ namespace HikeHandler
             if (!uiTestMode)
             {
                 SearchRegionForm sRForm = new SearchRegionForm(sqlConnection);
-                sRForm.Show();
+                sRForm.Open();
             }            
         }
 
@@ -174,12 +174,12 @@ namespace HikeHandler
             if (uiTestMode)
             {
                 AddRegionForm aRForm = new AddRegionForm();
-                aRForm.Show();
+                aRForm.Open();
             }
             if (!uiTestMode)
             {
                 AddRegionForm aRForm = new AddRegionForm(sqlConnection);
-                aRForm.Show();
+                aRForm.Open();
             }            
         }
 

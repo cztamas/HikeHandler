@@ -74,6 +74,8 @@
             this.descriptionBox.Size = new System.Drawing.Size(391, 73);
             this.descriptionBox.TabIndex = 5;
             this.descriptionBox.Text = "";
+            this.descriptionBox.Enter += new System.EventHandler(this.descriptionBox_Enter);
+            this.descriptionBox.Leave += new System.EventHandler(this.descriptionBox_Leave);
             // 
             // saveRegionButton
             // 

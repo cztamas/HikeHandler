@@ -35,7 +35,7 @@ namespace HikeHandler.Data_Containers
 
         public MySqlCommand SearchCommand(MySqlConnection connection)
         {
-            string commandText = @"SELECT cp.idcp, cp.name, r.name, country.name, cp.hikecount, cp.type, cp.description
+            string commandText = @"SELECT cp.idcp, cp.name, cp.type, cp.hikecount, r.name, country.name, cp.description
 FROM cp, region r, country c WHERE cp.idregion=r.idregion AND cp.idcountry=c.idcountry
 AND cp.name LIKE @name AND c.name LIKE @countryName AND r.name LIKE @regionName";
             if (CPID != -1)

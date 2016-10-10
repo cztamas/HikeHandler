@@ -29,36 +29,37 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.countryBox = new System.Windows.Forms.TextBox();
+            this.regionBox = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.descriptionBox = new System.Windows.Forms.RichTextBox();
+            this.typeComboBox = new System.Windows.Forms.ComboBox();
+            this.showHikesButton = new System.Windows.Forms.Button();
+            this.hikeCountBox = new System.Windows.Forms.TextBox();
+            this.nameBox = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
+            this.editButton = new System.Windows.Forms.Button();
             this.closeButton = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
+            this.saveEditButton = new System.Windows.Forms.Button();
+            this.cancelEditButton = new System.Windows.Forms.Button();
+            this.refreshButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.textBox4);
-            this.groupBox1.Controls.Add(this.textBox2);
+            this.groupBox1.Controls.Add(this.countryBox);
+            this.groupBox1.Controls.Add(this.regionBox);
             this.groupBox1.Controls.Add(this.groupBox2);
-            this.groupBox1.Controls.Add(this.comboBox1);
-            this.groupBox1.Controls.Add(this.button1);
-            this.groupBox1.Controls.Add(this.textBox3);
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.typeComboBox);
+            this.groupBox1.Controls.Add(this.showHikesButton);
+            this.groupBox1.Controls.Add(this.hikeCountBox);
+            this.groupBox1.Controls.Add(this.nameBox);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label3);
@@ -66,73 +67,78 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(12, 2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(398, 186);
+            this.groupBox1.Size = new System.Drawing.Size(393, 186);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Adatok";
             // 
-            // textBox4
+            // countryBox
             // 
-            this.textBox4.Location = new System.Drawing.Point(256, 45);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(129, 20);
-            this.textBox4.TabIndex = 19;
+            this.countryBox.Enabled = false;
+            this.countryBox.Location = new System.Drawing.Point(256, 45);
+            this.countryBox.Name = "countryBox";
+            this.countryBox.Size = new System.Drawing.Size(129, 20);
+            this.countryBox.TabIndex = 19;
             // 
-            // textBox2
+            // regionBox
             // 
-            this.textBox2.Location = new System.Drawing.Point(71, 45);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(133, 20);
-            this.textBox2.TabIndex = 18;
+            this.regionBox.Enabled = false;
+            this.regionBox.Location = new System.Drawing.Point(71, 45);
+            this.regionBox.Name = "regionBox";
+            this.regionBox.Size = new System.Drawing.Size(133, 20);
+            this.regionBox.TabIndex = 18;
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.richTextBox1);
-            this.groupBox2.Location = new System.Drawing.Point(6, 72);
+            this.groupBox2.Controls.Add(this.descriptionBox);
+            this.groupBox2.Location = new System.Drawing.Point(0, 71);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(254, 106);
+            this.groupBox2.Size = new System.Drawing.Size(254, 115);
             this.groupBox2.TabIndex = 17;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Leírás";
             // 
-            // richTextBox1
+            // descriptionBox
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(6, 19);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(241, 81);
-            this.richTextBox1.TabIndex = 13;
-            this.richTextBox1.Text = "";
+            this.descriptionBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.descriptionBox.Location = new System.Drawing.Point(3, 16);
+            this.descriptionBox.Name = "descriptionBox";
+            this.descriptionBox.Size = new System.Drawing.Size(248, 96);
+            this.descriptionBox.TabIndex = 13;
+            this.descriptionBox.Text = "";
             // 
-            // comboBox1
+            // typeComboBox
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(256, 19);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(129, 21);
-            this.comboBox1.TabIndex = 14;
+            this.typeComboBox.FormattingEnabled = true;
+            this.typeComboBox.Location = new System.Drawing.Point(256, 19);
+            this.typeComboBox.Name = "typeComboBox";
+            this.typeComboBox.Size = new System.Drawing.Size(129, 21);
+            this.typeComboBox.TabIndex = 14;
             // 
-            // button1
+            // showHikesButton
             // 
-            this.button1.Location = new System.Drawing.Point(275, 124);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(110, 23);
-            this.button1.TabIndex = 11;
-            this.button1.Text = "Túrák...";
-            this.button1.UseVisualStyleBackColor = true;
+            this.showHikesButton.Location = new System.Drawing.Point(281, 124);
+            this.showHikesButton.Name = "showHikesButton";
+            this.showHikesButton.Size = new System.Drawing.Size(104, 23);
+            this.showHikesButton.TabIndex = 11;
+            this.showHikesButton.Text = "Túrák...";
+            this.showHikesButton.UseVisualStyleBackColor = true;
+            this.showHikesButton.Click += new System.EventHandler(this.showHikesButton_Click);
             // 
-            // textBox3
+            // hikeCountBox
             // 
-            this.textBox3.Location = new System.Drawing.Point(349, 88);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(36, 20);
-            this.textBox3.TabIndex = 8;
+            this.hikeCountBox.Enabled = false;
+            this.hikeCountBox.Location = new System.Drawing.Point(349, 88);
+            this.hikeCountBox.Name = "hikeCountBox";
+            this.hikeCountBox.Size = new System.Drawing.Size(36, 20);
+            this.hikeCountBox.TabIndex = 8;
             // 
-            // textBox1
+            // nameBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(71, 19);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(133, 20);
-            this.textBox1.TabIndex = 6;
+            this.nameBox.Location = new System.Drawing.Point(71, 19);
+            this.nameBox.Name = "nameBox";
+            this.nameBox.Size = new System.Drawing.Size(133, 20);
+            this.nameBox.TabIndex = 6;
             // 
             // label5
             // 
@@ -179,54 +185,71 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Név:";
             // 
-            // button2
+            // editButton
             // 
-            this.button2.Location = new System.Drawing.Point(12, 194);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(237, 23);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Szerkesztés...";
-            this.button2.UseVisualStyleBackColor = true;
+            this.editButton.Location = new System.Drawing.Point(12, 194);
+            this.editButton.Name = "editButton";
+            this.editButton.Size = new System.Drawing.Size(184, 23);
+            this.editButton.TabIndex = 1;
+            this.editButton.Text = "Szerkesztés...";
+            this.editButton.UseVisualStyleBackColor = true;
+            this.editButton.Click += new System.EventHandler(this.editButton_Click);
             // 
             // closeButton
             // 
-            this.closeButton.Location = new System.Drawing.Point(255, 194);
+            this.closeButton.Location = new System.Drawing.Point(293, 194);
             this.closeButton.Name = "closeButton";
-            this.closeButton.Size = new System.Drawing.Size(155, 23);
+            this.closeButton.Size = new System.Drawing.Size(104, 23);
             this.closeButton.TabIndex = 2;
             this.closeButton.Text = "Bezárás";
             this.closeButton.UseVisualStyleBackColor = true;
             this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
             // 
-            // button4
+            // saveEditButton
             // 
-            this.button4.Location = new System.Drawing.Point(12, 194);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(107, 23);
-            this.button4.TabIndex = 3;
-            this.button4.Text = "Mentés";
-            this.button4.UseVisualStyleBackColor = true;
+            this.saveEditButton.Location = new System.Drawing.Point(12, 194);
+            this.saveEditButton.Name = "saveEditButton";
+            this.saveEditButton.Size = new System.Drawing.Size(110, 23);
+            this.saveEditButton.TabIndex = 3;
+            this.saveEditButton.Text = "Változások mentése";
+            this.saveEditButton.UseVisualStyleBackColor = true;
+            this.saveEditButton.Click += new System.EventHandler(this.saveEditButton_Click);
             // 
-            // button5
+            // cancelEditButton
             // 
-            this.button5.Location = new System.Drawing.Point(125, 194);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(124, 23);
-            this.button5.TabIndex = 4;
-            this.button5.Text = "Mégse";
-            this.button5.UseVisualStyleBackColor = true;
+            this.cancelEditButton.Location = new System.Drawing.Point(128, 194);
+            this.cancelEditButton.Name = "cancelEditButton";
+            this.cancelEditButton.Size = new System.Drawing.Size(68, 23);
+            this.cancelEditButton.TabIndex = 4;
+            this.cancelEditButton.Text = "Mégse";
+            this.cancelEditButton.UseVisualStyleBackColor = true;
+            this.cancelEditButton.Click += new System.EventHandler(this.cancelEditButton_Click);
+            // 
+            // refreshButton
+            // 
+            this.refreshButton.Location = new System.Drawing.Point(202, 194);
+            this.refreshButton.Name = "refreshButton";
+            this.refreshButton.Size = new System.Drawing.Size(85, 23);
+            this.refreshButton.TabIndex = 5;
+            this.refreshButton.Text = "Frissítés";
+            this.refreshButton.UseVisualStyleBackColor = true;
+            this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
             // 
             // ViewCPForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(417, 223);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
+            this.CancelButton = this.closeButton;
+            this.ClientSize = new System.Drawing.Size(411, 223);
+            this.Controls.Add(this.refreshButton);
+            this.Controls.Add(this.cancelEditButton);
+            this.Controls.Add(this.saveEditButton);
             this.Controls.Add(this.closeButton);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.editButton);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "ViewCPForm";
+            this.ShowIcon = false;
             this.Text = "cpnév";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -238,22 +261,23 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox hikeCountBox;
+        private System.Windows.Forms.TextBox nameBox;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.ComboBox typeComboBox;
+        private System.Windows.Forms.RichTextBox descriptionBox;
+        private System.Windows.Forms.Button showHikesButton;
+        private System.Windows.Forms.Button editButton;
         private System.Windows.Forms.Button closeButton;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button saveEditButton;
+        private System.Windows.Forms.Button cancelEditButton;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox countryBox;
+        private System.Windows.Forms.TextBox regionBox;
+        private System.Windows.Forms.Button refreshButton;
     }
 }

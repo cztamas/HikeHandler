@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
+using System.Windows.Forms;
 
 namespace HikeHandler.Data_Containers
 {
@@ -15,7 +16,7 @@ namespace HikeHandler.Data_Containers
         public string Name { get; set; }
         public string CountryName { get; set; }
         public string RegionName { get; set; }
-        public CPType TypeOfCP { get; set; }
+        public CPType? TypeOfCP { get; set; }
         public string Description { get; set; }
         public IntPile HikeCount { get; set; }
 
@@ -35,7 +36,7 @@ namespace HikeHandler.Data_Containers
 
         public MySqlCommand SearchCommand(MySqlConnection connection)
         {
-            string commandText = @"SELECT cp.idcp, cp.name, cp.type, cp.hikecount, r.name, country.name, cp.description
+            string commandText = @"SELECT cp.idcp, cp.name, cp.type, cp.hikecount, r.name, c.name, cp.description
 FROM cp, region r, country c WHERE cp.idregion=r.idregion AND cp.idcountry=c.idcountry
 AND cp.name LIKE @name AND c.name LIKE @countryName AND r.name LIKE @regionName";
             if (CPID != -1)
@@ -45,16 +46,20 @@ AND cp.name LIKE @name AND c.name LIKE @countryName AND r.name LIKE @regionName"
             if (IDCountry != -1)
                 commandText += " AND c.idcountry=" + IDCountry;
             if (HikeCount != null)
-                commandText += HikeCount.SqlSearchCondition("cp.hikecount");
-            if (TypeOfCP != 0)
+            {
+                if (HikeCount.Count() > 0) 
+                commandText += " AND " + HikeCount.SqlSearchCondition("cp.hikecount");
+            }                
+            if (TypeOfCP != null)
                 commandText += " AND cp.type=@type";
             commandText += ";";
             MySqlCommand command = new MySqlCommand(commandText, connection);
-            command.Parameters.AddWithValue("@name", Name);
-            command.Parameters.AddWithValue("@countryName", CountryName);
-            command.Parameters.AddWithValue("@regionName", RegionName);
-            if (TypeOfCP != 0)
+            command.Parameters.AddWithValue("@name", "%" + Name + "%");
+            command.Parameters.AddWithValue("@countryName", "%" + CountryName + "%");
+            command.Parameters.AddWithValue("@regionName", "%" + RegionName + "%");
+            if (TypeOfCP != null)
                 command.Parameters.AddWithValue("@type", TypeOfCP.ToString());
+            //MessageBox.Show(commandText);
             return command;
         }        
     }

@@ -90,12 +90,12 @@ namespace HikeHandler
             if (uiTestMode)
             {
                 SearchHikeForm sHForm = new SearchHikeForm();
-                sHForm.Show();
+                sHForm.Open();
             }
             if (!uiTestMode)
             {
                 SearchHikeForm sHForm = new SearchHikeForm(sqlConnection);
-                sHForm.Show();
+                sHForm.Open();
             }
         }
 
@@ -104,12 +104,12 @@ namespace HikeHandler
             if (uiTestMode)
             {
                 SearchCPForm sCPForm = new SearchCPForm();
-                sCPForm.Show();
+                sCPForm.Open();
             }
             if (!uiTestMode)
             {
                 SearchCPForm sCPForm = new SearchCPForm(sqlConnection);
-                sCPForm.Show();
+                sCPForm.Open();
             }            
         }
 
@@ -118,7 +118,7 @@ namespace HikeHandler
             if (uiTestMode)
             {
                 SearchRegionForm sRForm = new SearchRegionForm();
-                sRForm.Show();
+                sRForm.Open();
             }
             if (!uiTestMode)
             {
@@ -132,12 +132,12 @@ namespace HikeHandler
             if (uiTestMode)
             {
                 SearchCountryForm sCForm = new SearchCountryForm();
-                sCForm.Show();
+                sCForm.Open();
             }
             if (!uiTestMode)
             {
                 SearchCountryForm sCForm = new SearchCountryForm(sqlConnection);
-                sCForm.Show();
+                sCForm.Open();
             }            
         }
 
@@ -146,12 +146,12 @@ namespace HikeHandler
             if (uiTestMode)
             {
                 AddHikeForm aHForm = new AddHikeForm();
-                aHForm.Show();
+                aHForm.Open();
             }
             if (!uiTestMode)
             {
                 AddHikeForm aHForm = new AddHikeForm(sqlConnection);
-                aHForm.Show();
+                aHForm.Open();
             }            
         }
 
@@ -160,12 +160,12 @@ namespace HikeHandler
             if (uiTestMode)
             {
                 AddCPForm aCPForm = new AddCPForm();
-                aCPForm.Show();
+                aCPForm.Open();
             }
             if (!uiTestMode)
             {
                 AddCPForm aCPForm = new AddCPForm(sqlConnection);
-                aCPForm.Show();
+                aCPForm.Open();
             }            
         }
 
@@ -188,12 +188,12 @@ namespace HikeHandler
             if (uiTestMode)
             {
                 AddCountryForm aCForm = new AddCountryForm();
-                aCForm.Show();
+                aCForm.Open();
             }
             if (!uiTestMode)
             {
                 AddCountryForm aCForm = new AddCountryForm(sqlConnection);
-                aCForm.Show();
+                aCForm.Open();
             }            
         }
 

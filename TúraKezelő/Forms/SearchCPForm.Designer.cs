@@ -79,6 +79,8 @@
             // 
             // regionComboBox
             // 
+            this.regionComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
+            this.regionComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.regionComboBox.FormattingEnabled = true;
             this.regionComboBox.Location = new System.Drawing.Point(244, 43);
             this.regionComboBox.Name = "regionComboBox";
@@ -87,14 +89,19 @@
             // 
             // countryComboBox
             // 
+            this.countryComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
+            this.countryComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.countryComboBox.FormattingEnabled = true;
             this.countryComboBox.Location = new System.Drawing.Point(55, 43);
             this.countryComboBox.Name = "countryComboBox";
             this.countryComboBox.Size = new System.Drawing.Size(121, 21);
             this.countryComboBox.TabIndex = 8;
+            this.countryComboBox.SelectedValueChanged += new System.EventHandler(this.countryComboBox_SelectedValueChanged);
             // 
             // typeComboBox
             // 
+            this.typeComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.typeComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.typeComboBox.FormattingEnabled = true;
             this.typeComboBox.Location = new System.Drawing.Point(244, 16);
             this.typeComboBox.Name = "typeComboBox";
@@ -177,13 +184,17 @@
             // 
             this.resultView.AllowUserToAddRows = false;
             this.resultView.AllowUserToDeleteRows = false;
+            this.resultView.AllowUserToResizeRows = false;
             this.resultView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.resultView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.resultView.Location = new System.Drawing.Point(3, 16);
             this.resultView.Name = "resultView";
             this.resultView.ReadOnly = true;
+            this.resultView.RowHeadersVisible = false;
+            this.resultView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.resultView.Size = new System.Drawing.Size(373, 109);
             this.resultView.TabIndex = 0;
+            this.resultView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.resultView_CellDoubleClick);
             // 
             // clearButton
             // 
@@ -213,11 +224,14 @@
             this.detailsButton.TabIndex = 6;
             this.detailsButton.Text = "Részletek...";
             this.detailsButton.UseVisualStyleBackColor = true;
+            this.detailsButton.Click += new System.EventHandler(this.detailsButton_Click);
             // 
             // SearchCPForm
             // 
+            this.AcceptButton = this.searchButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.closeButton;
             this.ClientSize = new System.Drawing.Size(402, 292);
             this.Controls.Add(this.detailsButton);
             this.Controls.Add(this.closeButton);
@@ -225,6 +239,7 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "SearchCPForm";
+            this.ShowIcon = false;
             this.Text = "CheckPoint keresése";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

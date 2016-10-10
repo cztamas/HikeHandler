@@ -7,14 +7,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
 namespace HikeHandler.Forms
 {
     public partial class ViewHikeForm : Form
     {
+        private int IDhike;
+        private MySqlConnection sqlConnection;
+
         public ViewHikeForm()
         {
             InitializeComponent();
+        }
+
+        public ViewHikeForm(MySqlConnection connection, int hikeID)
+        {
+            sqlConnection = connection;
+            IDhike = hikeID;
         }
 
         private bool isEditable;

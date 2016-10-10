@@ -39,6 +39,8 @@ namespace HikeHandler
         {
             if (max > 0)
                 return "(" + variable + " BETWEEN " + min + " AND " + max + ")";
+            if (max == 0 && min == 0)
+                return "(" + variable + "=0" + ")";
             return "(" + variable + " >= " + min + ")";
         }
     }
@@ -62,6 +64,13 @@ namespace HikeHandler
             intervals.Add(interval);
         }
 
+        public int Count()
+        {
+            if (intervals == null)
+                return 0;
+            return intervals.Count;
+        }
+
         public string SqlSearchCondition(string variable)
         {
             string condition = String.Empty;
@@ -79,6 +88,6 @@ namespace HikeHandler
 
     public enum CPType
     {
-        undefined = 0, település, turistaház, hegycsúcs, egyéb
+        település, turistaház, tereppont, egyéb
     }
 }

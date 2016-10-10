@@ -63,6 +63,8 @@ namespace HikeHandler.Forms
         private void RefreshForm()
         {
             HikeRegion region = GetRegionData(regionID);
+            if (region == null)
+                return;
             nameBox.Text = region.Name;
             countryBox.Text = region.CountryName;
             hikeCountBox.Text = region.HikeCount.ToString();

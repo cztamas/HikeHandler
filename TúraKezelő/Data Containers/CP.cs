@@ -15,11 +15,16 @@ namespace HikeHandler.Data_Containers
         public string Name { get; set; }
         public string CountryName { get; set; }
         public string RegionName { get; set; }
-        public CPType TypeOfCP { get; set; }
+        public CPType? TypeOfCP { get; set; }
         public string Description { get; set; }
         public int HikeCount { get; set; }
 
         public CP() { }
+
+        public CP(int idCP)
+        {
+            CPID = idCP;
+        }
         
         public MySqlCommand SaveCommand(MySqlConnection connection)
         {
@@ -29,7 +34,10 @@ VALUES (@name, @idcountry, @idregion, @type, 0, @description);";
             command.Parameters.AddWithValue("@name", Name);
             command.Parameters.AddWithValue("@idcountry", IDCountry);
             command.Parameters.AddWithValue("@idregion", IDRegion);
-            command.Parameters.AddWithValue("@type", TypeOfCP.ToString());
+            string typeString = string.Empty;
+            if (TypeOfCP != null)
+                typeString = TypeOfCP.ToString();
+            command.Parameters.AddWithValue("@type", typeString);
             command.Parameters.AddWithValue("@description", Description);
             return command;
         }
@@ -39,7 +47,10 @@ VALUES (@name, @idcountry, @idregion, @type, 0, @description);";
             string commandText = "UPDATE cp SET name=@name, type=@type, description=@description WHERE idcp=@idcp;";
             MySqlCommand command = new MySqlCommand(commandText, connection);
             command.Parameters.AddWithValue("@name", Name);
-            command.Parameters.AddWithValue("@type", TypeOfCP.ToString());
+            string typeString = string.Empty;
+            if (TypeOfCP != null)
+                typeString = TypeOfCP.ToString();
+            command.Parameters.AddWithValue("@type", typeString);
             command.Parameters.AddWithValue("@description", Description);
             command.Parameters.AddWithValue("@idcp", CPID);
             return command;

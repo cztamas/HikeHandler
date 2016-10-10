@@ -26,6 +26,11 @@ namespace HikeHandler.Forms
 
         private MySqlConnection sqlConnection;
 
+        public void Open()
+        {
+            Show();
+        }
+
         private void closeButton_Click(object sender, EventArgs e)
         {
             this.Close();

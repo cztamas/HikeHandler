@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using HikeHandler.Data_Containers;
 
 namespace HikeHandler.Forms
 {
@@ -23,8 +24,11 @@ namespace HikeHandler.Forms
 
         public ViewHikeForm(MySqlConnection connection, int hikeID)
         {
+            InitializeComponent();
             sqlConnection = connection;
             IDhike = hikeID;
+            RefreshForm();
+            MakeUneditable();
         }
 
         private bool isEditable;
@@ -35,9 +39,25 @@ namespace HikeHandler.Forms
         private void MakeUneditable()
         { }
 
+        private void RefreshForm()
+        { }
+
+        
+
         private void closeButton_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void editButton_Click(object sender, EventArgs e)
+        {
+            this.MakeEditable();
+        }
+
+        private void cancelEditButton_Click(object sender, EventArgs e)
+        {
+            this.MakeUneditable();
+            RefreshForm();
         }
 
         /* richTextBox2

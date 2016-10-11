@@ -86,8 +86,21 @@ namespace HikeHandler
         }
     }
 
+    public class DatePile
+    { }
+
     public enum CPType
     {
         település, turistaház, tereppont, egyéb
+    }
+
+    public enum HikeType
+    {
+        túra, séta
+    }
+
+    public enum HikeCPRelation
+    {
+
     }
 }

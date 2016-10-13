@@ -27,6 +27,11 @@ namespace HikeHandler.Forms
 
         private MySqlConnection sqlConnection;
 
+        public void Open()
+        {
+            Show();
+        }
+
         private void Clear()
         {
             resultView.DataSource = null;

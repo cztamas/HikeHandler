@@ -21,12 +21,21 @@ namespace HikeHandler.Forms
 
         public SearchCPForm(MySqlConnection connection)
         {
-            InitializeComponent();
+            InitializeComponent();            
             sqlConnection = connection;
             GetCountryList();
+            GetCPTypes();            
         }
 
         private MySqlConnection sqlConnection;
+
+        public void Open()
+        {
+            Show();
+            countryComboBox.Text = string.Empty;
+            regionComboBox.Text = string.Empty;
+            nameBox.Focus();
+        }
 
         private void GetCountryList()
         {
@@ -88,6 +97,35 @@ namespace HikeHandler.Forms
             }
         }
 
+        private void GetCPTypes()
+        {
+            DataTable cpTypesTable = new DataTable();
+            DataColumn column;
+            DataRow row;
+
+            column = new DataColumn("id", typeof(int));
+            cpTypesTable.Columns.Add(column);
+            column = new DataColumn("name", typeof(string));
+            cpTypesTable.Columns.Add(column);
+
+            row = cpTypesTable.NewRow();
+            row["id"] = -1;
+            row["name"] = string.Empty;
+            cpTypesTable.Rows.Add(row);
+
+            Array cpTypes = Enum.GetValues(typeof(CPType));
+            foreach (CPType item in cpTypes)
+            {
+                row = cpTypesTable.NewRow();
+                row["id"] = (int)item;
+                row["name"] = item.ToString();
+                cpTypesTable.Rows.Add(row);
+            }
+            typeComboBox.DataSource = cpTypesTable;
+            typeComboBox.ValueMember = "id";
+            typeComboBox.DisplayMember = "name";
+        }
+
         private void Clear()
         { }
 
@@ -124,7 +162,8 @@ namespace HikeHandler.Forms
             template.Name = nameBox.Text;
             template.CountryName = countryComboBox.Text;
             template.RegionName = regionComboBox.Text;
-            template.TypeOfCP = (CPType)typeComboBox.SelectedValue;
+            if ((int)typeComboBox.SelectedValue != -1)
+                template.TypeOfCP = (CPType)typeComboBox.SelectedValue;
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(template.SearchCommand(sqlConnection)))
             {
                 try
@@ -149,9 +188,54 @@ namespace HikeHandler.Forms
 
         private void countryComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
-            if (countryComboBox.SelectedValue.GetType() != typeof(int))
+            int a;
+            if (!int.TryParse(countryComboBox.SelectedValue.ToString(),out a))
                 return;
+            regionComboBox.Text = string.Empty;
             GetRegions((int)countryComboBox.SelectedValue);
+            regionComboBox.Text = string.Empty;            
+        }
+        
+
+        private void detailsButton_Click(object sender, EventArgs e)
+        {
+            if (resultView.SelectedRows == null)
+                return;
+            if (sqlConnection == null)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
+            foreach (DataGridViewRow row in resultView.SelectedRows)
+            {
+                int cpID = (int)row.Cells[0].Value;
+                ViewCPForm viewCPForm = new ViewCPForm(sqlConnection, cpID);
+                viewCPForm.Show();
+            }
+        }
+
+        private void resultView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0)
+                return;
+            if (sqlConnection == null)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
+            int cpID = (int)resultView.Rows[e.RowIndex].Cells[0].Value;
+            ViewCPForm viewCPForm = new ViewCPForm(sqlConnection, cpID);
+            viewCPForm.Show();
         }
     }
 }

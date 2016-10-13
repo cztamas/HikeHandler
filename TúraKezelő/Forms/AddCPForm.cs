@@ -25,20 +25,44 @@ namespace HikeHandler.Forms
         {
             InitializeComponent();
             sqlConnection = connection;
-            GetTypes();
-            GetCountries();
+            GetCPTypes();
+            GetCountries();            
         } 
 
-        private void Open()
+        public void Open()
         {
             Show();
+            typeComboBox.SelectedValue = -1;
             nameBox.Focus();
         }
         
-        private void GetTypes()
+        private void GetCPTypes()
         {
+            DataTable cpTypesTable = new DataTable();
+            DataColumn column;
+            DataRow row;
+
+            column = new DataColumn("id", typeof(int));
+            cpTypesTable.Columns.Add(column);
+            column = new DataColumn("name", typeof(string));
+            cpTypesTable.Columns.Add(column);
+
+            row = cpTypesTable.NewRow();
+            row["id"] = -1;
+            row["name"] = string.Empty;
+            cpTypesTable.Rows.Add(row);
+
             Array cpTypes = Enum.GetValues(typeof(CPType));
-            typeComboBox.DataSource = cpTypes;
+            foreach( CPType item in cpTypes)
+            {
+                row = cpTypesTable.NewRow();
+                row["id"] = (int)item;
+                row["name"] = item.ToString();
+                cpTypesTable.Rows.Add(row);
+            }
+            typeComboBox.DataSource = cpTypesTable;
+            typeComboBox.ValueMember = "id";
+            typeComboBox.DisplayMember = "name";
         }
 
         private void GetCountries()
@@ -133,7 +157,8 @@ namespace HikeHandler.Forms
             checkPoint.Description = descriptionBox.Text;
             checkPoint.IDCountry = (int)countryComboBox.SelectedValue;
             checkPoint.IDRegion = (int)regionComboBox.SelectedValue;
-            checkPoint.TypeOfCP = (CPType)typeComboBox.SelectedValue;
+            if ((int)typeComboBox.SelectedValue != -1)
+                checkPoint.TypeOfCP = (CPType)typeComboBox.SelectedValue;
             using (MySqlCommand command = checkPoint.SaveCommand(sqlConnection))
             {
                 try

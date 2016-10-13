@@ -32,8 +32,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -49,10 +47,12 @@
             this.listView1 = new System.Windows.Forms.ListView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.editButton = new System.Windows.Forms.Button();
             this.closeButton = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
+            this.saveEditButton = new System.Windows.Forms.Button();
+            this.cancelEditButton = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -60,17 +60,17 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.textBox2);
+            this.groupBox1.Controls.Add(this.textBox1);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.comboBox3);
             this.groupBox1.Controls.Add(this.dateTimePicker1);
-            this.groupBox1.Controls.Add(this.comboBox2);
-            this.groupBox1.Controls.Add(this.comboBox1);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(262, 128);
+            this.groupBox1.Size = new System.Drawing.Size(242, 128);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Alapadatok";
@@ -87,33 +87,17 @@
             // comboBox3
             // 
             this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(71, 72);
+            this.comboBox3.Location = new System.Drawing.Point(71, 70);
             this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(180, 21);
+            this.comboBox3.Size = new System.Drawing.Size(160, 21);
             this.comboBox3.TabIndex = 6;
             // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(71, 99);
+            this.dateTimePicker1.Location = new System.Drawing.Point(71, 97);
             this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(180, 20);
+            this.dateTimePicker1.Size = new System.Drawing.Size(160, 20);
             this.dateTimePicker1.TabIndex = 5;
-            // 
-            // comboBox2
-            // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(71, 45);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(180, 21);
-            this.comboBox2.TabIndex = 4;
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(71, 18);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(180, 21);
-            this.comboBox1.TabIndex = 3;
             // 
             // label3
             // 
@@ -153,7 +137,7 @@
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.listView1);
-            this.groupBox2.Location = new System.Drawing.Point(280, 12);
+            this.groupBox2.Location = new System.Drawing.Point(260, 12);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(334, 228);
             this.groupBox2.TabIndex = 4;
@@ -243,31 +227,33 @@
             this.groupBox3.Controls.Add(this.richTextBox1);
             this.groupBox3.Location = new System.Drawing.Point(12, 146);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(262, 123);
+            this.groupBox3.Size = new System.Drawing.Size(242, 123);
             this.groupBox3.TabIndex = 11;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Leírás";
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(6, 19);
+            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextBox1.Location = new System.Drawing.Point(3, 16);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(250, 94);
+            this.richTextBox1.Size = new System.Drawing.Size(236, 104);
             this.richTextBox1.TabIndex = 9;
             this.richTextBox1.Text = "";
             // 
-            // button1
+            // editButton
             // 
-            this.button1.Location = new System.Drawing.Point(280, 246);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(214, 23);
-            this.button1.TabIndex = 12;
-            this.button1.Text = "Szerkesztés...";
-            this.button1.UseVisualStyleBackColor = true;
+            this.editButton.Location = new System.Drawing.Point(260, 246);
+            this.editButton.Name = "editButton";
+            this.editButton.Size = new System.Drawing.Size(214, 23);
+            this.editButton.TabIndex = 12;
+            this.editButton.Text = "Szerkesztés...";
+            this.editButton.UseVisualStyleBackColor = true;
+            this.editButton.Click += new System.EventHandler(this.editButton_Click);
             // 
             // closeButton
             // 
-            this.closeButton.Location = new System.Drawing.Point(500, 246);
+            this.closeButton.Location = new System.Drawing.Point(480, 246);
             this.closeButton.Name = "closeButton";
             this.closeButton.Size = new System.Drawing.Size(114, 23);
             this.closeButton.TabIndex = 13;
@@ -275,37 +261,55 @@
             this.closeButton.UseVisualStyleBackColor = true;
             this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
             // 
-            // button7
+            // saveEditButton
             // 
-            this.button7.Location = new System.Drawing.Point(280, 246);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(104, 23);
-            this.button7.TabIndex = 14;
-            this.button7.Text = "Mentés";
-            this.button7.UseVisualStyleBackColor = true;
+            this.saveEditButton.Location = new System.Drawing.Point(260, 246);
+            this.saveEditButton.Name = "saveEditButton";
+            this.saveEditButton.Size = new System.Drawing.Size(110, 23);
+            this.saveEditButton.TabIndex = 14;
+            this.saveEditButton.Text = "Változások mentése";
+            this.saveEditButton.UseVisualStyleBackColor = true;
             // 
-            // button8
+            // cancelEditButton
             // 
-            this.button8.Location = new System.Drawing.Point(390, 246);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(104, 23);
-            this.button8.TabIndex = 15;
-            this.button8.Text = "Mégse";
-            this.button8.UseVisualStyleBackColor = true;
+            this.cancelEditButton.Location = new System.Drawing.Point(376, 246);
+            this.cancelEditButton.Name = "cancelEditButton";
+            this.cancelEditButton.Size = new System.Drawing.Size(98, 23);
+            this.cancelEditButton.TabIndex = 15;
+            this.cancelEditButton.Text = "Mégse";
+            this.cancelEditButton.UseVisualStyleBackColor = true;
+            this.cancelEditButton.Click += new System.EventHandler(this.cancelEditButton_Click);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(71, 18);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(160, 20);
+            this.textBox1.TabIndex = 8;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(71, 44);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(160, 20);
+            this.textBox2.TabIndex = 9;
             // 
             // ViewHikeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.closeButton;
             this.ClientSize = new System.Drawing.Size(620, 271);
-            this.Controls.Add(this.button8);
-            this.Controls.Add(this.button7);
+            this.Controls.Add(this.cancelEditButton);
+            this.Controls.Add(this.saveEditButton);
             this.Controls.Add(this.closeButton);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.editButton);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "ViewHikeForm";
+            this.ShowIcon = false;
             this.Text = "ViewHikeForm";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -322,11 +326,9 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
-        private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button5;
@@ -339,9 +341,11 @@
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button editButton;
         private System.Windows.Forms.Button closeButton;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button saveEditButton;
+        private System.Windows.Forms.Button cancelEditButton;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }

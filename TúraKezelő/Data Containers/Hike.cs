@@ -17,6 +17,7 @@ namespace HikeHandler.Data_Containers
         public string RegionName { get; set; }
         public string Description { get; set; }
         public DateTime HikeDate { get; set; }
+        public HikeType HikeType { get; set; }
 
         public Hike()
         { }
@@ -27,6 +28,17 @@ namespace HikeHandler.Data_Containers
         }
 
         public MySqlCommand SaveCommand(MySqlConnection connection)
+        {
+            string commandString = @"INSERT INTO hike (date, idregion, idcountry, type, description) 
+VALUES (@date, @idregion, @idcountry, @type, @description)";
+
+
+
+
+            return null;
+        }
+
+        public MySqlCommand FindPositionCommand(MySqlConnection connection)
         {
             return null;
         }

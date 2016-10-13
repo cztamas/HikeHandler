@@ -87,7 +87,82 @@ namespace HikeHandler
     }
 
     public class DatePile
-    { }
+    {
+        private List<DateInterval> intervals;
+        private List<int> months;
+        private List<int> weekdays;
+
+        public DatePile(List<DateInterval> dateIntervals)
+        {
+            intervals = dateIntervals;
+        }
+
+        public DatePile()
+        {
+            intervals = new List<DateInterval>();
+        }
+
+        public void Add(DateInterval dateInterval)
+        {
+            intervals.Add(dateInterval);
+        }
+
+        public string SqlSearchCondition(string variable)
+        {
+            if (intervals == null)
+                return string.Empty;
+            string condition = string.Empty;
+            foreach (DateInterval interval in intervals)
+            {
+                if (interval.SqlSnippet(variable)!=string.Empty)
+                {
+                    if (condition != String.Empty)
+                        condition += " OR ";
+                    condition += interval.SqlSnippet(variable);
+                }
+            }
+            if (condition == string.Empty)
+                return string.Empty;
+            return "(" + condition + ")";
+        }
+    }
+
+    public class DateInterval
+    {
+        private DateTime? min;
+        private DateTime? max;
+
+        public DateInterval(DateTime begin, DateTime end)
+        {
+            min = begin;
+            max = end;
+        }
+
+        public DateInterval(DateTime date, bool isMax)
+        {
+            if (isMax)
+            {
+                min = null;
+                max = date;
+            }
+            if (!isMax)
+            {
+                min = date;
+                max = null;
+            }
+        }
+
+        public string SqlSnippet(string variable)
+        {
+            if (min != null && max != null)
+                return "(" + min.ToString() + " <= " + variable + " AND " + variable + " <= " + max.ToString() + ")";
+            if (min == null && max != null)
+                return variable + " <= " + max.ToString();
+            if (min != null && max == null) 
+                return variable + " >= " + min.ToString();
+            return string.Empty;
+        }
+    }
 
     public enum CPType
     {
@@ -101,6 +176,8 @@ namespace HikeHandler
 
     public enum HikeCPRelation
     {
-
+        normál
     }
+
+    
 }

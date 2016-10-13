@@ -17,6 +17,7 @@ namespace HikeHandler.Data_Containers
         public string RegionName { get; set; }
         public string Description { get; set; }
         public DatePile HikeDate { get; set; }
+        public HikeType? HikeType { get; set; }
 
         public HikeTemplate()
         { }

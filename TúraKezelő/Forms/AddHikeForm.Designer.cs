@@ -43,14 +43,13 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.moveDownButton = new System.Windows.Forms.Button();
             this.moveUpButton = new System.Windows.Forms.Button();
-            this.comboBox5 = new System.Windows.Forms.ComboBox();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.cpNameComboBox = new System.Windows.Forms.ComboBox();
             this.removeCPButton = new System.Windows.Forms.Button();
             this.addCPButton = new System.Windows.Forms.Button();
-            this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.cpListView = new System.Windows.Forms.ListView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.allRegionCheckBox = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -68,7 +67,7 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(243, 128);
+            this.groupBox1.Size = new System.Drawing.Size(220, 128);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Alapadatok";
@@ -87,31 +86,33 @@
             this.typeComboBox.FormattingEnabled = true;
             this.typeComboBox.Location = new System.Drawing.Point(71, 72);
             this.typeComboBox.Name = "typeComboBox";
-            this.typeComboBox.Size = new System.Drawing.Size(163, 21);
-            this.typeComboBox.TabIndex = 6;
+            this.typeComboBox.Size = new System.Drawing.Size(141, 21);
+            this.typeComboBox.TabIndex = 3;
             // 
             // dateBox
             // 
+            this.dateBox.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dateBox.Location = new System.Drawing.Point(71, 99);
             this.dateBox.Name = "dateBox";
-            this.dateBox.Size = new System.Drawing.Size(163, 20);
-            this.dateBox.TabIndex = 5;
+            this.dateBox.Size = new System.Drawing.Size(141, 20);
+            this.dateBox.TabIndex = 4;
             // 
             // regionComboBox
             // 
             this.regionComboBox.FormattingEnabled = true;
             this.regionComboBox.Location = new System.Drawing.Point(71, 45);
             this.regionComboBox.Name = "regionComboBox";
-            this.regionComboBox.Size = new System.Drawing.Size(163, 21);
-            this.regionComboBox.TabIndex = 4;
+            this.regionComboBox.Size = new System.Drawing.Size(141, 21);
+            this.regionComboBox.TabIndex = 2;
+            this.regionComboBox.SelectedValueChanged += new System.EventHandler(this.regionComboBox_SelectedValueChanged);
             // 
             // countryComboBox
             // 
             this.countryComboBox.FormattingEnabled = true;
             this.countryComboBox.Location = new System.Drawing.Point(71, 18);
             this.countryComboBox.Name = "countryComboBox";
-            this.countryComboBox.Size = new System.Drawing.Size(163, 21);
-            this.countryComboBox.TabIndex = 3;
+            this.countryComboBox.Size = new System.Drawing.Size(141, 21);
+            this.countryComboBox.TabIndex = 1;
             this.countryComboBox.SelectedValueChanged += new System.EventHandler(this.countryComboBox_SelectedValueChanged);
             // 
             // label3
@@ -143,9 +144,9 @@
             // 
             // addHikeButton
             // 
-            this.addHikeButton.Location = new System.Drawing.Point(261, 246);
+            this.addHikeButton.Location = new System.Drawing.Point(238, 221);
             this.addHikeButton.Name = "addHikeButton";
-            this.addHikeButton.Size = new System.Drawing.Size(214, 23);
+            this.addHikeButton.Size = new System.Drawing.Size(171, 23);
             this.addHikeButton.TabIndex = 1;
             this.addHikeButton.Text = "Túra hozzáadása";
             this.addHikeButton.UseVisualStyleBackColor = true;
@@ -154,7 +155,7 @@
             // cancelButton
             // 
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(481, 246);
+            this.cancelButton.Location = new System.Drawing.Point(415, 221);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(105, 23);
             this.cancelButton.TabIndex = 2;
@@ -167,31 +168,32 @@
             this.descriptionBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.descriptionBox.Location = new System.Drawing.Point(3, 16);
             this.descriptionBox.Name = "descriptionBox";
-            this.descriptionBox.Size = new System.Drawing.Size(237, 104);
-            this.descriptionBox.TabIndex = 9;
+            this.descriptionBox.Size = new System.Drawing.Size(214, 79);
+            this.descriptionBox.TabIndex = 5;
             this.descriptionBox.Text = "";
+            this.descriptionBox.Enter += new System.EventHandler(this.descriptionBox_Enter);
+            this.descriptionBox.Leave += new System.EventHandler(this.descriptionBox_Leave);
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.allRegionCheckBox);
             this.groupBox2.Controls.Add(this.moveDownButton);
             this.groupBox2.Controls.Add(this.moveUpButton);
-            this.groupBox2.Controls.Add(this.comboBox5);
-            this.groupBox2.Controls.Add(this.comboBox4);
+            this.groupBox2.Controls.Add(this.cpNameComboBox);
             this.groupBox2.Controls.Add(this.removeCPButton);
             this.groupBox2.Controls.Add(this.addCPButton);
-            this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.cpListView);
-            this.groupBox2.Location = new System.Drawing.Point(261, 12);
+            this.groupBox2.Location = new System.Drawing.Point(238, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(334, 228);
+            this.groupBox2.Size = new System.Drawing.Size(288, 203);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "CheckPointok";
             // 
             // moveDownButton
             // 
-            this.moveDownButton.Location = new System.Drawing.Point(220, 144);
+            this.moveDownButton.Location = new System.Drawing.Point(177, 97);
             this.moveDownButton.Name = "moveDownButton";
             this.moveDownButton.Size = new System.Drawing.Size(105, 23);
             this.moveDownButton.TabIndex = 8;
@@ -200,32 +202,27 @@
             // 
             // moveUpButton
             // 
-            this.moveUpButton.Location = new System.Drawing.Point(220, 115);
+            this.moveUpButton.Location = new System.Drawing.Point(177, 68);
             this.moveUpButton.Name = "moveUpButton";
             this.moveUpButton.Size = new System.Drawing.Size(105, 23);
             this.moveUpButton.TabIndex = 7;
             this.moveUpButton.Text = "Fölfelé mozgat";
             this.moveUpButton.UseVisualStyleBackColor = true;
             // 
-            // comboBox5
+            // cpNameComboBox
             // 
-            this.comboBox5.FormattingEnabled = true;
-            this.comboBox5.Location = new System.Drawing.Point(85, 45);
-            this.comboBox5.Name = "comboBox5";
-            this.comboBox5.Size = new System.Drawing.Size(129, 21);
-            this.comboBox5.TabIndex = 6;
-            // 
-            // comboBox4
-            // 
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(85, 19);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(129, 21);
-            this.comboBox4.TabIndex = 5;
+            this.cpNameComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cpNameComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cpNameComboBox.FormattingEnabled = true;
+            this.cpNameComboBox.Location = new System.Drawing.Point(42, 18);
+            this.cpNameComboBox.MaxDropDownItems = 6;
+            this.cpNameComboBox.Name = "cpNameComboBox";
+            this.cpNameComboBox.Size = new System.Drawing.Size(129, 21);
+            this.cpNameComboBox.TabIndex = 5;
             // 
             // removeCPButton
             // 
-            this.removeCPButton.Location = new System.Drawing.Point(220, 173);
+            this.removeCPButton.Location = new System.Drawing.Point(177, 126);
             this.removeCPButton.Name = "removeCPButton";
             this.removeCPButton.Size = new System.Drawing.Size(105, 23);
             this.removeCPButton.TabIndex = 4;
@@ -234,21 +231,12 @@
             // 
             // addCPButton
             // 
-            this.addCPButton.Location = new System.Drawing.Point(220, 43);
+            this.addCPButton.Location = new System.Drawing.Point(177, 16);
             this.addCPButton.Name = "addCPButton";
             this.addCPButton.Size = new System.Drawing.Size(105, 23);
             this.addCPButton.TabIndex = 3;
             this.addCPButton.Text = "CP hozzáadása";
             this.addCPButton.UseVisualStyleBackColor = true;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 48);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(73, 13);
-            this.label7.TabIndex = 2;
-            this.label7.Text = "Érintés módja:";
             // 
             // label6
             // 
@@ -262,9 +250,9 @@
             // cpListView
             // 
             this.cpListView.FullRowSelect = true;
-            this.cpListView.Location = new System.Drawing.Point(9, 76);
+            this.cpListView.Location = new System.Drawing.Point(9, 68);
             this.cpListView.Name = "cpListView";
-            this.cpListView.Size = new System.Drawing.Size(205, 146);
+            this.cpListView.Size = new System.Drawing.Size(162, 129);
             this.cpListView.TabIndex = 0;
             this.cpListView.UseCompatibleStateImageBehavior = false;
             // 
@@ -273,10 +261,21 @@
             this.groupBox3.Controls.Add(this.descriptionBox);
             this.groupBox3.Location = new System.Drawing.Point(12, 146);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(243, 123);
+            this.groupBox3.Size = new System.Drawing.Size(220, 98);
             this.groupBox3.TabIndex = 10;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Leírás";
+            // 
+            // allRegionCheckBox
+            // 
+            this.allRegionCheckBox.AutoSize = true;
+            this.allRegionCheckBox.Location = new System.Drawing.Point(42, 45);
+            this.allRegionCheckBox.Name = "allRegionCheckBox";
+            this.allRegionCheckBox.Size = new System.Drawing.Size(115, 17);
+            this.allRegionCheckBox.TabIndex = 9;
+            this.allRegionCheckBox.Text = "más tájegységek is";
+            this.allRegionCheckBox.UseVisualStyleBackColor = true;
+            this.allRegionCheckBox.CheckedChanged += new System.EventHandler(this.allRegionCheckBox_CheckedChanged);
             // 
             // AddHikeForm
             // 
@@ -284,7 +283,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(625, 274);
+            this.ClientSize = new System.Drawing.Size(533, 249);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.cancelButton);
@@ -320,14 +319,13 @@
         private System.Windows.Forms.RichTextBox descriptionBox;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.ListView cpListView;
-        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.ComboBox cpNameComboBox;
         private System.Windows.Forms.Button removeCPButton;
         private System.Windows.Forms.Button addCPButton;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox comboBox5;
         private System.Windows.Forms.Button moveDownButton;
         private System.Windows.Forms.Button moveUpButton;
         private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.CheckBox allRegionCheckBox;
     }
 }

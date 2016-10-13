@@ -160,8 +160,8 @@ namespace HikeHandler
             column = new DataColumn("name", typeof(string));
             hikeTypesTable.Columns.Add(column);            
 
-            Array cpTypes = Enum.GetValues(typeof(CPType));
-            foreach (CPType item in cpTypes)
+            Array hikeTypes = Enum.GetValues(typeof(HikeType));
+            foreach (HikeType item in hikeTypes)
             {
                 row = hikeTypesTable.NewRow();
                 row["id"] = (int)item;
@@ -206,13 +206,15 @@ namespace HikeHandler
             hike.IDCountry = (int)countryComboBox.SelectedValue;
             hike.IDRegion = (int)regionComboBox.SelectedValue;
             hike.HikeType = (HikeType)typeComboBox.SelectedValue;
-            hike.HikeDate = dateBox.Value;
+            hike.HikeDate = dateBox.Value.Date;
             hike.Description = descriptionBox.Text;
             using (MySqlCommand command = hike.SaveCommand(sqlConnection))
             {
                 try
                 {
                     command.ExecuteNonQuery();
+                    if (hike.HikeType == HikeType.túra)
+                        Hike.UpdatePositions(sqlConnection);
                     MessageBox.Show("Sikeresen elmentve.");
                     Close();
                 }

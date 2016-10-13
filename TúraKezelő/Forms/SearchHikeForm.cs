@@ -139,5 +139,98 @@ namespace HikeHandler.Forms
             countryComboBox.Text = string.Empty;
             regionComboBox.Text = string.Empty;
         }
+
+        private void searchButton_Click(object sender, EventArgs e)
+        {
+            if (!hikePositionBox.Text.IsIntPile())
+            {
+                MessageBox.Show("Hibás számformátum.");
+                hikePositionBox.Focus();
+                return;
+            }
+            if (!dateBox.Text.IsDatePile())
+            {
+                MessageBox.Show("Hibás dátumformátum.");
+                dateBox.Focus();
+                return;
+            }
+            if (sqlConnection == null)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
+            HikeTemplate template = new HikeTemplate();
+            template.CountryName = countryComboBox.Text;
+            template.RegionName = regionComboBox.Text;
+            if ((int)typeComboBox.SelectedValue != -1)
+                template.HikeType = (HikeType)typeComboBox.SelectedValue;
+            template.Position = hikePositionBox.Text.ToIntPile();
+            template.HikeDate = dateBox.Text.ToDatePile();
+            using (MySqlDataAdapter adapter = new MySqlDataAdapter(template.SearchCommand(sqlConnection)))
+            {
+                try
+                {
+                    DataTable resultTable = new DataTable();
+                    adapter.Fill(resultTable);
+                    resultView.DataSource = resultTable;
+                    resultView.Columns[0].Visible = false;
+                    resultView.Columns[1].HeaderText = "Sorszám";
+                    resultView.Columns[2].HeaderText = "Dátum";
+                    resultView.Columns[3].HeaderText = "Tájegység";
+                    resultView.Columns[4].HeaderText = "Ország";
+                    resultView.Columns[5].HeaderText = "Típus";
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Hiba");
+                }
+            }
+        }
+
+        private void detailsButton_Click(object sender, EventArgs e)
+        {
+            if (resultView.SelectedRows == null)
+                return;
+            if (sqlConnection == null)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
+            foreach (DataGridViewRow row in resultView.SelectedRows)
+            {
+                int hikeID = (int)row.Cells[0].Value;
+                ViewHikeForm viewHikeForm = new ViewHikeForm(sqlConnection, hikeID);
+                viewHikeForm.Show();
+            }
+        }
+
+        private void resultView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0)
+                return;
+            if (sqlConnection == null)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
+            int hikeID = (int)resultView.Rows[e.RowIndex].Cells[0].Value;
+            ViewHikeForm viewHikeForm = new ViewHikeForm(sqlConnection, hikeID);
+            viewHikeForm.Show();
+        }
     }
 }

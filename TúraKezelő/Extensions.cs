@@ -78,5 +78,15 @@ namespace HikeHandler
             }
             return pile;
         }
+
+        public static bool IsDatePile(this string text)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static DatePile ToDatePile(this string text)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -171,7 +171,7 @@ namespace HikeHandler
 
     public enum HikeType
     {
-        túra, séta
+        túra=0, séta
     }
 
     public enum HikeCPRelation

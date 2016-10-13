@@ -228,6 +228,7 @@
             this.searchButton.TabIndex = 5;
             this.searchButton.Text = "Keresés";
             this.searchButton.UseVisualStyleBackColor = true;
+            this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
             // 
             // groupBox3
             // 
@@ -243,13 +244,17 @@
             // 
             this.resultView.AllowUserToAddRows = false;
             this.resultView.AllowUserToDeleteRows = false;
+            this.resultView.AllowUserToResizeRows = false;
             this.resultView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.resultView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.resultView.Location = new System.Drawing.Point(3, 16);
             this.resultView.Name = "resultView";
             this.resultView.ReadOnly = true;
+            this.resultView.RowHeadersVisible = false;
+            this.resultView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.resultView.Size = new System.Drawing.Size(347, 298);
             this.resultView.TabIndex = 0;
+            this.resultView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.resultView_CellDoubleClick);
             // 
             // clearButton
             // 
@@ -280,6 +285,7 @@
             this.detailsButton.TabIndex = 9;
             this.detailsButton.Text = "Részletek...";
             this.detailsButton.UseVisualStyleBackColor = true;
+            this.detailsButton.Click += new System.EventHandler(this.detailsButton_Click);
             // 
             // SearchHikeForm
             // 

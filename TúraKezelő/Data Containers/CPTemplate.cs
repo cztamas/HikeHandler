@@ -15,7 +15,7 @@ namespace HikeHandler.Data_Containers
         public string Name { get; set; }
         public string CountryName { get; set; }
         public string RegionName { get; set; }
-        public CPType TypeOfCP { get; set; }
+        public CPType? TypeOfCP { get; set; }
         public string Description { get; set; }
         public IntPile HikeCount { get; set; }
 
@@ -46,7 +46,7 @@ AND cp.name LIKE @name AND c.name LIKE @countryName AND r.name LIKE @regionName"
                 commandText += " AND c.idcountry=" + IDCountry;
             if (HikeCount != null)
                 commandText += HikeCount.SqlSearchCondition("cp.hikecount");
-            if (TypeOfCP != 0)
+            if (TypeOfCP != null)
                 commandText += " AND cp.type=@type";
             commandText += ";";
             MySqlCommand command = new MySqlCommand(commandText, connection);

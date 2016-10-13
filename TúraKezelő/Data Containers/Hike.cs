@@ -29,28 +29,41 @@ namespace HikeHandler.Data_Containers
 
         public MySqlCommand SaveCommand(MySqlConnection connection)
         {
-            string commandString = @"INSERT INTO hike (date, idregion, idcountry, type, description) 
+            string commandText = @"INSERT INTO hike (date, idregion, idcountry, type, description) 
 VALUES (@date, @idregion, @idcountry, @type, @description)";
-
-
-
-
-            return null;
+            MySqlCommand command = new MySqlCommand(commandText, connection);
+            command.Parameters.AddWithValue("@date", HikeDate.ToString());
+            command.Parameters.AddWithValue("@idregion", IDRegion);
+            command.Parameters.AddWithValue("@idcountry", IDCountry);
+            command.Parameters.AddWithValue("@description", Description);
+            command.Parameters.AddWithValue("@type", HikeType.ToString());
+            return command;
         }
 
-        public MySqlCommand FindPositionCommand(MySqlConnection connection)
+        public static MySqlCommand FindPositionCommand(int idHike, MySqlConnection connection)
         {
             return null;
         }
 
         public MySqlCommand UpdateCommand(MySqlConnection connection)
         {
-            return null;
+            string commandText = "UPDATE hike SET description=@description, type=@type WHERE idhike=@idhike";
+            MySqlCommand command = new MySqlCommand(commandText, connection);
+            command.Parameters.AddWithValue("@description", Description);
+            command.Parameters.AddWithValue("@type", HikeType.ToString());
+            command.Parameters.AddWithValue("@idhike", IDHike);
+            return command;
         }
 
         public MySqlCommand DeleteCommand(MySqlConnection connection)
         {
             return null;
         }
+
+        public static MySqlCommand RemoveFromPositionListCommand(int idHike, MySqlConnection connection)
+        {
+            return null;
+        }
+        
     }
 }

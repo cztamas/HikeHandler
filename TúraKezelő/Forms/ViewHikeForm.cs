@@ -29,9 +29,7 @@ namespace HikeHandler.Forms
             IDhike = hikeID;
             RefreshForm();
             MakeUneditable();
-        }
-
-        private bool isEditable;
+        }        
 
         private void MakeEditable()
         { }
@@ -40,9 +38,36 @@ namespace HikeHandler.Forms
         { }
 
         private void RefreshForm()
-        { }
+        {
+            Hike hikeData = GetHikeData(IDhike);
+            if (hikeData == null)
+                return;
+            countryBox.Text = hikeData.CountryName;
+            regionBox.Text = hikeData.RegionName;
+            typeComboBox.Text = hikeData.HikeType.ToString();
+            dateBox.Value = hikeData.HikeDate;
+            descriptionBox.Text = hikeData.Description;
+            Text = hikeData.Position.ToString() + ". túra adatai";
+            positionBox.Text = hikeData.Position.ToString();
+        }
 
-        
+        private Hike GetHikeData(int hikeID)
+        {
+            if (sqlConnection == null)
+            {
+                MessageBox.Show("Nem lehet elérni az adatbázist", "Hiba");
+                return null;
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                MessageBox.Show("Nem lehet elérni az adatbázist", "Hiba");
+                return null;
+            }
+
+
+
+            return null;
+        }
 
         private void closeButton_Click(object sender, EventArgs e)
         {
@@ -60,22 +85,7 @@ namespace HikeHandler.Forms
             RefreshForm();
         }
 
-        /* richTextBox2
-            // 
-            this.richTextBox2.Location = new System.Drawing.Point(9, 18);
-            this.richTextBox2.Name = "richTextBox2";
-            this.richTextBox2.Size = new System.Drawing.Size(316, 204);
-            this.richTextBox2.TabIndex = 16;
-            this.richTextBox2.Text = "";
-
-        // richTextBox1
-            // 
-            this.richTextBox1.Location = new System.Drawing.Point(6, 19);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(250, 69);
-            this.richTextBox1.TabIndex = 9;
-            this.richTextBox1.Text = "";
-        */
+        
 
     }
 }

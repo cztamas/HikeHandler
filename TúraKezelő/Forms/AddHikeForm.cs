@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using HikeHandler.Data_Containers;
 
 namespace HikeHandler
 {
@@ -149,7 +150,28 @@ namespace HikeHandler
         }
 
         private void GetHikeTypes()
-        { }
+        {
+            DataTable hikeTypesTable = new DataTable();
+            DataColumn column;
+            DataRow row;
+
+            column = new DataColumn("id", typeof(int));
+            hikeTypesTable.Columns.Add(column);
+            column = new DataColumn("name", typeof(string));
+            hikeTypesTable.Columns.Add(column);            
+
+            Array cpTypes = Enum.GetValues(typeof(CPType));
+            foreach (CPType item in cpTypes)
+            {
+                row = hikeTypesTable.NewRow();
+                row["id"] = (int)item;
+                row["name"] = item.ToString();
+                hikeTypesTable.Rows.Add(row);
+            }
+            typeComboBox.DataSource = hikeTypesTable;
+            typeComboBox.ValueMember = "id";
+            typeComboBox.DisplayMember = "name";
+        }
 
         public void Open()
         {
@@ -170,7 +192,35 @@ namespace HikeHandler
 
         private void addHikeButton_Click(object sender, EventArgs e)
         {
-
+            if (sqlConnection == null)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
+            Hike hike = new Hike();
+            hike.IDCountry = (int)countryComboBox.SelectedValue;
+            hike.IDRegion = (int)regionComboBox.SelectedValue;
+            hike.HikeType = (HikeType)typeComboBox.SelectedValue;
+            hike.HikeDate = dateBox.Value;
+            hike.Description = descriptionBox.Text;
+            using (MySqlCommand command = hike.SaveCommand(sqlConnection))
+            {
+                try
+                {
+                    command.ExecuteNonQuery();
+                    MessageBox.Show("Sikeresen elmentve.");
+                    Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Hiba");
+                }
+            }
         }
 
         private void descriptionBox_Enter(object sender, EventArgs e)

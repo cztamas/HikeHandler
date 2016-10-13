@@ -199,6 +199,9 @@ namespace HikeHandler.Forms
 
         }
 
-        
+        private void deleteCPbutton_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

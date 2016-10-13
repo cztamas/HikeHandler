@@ -29,30 +29,32 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.regionBox = new System.Windows.Forms.TextBox();
+            this.countryBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.typeComboBox = new System.Windows.Forms.ComboBox();
+            this.dateBox = new System.Windows.Forms.DateTimePicker();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.allRegionCheckBox = new System.Windows.Forms.CheckBox();
             this.button6 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
-            this.comboBox5 = new System.Windows.Forms.ComboBox();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.cpNameComboBox = new System.Windows.Forms.ComboBox();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
-            this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.listView1 = new System.Windows.Forms.ListView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.descriptionBox = new System.Windows.Forms.RichTextBox();
             this.editButton = new System.Windows.Forms.Button();
             this.closeButton = new System.Windows.Forms.Button();
             this.saveEditButton = new System.Windows.Forms.Button();
             this.cancelEditButton = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.deleteHikeButton = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.positionBox = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -60,11 +62,13 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.textBox2);
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.positionBox);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.regionBox);
+            this.groupBox1.Controls.Add(this.countryBox);
             this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.comboBox3);
-            this.groupBox1.Controls.Add(this.dateTimePicker1);
+            this.groupBox1.Controls.Add(this.typeComboBox);
+            this.groupBox1.Controls.Add(this.dateBox);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
@@ -75,6 +79,22 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Alapadatok";
             // 
+            // regionBox
+            // 
+            this.regionBox.Enabled = false;
+            this.regionBox.Location = new System.Drawing.Point(71, 44);
+            this.regionBox.Name = "regionBox";
+            this.regionBox.Size = new System.Drawing.Size(160, 20);
+            this.regionBox.TabIndex = 9;
+            // 
+            // countryBox
+            // 
+            this.countryBox.Enabled = false;
+            this.countryBox.Location = new System.Drawing.Point(71, 18);
+            this.countryBox.Name = "countryBox";
+            this.countryBox.Size = new System.Drawing.Size(160, 20);
+            this.countryBox.TabIndex = 8;
+            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -84,20 +104,21 @@
             this.label4.TabIndex = 7;
             this.label4.Text = "Dátum:";
             // 
-            // comboBox3
+            // typeComboBox
             // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(71, 70);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(160, 21);
-            this.comboBox3.TabIndex = 6;
+            this.typeComboBox.FormattingEnabled = true;
+            this.typeComboBox.Location = new System.Drawing.Point(71, 70);
+            this.typeComboBox.Name = "typeComboBox";
+            this.typeComboBox.Size = new System.Drawing.Size(50, 21);
+            this.typeComboBox.TabIndex = 6;
             // 
-            // dateTimePicker1
+            // dateBox
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(71, 97);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(160, 20);
-            this.dateTimePicker1.TabIndex = 5;
+            this.dateBox.Enabled = false;
+            this.dateBox.Location = new System.Drawing.Point(71, 97);
+            this.dateBox.Name = "dateBox";
+            this.dateBox.Size = new System.Drawing.Size(160, 20);
+            this.dateBox.TabIndex = 5;
             // 
             // label3
             // 
@@ -128,13 +149,12 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.allRegionCheckBox);
             this.groupBox2.Controls.Add(this.button6);
             this.groupBox2.Controls.Add(this.button5);
-            this.groupBox2.Controls.Add(this.comboBox5);
-            this.groupBox2.Controls.Add(this.comboBox4);
+            this.groupBox2.Controls.Add(this.cpNameComboBox);
             this.groupBox2.Controls.Add(this.button4);
             this.groupBox2.Controls.Add(this.button3);
-            this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.listView1);
             this.groupBox2.Location = new System.Drawing.Point(260, 12);
@@ -144,9 +164,19 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "CheckPointok";
             // 
+            // allRegionCheckBox
+            // 
+            this.allRegionCheckBox.AutoSize = true;
+            this.allRegionCheckBox.Location = new System.Drawing.Point(42, 46);
+            this.allRegionCheckBox.Name = "allRegionCheckBox";
+            this.allRegionCheckBox.Size = new System.Drawing.Size(115, 17);
+            this.allRegionCheckBox.TabIndex = 9;
+            this.allRegionCheckBox.Text = "más tájegységek is";
+            this.allRegionCheckBox.UseVisualStyleBackColor = true;
+            // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(220, 144);
+            this.button6.Location = new System.Drawing.Point(220, 119);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(105, 23);
             this.button6.TabIndex = 8;
@@ -155,32 +185,24 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(220, 115);
+            this.button5.Location = new System.Drawing.Point(220, 90);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(105, 23);
             this.button5.TabIndex = 7;
             this.button5.Text = "Fölfelé mozgat";
             this.button5.UseVisualStyleBackColor = true;
             // 
-            // comboBox5
+            // cpNameComboBox
             // 
-            this.comboBox5.FormattingEnabled = true;
-            this.comboBox5.Location = new System.Drawing.Point(85, 45);
-            this.comboBox5.Name = "comboBox5";
-            this.comboBox5.Size = new System.Drawing.Size(129, 21);
-            this.comboBox5.TabIndex = 6;
-            // 
-            // comboBox4
-            // 
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(85, 19);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(129, 21);
-            this.comboBox4.TabIndex = 5;
+            this.cpNameComboBox.FormattingEnabled = true;
+            this.cpNameComboBox.Location = new System.Drawing.Point(42, 18);
+            this.cpNameComboBox.Name = "cpNameComboBox";
+            this.cpNameComboBox.Size = new System.Drawing.Size(172, 21);
+            this.cpNameComboBox.TabIndex = 5;
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(220, 173);
+            this.button4.Location = new System.Drawing.Point(220, 148);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(105, 23);
             this.button4.TabIndex = 4;
@@ -189,21 +211,12 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(220, 43);
+            this.button3.Location = new System.Drawing.Point(220, 18);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(105, 23);
             this.button3.TabIndex = 3;
             this.button3.Text = "CP hozzáadása";
             this.button3.UseVisualStyleBackColor = true;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 48);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(73, 13);
-            this.label7.TabIndex = 2;
-            this.label7.Text = "Érintés módja:";
             // 
             // label6
             // 
@@ -224,7 +237,7 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.richTextBox1);
+            this.groupBox3.Controls.Add(this.descriptionBox);
             this.groupBox3.Location = new System.Drawing.Point(12, 146);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(242, 123);
@@ -232,20 +245,20 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Leírás";
             // 
-            // richTextBox1
+            // descriptionBox
             // 
-            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBox1.Location = new System.Drawing.Point(3, 16);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(236, 104);
-            this.richTextBox1.TabIndex = 9;
-            this.richTextBox1.Text = "";
+            this.descriptionBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.descriptionBox.Location = new System.Drawing.Point(3, 16);
+            this.descriptionBox.Name = "descriptionBox";
+            this.descriptionBox.Size = new System.Drawing.Size(236, 104);
+            this.descriptionBox.TabIndex = 9;
+            this.descriptionBox.Text = "";
             // 
             // editButton
             // 
             this.editButton.Location = new System.Drawing.Point(260, 246);
             this.editButton.Name = "editButton";
-            this.editButton.Size = new System.Drawing.Size(214, 23);
+            this.editButton.Size = new System.Drawing.Size(165, 23);
             this.editButton.TabIndex = 12;
             this.editButton.Text = "Szerkesztés...";
             this.editButton.UseVisualStyleBackColor = true;
@@ -253,11 +266,12 @@
             // 
             // closeButton
             // 
-            this.closeButton.Location = new System.Drawing.Point(480, 246);
+            this.closeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.closeButton.Location = new System.Drawing.Point(518, 246);
             this.closeButton.Name = "closeButton";
-            this.closeButton.Size = new System.Drawing.Size(114, 23);
+            this.closeButton.Size = new System.Drawing.Size(76, 23);
             this.closeButton.TabIndex = 13;
-            this.closeButton.Text = "Bezár";
+            this.closeButton.Text = "Bezárás";
             this.closeButton.UseVisualStyleBackColor = true;
             this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
             // 
@@ -274,32 +288,44 @@
             // 
             this.cancelEditButton.Location = new System.Drawing.Point(376, 246);
             this.cancelEditButton.Name = "cancelEditButton";
-            this.cancelEditButton.Size = new System.Drawing.Size(98, 23);
+            this.cancelEditButton.Size = new System.Drawing.Size(49, 23);
             this.cancelEditButton.TabIndex = 15;
             this.cancelEditButton.Text = "Mégse";
             this.cancelEditButton.UseVisualStyleBackColor = true;
             this.cancelEditButton.Click += new System.EventHandler(this.cancelEditButton_Click);
             // 
-            // textBox1
+            // deleteHikeButton
             // 
-            this.textBox1.Location = new System.Drawing.Point(71, 18);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(160, 20);
-            this.textBox1.TabIndex = 8;
+            this.deleteHikeButton.Location = new System.Drawing.Point(431, 246);
+            this.deleteHikeButton.Name = "deleteHikeButton";
+            this.deleteHikeButton.Size = new System.Drawing.Size(81, 23);
+            this.deleteHikeButton.TabIndex = 9;
+            this.deleteHikeButton.Text = "Túra törlése...";
+            this.deleteHikeButton.UseVisualStyleBackColor = true;
             // 
-            // textBox2
+            // label5
             // 
-            this.textBox2.Location = new System.Drawing.Point(71, 44);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(160, 20);
-            this.textBox2.TabIndex = 9;
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(127, 75);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(50, 13);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "Sorszám:";
+            // 
+            // positionBox
+            // 
+            this.positionBox.Location = new System.Drawing.Point(183, 70);
+            this.positionBox.Name = "positionBox";
+            this.positionBox.Size = new System.Drawing.Size(48, 20);
+            this.positionBox.TabIndex = 11;
             // 
             // ViewHikeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.closeButton;
-            this.ClientSize = new System.Drawing.Size(620, 271);
+            this.ClientSize = new System.Drawing.Size(603, 276);
+            this.Controls.Add(this.deleteHikeButton);
             this.Controls.Add(this.cancelEditButton);
             this.Controls.Add(this.saveEditButton);
             this.Controls.Add(this.closeButton);
@@ -324,28 +350,30 @@
 
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox comboBox3;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.ComboBox typeComboBox;
+        private System.Windows.Forms.DateTimePicker dateBox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.ComboBox comboBox5;
-        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.ComboBox cpNameComboBox;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.RichTextBox descriptionBox;
         private System.Windows.Forms.Button editButton;
         private System.Windows.Forms.Button closeButton;
         private System.Windows.Forms.Button saveEditButton;
         private System.Windows.Forms.Button cancelEditButton;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox regionBox;
+        private System.Windows.Forms.TextBox countryBox;
+        private System.Windows.Forms.Button deleteHikeButton;
+        private System.Windows.Forms.CheckBox allRegionCheckBox;
+        private System.Windows.Forms.TextBox positionBox;
+        private System.Windows.Forms.Label label5;
     }
 }

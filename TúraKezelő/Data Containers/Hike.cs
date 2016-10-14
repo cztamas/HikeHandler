@@ -48,7 +48,7 @@ namespace HikeHandler.Data_Containers
             string commandText = @"INSERT INTO hike (date, idregion, idcountry, type, description, cpstring) 
 VALUES (@date, @idregion, @idcountry, @type, @description, @cpstring)";
             MySqlCommand command = new MySqlCommand(commandText, connection);
-            command.Parameters.AddWithValue("@date", HikeDate.Date.ToString("yyyy-MM-dd"));
+            command.Parameters.AddWithValue("@date", HikeDate.ToString("yyyy-MM-dd"));
             command.Parameters.AddWithValue("@idregion", IDRegion);
             command.Parameters.AddWithValue("@idcountry", IDCountry);
             command.Parameters.AddWithValue("@description", Description);

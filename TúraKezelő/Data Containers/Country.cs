@@ -45,7 +45,9 @@ namespace HikeHandler.Data_Containers
                 {
                     DataTable table = new DataTable();
                     adapter.Fill(table);
-                    int count = (int)table.Rows[0]["count"];
+                    int count;
+                    if (!int.TryParse(table.Rows[0]["count"].ToString(), out count))
+                        return false;                    
                     commandText = "UPDATE country SET hikecount=@hikecount WHERE idcountry=@idcountry;";
                     using (MySqlCommand command = new MySqlCommand(commandText, connection))
                     {

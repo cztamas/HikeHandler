@@ -57,7 +57,7 @@ AND c.name LIKE @countryName AND r.name LIKE @regionName";
                 commandText += " AND type = @type";
             foreach (int item in CPList)
             {
-                commandText += " AND cpstring LIKE '%." + item + ".%'";
+                commandText += " AND cpstring LIKE '%." + item.ToString() + ".%'";
             }
             commandText += " ORDER BY h.date ASC;";
             //MessageBox.Show(commandText);

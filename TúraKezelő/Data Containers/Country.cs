@@ -35,6 +35,33 @@ namespace HikeHandler.Data_Containers
         {
             ID = countryID;
         }
+
+        public static bool UpdateHikeCount(int idCountry, MySqlConnection connection)
+        {
+            string commandText = "SELECT COUNT(*) AS count FROM hike WHERE idcountry=" + idCountry + ";";
+            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, connection))
+            {
+                try
+                {
+                    DataTable table = new DataTable();
+                    adapter.Fill(table);
+                    int count = (int)table.Rows[0]["count"];
+                    commandText = "UPDATE country SET hikecount=@hikecount WHERE idcountry=@idcountry;";
+                    using (MySqlCommand command = new MySqlCommand(commandText, connection))
+                    {
+                        command.Parameters.AddWithValue("@hikecount", count);
+                        command.Parameters.AddWithValue("@idcountry", idCountry);
+                        command.ExecuteNonQuery();
+                        return true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Hiba");
+                    return false;
+                }
+            }
+        }
         
         public MySqlCommand SaveCommand(MySqlConnection connection)
         {

@@ -193,6 +193,7 @@ namespace HikeHandler.Forms
                     resultView.Columns[4].HeaderText = "Ország";
                     resultView.Columns[5].HeaderText = "Típus";
                     resultView.Columns[6].Visible = false;
+                    resultView.Columns[7].Visible = false;
                 }
                 catch (Exception ex)
                 {

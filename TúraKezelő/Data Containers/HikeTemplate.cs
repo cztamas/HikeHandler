@@ -19,19 +19,23 @@ namespace HikeHandler.Data_Containers
         public string Description { get; set; }
         public DatePile HikeDate { get; set; }
         public HikeType? HikeType { get; set; }
+        public List<int> CPList { get; set; }
 
         public HikeTemplate()
-        { }
+        {
+            CPList = new List<int>();
+        }
 
         public HikeTemplate(int hikeID)
         {
             IDHike = hikeID;
+            CPList = new List<int>();
         }
 
         public MySqlCommand SearchCommand(MySqlConnection connection)
         {
             string commandText = @"SELECT h.idhike, h.position, h.date, r.name AS 'regionname', c.name AS 'countryname', h.type, 
-h.description FROM hike h, region r, country c WHERE h.idcountry=c.idcountry AND h.idregion=r.idregion 
+h.description, h.cpstring FROM hike h, region r, country c WHERE h.idcountry=c.idcountry AND h.idregion=r.idregion 
 AND c.name LIKE @countryName AND r.name LIKE @regionName";
             if (IDHike != null)
                 commandText += " AND h.idhike=" + IDHike;
@@ -51,6 +55,10 @@ AND c.name LIKE @countryName AND r.name LIKE @regionName";
             }
             if (HikeType != null)
                 commandText += " AND type = @type";
+            foreach (int item in CPList)
+            {
+                commandText += " AND cpstring LIKE '%." + item + ".%'";
+            }
             commandText += " ORDER BY h.date ASC;";
             //MessageBox.Show(commandText);
             MySqlCommand command = new MySqlCommand(commandText, connection);

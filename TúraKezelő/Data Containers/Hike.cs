@@ -20,25 +20,40 @@ namespace HikeHandler.Data_Containers
         public string Description { get; set; }
         public DateTime HikeDate { get; set; }
         public HikeType HikeType { get; set; }
+        public List<int> CPList { get; set; }
 
         public Hike()
-        { }
+        {
+            CPList = new List<int>();
+        }
 
         public Hike(int hikeID)
         {
             IDHike = hikeID;
+            CPList = new List<int>();
+        }
+
+        public string GetCPString()
+        {
+            string cpString = string.Empty;
+            foreach (int item in CPList)
+            {
+                cpString += "." + item + ".";
+            }
+            return cpString;
         }
 
         public MySqlCommand SaveCommand(MySqlConnection connection)
         {
-            string commandText = @"INSERT INTO hike (date, idregion, idcountry, type, description) 
-VALUES (@date, @idregion, @idcountry, @type, @description)";
+            string commandText = @"INSERT INTO hike (date, idregion, idcountry, type, description, cpstring) 
+VALUES (@date, @idregion, @idcountry, @type, @description, @cpstring)";
             MySqlCommand command = new MySqlCommand(commandText, connection);
             command.Parameters.AddWithValue("@date", HikeDate.Date.ToString("yyyy-MM-dd"));
             command.Parameters.AddWithValue("@idregion", IDRegion);
             command.Parameters.AddWithValue("@idcountry", IDCountry);
             command.Parameters.AddWithValue("@description", Description);
             command.Parameters.AddWithValue("@type", HikeType.ToString());
+            command.Parameters.AddWithValue("@cpstring", GetCPString());
             return command;
         }
 
@@ -90,7 +105,7 @@ VALUES (@date, @idregion, @idcountry, @type, @description)";
                 }
             }
         }
-
+         
         // Moves all positions by +1 or -1 after a certain date
         // +1 if upOrDown = true
         public static void MovePositions(DateTime date, MySqlConnection connection, bool upOrDown)
@@ -114,7 +129,7 @@ VALUES (@date, @idregion, @idcountry, @type, @description)";
 
         public MySqlCommand UpdateCommand(MySqlConnection connection)
         {
-            string commandText = "UPDATE hike SET description=@description, type=@type";
+            string commandText = "UPDATE hike SET description=@description, type=@type, cpstring=@cpstring";
             if (HikeType != HikeType.túra)
                 commandText += ", position = NULL";
             commandText += " WHERE idhike=@idhike;";
@@ -122,13 +137,14 @@ VALUES (@date, @idregion, @idcountry, @type, @description)";
             MySqlCommand command = new MySqlCommand(commandText, connection);
             command.Parameters.AddWithValue("@description", Description);
             command.Parameters.AddWithValue("@type", HikeType.ToString());
+            command.Parameters.AddWithValue("@cpstring", GetCPString());
             command.Parameters.AddWithValue("@idhike", IDHike);
             return command;
         }
 
         public MySqlCommand DeleteCommand(MySqlConnection connection)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
         

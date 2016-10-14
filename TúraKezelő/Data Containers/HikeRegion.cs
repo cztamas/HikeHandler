@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data;
+using System.Windows.Forms;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 
@@ -23,6 +25,33 @@ namespace HikeHandler.Data_Containers
             CountryID = idOfCountry;
             Name = regionName;
             Description = regionDescription;
+        }
+
+        public static bool UpdateHikeCount(int idRegion, MySqlConnection connection)
+        {
+            string commandText = "SELECT COUNT(*) AS count FROM hike WHERE idregion=" + idRegion + ";";
+            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, connection))
+            {
+                try
+                {
+                    DataTable table = new DataTable();
+                    adapter.Fill(table);
+                    int count = (int)table.Rows[0]["count"];
+                    commandText = "UPDATE region SET hikecount=@hikecount WHERE idregion=@idregion;";
+                    using (MySqlCommand command = new MySqlCommand(commandText, connection))
+                    {
+                        command.Parameters.AddWithValue("@hikecount", count);
+                        command.Parameters.AddWithValue("@idregion", idRegion);
+                        command.ExecuteNonQuery();
+                        return true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Hiba");
+                    return false;
+                }
+            }
         }
 
         public MySqlCommand SaveCommand(MySqlConnection connection)

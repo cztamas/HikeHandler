@@ -214,7 +214,11 @@ namespace HikeHandler
                 {
                     command.ExecuteNonQuery();
                     if (hike.HikeType == HikeType.túra)
+                    {
                         Hike.UpdatePositions(sqlConnection);
+                        Country.UpdateHikeCount(hike.IDCountry, sqlConnection);
+                        HikeRegion.UpdateHikeCount(hike.IDRegion, sqlConnection);
+                    }
                     MessageBox.Show("Sikeresen elmentve.");
                     Close();
                 }

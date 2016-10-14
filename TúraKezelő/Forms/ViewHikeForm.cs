@@ -32,10 +32,28 @@ namespace HikeHandler.Forms
         }        
 
         private void MakeEditable()
-        { }
+        {
+            typeComboBox.Enabled = true;
+            descriptionBox.Enabled = true;
+            saveEditButton.Enabled = true;
+            saveEditButton.Visible = true;
+            cancelEditButton.Enabled = true;
+            cancelEditButton.Visible = true;
+            editButton.Enabled = false;
+            editButton.Visible = false;
+        }
 
         private void MakeUneditable()
-        { }
+        {
+            typeComboBox.Enabled = false;
+            descriptionBox.Enabled = false;
+            saveEditButton.Enabled = false;
+            saveEditButton.Visible = false;
+            cancelEditButton.Enabled = false;
+            cancelEditButton.Visible = false;
+            editButton.Enabled = true;
+            editButton.Visible = true;
+        }
 
         private void RefreshForm()
         {
@@ -63,10 +81,30 @@ namespace HikeHandler.Forms
                 MessageBox.Show("Nem lehet elérni az adatbázist", "Hiba");
                 return null;
             }
-
-
-
-            return null;
+            HikeTemplate template = new HikeTemplate(IDhike);
+            using (MySqlDataAdapter adapter = new MySqlDataAdapter(template.SearchCommand(sqlConnection)))
+            {
+                try
+                {
+                    DataTable resultTable = new DataTable();
+                    adapter.Fill(resultTable);
+                    DataRow row = resultTable.Rows[0];
+                    Hike hikeData = new Hike(IDhike);
+                    hikeData.CountryName = (string)row["countryname"];
+                    hikeData.RegionName = (string)row["regionname"];
+                    hikeData.Position = (int)row["position"];
+                    hikeData.HikeDate = Convert.ToDateTime((string)row["date"]);
+                    HikeType hikeType;
+                    Enum.TryParse<HikeType>((string)row["date"], out hikeType);
+                    hikeData.HikeType = hikeType;
+                    return hikeData;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Hiba");
+                    return null;
+                }
+            }   
         }
 
         private void closeButton_Click(object sender, EventArgs e)

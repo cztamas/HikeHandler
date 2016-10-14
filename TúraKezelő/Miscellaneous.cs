@@ -172,12 +172,5 @@ namespace HikeHandler
     public enum HikeType
     {
         túra=0, séta
-    }
-
-    public enum HikeCPRelation
-    {
-        normál
-    }
-
-    
+    }    
 }

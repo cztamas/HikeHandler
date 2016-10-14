@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.positionBox = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.regionBox = new System.Windows.Forms.TextBox();
             this.countryBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -53,8 +55,6 @@
             this.saveEditButton = new System.Windows.Forms.Button();
             this.cancelEditButton = new System.Windows.Forms.Button();
             this.deleteHikeButton = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
-            this.positionBox = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -78,6 +78,23 @@
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Alapadatok";
+            // 
+            // positionBox
+            // 
+            this.positionBox.Enabled = false;
+            this.positionBox.Location = new System.Drawing.Point(183, 71);
+            this.positionBox.Name = "positionBox";
+            this.positionBox.Size = new System.Drawing.Size(48, 20);
+            this.positionBox.TabIndex = 11;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(127, 75);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(50, 13);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "Sorszám:";
             // 
             // regionBox
             // 
@@ -283,6 +300,7 @@
             this.saveEditButton.TabIndex = 14;
             this.saveEditButton.Text = "Változások mentése";
             this.saveEditButton.UseVisualStyleBackColor = true;
+            this.saveEditButton.Click += new System.EventHandler(this.saveEditButton_Click);
             // 
             // cancelEditButton
             // 
@@ -302,22 +320,6 @@
             this.deleteHikeButton.TabIndex = 9;
             this.deleteHikeButton.Text = "Túra törlése...";
             this.deleteHikeButton.UseVisualStyleBackColor = true;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(127, 75);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(50, 13);
-            this.label5.TabIndex = 10;
-            this.label5.Text = "Sorszám:";
-            // 
-            // positionBox
-            // 
-            this.positionBox.Location = new System.Drawing.Point(183, 70);
-            this.positionBox.Name = "positionBox";
-            this.positionBox.Size = new System.Drawing.Size(48, 20);
-            this.positionBox.TabIndex = 11;
             // 
             // ViewHikeForm
             // 

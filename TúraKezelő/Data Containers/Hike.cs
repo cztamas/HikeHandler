@@ -66,13 +66,11 @@ VALUES (@date, @idregion, @idcountry, @type, @description)";
             {
                 date = Convert.ToDateTime(row["date"]);
                 commandText = "SELECT COUNT(*) AS count FROM hike WHERE date < '"+ date.ToString("yyyy-MM-dd") +"' AND type='túra';";
-                //MessageBox.Show(commandText);
                 using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, connection))
                 {
                     try
                     {
                         adapter.Fill(table);
-                        //MessageBox.Show(table.Rows[0]["count"].ToString());
                         int.TryParse((table.Rows[0]["count"]).ToString(), out position);
                         position++;
                         commandText = "UPDATE hike SET position=" + position + " WHERE idhike=" + row["idhike"] + " AND type='túra';";
@@ -97,12 +95,12 @@ VALUES (@date, @idregion, @idcountry, @type, @description)";
         // +1 if upOrDown = true
         public static void MovePositions(DateTime date, MySqlConnection connection, bool upOrDown)
         {
-            string commandText = "UPDATE hike SET position=position+1 WHERE date > @date;";            
+            string commandText = "UPDATE hike SET position=position+1 WHERE date > @date AND type='túra' AND position IS NOT NULL;";            
             if (!upOrDown)
-                commandText = "UPDATE hike SET position=position-1 WHERE date > @date AND type='túra' AND position NOT NULL;";
+                commandText = "UPDATE hike SET position=position-1 WHERE date > @date AND type='túra' AND position IS NOT NULL;";
             using (MySqlCommand command = new MySqlCommand(commandText, connection))
             {
-                command.Parameters.AddWithValue("@date", date.Date);
+                command.Parameters.AddWithValue("@date", date.ToString("yyyy-MM-dd"));
                 try
                 {
                     command.ExecuteNonQuery();
@@ -116,7 +114,11 @@ VALUES (@date, @idregion, @idcountry, @type, @description)";
 
         public MySqlCommand UpdateCommand(MySqlConnection connection)
         {
-            string commandText = "UPDATE hike SET description=@description, type=@type WHERE idhike=@idhike";
+            string commandText = "UPDATE hike SET description=@description, type=@type";
+            if (HikeType != HikeType.túra)
+                commandText += ", position = NULL";
+            commandText += " WHERE idhike=@idhike;";
+            //MessageBox.Show(commandText);
             MySqlCommand command = new MySqlCommand(commandText, connection);
             command.Parameters.AddWithValue("@description", Description);
             command.Parameters.AddWithValue("@type", HikeType.ToString());
@@ -129,10 +131,7 @@ VALUES (@date, @idregion, @idcountry, @type, @description)";
             return null;
         }
 
-        public static MySqlCommand RemoveFromPositionListCommand(int idHike, MySqlConnection connection)
-        {
-            return null;
-        }
+        
         
     }
 }

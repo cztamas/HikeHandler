@@ -24,6 +24,7 @@ namespace HikeHandler.Forms
             InitializeComponent();
             sqlConnection = connection;
             GetCountryList();
+            GetHikeTypes();
         }
 
         private MySqlConnection sqlConnection;
@@ -120,6 +121,10 @@ namespace HikeHandler.Forms
         public void Open()
         {
             Show();
+            typeComboBox.SelectedValue = -1;            
+            countryComboBox.Text = string.Empty;
+            regionComboBox.Text = string.Empty;
+            countryComboBox.Focus();
         }
 
         private void closeButton_Click(object sender, EventArgs e)
@@ -167,8 +172,11 @@ namespace HikeHandler.Forms
             HikeTemplate template = new HikeTemplate();
             template.CountryName = countryComboBox.Text;
             template.RegionName = regionComboBox.Text;
-            if ((int)typeComboBox.SelectedValue != -1)
-                template.HikeType = (HikeType)typeComboBox.SelectedValue;
+            if (typeComboBox.SelectedValue != null)
+            {
+                if ((int)typeComboBox.SelectedValue != -1)
+                    template.HikeType = (HikeType)typeComboBox.SelectedValue;
+            }
             template.Position = hikePositionBox.Text.ToIntPile();
             template.HikeDate = dateBox.Text.ToDatePile();
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(template.SearchCommand(sqlConnection)))
@@ -184,6 +192,7 @@ namespace HikeHandler.Forms
                     resultView.Columns[3].HeaderText = "Tájegység";
                     resultView.Columns[4].HeaderText = "Ország";
                     resultView.Columns[5].HeaderText = "Típus";
+                    resultView.Columns[6].Visible = false;
                 }
                 catch (Exception ex)
                 {
@@ -231,6 +240,14 @@ namespace HikeHandler.Forms
             int hikeID = (int)resultView.Rows[e.RowIndex].Cells[0].Value;
             ViewHikeForm viewHikeForm = new ViewHikeForm(sqlConnection, hikeID);
             viewHikeForm.Show();
+        }
+
+        private void countryComboBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            int countryID;
+            if (!int.TryParse(countryComboBox.SelectedValue.ToString(), out countryID))
+                return;
+            GetRegionList(countryID);
         }
     }
 }

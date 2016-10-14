@@ -41,7 +41,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.CPView = new System.Windows.Forms.DataGridView();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.CPcomboBox = new System.Windows.Forms.ComboBox();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
@@ -111,6 +111,8 @@
             // 
             // typeComboBox
             // 
+            this.typeComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.typeComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.typeComboBox.FormattingEnabled = true;
             this.typeComboBox.Location = new System.Drawing.Point(178, 72);
             this.typeComboBox.Name = "typeComboBox";
@@ -119,6 +121,8 @@
             // 
             // regionComboBox
             // 
+            this.regionComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
+            this.regionComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.regionComboBox.FormattingEnabled = true;
             this.regionComboBox.Location = new System.Drawing.Point(71, 45);
             this.regionComboBox.Name = "regionComboBox";
@@ -127,11 +131,14 @@
             // 
             // countryComboBox
             // 
+            this.countryComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
+            this.countryComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.countryComboBox.FormattingEnabled = true;
             this.countryComboBox.Location = new System.Drawing.Point(71, 18);
             this.countryComboBox.Name = "countryComboBox";
             this.countryComboBox.Size = new System.Drawing.Size(180, 21);
             this.countryComboBox.TabIndex = 3;
+            this.countryComboBox.SelectedValueChanged += new System.EventHandler(this.countryComboBox_SelectedValueChanged);
             // 
             // label3
             // 
@@ -163,7 +170,7 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.CPView);
-            this.groupBox2.Controls.Add(this.comboBox4);
+            this.groupBox2.Controls.Add(this.CPcomboBox);
             this.groupBox2.Controls.Add(this.button4);
             this.groupBox2.Controls.Add(this.button3);
             this.groupBox2.Controls.Add(this.label6);
@@ -185,13 +192,15 @@
             this.CPView.Size = new System.Drawing.Size(256, 109);
             this.CPView.TabIndex = 7;
             // 
-            // comboBox4
+            // CPcomboBox
             // 
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(85, 13);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(166, 21);
-            this.comboBox4.TabIndex = 5;
+            this.CPcomboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.CPcomboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.CPcomboBox.FormattingEnabled = true;
+            this.CPcomboBox.Location = new System.Drawing.Point(85, 13);
+            this.CPcomboBox.Name = "CPcomboBox";
+            this.CPcomboBox.Size = new System.Drawing.Size(166, 21);
+            this.CPcomboBox.TabIndex = 5;
             // 
             // button4
             // 
@@ -326,7 +335,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.ComboBox CPcomboBox;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label label6;

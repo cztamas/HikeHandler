@@ -157,9 +157,9 @@ namespace HikeHandler
             if (min != null && max != null)
                 return "(" + min.ToString() + " <= " + variable + " AND " + variable + " <= " + max.ToString() + ")";
             if (min == null && max != null)
-                return variable + " <= " + max.ToString();
+                return variable + " <= " + ((DateTime)max).ToString("yyyy-mm-DD");
             if (min != null && max == null) 
-                return variable + " >= " + min.ToString();
+                return variable + " >= " + ((DateTime)min).ToString("yyyy-mm-DD");
             return string.Empty;
         }
     }

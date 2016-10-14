@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
+using System.Windows.Forms;
 
 namespace HikeHandler.Data_Containers
 {
@@ -29,22 +30,29 @@ namespace HikeHandler.Data_Containers
 
         public MySqlCommand SearchCommand(MySqlConnection connection)
         {
-            string commandText = @"SELECT h.idhike, h.position, h.date, r.name AS 'regionname', c.name AS 'countryname', h.type 
-FROM hike h, region r, country c ORDER BY h.position ASC
-WHERE h.idcountry=c.idcountry AND h.idregion=c.idregion AND c.name LIKE @countryName AND r.name LIKE @regionName";
+            string commandText = @"SELECT h.idhike, h.position, h.date, r.name AS 'regionname', c.name AS 'countryname', h.type, 
+h.description FROM hike h, region r, country c WHERE h.idcountry=c.idcountry AND h.idregion=r.idregion 
+AND c.name LIKE @countryName AND r.name LIKE @regionName";
             if (IDHike != null)
-                commandText += " AND cp.idcp=" + IDHike;
+                commandText += " AND h.idhike=" + IDHike;
             if (IDRegion != null)
                 commandText += " AND r.idregion=" + IDRegion;
             if (IDCountry != null)
                 commandText += " AND c.idcountry=" + IDCountry;
             if (HikeDate != null)
-                commandText += " AND " + HikeDate.SqlSearchCondition("h.date");
+            {
+                if (HikeDate.SqlSearchCondition("h.date") != string.Empty)
+                    commandText += " AND " + HikeDate.SqlSearchCondition("h.date");
+            }
             if (Position != null)
-                commandText += " AND " + Position.SqlSearchCondition("h.position");
+            {
+                if (Position.SqlSearchCondition("h.position") != string.Empty)
+                    commandText += " AND " + Position.SqlSearchCondition("h.position");
+            }
             if (HikeType != null)
                 commandText += " AND type = @type";
-            commandText += ";";
+            commandText += " ORDER BY h.date ASC;";
+            //MessageBox.Show(commandText);
             MySqlCommand command = new MySqlCommand(commandText, connection);
             command.Parameters.AddWithValue("@countryName", "%" + CountryName + "%");
             command.Parameters.AddWithValue("@regionName", "%" + RegionName + "%");

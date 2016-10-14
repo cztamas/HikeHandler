@@ -15,6 +15,7 @@ namespace HikeHandler.Forms
     public partial class ViewHikeForm : Form
     {
         private int IDhike;
+        private HikeType typeOfHike;
         private MySqlConnection sqlConnection;
 
         public ViewHikeForm()
@@ -27,6 +28,7 @@ namespace HikeHandler.Forms
             InitializeComponent();
             sqlConnection = connection;
             IDhike = hikeID;
+            GetHikeTypes();
             RefreshForm();
             MakeUneditable();
         }        
@@ -62,11 +64,12 @@ namespace HikeHandler.Forms
                 return;
             countryBox.Text = hikeData.CountryName;
             regionBox.Text = hikeData.RegionName;
-            typeComboBox.Text = hikeData.HikeType.ToString();
+            typeComboBox.SelectedValue = (int)hikeData.HikeType;
             dateBox.Value = hikeData.HikeDate;
             descriptionBox.Text = hikeData.Description;
             Text = hikeData.Position.ToString() + ". túra adatai";
             positionBox.Text = hikeData.Position.ToString();
+            typeOfHike = hikeData.HikeType;
         }
 
         private Hike GetHikeData(int hikeID)
@@ -92,11 +95,14 @@ namespace HikeHandler.Forms
                     Hike hikeData = new Hike(IDhike);
                     hikeData.CountryName = (string)row["countryname"];
                     hikeData.RegionName = (string)row["regionname"];
-                    hikeData.Position = (int)row["position"];
-                    hikeData.HikeDate = Convert.ToDateTime((string)row["date"]);
+                    int posInt;
+                    if (int.TryParse(row["position"].ToString(), out posInt))
+                        hikeData.Position = posInt;
+                    hikeData.HikeDate = Convert.ToDateTime(row["date"]);
                     HikeType hikeType;
-                    Enum.TryParse<HikeType>((string)row["date"], out hikeType);
+                    Enum.TryParse<HikeType>((string)row["type"], out hikeType);
                     hikeData.HikeType = hikeType;
+                    hikeData.Description = (string)row["description"];
                     return hikeData;
                 }
                 catch (Exception ex)
@@ -105,6 +111,30 @@ namespace HikeHandler.Forms
                     return null;
                 }
             }   
+        }
+
+        private void GetHikeTypes()
+        {
+            DataTable hikeTypesTable = new DataTable();
+            DataColumn column;
+            DataRow row;
+
+            column = new DataColumn("id", typeof(int));
+            hikeTypesTable.Columns.Add(column);
+            column = new DataColumn("name", typeof(string));
+            hikeTypesTable.Columns.Add(column);
+
+            Array hikeTypes = Enum.GetValues(typeof(HikeType));
+            foreach (HikeType item in hikeTypes)
+            {
+                row = hikeTypesTable.NewRow();
+                row["id"] = (int)item;
+                row["name"] = item.ToString();
+                hikeTypesTable.Rows.Add(row);
+            }
+            typeComboBox.DataSource = hikeTypesTable;
+            typeComboBox.ValueMember = "id";
+            typeComboBox.DisplayMember = "name";
         }
 
         private void closeButton_Click(object sender, EventArgs e)
@@ -123,7 +153,40 @@ namespace HikeHandler.Forms
             RefreshForm();
         }
 
-        
+        private void saveEditButton_Click(object sender, EventArgs e)
+        {
+            if (sqlConnection == null)
+            {
+                MessageBox.Show("Nem lehet elérni az adatbázist", "Hiba");
+                return;
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                MessageBox.Show("Nem lehet elérni az adatbázist", "Hiba");
+                return;
+            }
+            Hike hikeData = new Hike(IDhike);
+            hikeData.Description = descriptionBox.Text;
+            hikeData.HikeType = (HikeType)typeComboBox.SelectedValue;
+            hikeData.HikeDate = dateBox.Value;
+            using (MySqlCommand command = hikeData.UpdateCommand(sqlConnection))
+            {
+                try
+                {
+                    command.ExecuteNonQuery();
+                    if (hikeData.HikeType == HikeType.túra && typeOfHike != HikeType.túra)
+                        Hike.UpdatePositions(sqlConnection);
 
+                    if (hikeData.HikeType != HikeType.túra && typeOfHike == HikeType.túra)
+                        Hike.MovePositions(hikeData.HikeDate, sqlConnection, false);
+                    RefreshForm();
+                    MakeUneditable();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Hiba");
+                }
+            }
+        }
     }
 }

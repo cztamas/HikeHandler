@@ -250,5 +250,15 @@ namespace HikeHandler.Forms
                 return;
             GetRegionList(countryID);
         }
+
+        private void addCPButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void removeCPButton_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

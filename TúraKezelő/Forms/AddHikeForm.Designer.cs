@@ -41,18 +41,20 @@
             this.cancelButton = new System.Windows.Forms.Button();
             this.descriptionBox = new System.Windows.Forms.RichTextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.allRegionCheckBox = new System.Windows.Forms.CheckBox();
             this.moveDownButton = new System.Windows.Forms.Button();
             this.moveUpButton = new System.Windows.Forms.Button();
             this.cpNameComboBox = new System.Windows.Forms.ComboBox();
             this.removeCPButton = new System.Windows.Forms.Button();
             this.addCPButton = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
-            this.cpListView = new System.Windows.Forms.ListView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.allRegionCheckBox = new System.Windows.Forms.CheckBox();
+            this.cpGridView = new System.Windows.Forms.DataGridView();
+            this.refreshButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cpGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -176,6 +178,8 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.refreshButton);
+            this.groupBox2.Controls.Add(this.cpGridView);
             this.groupBox2.Controls.Add(this.allRegionCheckBox);
             this.groupBox2.Controls.Add(this.moveDownButton);
             this.groupBox2.Controls.Add(this.moveUpButton);
@@ -183,13 +187,23 @@
             this.groupBox2.Controls.Add(this.removeCPButton);
             this.groupBox2.Controls.Add(this.addCPButton);
             this.groupBox2.Controls.Add(this.label6);
-            this.groupBox2.Controls.Add(this.cpListView);
             this.groupBox2.Location = new System.Drawing.Point(238, 12);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(288, 203);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "CheckPointok";
+            // 
+            // allRegionCheckBox
+            // 
+            this.allRegionCheckBox.AutoSize = true;
+            this.allRegionCheckBox.Location = new System.Drawing.Point(42, 45);
+            this.allRegionCheckBox.Name = "allRegionCheckBox";
+            this.allRegionCheckBox.Size = new System.Drawing.Size(115, 17);
+            this.allRegionCheckBox.TabIndex = 9;
+            this.allRegionCheckBox.Text = "más tájegységek is";
+            this.allRegionCheckBox.UseVisualStyleBackColor = true;
+            this.allRegionCheckBox.CheckedChanged += new System.EventHandler(this.allRegionCheckBox_CheckedChanged);
             // 
             // moveDownButton
             // 
@@ -199,6 +213,7 @@
             this.moveDownButton.TabIndex = 8;
             this.moveDownButton.Text = "Lefelé mozgat";
             this.moveDownButton.UseVisualStyleBackColor = true;
+            this.moveDownButton.Click += new System.EventHandler(this.moveDownButton_Click);
             // 
             // moveUpButton
             // 
@@ -208,6 +223,7 @@
             this.moveUpButton.TabIndex = 7;
             this.moveUpButton.Text = "Fölfelé mozgat";
             this.moveUpButton.UseVisualStyleBackColor = true;
+            this.moveUpButton.Click += new System.EventHandler(this.moveUpButton_Click);
             // 
             // cpNameComboBox
             // 
@@ -228,6 +244,7 @@
             this.removeCPButton.TabIndex = 4;
             this.removeCPButton.Text = "Kijelölt törlése";
             this.removeCPButton.UseVisualStyleBackColor = true;
+            this.removeCPButton.Click += new System.EventHandler(this.removeCPButton_Click);
             // 
             // addCPButton
             // 
@@ -237,6 +254,7 @@
             this.addCPButton.TabIndex = 3;
             this.addCPButton.Text = "CP hozzáadása";
             this.addCPButton.UseVisualStyleBackColor = true;
+            this.addCPButton.Click += new System.EventHandler(this.addCPButton_Click);
             // 
             // label6
             // 
@@ -246,15 +264,6 @@
             this.label6.Size = new System.Drawing.Size(30, 13);
             this.label6.TabIndex = 1;
             this.label6.Text = "Név:";
-            // 
-            // cpListView
-            // 
-            this.cpListView.FullRowSelect = true;
-            this.cpListView.Location = new System.Drawing.Point(9, 68);
-            this.cpListView.Name = "cpListView";
-            this.cpListView.Size = new System.Drawing.Size(162, 129);
-            this.cpListView.TabIndex = 0;
-            this.cpListView.UseCompatibleStateImageBehavior = false;
             // 
             // groupBox3
             // 
@@ -266,16 +275,28 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Leírás";
             // 
-            // allRegionCheckBox
+            // cpGridView
             // 
-            this.allRegionCheckBox.AutoSize = true;
-            this.allRegionCheckBox.Location = new System.Drawing.Point(42, 45);
-            this.allRegionCheckBox.Name = "allRegionCheckBox";
-            this.allRegionCheckBox.Size = new System.Drawing.Size(115, 17);
-            this.allRegionCheckBox.TabIndex = 9;
-            this.allRegionCheckBox.Text = "más tájegységek is";
-            this.allRegionCheckBox.UseVisualStyleBackColor = true;
-            this.allRegionCheckBox.CheckedChanged += new System.EventHandler(this.allRegionCheckBox_CheckedChanged);
+            this.cpGridView.AllowUserToAddRows = false;
+            this.cpGridView.AllowUserToDeleteRows = false;
+            this.cpGridView.AllowUserToResizeRows = false;
+            this.cpGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.cpGridView.Location = new System.Drawing.Point(6, 68);
+            this.cpGridView.Name = "cpGridView";
+            this.cpGridView.ReadOnly = true;
+            this.cpGridView.RowHeadersVisible = false;
+            this.cpGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.cpGridView.Size = new System.Drawing.Size(165, 129);
+            this.cpGridView.TabIndex = 10;
+            // 
+            // refreshButton
+            // 
+            this.refreshButton.Location = new System.Drawing.Point(177, 174);
+            this.refreshButton.Name = "refreshButton";
+            this.refreshButton.Size = new System.Drawing.Size(105, 23);
+            this.refreshButton.TabIndex = 11;
+            this.refreshButton.Text = "Frissítés";
+            this.refreshButton.UseVisualStyleBackColor = true;
             // 
             // AddHikeForm
             // 
@@ -299,6 +320,7 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.cpGridView)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -318,7 +340,6 @@
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.RichTextBox descriptionBox;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.ListView cpListView;
         private System.Windows.Forms.ComboBox cpNameComboBox;
         private System.Windows.Forms.Button removeCPButton;
         private System.Windows.Forms.Button addCPButton;
@@ -327,5 +348,7 @@
         private System.Windows.Forms.Button moveUpButton;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.CheckBox allRegionCheckBox;
+        private System.Windows.Forms.Button refreshButton;
+        private System.Windows.Forms.DataGridView cpGridView;
     }
 }

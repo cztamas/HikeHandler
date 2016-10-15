@@ -41,9 +41,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.CPView = new System.Windows.Forms.DataGridView();
-            this.CPcomboBox = new System.Windows.Forms.ComboBox();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.cpNameComboBox = new System.Windows.Forms.ComboBox();
+            this.removeCPButton = new System.Windows.Forms.Button();
+            this.addCPButton = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.searchButton = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -170,9 +170,9 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.CPView);
-            this.groupBox2.Controls.Add(this.CPcomboBox);
-            this.groupBox2.Controls.Add(this.button4);
-            this.groupBox2.Controls.Add(this.button3);
+            this.groupBox2.Controls.Add(this.cpNameComboBox);
+            this.groupBox2.Controls.Add(this.removeCPButton);
+            this.groupBox2.Controls.Add(this.addCPButton);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Location = new System.Drawing.Point(12, 148);
             this.groupBox2.Name = "groupBox2";
@@ -192,33 +192,35 @@
             this.CPView.Size = new System.Drawing.Size(256, 109);
             this.CPView.TabIndex = 7;
             // 
-            // CPcomboBox
+            // cpNameComboBox
             // 
-            this.CPcomboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.CPcomboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.CPcomboBox.FormattingEnabled = true;
-            this.CPcomboBox.Location = new System.Drawing.Point(85, 13);
-            this.CPcomboBox.Name = "CPcomboBox";
-            this.CPcomboBox.Size = new System.Drawing.Size(166, 21);
-            this.CPcomboBox.TabIndex = 5;
+            this.cpNameComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cpNameComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cpNameComboBox.FormattingEnabled = true;
+            this.cpNameComboBox.Location = new System.Drawing.Point(85, 13);
+            this.cpNameComboBox.Name = "cpNameComboBox";
+            this.cpNameComboBox.Size = new System.Drawing.Size(166, 21);
+            this.cpNameComboBox.TabIndex = 5;
             // 
-            // button4
+            // removeCPButton
             // 
-            this.button4.Location = new System.Drawing.Point(151, 40);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(100, 23);
-            this.button4.TabIndex = 4;
-            this.button4.Text = "Kijelölt törlése";
-            this.button4.UseVisualStyleBackColor = true;
+            this.removeCPButton.Location = new System.Drawing.Point(151, 40);
+            this.removeCPButton.Name = "removeCPButton";
+            this.removeCPButton.Size = new System.Drawing.Size(100, 23);
+            this.removeCPButton.TabIndex = 4;
+            this.removeCPButton.Text = "Kijelölt törlése";
+            this.removeCPButton.UseVisualStyleBackColor = true;
+            this.removeCPButton.Click += new System.EventHandler(this.removeCPButton_Click);
             // 
-            // button3
+            // addCPButton
             // 
-            this.button3.Location = new System.Drawing.Point(6, 40);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(136, 23);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "CP hozzáadása";
-            this.button3.UseVisualStyleBackColor = true;
+            this.addCPButton.Location = new System.Drawing.Point(6, 40);
+            this.addCPButton.Name = "addCPButton";
+            this.addCPButton.Size = new System.Drawing.Size(136, 23);
+            this.addCPButton.TabIndex = 3;
+            this.addCPButton.Text = "CP hozzáadása";
+            this.addCPButton.UseVisualStyleBackColor = true;
+            this.addCPButton.Click += new System.EventHandler(this.addCPButton_Click);
             // 
             // label6
             // 
@@ -335,9 +337,9 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.ComboBox CPcomboBox;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.ComboBox cpNameComboBox;
+        private System.Windows.Forms.Button removeCPButton;
+        private System.Windows.Forms.Button addCPButton;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox dateBox;

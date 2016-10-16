@@ -23,13 +23,13 @@ namespace HikeHandler.Forms
         {
             InitializeComponent();
             sqlConnection = connection;
+            checkPointHandler.Init(sqlConnection, CPHandlerStyle.Search);
+            regionComboBox.SelectedValueChanged += new EventHandler(checkPointHandler.Region_Refreshed);
             GetCountryList();
-            GetHikeTypes();
-            InitCPTable();
+            GetHikeTypes();            
         }
 
         private MySqlConnection sqlConnection;
-        private DataTable cpTable;
 
         private void GetCountryList()
         {
@@ -128,20 +128,7 @@ namespace HikeHandler.Forms
             regionComboBox.Text = string.Empty;
             countryComboBox.Focus();
         }
-
-        private void InitCPTable()
-        {
-            cpTable = new DataTable();
-            cpTable.Clear();
-            cpTable.Columns.Add("idcp");
-            cpTable.Columns.Add("name");
-            BindingSource source = new BindingSource();
-            source.DataSource = cpTable;
-            cpGridView.DataSource = source;
-            cpGridView.Columns[0].Visible = false;
-            cpGridView.Columns[1].HeaderText = "CheckPoint neve";
-        }
-
+        
         private void closeButton_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -154,7 +141,7 @@ namespace HikeHandler.Forms
 
         private void Clear()
         {
-            cpGridView.DataSource = null;
+            checkPointHandler.Clear();
             resultView.DataSource = null;
             countryComboBox.Text = string.Empty;
             regionComboBox.Text = string.Empty;
@@ -194,7 +181,8 @@ namespace HikeHandler.Forms
             }
             template.Position = hikePositionBox.Text.ToIntPile();
             template.HikeDate = dateBox.Text.ToDatePile();
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(template.SearchCommand(sqlConnection)))
+            template.CPList = checkPointHandler.CPList;
+            using (MySqlDataAdapter adapter = new MySqlDataAdapter(template.SearchCommand(sqlConnection,checkPointHandler.AnyCPOrder)))
             {
                 try
                 {
@@ -264,28 +252,6 @@ namespace HikeHandler.Forms
             if (!int.TryParse(countryComboBox.SelectedValue.ToString(), out countryID))
                 return;
             GetRegionList(countryID);
-        }
-
-        private void addCPButton_Click(object sender, EventArgs e)
-        {
-            if (cpNameComboBox.DataSource == null)
-                return;
-            DataRow row = ((DataTable)cpNameComboBox.DataSource).Rows[cpNameComboBox.SelectedIndex];
-            cpTable.ImportRow(row);
-        }
-
-        private void removeCPButton_Click(object sender, EventArgs e)
-        {
-            List<DataRow> rowsToDelete = new List<DataRow>();
-            foreach (DataGridViewRow row in cpGridView.SelectedRows)
-            {
-                int index = row.Index;
-                rowsToDelete.Add(cpTable.Rows[index]);
-            }
-            foreach (DataRow row in rowsToDelete)
-            {
-                cpTable.Rows.Remove(row);
-            }
         }
     }
 }

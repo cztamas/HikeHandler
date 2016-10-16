@@ -160,7 +160,7 @@
             this.groupBox3.Controls.Add(this.descriptionBox);
             this.groupBox3.Location = new System.Drawing.Point(12, 146);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(242, 123);
+            this.groupBox3.Size = new System.Drawing.Size(242, 136);
             this.groupBox3.TabIndex = 11;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Leírás";
@@ -170,15 +170,15 @@
             this.descriptionBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.descriptionBox.Location = new System.Drawing.Point(3, 16);
             this.descriptionBox.Name = "descriptionBox";
-            this.descriptionBox.Size = new System.Drawing.Size(236, 104);
+            this.descriptionBox.Size = new System.Drawing.Size(236, 117);
             this.descriptionBox.TabIndex = 9;
             this.descriptionBox.Text = "";
             // 
             // editButton
             // 
-            this.editButton.Location = new System.Drawing.Point(260, 246);
+            this.editButton.Location = new System.Drawing.Point(260, 230);
             this.editButton.Name = "editButton";
-            this.editButton.Size = new System.Drawing.Size(165, 23);
+            this.editButton.Size = new System.Drawing.Size(150, 23);
             this.editButton.TabIndex = 12;
             this.editButton.Text = "Szerkesztés...";
             this.editButton.UseVisualStyleBackColor = true;
@@ -187,9 +187,9 @@
             // closeButton
             // 
             this.closeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.closeButton.Location = new System.Drawing.Point(518, 246);
+            this.closeButton.Location = new System.Drawing.Point(416, 259);
             this.closeButton.Name = "closeButton";
-            this.closeButton.Size = new System.Drawing.Size(76, 23);
+            this.closeButton.Size = new System.Drawing.Size(89, 23);
             this.closeButton.TabIndex = 13;
             this.closeButton.Text = "Bezárás";
             this.closeButton.UseVisualStyleBackColor = true;
@@ -197,9 +197,9 @@
             // 
             // saveEditButton
             // 
-            this.saveEditButton.Location = new System.Drawing.Point(260, 246);
+            this.saveEditButton.Location = new System.Drawing.Point(260, 230);
             this.saveEditButton.Name = "saveEditButton";
-            this.saveEditButton.Size = new System.Drawing.Size(110, 23);
+            this.saveEditButton.Size = new System.Drawing.Size(150, 23);
             this.saveEditButton.TabIndex = 14;
             this.saveEditButton.Text = "Változások mentése";
             this.saveEditButton.UseVisualStyleBackColor = true;
@@ -207,9 +207,9 @@
             // 
             // cancelEditButton
             // 
-            this.cancelEditButton.Location = new System.Drawing.Point(376, 246);
+            this.cancelEditButton.Location = new System.Drawing.Point(416, 230);
             this.cancelEditButton.Name = "cancelEditButton";
-            this.cancelEditButton.Size = new System.Drawing.Size(49, 23);
+            this.cancelEditButton.Size = new System.Drawing.Size(89, 23);
             this.cancelEditButton.TabIndex = 15;
             this.cancelEditButton.Text = "Mégse";
             this.cancelEditButton.UseVisualStyleBackColor = true;
@@ -217,9 +217,9 @@
             // 
             // deleteHikeButton
             // 
-            this.deleteHikeButton.Location = new System.Drawing.Point(431, 246);
+            this.deleteHikeButton.Location = new System.Drawing.Point(260, 259);
             this.deleteHikeButton.Name = "deleteHikeButton";
-            this.deleteHikeButton.Size = new System.Drawing.Size(81, 23);
+            this.deleteHikeButton.Size = new System.Drawing.Size(150, 23);
             this.deleteHikeButton.TabIndex = 9;
             this.deleteHikeButton.Text = "Túra törlése...";
             this.deleteHikeButton.UseVisualStyleBackColor = true;
@@ -228,7 +228,7 @@
             // 
             this.checkPointHandler.Location = new System.Drawing.Point(260, 12);
             this.checkPointHandler.Name = "checkPointHandler";
-            this.checkPointHandler.Size = new System.Drawing.Size(274, 212);
+            this.checkPointHandler.Size = new System.Drawing.Size(264, 212);
             this.checkPointHandler.TabIndex = 16;
             // 
             // ViewHikeForm
@@ -236,7 +236,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.closeButton;
-            this.ClientSize = new System.Drawing.Size(603, 276);
+            this.ClientSize = new System.Drawing.Size(518, 289);
             this.Controls.Add(this.checkPointHandler);
             this.Controls.Add(this.deleteHikeButton);
             this.Controls.Add(this.cancelEditButton);

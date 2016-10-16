@@ -55,9 +55,10 @@
             this.groupBox1.Controls.Add(this.cpGridView);
             this.groupBox1.Controls.Add(this.addCPButton);
             this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(251, 205);
+            this.groupBox1.Size = new System.Drawing.Size(254, 206);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "CheckPointok";
@@ -168,7 +169,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupBox1);
             this.Name = "CPHandler";
-            this.Size = new System.Drawing.Size(259, 212);
+            this.Size = new System.Drawing.Size(254, 206);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cpGridView)).EndInit();

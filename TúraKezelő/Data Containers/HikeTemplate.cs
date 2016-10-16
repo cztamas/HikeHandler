@@ -32,7 +32,7 @@ namespace HikeHandler.Data_Containers
             CPList = new List<int>();
         }
 
-        public MySqlCommand SearchCommand(MySqlConnection connection)
+        public MySqlCommand SearchCommand(MySqlConnection connection, bool anyCPOrder)
         {
             string commandText = @"SELECT h.idhike, h.position, h.date, r.name AS 'regionname', c.name AS 'countryname', h.type, 
 h.description, h.cpstring FROM hike h, region r, country c WHERE h.idcountry=c.idcountry AND h.idregion=r.idregion 
@@ -55,9 +55,21 @@ AND c.name LIKE @countryName AND r.name LIKE @regionName";
             }
             if (HikeType != null)
                 commandText += " AND type = @type";
-            foreach (int item in CPList)
+            if (anyCPOrder)
             {
-                commandText += " AND cpstring LIKE '%." + item.ToString() + ".%'";
+                foreach (int item in CPList)
+                {
+                    commandText += " AND cpstring LIKE '%." + item.ToString() + ".%'";
+                }
+            }
+            if (!anyCPOrder)
+            {
+                string condition = string.Empty;
+                foreach (int item in CPList)
+                {
+                    condition += "%." + item + ".%";
+                }
+                commandText += " AND cpstring LIKE '" + condition + "'";
             }
             commandText += " ORDER BY h.date ASC;";
             //MessageBox.Show(commandText);

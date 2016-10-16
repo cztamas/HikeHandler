@@ -21,6 +21,7 @@ namespace HikeHandler.Data_Containers
         public DateTime HikeDate { get; set; }
         public HikeType HikeType { get; set; }
         public List<int> CPList { get; set; }
+        public string CPString { get; set; }
 
         public Hike()
         {

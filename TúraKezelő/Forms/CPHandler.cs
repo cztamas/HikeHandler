@@ -16,6 +16,20 @@ namespace HikeHandler.Forms
         private MySqlConnection sqlConnection;
         private DataTable cpTable;
         private int regionID;
+        public bool AnyCPOrder
+        {
+            get
+            {
+                return anyOrderCheckBox.Checked;
+            }
+        }
+        public List<int> CPList
+        {
+            get
+            {
+                return GiveCPList();
+            }
+        }
 
         public CPHandler()
         {
@@ -68,6 +82,12 @@ namespace HikeHandler.Forms
             allRegionCheckBox.Visible = false;
         }
 
+        public void Clear()
+        {
+            cpNameComboBox.DataSource = null;
+            cpTable.Clear();
+        }
+
         public void LoadCPs(string cpString)
         {
             if (!cpString.IsCPString())
@@ -105,6 +125,19 @@ namespace HikeHandler.Forms
                     }
                 }
             }
+        }
+
+        private List<int> GiveCPList()
+        {
+            List<int> cpList = new List<int>();
+            int item;
+            foreach (DataRow row in cpTable.Rows)
+            {
+                if (!int.TryParse(row["idcp"].ToString(), out item))
+                    continue;
+                cpList.Add(item);
+            }
+            return cpList;
         }
 
         private void GetCPList()
@@ -277,34 +310,7 @@ namespace HikeHandler.Forms
             }
             return cpString;
         }
-
-        public string GetSearchCondition(string variable)
-        {
-            string condition = string.Empty;
-            int idCP;
-            if (anyOrderCheckBox.Checked)
-            {
-                foreach (DataRow row in cpTable.Rows)
-                {
-                    if (!int.TryParse(row["cpid"].ToString(), out idCP))
-                        continue;
-                    condition += " AND " + variable + " LIKE '%." + idCP + ".%'";
-                }
-                if (condition != string.Empty)
-                    return "(" + condition + ")";
-                return string.Empty;
-            }
-            foreach (DataRow row in cpTable.Rows)
-            {
-                if (!int.TryParse(row["cpid"].ToString(), out idCP))
-                    continue;
-                condition += "%." + idCP + ".%";
-            }
-            if (condition != string.Empty)
-                return " AND " + variable + " LIKE '" + condition + "';";
-            return string.Empty;            
-        }
-
+        
         private void allRegionCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             if (allRegionCheckBox.Checked)

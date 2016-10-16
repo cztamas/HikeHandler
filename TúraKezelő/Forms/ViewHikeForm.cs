@@ -70,6 +70,7 @@ namespace HikeHandler.Forms
             typeComboBox.SelectedValue = (int)hikeData.HikeType;
             dateBox.Value = hikeData.HikeDate;
             descriptionBox.Text = hikeData.Description;
+            checkPointHandler.LoadCPs(hikeData.CPString);
             Text = hikeData.Position.ToString() + ". túra adatai";
             positionBox.Text = hikeData.Position.ToString();
             typeOfHike = hikeData.HikeType;
@@ -88,7 +89,7 @@ namespace HikeHandler.Forms
                 return null;
             }
             HikeTemplate template = new HikeTemplate(IDhike);
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(template.SearchCommand(sqlConnection)))
+            using (MySqlDataAdapter adapter = new MySqlDataAdapter(template.SearchCommand(sqlConnection,true)))
             {
                 try
                 {
@@ -106,6 +107,7 @@ namespace HikeHandler.Forms
                     Enum.TryParse<HikeType>((string)row["type"], out hikeType);
                     hikeData.HikeType = hikeType;
                     hikeData.Description = (string)row["description"];
+                    hikeData.CPString = (string)row["cpstring"];
                     return hikeData;
                 }
                 catch (Exception ex)
@@ -172,6 +174,7 @@ namespace HikeHandler.Forms
             hikeData.Description = descriptionBox.Text;
             hikeData.HikeType = (HikeType)typeComboBox.SelectedValue;
             hikeData.HikeDate = dateBox.Value;
+            hikeData.CPList = checkPointHandler.CPList;
             using (MySqlCommand command = hikeData.UpdateCommand(sqlConnection))
             {
                 try

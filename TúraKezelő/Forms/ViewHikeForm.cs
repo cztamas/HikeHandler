@@ -29,6 +29,7 @@ namespace HikeHandler.Forms
             sqlConnection = connection;
             IDhike = hikeID;
             GetHikeTypes();
+            checkPointHandler.Init(sqlConnection, CPHandlerStyle.View);
             RefreshForm();
             MakeUneditable();
         }        
@@ -43,6 +44,7 @@ namespace HikeHandler.Forms
             cancelEditButton.Visible = true;
             editButton.Enabled = false;
             editButton.Visible = false;
+            checkPointHandler.MakeEditable();
         }
 
         private void MakeUneditable()
@@ -55,6 +57,7 @@ namespace HikeHandler.Forms
             cancelEditButton.Visible = false;
             editButton.Enabled = true;
             editButton.Visible = true;
+            checkPointHandler.MakeUneditable();
         }
 
         private void RefreshForm()

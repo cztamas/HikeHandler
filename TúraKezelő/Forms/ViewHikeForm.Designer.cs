@@ -39,15 +39,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.allRegionCheckBox = new System.Windows.Forms.CheckBox();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.cpNameComboBox = new System.Windows.Forms.ComboBox();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
-            this.listView1 = new System.Windows.Forms.ListView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.descriptionBox = new System.Windows.Forms.RichTextBox();
             this.editButton = new System.Windows.Forms.Button();
@@ -55,8 +46,8 @@
             this.saveEditButton = new System.Windows.Forms.Button();
             this.cancelEditButton = new System.Windows.Forms.Button();
             this.deleteHikeButton = new System.Windows.Forms.Button();
+            this.checkPointHandler = new HikeHandler.Forms.CPHandler();
             this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -164,94 +155,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Ország:";
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.allRegionCheckBox);
-            this.groupBox2.Controls.Add(this.button6);
-            this.groupBox2.Controls.Add(this.button5);
-            this.groupBox2.Controls.Add(this.cpNameComboBox);
-            this.groupBox2.Controls.Add(this.button4);
-            this.groupBox2.Controls.Add(this.button3);
-            this.groupBox2.Controls.Add(this.label6);
-            this.groupBox2.Controls.Add(this.listView1);
-            this.groupBox2.Location = new System.Drawing.Point(260, 12);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(334, 228);
-            this.groupBox2.TabIndex = 4;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "CheckPointok";
-            // 
-            // allRegionCheckBox
-            // 
-            this.allRegionCheckBox.AutoSize = true;
-            this.allRegionCheckBox.Location = new System.Drawing.Point(42, 46);
-            this.allRegionCheckBox.Name = "allRegionCheckBox";
-            this.allRegionCheckBox.Size = new System.Drawing.Size(115, 17);
-            this.allRegionCheckBox.TabIndex = 9;
-            this.allRegionCheckBox.Text = "más tájegységek is";
-            this.allRegionCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(220, 119);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(105, 23);
-            this.button6.TabIndex = 8;
-            this.button6.Text = "Lefelé mozgat";
-            this.button6.UseVisualStyleBackColor = true;
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(220, 90);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(105, 23);
-            this.button5.TabIndex = 7;
-            this.button5.Text = "Fölfelé mozgat";
-            this.button5.UseVisualStyleBackColor = true;
-            // 
-            // cpNameComboBox
-            // 
-            this.cpNameComboBox.FormattingEnabled = true;
-            this.cpNameComboBox.Location = new System.Drawing.Point(42, 18);
-            this.cpNameComboBox.Name = "cpNameComboBox";
-            this.cpNameComboBox.Size = new System.Drawing.Size(172, 21);
-            this.cpNameComboBox.TabIndex = 5;
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(220, 148);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(105, 23);
-            this.button4.TabIndex = 4;
-            this.button4.Text = "Kijelölt törlése";
-            this.button4.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(220, 18);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(105, 23);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "CP hozzáadása";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 21);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(30, 13);
-            this.label6.TabIndex = 1;
-            this.label6.Text = "Név:";
-            // 
-            // listView1
-            // 
-            this.listView1.Location = new System.Drawing.Point(9, 76);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(205, 146);
-            this.listView1.TabIndex = 0;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.descriptionBox);
@@ -321,19 +224,26 @@
             this.deleteHikeButton.Text = "Túra törlése...";
             this.deleteHikeButton.UseVisualStyleBackColor = true;
             // 
+            // checkPointHandler
+            // 
+            this.checkPointHandler.Location = new System.Drawing.Point(260, 12);
+            this.checkPointHandler.Name = "checkPointHandler";
+            this.checkPointHandler.Size = new System.Drawing.Size(274, 212);
+            this.checkPointHandler.TabIndex = 16;
+            // 
             // ViewHikeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.closeButton;
             this.ClientSize = new System.Drawing.Size(603, 276);
+            this.Controls.Add(this.checkPointHandler);
             this.Controls.Add(this.deleteHikeButton);
             this.Controls.Add(this.cancelEditButton);
             this.Controls.Add(this.saveEditButton);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.editButton);
             this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "ViewHikeForm";
@@ -341,8 +251,6 @@
             this.Text = "ViewHikeForm";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -357,14 +265,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.ComboBox cpNameComboBox;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.RichTextBox descriptionBox;
         private System.Windows.Forms.Button editButton;
@@ -374,8 +274,8 @@
         private System.Windows.Forms.TextBox regionBox;
         private System.Windows.Forms.TextBox countryBox;
         private System.Windows.Forms.Button deleteHikeButton;
-        private System.Windows.Forms.CheckBox allRegionCheckBox;
         private System.Windows.Forms.TextBox positionBox;
         private System.Windows.Forms.Label label5;
+        private CPHandler checkPointHandler;
     }
 }

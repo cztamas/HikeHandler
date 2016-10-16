@@ -9,6 +9,11 @@ namespace HikeHandler
 {
     public static class Extensions
     {
+        public static bool IsCPString(this string text)
+        {            
+            return Regex.IsMatch(text, @"^(\.\d+\.)*$");
+        }
+
          public static bool IsIntPile(this string text)
         {
             text = Regex.Replace(text, @"\s+", "");

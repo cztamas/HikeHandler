@@ -9,22 +9,102 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 
-namespace TúraKezelő.Forms
+namespace HikeHandler.Forms
 {
     public partial class CPHandler : UserControl
     {
         private MySqlConnection sqlConnection;
         private DataTable cpTable;
+        private int regionID;
 
         public CPHandler()
         {
             InitializeComponent();
-        }
+        }        
 
-        public CPHandler(MySqlConnection connection) : this()
+        public void Init(MySqlConnection connection, CPHandlerStyle style)
         {
             sqlConnection = connection;
             InitCPTable();
+            switch (style)
+            {
+                case CPHandlerStyle.Add:
+                    anyOrderCheckBox.Visible = false;
+                    anyOrderCheckBox.Enabled = false;
+                    break;
+                case CPHandlerStyle.Search:
+                    RefreshButton.Enabled = false;
+                    RefreshButton.Visible = false;
+                    break;
+                case CPHandlerStyle.View:
+                    anyOrderCheckBox.Visible = false;
+                    anyOrderCheckBox.Enabled = false;
+                    RefreshButton.Enabled = false;
+                    RefreshButton.Visible = false;
+                    MakeUneditable();
+                    break;
+            }
+        }
+
+        public void MakeEditable()
+        {
+            addCPButton.Enabled = true;
+            removeCPButton.Enabled = true;
+            moveDownButton.Enabled = true;
+            moveUpButton.Enabled = true;
+            cpNameComboBox.Enabled = true;
+            allRegionCheckBox.Enabled = true;
+            allRegionCheckBox.Visible = true;
+        }
+
+        public void MakeUneditable()
+        {
+            addCPButton.Enabled = false;
+            removeCPButton.Enabled = false;
+            moveDownButton.Enabled = false;
+            moveUpButton.Enabled = false;
+            cpNameComboBox.Enabled = false;
+            allRegionCheckBox.Enabled = false;
+            allRegionCheckBox.Visible = false;
+        }
+
+        public void LoadCPs(string cpString)
+        {
+            if (!cpString.IsCPString())
+                return;
+            if (sqlConnection == null)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
+            char[] separator = new char[] { '.' };
+            int id;
+            DataTable table = new DataTable();
+            string[] cpInts = cpString.Split(separator, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string item in cpInts)
+            {
+                if (!int.TryParse(item, out id))
+                    continue;
+                string commandText = "SELECT idcp, name FROM cp WHERE idcp=" + id + ";";
+                using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
+                {
+                    try
+                    {                        
+                        adapter.Fill(table);
+                        DataRow row = table.Rows[0];
+                        cpTable.Rows.Add(row);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
+            }
         }
 
         private void GetCPList()
@@ -102,7 +182,12 @@ namespace TúraKezelő.Forms
 
         public void RefreshControl()
         {
-            GetCPList();
+            if (allRegionCheckBox.Checked)
+            {
+                GetCPList();
+                return;
+            }
+            GetCPList(regionID);
         }
 
         public void Region_Refreshed(object sender, EventArgs e)
@@ -112,9 +197,10 @@ namespace TúraKezelő.Forms
             ComboBox regionComboBox = sender as ComboBox;
             if (regionComboBox == null)
                 return;
-            int regionID;
-            if (!int.TryParse(regionComboBox.SelectedValue.ToString(), out regionID))
+            int id;
+            if (!int.TryParse(regionComboBox.SelectedValue.ToString(), out id))
                 return;
+            regionID = id;
             GetCPList(regionID);
         }
 
@@ -194,7 +280,49 @@ namespace TúraKezelő.Forms
 
         public string GetSearchCondition(string variable)
         {
-            throw new NotImplementedException();
+            string condition = string.Empty;
+            int idCP;
+            if (anyOrderCheckBox.Checked)
+            {
+                foreach (DataRow row in cpTable.Rows)
+                {
+                    if (!int.TryParse(row["cpid"].ToString(), out idCP))
+                        continue;
+                    condition += " AND " + variable + " LIKE '%." + idCP + ".%'";
+                }
+                if (condition != string.Empty)
+                    return "(" + condition + ")";
+                return string.Empty;
+            }
+            foreach (DataRow row in cpTable.Rows)
+            {
+                if (!int.TryParse(row["cpid"].ToString(), out idCP))
+                    continue;
+                condition += "%." + idCP + ".%";
+            }
+            if (condition != string.Empty)
+                return " AND " + variable + " LIKE '" + condition + "';";
+            return string.Empty;            
         }
+
+        private void allRegionCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (allRegionCheckBox.Checked)
+            {
+                GetCPList();
+                return;
+            }                
+            if (!allRegionCheckBox.Checked)
+            {
+                if (regionID == 0)
+                    return;
+                GetCPList(regionID);
+            }
+        }
+    }
+
+    public enum CPHandlerStyle
+    {
+        Add, Search, View
     }
 }

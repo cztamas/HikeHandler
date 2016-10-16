@@ -56,6 +56,12 @@
     <Compile Include="Data Containers\HikeRegionTemplate.cs" />
     <Compile Include="Data Containers\HikeTemplate.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Forms\CPHandler.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\CPHandler.Designer.cs">
+      <DependentUpon>CPHandler.cs</DependentUpon>
+    </Compile>
     <Compile Include="Miscellaneous.cs" />
     <Compile Include="Data Containers\HikeRegion.cs" />
     <Compile Include="Forms\AddCountryForm.cs">
@@ -158,6 +164,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\BaseForm.resx">
       <DependentUpon>BaseForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CPHandler.resx">
+      <DependentUpon>CPHandler.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PasswordForm.resx">
       <DependentUpon>PasswordForm.cs</DependentUpon>

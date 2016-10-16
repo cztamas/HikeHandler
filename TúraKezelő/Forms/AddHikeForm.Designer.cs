@@ -41,6 +41,8 @@
             this.cancelButton = new System.Windows.Forms.Button();
             this.descriptionBox = new System.Windows.Forms.RichTextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.refreshButton = new System.Windows.Forms.Button();
+            this.cpGridView = new System.Windows.Forms.DataGridView();
             this.allRegionCheckBox = new System.Windows.Forms.CheckBox();
             this.moveDownButton = new System.Windows.Forms.Button();
             this.moveUpButton = new System.Windows.Forms.Button();
@@ -49,12 +51,10 @@
             this.addCPButton = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.cpGridView = new System.Windows.Forms.DataGridView();
-            this.refreshButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cpGridView)).BeginInit();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -194,6 +194,29 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "CheckPointok";
             // 
+            // refreshButton
+            // 
+            this.refreshButton.Location = new System.Drawing.Point(177, 174);
+            this.refreshButton.Name = "refreshButton";
+            this.refreshButton.Size = new System.Drawing.Size(105, 23);
+            this.refreshButton.TabIndex = 11;
+            this.refreshButton.Text = "Frissítés";
+            this.refreshButton.UseVisualStyleBackColor = true;
+            // 
+            // cpGridView
+            // 
+            this.cpGridView.AllowUserToAddRows = false;
+            this.cpGridView.AllowUserToDeleteRows = false;
+            this.cpGridView.AllowUserToResizeRows = false;
+            this.cpGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.cpGridView.Location = new System.Drawing.Point(6, 68);
+            this.cpGridView.Name = "cpGridView";
+            this.cpGridView.ReadOnly = true;
+            this.cpGridView.RowHeadersVisible = false;
+            this.cpGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.cpGridView.Size = new System.Drawing.Size(165, 129);
+            this.cpGridView.TabIndex = 10;
+            // 
             // allRegionCheckBox
             // 
             this.allRegionCheckBox.AutoSize = true;
@@ -275,29 +298,6 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Leírás";
             // 
-            // cpGridView
-            // 
-            this.cpGridView.AllowUserToAddRows = false;
-            this.cpGridView.AllowUserToDeleteRows = false;
-            this.cpGridView.AllowUserToResizeRows = false;
-            this.cpGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.cpGridView.Location = new System.Drawing.Point(6, 68);
-            this.cpGridView.Name = "cpGridView";
-            this.cpGridView.ReadOnly = true;
-            this.cpGridView.RowHeadersVisible = false;
-            this.cpGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.cpGridView.Size = new System.Drawing.Size(165, 129);
-            this.cpGridView.TabIndex = 10;
-            // 
-            // refreshButton
-            // 
-            this.refreshButton.Location = new System.Drawing.Point(177, 174);
-            this.refreshButton.Name = "refreshButton";
-            this.refreshButton.Size = new System.Drawing.Size(105, 23);
-            this.refreshButton.TabIndex = 11;
-            this.refreshButton.Text = "Frissítés";
-            this.refreshButton.UseVisualStyleBackColor = true;
-            // 
             // AddHikeForm
             // 
             this.AcceptButton = this.addHikeButton;
@@ -319,8 +319,8 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.cpGridView)).EndInit();
+            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

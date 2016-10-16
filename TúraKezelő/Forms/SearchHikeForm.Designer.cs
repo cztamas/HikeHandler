@@ -40,7 +40,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.CPView = new System.Windows.Forms.DataGridView();
+            this.cpGridView = new System.Windows.Forms.DataGridView();
             this.cpNameComboBox = new System.Windows.Forms.ComboBox();
             this.removeCPButton = new System.Windows.Forms.Button();
             this.addCPButton = new System.Windows.Forms.Button();
@@ -53,7 +53,7 @@
             this.detailsButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.CPView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cpGridView)).BeginInit();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.resultView)).BeginInit();
             this.SuspendLayout();
@@ -169,7 +169,7 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.CPView);
+            this.groupBox2.Controls.Add(this.cpGridView);
             this.groupBox2.Controls.Add(this.cpNameComboBox);
             this.groupBox2.Controls.Add(this.removeCPButton);
             this.groupBox2.Controls.Add(this.addCPButton);
@@ -181,32 +181,31 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "CheckPointok";
             // 
-            // CPView
+            // cpGridView
             // 
-            this.CPView.AllowUserToAddRows = false;
-            this.CPView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.CPView.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.CPView.Location = new System.Drawing.Point(3, 69);
-            this.CPView.Name = "CPView";
-            this.CPView.ReadOnly = true;
-            this.CPView.Size = new System.Drawing.Size(256, 109);
-            this.CPView.TabIndex = 7;
+            this.cpGridView.AllowUserToAddRows = false;
+            this.cpGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.cpGridView.Location = new System.Drawing.Point(9, 45);
+            this.cpGridView.Name = "cpGridView";
+            this.cpGridView.ReadOnly = true;
+            this.cpGridView.Size = new System.Drawing.Size(143, 130);
+            this.cpGridView.TabIndex = 7;
             // 
             // cpNameComboBox
             // 
             this.cpNameComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cpNameComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cpNameComboBox.FormattingEnabled = true;
-            this.cpNameComboBox.Location = new System.Drawing.Point(85, 13);
+            this.cpNameComboBox.Location = new System.Drawing.Point(42, 16);
             this.cpNameComboBox.Name = "cpNameComboBox";
-            this.cpNameComboBox.Size = new System.Drawing.Size(166, 21);
+            this.cpNameComboBox.Size = new System.Drawing.Size(110, 21);
             this.cpNameComboBox.TabIndex = 5;
             // 
             // removeCPButton
             // 
-            this.removeCPButton.Location = new System.Drawing.Point(151, 40);
+            this.removeCPButton.Location = new System.Drawing.Point(158, 72);
             this.removeCPButton.Name = "removeCPButton";
-            this.removeCPButton.Size = new System.Drawing.Size(100, 23);
+            this.removeCPButton.Size = new System.Drawing.Size(93, 23);
             this.removeCPButton.TabIndex = 4;
             this.removeCPButton.Text = "Kijelölt törlése";
             this.removeCPButton.UseVisualStyleBackColor = true;
@@ -214,9 +213,9 @@
             // 
             // addCPButton
             // 
-            this.addCPButton.Location = new System.Drawing.Point(6, 40);
+            this.addCPButton.Location = new System.Drawing.Point(158, 16);
             this.addCPButton.Name = "addCPButton";
-            this.addCPButton.Size = new System.Drawing.Size(136, 23);
+            this.addCPButton.Size = new System.Drawing.Size(93, 23);
             this.addCPButton.TabIndex = 3;
             this.addCPButton.Text = "CP hozzáadása";
             this.addCPButton.UseVisualStyleBackColor = true;
@@ -319,7 +318,7 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.CPView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cpGridView)).EndInit();
             this.groupBox3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.resultView)).EndInit();
             this.ResumeLayout(false);
@@ -348,7 +347,7 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button clearButton;
         private System.Windows.Forms.Button closeButton;
-        private System.Windows.Forms.DataGridView CPView;
+        private System.Windows.Forms.DataGridView cpGridView;
         private System.Windows.Forms.DataGridView resultView;
         private System.Windows.Forms.Button detailsButton;
     }

@@ -25,9 +25,11 @@ namespace HikeHandler.Forms
             sqlConnection = connection;
             GetCountryList();
             GetHikeTypes();
+            InitCPTable();
         }
 
         private MySqlConnection sqlConnection;
+        private DataTable cpTable;
 
         private void GetCountryList()
         {
@@ -127,6 +129,19 @@ namespace HikeHandler.Forms
             countryComboBox.Focus();
         }
 
+        private void InitCPTable()
+        {
+            cpTable = new DataTable();
+            cpTable.Clear();
+            cpTable.Columns.Add("idcp");
+            cpTable.Columns.Add("name");
+            BindingSource source = new BindingSource();
+            source.DataSource = cpTable;
+            cpGridView.DataSource = source;
+            cpGridView.Columns[0].Visible = false;
+            cpGridView.Columns[1].HeaderText = "CheckPoint neve";
+        }
+
         private void closeButton_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -139,7 +154,7 @@ namespace HikeHandler.Forms
 
         private void Clear()
         {
-            CPView.DataSource = null;
+            cpGridView.DataSource = null;
             resultView.DataSource = null;
             countryComboBox.Text = string.Empty;
             regionComboBox.Text = string.Empty;
@@ -253,12 +268,24 @@ namespace HikeHandler.Forms
 
         private void addCPButton_Click(object sender, EventArgs e)
         {
-
+            if (cpNameComboBox.DataSource == null)
+                return;
+            DataRow row = ((DataTable)cpNameComboBox.DataSource).Rows[cpNameComboBox.SelectedIndex];
+            cpTable.ImportRow(row);
         }
 
         private void removeCPButton_Click(object sender, EventArgs e)
         {
-
+            List<DataRow> rowsToDelete = new List<DataRow>();
+            foreach (DataGridViewRow row in cpGridView.SelectedRows)
+            {
+                int index = row.Index;
+                rowsToDelete.Add(cpTable.Rows[index]);
+            }
+            foreach (DataRow row in rowsToDelete)
+            {
+                cpTable.Rows.Remove(row);
+            }
         }
     }
 }

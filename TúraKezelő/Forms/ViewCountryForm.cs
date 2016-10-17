@@ -142,5 +142,37 @@ namespace HikeHandler.Forms
                 }
             }
         }
+
+        private void regionsOfCountryButton_Click(object sender, EventArgs e)
+        {
+            HikeRegionTemplate template = new HikeRegionTemplate();
+            template.IDcountry = countryData.ID;
+            template.CountryName = countryData.Name;
+            SearchRegionForm searchRegionForm = new SearchRegionForm(sqlConnection, template);
+            searchRegionForm.Show();
+        }
+
+        private void cpsOfCountryButton_Click(object sender, EventArgs e)
+        {
+            CPTemplate template = new CPTemplate();
+            template.IDCountry = countryData.ID;
+            template.CountryName = countryData.Name;
+            SearchCPForm searchCPForm = new SearchCPForm(sqlConnection, template);
+            searchCPForm.Show();
+        }
+
+        private void hikesOfCountryButton_Click(object sender, EventArgs e)
+        {
+            HikeTemplate template = new HikeTemplate();
+            template.IDCountry = countryData.ID;
+            template.CountryName = countryData.Name;
+            SearchHikeForm searchHikeForm = new SearchHikeForm(sqlConnection, template);
+            searchHikeForm.Show();
+        }
+
+        private void deleteCountryButton_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

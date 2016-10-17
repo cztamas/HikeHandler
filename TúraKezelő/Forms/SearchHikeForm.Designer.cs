@@ -185,6 +185,7 @@
             this.resultView.AllowUserToAddRows = false;
             this.resultView.AllowUserToDeleteRows = false;
             this.resultView.AllowUserToResizeRows = false;
+            this.resultView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.resultView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.resultView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.resultView.Location = new System.Drawing.Point(3, 16);
@@ -231,6 +232,7 @@
             // 
             this.checkPointHandler.Location = new System.Drawing.Point(12, 148);
             this.checkPointHandler.Name = "checkPointHandler";
+            this.checkPointHandler.RegionID = 0;
             this.checkPointHandler.Size = new System.Drawing.Size(254, 206);
             this.checkPointHandler.TabIndex = 10;
             // 

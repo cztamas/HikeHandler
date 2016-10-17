@@ -27,6 +27,19 @@ namespace HikeHandler.Forms
             GetCPTypes();            
         }
 
+        public SearchCPForm(MySqlConnection connection, CPTemplate template)
+        {
+            InitializeComponent();
+            sqlConnection = connection;
+            GetCountryList();
+            GetCPTypes();
+            if (template.CountryName != string.Empty)
+                countryComboBox.Text = template.CountryName;
+            if (template.RegionName != string.Empty)
+                regionComboBox.Text = template.RegionName;
+            MakeSearch(template);
+        }
+
         private MySqlConnection sqlConnection;
 
         public void Open()
@@ -127,26 +140,12 @@ namespace HikeHandler.Forms
         }
 
         private void Clear()
-        { }
-
-        private void closeButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            throw new NotImplementedException();
         }
 
-        private void clearButton_Click(object sender, EventArgs e)
+        private void MakeSearch(CPTemplate template)
         {
-            this.Clear();
-        }
-
-        private void searchButton_Click(object sender, EventArgs e)
-        {
-            if (!hikeNumberBox.Text.IsIntPile())
-            {
-                MessageBox.Show("Nem megfelelő számformátum.", "Hiba");
-                hikeNumberBox.Focus();
-                return;
-            }
             if (sqlConnection == null)
             {
                 MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
@@ -157,13 +156,6 @@ namespace HikeHandler.Forms
                 MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
                 return;
             }
-            CPTemplate template = new CPTemplate();
-            template.HikeCount = hikeNumberBox.Text.ToIntPile();
-            template.Name = nameBox.Text;
-            template.CountryName = countryComboBox.Text;
-            template.RegionName = regionComboBox.Text;
-            if ((int)typeComboBox.SelectedValue != -1)
-                template.TypeOfCP = (CPType)typeComboBox.SelectedValue;
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(template.SearchCommand(sqlConnection)))
             {
                 try
@@ -184,6 +176,35 @@ namespace HikeHandler.Forms
                     MessageBox.Show(ex.Message, "Hiba");
                 }
             }
+        }
+
+        private void closeButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void clearButton_Click(object sender, EventArgs e)
+        {
+            this.Clear();
+        }
+
+        private void searchButton_Click(object sender, EventArgs e)
+        {
+            if (!hikeNumberBox.Text.IsIntPile())
+            {
+                MessageBox.Show("Nem megfelelő számformátum.", "Hiba");
+                hikeNumberBox.Focus();
+                return;
+            }
+            
+            CPTemplate template = new CPTemplate();
+            template.HikeCount = hikeNumberBox.Text.ToIntPile();
+            template.Name = nameBox.Text;
+            template.CountryName = countryComboBox.Text;
+            template.RegionName = regionComboBox.Text;
+            if ((int)typeComboBox.SelectedValue != -1)
+                template.TypeOfCP = (CPType)typeComboBox.SelectedValue;
+            MakeSearch(template);
         }
 
         private void countryComboBox_SelectedValueChanged(object sender, EventArgs e)

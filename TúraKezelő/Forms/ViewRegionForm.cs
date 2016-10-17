@@ -16,6 +16,7 @@ namespace HikeHandler.Forms
     {
         private MySqlConnection sqlConnection;
         private int regionID;
+        private string regionName;
 
         public ViewRegionForm()
         {
@@ -154,6 +155,29 @@ namespace HikeHandler.Forms
                     MessageBox.Show(ex.Message, "Hiba");
                 }
             }
+        }
+
+        private void showHikesButton_Click(object sender, EventArgs e)
+        {
+            HikeTemplate template = new HikeTemplate();
+            template.IDRegion = regionID;
+            template.RegionName = regionName;
+            SearchHikeForm searchHikeForm = new SearchHikeForm(sqlConnection, template);
+            searchHikeForm.Show();
+        }
+
+        private void showCPsButton_Click(object sender, EventArgs e)
+        {
+            CPTemplate template = new CPTemplate();
+            template.IDRegion = regionID;
+            template.RegionName = regionName;
+            SearchCPForm searchCPForm = new SearchCPForm(sqlConnection, template);
+            searchCPForm.Show();
+        }
+
+        private void deleteButton_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

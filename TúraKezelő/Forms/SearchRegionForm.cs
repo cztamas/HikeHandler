@@ -28,6 +28,15 @@ namespace HikeHandler.Forms
             GetCountryList();            
         }
 
+        public SearchRegionForm(MySqlConnection connection, HikeRegionTemplate template)
+        {
+            InitializeComponent();
+            sqlConnection = connection;
+            GetCountryList();
+            countryComboBox.Text = template.CountryName;
+            MakeSearch(template);
+        }
+
         public void Open()
         {
             Show();
@@ -82,15 +91,9 @@ namespace HikeHandler.Forms
             countryComboBox.ValueMember = "idcountry";
             countryComboBox.DisplayMember = "name";
         }
-                
-        private void searchButton_Click(object sender, EventArgs e)
+           
+        private void MakeSearch(HikeRegionTemplate template)
         {
-            if (!hikeNumberBox.Text.IsIntPile())
-            {
-                MessageBox.Show("Nem megfelelő számformátum.", "Hiba");
-                hikeNumberBox.Focus();
-                return;
-            }
             if (sqlConnection == null)
             {
                 MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
@@ -101,7 +104,6 @@ namespace HikeHandler.Forms
                 MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
                 return;
             }
-            HikeRegionTemplate template = new HikeRegionTemplate(countryComboBox.Text, nameBox.Text, hikeNumberBox.Text);
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(template.SearchCommand(sqlConnection)))
             {
                 try
@@ -120,6 +122,19 @@ namespace HikeHandler.Forms
                     MessageBox.Show(ex.Message, "Hiba");
                 }
             }
+        }
+             
+        private void searchButton_Click(object sender, EventArgs e)
+        {
+            if (!hikeNumberBox.Text.IsIntPile())
+            {
+                MessageBox.Show("Nem megfelelő számformátum.", "Hiba");
+                hikeNumberBox.Focus();
+                return;
+            }
+            
+            HikeRegionTemplate template = new HikeRegionTemplate(countryComboBox.Text, nameBox.Text, hikeNumberBox.Text.ToIntPile());
+            MakeSearch(template);
         }
 
         private void detailsButton_Click(object sender, EventArgs e)

@@ -223,11 +223,13 @@
             this.deleteHikeButton.TabIndex = 9;
             this.deleteHikeButton.Text = "Túra törlése...";
             this.deleteHikeButton.UseVisualStyleBackColor = true;
+            this.deleteHikeButton.Click += new System.EventHandler(this.deleteHikeButton_Click);
             // 
             // checkPointHandler
             // 
             this.checkPointHandler.Location = new System.Drawing.Point(260, 12);
             this.checkPointHandler.Name = "checkPointHandler";
+            this.checkPointHandler.RegionID = 0;
             this.checkPointHandler.Size = new System.Drawing.Size(264, 212);
             this.checkPointHandler.TabIndex = 16;
             // 

@@ -210,5 +210,10 @@ namespace HikeHandler.Forms
                 }
             }
         }
+
+        private void deleteHikeButton_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

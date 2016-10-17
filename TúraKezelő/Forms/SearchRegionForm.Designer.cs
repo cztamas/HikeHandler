@@ -128,7 +128,7 @@
             this.groupBox2.Controls.Add(this.resultView);
             this.groupBox2.Location = new System.Drawing.Point(12, 98);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(356, 128);
+            this.groupBox2.Size = new System.Drawing.Size(356, 143);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Találatok";
@@ -138,6 +138,7 @@
             this.resultView.AllowUserToAddRows = false;
             this.resultView.AllowUserToDeleteRows = false;
             this.resultView.AllowUserToResizeRows = false;
+            this.resultView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.resultView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.resultView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.resultView.Location = new System.Drawing.Point(3, 16);
@@ -145,13 +146,13 @@
             this.resultView.ReadOnly = true;
             this.resultView.RowHeadersVisible = false;
             this.resultView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.resultView.Size = new System.Drawing.Size(350, 109);
+            this.resultView.Size = new System.Drawing.Size(350, 124);
             this.resultView.TabIndex = 0;
             this.resultView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.resultView_CellDoubleClick);
             // 
             // clearButton
             // 
-            this.clearButton.Location = new System.Drawing.Point(130, 232);
+            this.clearButton.Location = new System.Drawing.Point(130, 247);
             this.clearButton.Name = "clearButton";
             this.clearButton.Size = new System.Drawing.Size(112, 23);
             this.clearButton.TabIndex = 2;
@@ -162,7 +163,7 @@
             // closeButton
             // 
             this.closeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.closeButton.Location = new System.Drawing.Point(248, 232);
+            this.closeButton.Location = new System.Drawing.Point(248, 247);
             this.closeButton.Name = "closeButton";
             this.closeButton.Size = new System.Drawing.Size(117, 23);
             this.closeButton.TabIndex = 3;
@@ -172,7 +173,7 @@
             // 
             // detailsButton
             // 
-            this.detailsButton.Location = new System.Drawing.Point(15, 232);
+            this.detailsButton.Location = new System.Drawing.Point(15, 247);
             this.detailsButton.Name = "detailsButton";
             this.detailsButton.Size = new System.Drawing.Size(109, 23);
             this.detailsButton.TabIndex = 4;
@@ -186,7 +187,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.closeButton;
-            this.ClientSize = new System.Drawing.Size(379, 263);
+            this.ClientSize = new System.Drawing.Size(379, 282);
             this.Controls.Add(this.detailsButton);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.clearButton);

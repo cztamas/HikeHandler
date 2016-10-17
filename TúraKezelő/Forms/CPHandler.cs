@@ -109,7 +109,7 @@ namespace HikeHandler.Forms
             {
                 if (!int.TryParse(item, out id))
                     continue;
-                string commandText = "SELECT idcp, name FROM cp WHERE idcp=" + id + ";";
+                string commandText = "SELECT name, idcp FROM cp WHERE idcp=" + id + ";";
                 using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
                 {
                     try
@@ -125,7 +125,6 @@ namespace HikeHandler.Forms
                     }
                 }
             }
-            cpGridView.Columns[0].Visible = false;
             RefreshCPList();
         }
 
@@ -207,13 +206,13 @@ namespace HikeHandler.Forms
         {
             cpTable = new DataTable();
             cpTable.Clear();
-            cpTable.Columns.Add("idcp");
             cpTable.Columns.Add("name");
+            cpTable.Columns.Add("idcp");
             BindingSource source = new BindingSource();
             source.DataSource = cpTable;
             cpGridView.DataSource = source;
-            cpGridView.Columns[0].Visible = false;
-            cpGridView.Columns[1].HeaderText = "CheckPoint neve";
+            cpGridView.Columns["idcp"].Visible = false;
+            cpGridView.Columns["name"].HeaderText = "CheckPoint neve";
         }
 
         public void RefreshControl()

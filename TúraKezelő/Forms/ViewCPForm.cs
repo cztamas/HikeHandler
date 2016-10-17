@@ -196,12 +196,15 @@ namespace HikeHandler.Forms
 
         private void showHikesButton_Click(object sender, EventArgs e)
         {
-
+            HikeTemplate template = new HikeTemplate();
+            template.CPList.Add(idCP);
+            SearchHikeForm searchHikeForm = new SearchHikeForm(sqlConnection, template);
+            searchHikeForm.Show();
         }
 
         private void deleteCPbutton_Click(object sender, EventArgs e)
         {
-
+            throw new NotImplementedException();
         }
     }
 }

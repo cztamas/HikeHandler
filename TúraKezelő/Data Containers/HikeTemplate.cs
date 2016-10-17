@@ -32,6 +32,16 @@ namespace HikeHandler.Data_Containers
             CPList = new List<int>();
         }
 
+        public string GetCPString()
+        {
+            string cpString = string.Empty;
+            foreach (int item in CPList)
+            {
+                cpString += "." + item + ".";
+            }
+            return cpString;
+        }
+
         public MySqlCommand SearchCommand(MySqlConnection connection, bool anyCPOrder)
         {
             string commandText = @"SELECT h.idhike, h.position, h.date, h.idregion, r.name AS 'regionname', c.name AS 'countryname', h.type, 

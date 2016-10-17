@@ -29,6 +29,23 @@ namespace HikeHandler.Forms
             GetHikeTypes();            
         }
 
+        public SearchHikeForm(MySqlConnection connection, HikeTemplate template)
+        {
+            InitializeComponent();
+            sqlConnection = connection;
+            checkPointHandler.Init(sqlConnection, CPHandlerStyle.Search);
+            regionComboBox.SelectedValueChanged += new EventHandler(checkPointHandler.Region_Refreshed);
+            GetCountryList();
+            GetHikeTypes();
+            if (template.CountryName != string.Empty)
+                countryComboBox.Text = template.CountryName;
+            if (template.RegionName != string.Empty)
+                regionComboBox.Text = template.RegionName;
+            if (template.GetCPString() != string.Empty)
+                checkPointHandler.LoadCPs(template.GetCPString());
+            MakeSearch(template);
+        }
+
         private MySqlConnection sqlConnection;
 
         private void GetCountryList()
@@ -147,20 +164,8 @@ namespace HikeHandler.Forms
             regionComboBox.Text = string.Empty;
         }
 
-        private void searchButton_Click(object sender, EventArgs e)
+        private void MakeSearch(HikeTemplate template)
         {
-            if (!hikePositionBox.Text.IsIntPile())
-            {
-                MessageBox.Show("Hibás számformátum.");
-                hikePositionBox.Focus();
-                return;
-            }
-            if (!dateBox.Text.IsDatePile())
-            {
-                MessageBox.Show("Hibás dátumformátum.");
-                dateBox.Focus();
-                return;
-            }
             if (sqlConnection == null)
             {
                 MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
@@ -171,18 +176,7 @@ namespace HikeHandler.Forms
                 MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
                 return;
             }
-            HikeTemplate template = new HikeTemplate();
-            template.CountryName = countryComboBox.Text;
-            template.RegionName = regionComboBox.Text;
-            if (typeComboBox.SelectedValue != null)
-            {
-                if ((int)typeComboBox.SelectedValue != -1)
-                    template.HikeType = (HikeType)typeComboBox.SelectedValue;
-            }
-            template.Position = hikePositionBox.Text.ToIntPile();
-            template.HikeDate = dateBox.Text.ToDatePile();
-            template.CPList = checkPointHandler.CPList;
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(template.SearchCommand(sqlConnection,checkPointHandler.AnyCPOrder)))
+            using (MySqlDataAdapter adapter = new MySqlDataAdapter(template.SearchCommand(sqlConnection, checkPointHandler.AnyCPOrder)))
             {
                 try
                 {
@@ -204,6 +198,35 @@ namespace HikeHandler.Forms
                     MessageBox.Show(ex.Message, "Hiba");
                 }
             }
+        }
+
+        private void searchButton_Click(object sender, EventArgs e)
+        {
+            if (!hikePositionBox.Text.IsIntPile())
+            {
+                MessageBox.Show("Hibás számformátum.");
+                hikePositionBox.Focus();
+                return;
+            }
+            if (!dateBox.Text.IsDatePile())
+            {
+                MessageBox.Show("Hibás dátumformátum.");
+                dateBox.Focus();
+                return;
+            }
+            
+            HikeTemplate template = new HikeTemplate();
+            template.CountryName = countryComboBox.Text;
+            template.RegionName = regionComboBox.Text;
+            if (typeComboBox.SelectedValue != null)
+            {
+                if ((int)typeComboBox.SelectedValue != -1)
+                    template.HikeType = (HikeType)typeComboBox.SelectedValue;
+            }
+            template.Position = hikePositionBox.Text.ToIntPile();
+            template.HikeDate = dateBox.Text.ToDatePile();
+            template.CPList = checkPointHandler.CPList;
+            MakeSearch(template);
         }
 
         private void detailsButton_Click(object sender, EventArgs e)

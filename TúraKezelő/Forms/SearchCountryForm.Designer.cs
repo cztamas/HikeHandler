@@ -62,7 +62,7 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(3, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(263, 75);
+            this.groupBox1.Size = new System.Drawing.Size(233, 75);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Keresés";
@@ -72,14 +72,14 @@
             this.countryBox.FormattingEnabled = true;
             this.countryBox.Location = new System.Drawing.Point(83, 18);
             this.countryBox.Name = "countryBox";
-            this.countryBox.Size = new System.Drawing.Size(171, 21);
+            this.countryBox.Size = new System.Drawing.Size(144, 21);
             this.countryBox.TabIndex = 7;
             // 
             // searchButton
             // 
-            this.searchButton.Location = new System.Drawing.Point(175, 43);
+            this.searchButton.Location = new System.Drawing.Point(158, 43);
             this.searchButton.Name = "searchButton";
-            this.searchButton.Size = new System.Drawing.Size(79, 23);
+            this.searchButton.Size = new System.Drawing.Size(69, 23);
             this.searchButton.TabIndex = 6;
             this.searchButton.Text = "Keresés";
             this.searchButton.UseVisualStyleBackColor = true;
@@ -89,7 +89,7 @@
             // 
             this.hikeNumberBox.Location = new System.Drawing.Point(83, 45);
             this.hikeNumberBox.Name = "hikeNumberBox";
-            this.hikeNumberBox.Size = new System.Drawing.Size(78, 20);
+            this.hikeNumberBox.Size = new System.Drawing.Size(69, 20);
             this.hikeNumberBox.TabIndex = 5;
             // 
             // label2
@@ -106,7 +106,7 @@
             this.groupBox2.Controls.Add(this.resultView);
             this.groupBox2.Location = new System.Drawing.Point(3, 93);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(263, 128);
+            this.groupBox2.Size = new System.Drawing.Size(233, 128);
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Találatok";
@@ -115,6 +115,7 @@
             // 
             this.resultView.AllowUserToAddRows = false;
             this.resultView.AllowUserToDeleteRows = false;
+            this.resultView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.resultView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.resultView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.resultView.Location = new System.Drawing.Point(3, 16);
@@ -122,15 +123,15 @@
             this.resultView.ReadOnly = true;
             this.resultView.RowHeadersVisible = false;
             this.resultView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.resultView.Size = new System.Drawing.Size(257, 109);
+            this.resultView.Size = new System.Drawing.Size(227, 109);
             this.resultView.TabIndex = 0;
             this.resultView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.resultView_CellDoubleClick);
             // 
             // clearButton
             // 
-            this.clearButton.Location = new System.Drawing.Point(88, 227);
+            this.clearButton.Location = new System.Drawing.Point(84, 227);
             this.clearButton.Name = "clearButton";
-            this.clearButton.Size = new System.Drawing.Size(84, 23);
+            this.clearButton.Size = new System.Drawing.Size(71, 23);
             this.clearButton.TabIndex = 7;
             this.clearButton.Text = "Új keresés";
             this.clearButton.UseVisualStyleBackColor = true;
@@ -139,9 +140,9 @@
             // closeButton
             // 
             this.closeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.closeButton.Location = new System.Drawing.Point(178, 227);
+            this.closeButton.Location = new System.Drawing.Point(161, 227);
             this.closeButton.Name = "closeButton";
-            this.closeButton.Size = new System.Drawing.Size(85, 23);
+            this.closeButton.Size = new System.Drawing.Size(72, 23);
             this.closeButton.TabIndex = 8;
             this.closeButton.Text = "Bezárás";
             this.closeButton.UseVisualStyleBackColor = true;
@@ -151,7 +152,7 @@
             // 
             this.detailsButton.Location = new System.Drawing.Point(6, 227);
             this.detailsButton.Name = "detailsButton";
-            this.detailsButton.Size = new System.Drawing.Size(76, 23);
+            this.detailsButton.Size = new System.Drawing.Size(72, 23);
             this.detailsButton.TabIndex = 9;
             this.detailsButton.Text = "Részletek...";
             this.detailsButton.UseVisualStyleBackColor = true;
@@ -163,7 +164,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.closeButton;
-            this.ClientSize = new System.Drawing.Size(270, 258);
+            this.ClientSize = new System.Drawing.Size(244, 258);
             this.Controls.Add(this.detailsButton);
             this.Controls.Add(this.clearButton);
             this.Controls.Add(this.closeButton);

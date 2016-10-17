@@ -137,7 +137,9 @@
             // cpGridView
             // 
             this.cpGridView.AllowUserToAddRows = false;
+            this.cpGridView.AllowUserToDeleteRows = false;
             this.cpGridView.AllowUserToResizeRows = false;
+            this.cpGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.cpGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.cpGridView.Location = new System.Drawing.Point(6, 73);
             this.cpGridView.Name = "cpGridView";

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.deleteButton = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.descriptionBox = new System.Windows.Forms.RichTextBox();
             this.hikeCountBox = new System.Windows.Forms.TextBox();
@@ -44,7 +45,6 @@
             this.saveEditButton = new System.Windows.Forms.Button();
             this.cancelEditButton = new System.Windows.Forms.Button();
             this.refreshButton = new System.Windows.Forms.Button();
-            this.deleteButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -67,6 +67,16 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Adatok";
+            // 
+            // deleteButton
+            // 
+            this.deleteButton.Location = new System.Drawing.Point(306, 117);
+            this.deleteButton.Name = "deleteButton";
+            this.deleteButton.Size = new System.Drawing.Size(107, 23);
+            this.deleteButton.TabIndex = 9;
+            this.deleteButton.Text = "Tájegység törlése...";
+            this.deleteButton.UseVisualStyleBackColor = true;
+            this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
             // 
             // groupBox2
             // 
@@ -118,6 +128,7 @@
             this.showCPsButton.TabIndex = 4;
             this.showCPsButton.Text = "CheckPointok...";
             this.showCPsButton.UseVisualStyleBackColor = true;
+            this.showCPsButton.Click += new System.EventHandler(this.showCPsButton_Click);
             // 
             // showHikesButton
             // 
@@ -127,6 +138,7 @@
             this.showHikesButton.TabIndex = 3;
             this.showHikesButton.Text = "Túrák...";
             this.showHikesButton.UseVisualStyleBackColor = true;
+            this.showHikesButton.Click += new System.EventHandler(this.showHikesButton_Click);
             // 
             // label3
             // 
@@ -167,6 +179,7 @@
             // 
             // closeButton
             // 
+            this.closeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.closeButton.Location = new System.Drawing.Point(318, 155);
             this.closeButton.Name = "closeButton";
             this.closeButton.Size = new System.Drawing.Size(107, 23);
@@ -204,15 +217,6 @@
             this.refreshButton.Text = "Frissítés";
             this.refreshButton.UseVisualStyleBackColor = true;
             this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
-            // 
-            // deleteButton
-            // 
-            this.deleteButton.Location = new System.Drawing.Point(306, 117);
-            this.deleteButton.Name = "deleteButton";
-            this.deleteButton.Size = new System.Drawing.Size(107, 23);
-            this.deleteButton.TabIndex = 9;
-            this.deleteButton.Text = "Tájegység törlése...";
-            this.deleteButton.UseVisualStyleBackColor = true;
             // 
             // ViewRegionForm
             // 

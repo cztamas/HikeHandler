@@ -74,6 +74,7 @@
             this.deleteCountryButton.TabIndex = 12;
             this.deleteCountryButton.Text = "Ország törlése...";
             this.deleteCountryButton.UseVisualStyleBackColor = true;
+            this.deleteCountryButton.Click += new System.EventHandler(this.deleteCountryButton_Click);
             // 
             // groupBox2
             // 
@@ -117,6 +118,7 @@
             this.hikesOfCountryButton.TabIndex = 8;
             this.hikesOfCountryButton.Text = "Túrák...";
             this.hikesOfCountryButton.UseVisualStyleBackColor = true;
+            this.hikesOfCountryButton.Click += new System.EventHandler(this.hikesOfCountryButton_Click);
             // 
             // cpsOfCountryButton
             // 
@@ -126,6 +128,7 @@
             this.cpsOfCountryButton.TabIndex = 7;
             this.cpsOfCountryButton.Text = "CheckPointok...";
             this.cpsOfCountryButton.UseVisualStyleBackColor = true;
+            this.cpsOfCountryButton.Click += new System.EventHandler(this.cpsOfCountryButton_Click);
             // 
             // regionsOfCountryButton
             // 
@@ -135,6 +138,7 @@
             this.regionsOfCountryButton.TabIndex = 6;
             this.regionsOfCountryButton.Text = "Tájegységek...";
             this.regionsOfCountryButton.UseVisualStyleBackColor = true;
+            this.regionsOfCountryButton.Click += new System.EventHandler(this.regionsOfCountryButton_Click);
             // 
             // label2
             // 

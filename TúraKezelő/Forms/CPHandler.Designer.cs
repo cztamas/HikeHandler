@@ -137,10 +137,13 @@
             // cpGridView
             // 
             this.cpGridView.AllowUserToAddRows = false;
+            this.cpGridView.AllowUserToResizeRows = false;
             this.cpGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.cpGridView.Location = new System.Drawing.Point(6, 73);
             this.cpGridView.Name = "cpGridView";
             this.cpGridView.ReadOnly = true;
+            this.cpGridView.RowHeadersVisible = false;
+            this.cpGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.cpGridView.Size = new System.Drawing.Size(142, 124);
             this.cpGridView.TabIndex = 3;
             // 

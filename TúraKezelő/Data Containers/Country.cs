@@ -91,5 +91,30 @@ namespace HikeHandler.Data_Containers
             command.Parameters.AddWithValue("@id", ID);
             return command;
         }
+
+        public bool IsDuplicateName(MySqlConnection connection)
+        {
+            string commandText = "SELECT COUNT(*) FROM country WHERE name=@name;";
+            using (MySqlCommand command = new MySqlCommand(commandText, connection))
+            {
+                command.Parameters.AddWithValue("@name", Name);
+                try
+                {
+                    int count;
+                    if (!int.TryParse(command.ExecuteScalar().ToString(), out count))
+                        return true;
+                    if (count == 0)
+                        return false;
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Hiba");
+                    return true;
+                }
+            }
+                
+            
+        }
     }
 }

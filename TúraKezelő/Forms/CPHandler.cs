@@ -15,7 +15,7 @@ namespace HikeHandler.Forms
     {
         private MySqlConnection sqlConnection;
         private DataTable cpTable;
-        private int regionID;
+        public int RegionID { get; set; }
         public bool AnyCPOrder
         {
             get
@@ -53,11 +53,10 @@ namespace HikeHandler.Forms
                 case CPHandlerStyle.View:
                     anyOrderCheckBox.Visible = false;
                     anyOrderCheckBox.Enabled = false;
-                    RefreshButton.Enabled = false;
-                    RefreshButton.Visible = false;
+                    //RefreshControl();
                     MakeUneditable();
                     break;
-            }
+            }            
         }
 
         public void MakeEditable()
@@ -90,6 +89,7 @@ namespace HikeHandler.Forms
 
         public void LoadCPs(string cpString)
         {
+            InitCPTable();
             if (!cpString.IsCPString())
                 return;
             if (sqlConnection == null)
@@ -104,7 +104,6 @@ namespace HikeHandler.Forms
             }
             char[] separator = new char[] { '.' };
             int id;
-            DataTable table = new DataTable();
             string[] cpInts = cpString.Split(separator, StringSplitOptions.RemoveEmptyEntries);
             foreach (string item in cpInts)
             {
@@ -114,10 +113,11 @@ namespace HikeHandler.Forms
                 using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
                 {
                     try
-                    {                        
+                    {
+                        DataTable table = new DataTable();
                         adapter.Fill(table);
                         DataRow row = table.Rows[0];
-                        cpTable.Rows.Add(row);
+                        cpTable.Rows.Add(row.ItemArray);
                     }
                     catch (Exception ex)
                     {
@@ -125,10 +125,13 @@ namespace HikeHandler.Forms
                     }
                 }
             }
+            cpGridView.Columns[0].Visible = false;
+            RefreshCPList();
         }
 
         private List<int> GiveCPList()
         {
+            cpTable.AcceptChanges();
             List<int> cpList = new List<int>();
             int item;
             foreach (DataRow row in cpTable.Rows)
@@ -220,7 +223,7 @@ namespace HikeHandler.Forms
                 GetCPList();
                 return;
             }
-            GetCPList(regionID);
+            GetCPList(RegionID);
         }
 
         public void Region_Refreshed(object sender, EventArgs e)
@@ -233,8 +236,8 @@ namespace HikeHandler.Forms
             int id;
             if (!int.TryParse(regionComboBox.SelectedValue.ToString(), out id))
                 return;
-            regionID = id;
-            GetCPList(regionID);
+            RegionID = id;
+            GetCPList(RegionID);
         }
 
         private void RefreshButton_Click(object sender, EventArgs e)
@@ -246,8 +249,10 @@ namespace HikeHandler.Forms
         {
             if (cpNameComboBox.DataSource == null)
                 return;
+            if (cpNameComboBox.SelectedIndex == -1)
+                return;
             DataRow row = ((DataTable)cpNameComboBox.DataSource).Rows[cpNameComboBox.SelectedIndex];
-            cpTable.ImportRow(row);
+            cpTable.Rows.Add(row.ItemArray);
         }
 
         private void removeCPButton_Click(object sender, EventArgs e)
@@ -311,20 +316,25 @@ namespace HikeHandler.Forms
             return cpString;
         }
         
-        private void allRegionCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void RefreshCPList()
         {
             if (allRegionCheckBox.Checked)
             {
                 GetCPList();
                 return;
-            }                
+            }
             if (!allRegionCheckBox.Checked)
             {
-                if (regionID == 0)
+                if (RegionID == 0)
                     return;
-                GetCPList(regionID);
+                GetCPList(RegionID);
             }
         }
+
+        private void allRegionCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            RefreshCPList();
+        }        
     }
 
     public enum CPHandlerStyle

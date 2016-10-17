@@ -166,6 +166,10 @@ namespace HikeHandler.Forms
                         Hike.UpdatePositions(sqlConnection);
                         Country.UpdateHikeCount(hike.IDCountry, sqlConnection);
                         HikeRegion.UpdateHikeCount(hike.IDRegion, sqlConnection);
+                        foreach (int item in hike.CPList)
+                        {
+                            CP.UpdateHikeCount(item, sqlConnection);
+                        }
                     }
                     MessageBox.Show("Sikeresen elmentve.");
                     Close();

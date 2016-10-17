@@ -50,16 +50,23 @@ namespace HikeHandler.Forms
                 return;
             }
             Country country = new Country(nameBox.Text, descriptionBox.Text);
-            MySqlCommand command = country.SaveCommand(sqlConnection);
-            try
+            if (country.IsDuplicateName(sqlConnection))
             {
-                command.ExecuteNonQuery();
-                MessageBox.Show("Sikeresen elmentve.");
-                Close();
+                MessageBox.Show("Már létezik ilyen nevű ország.", "Hiba");
+                return;
             }
-            catch (Exception ex)
+            using (MySqlCommand command = country.SaveCommand(sqlConnection))
             {
-                MessageBox.Show("Hiba: " + ex.Message);
+                try
+                {
+                    command.ExecuteNonQuery();
+                    MessageBox.Show("Sikeresen elmentve.");
+                    Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Hiba: " + ex.Message);
+                }
             }
         }
     }

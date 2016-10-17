@@ -159,6 +159,11 @@ namespace HikeHandler.Forms
             checkPoint.IDRegion = (int)regionComboBox.SelectedValue;
             if ((int)typeComboBox.SelectedValue != -1)
                 checkPoint.TypeOfCP = (CPType)typeComboBox.SelectedValue;
+            if (checkPoint.IsDuplicateName(sqlConnection))
+            {
+                MessageBox.Show("Már létezik ilyen néven checkpoint.", "Hiba");
+                return;
+            }
             using (MySqlCommand command = checkPoint.SaveCommand(sqlConnection))
             {
                 try

@@ -40,11 +40,11 @@ namespace HikeHandler.Data_Containers
                     int count;
                     if (!int.TryParse(table.Rows[0]["count"].ToString(), out count))
                         return false;
-                    commandText = "UPDATE region SET hikecount=@hikecount WHERE idcp=@idcp;";
+                    commandText = "UPDATE cp SET hikecount=@hikecount WHERE idcp=@idcp;";
                     using (MySqlCommand command = new MySqlCommand(commandText, connection))
                     {
                         command.Parameters.AddWithValue("@hikecount", count);
-                        command.Parameters.AddWithValue("@idregion", idCP);
+                        command.Parameters.AddWithValue("@idcp", idCP);
                         command.ExecuteNonQuery();
                         return true;
                     }
@@ -87,6 +87,27 @@ VALUES (@name, @idcountry, @idregion, @type, 0, @description);";
             return command;
         }
 
-
+        public bool IsDuplicateName(MySqlConnection connection)
+        {
+            string commandText = "SELECT COUNT(*) FROM cp WHERE name=@name;";
+            using (MySqlCommand command = new MySqlCommand(commandText, connection))
+            {
+                command.Parameters.AddWithValue("@name", Name);
+                try
+                {
+                    int count;
+                    if (!int.TryParse(command.ExecuteScalar().ToString(), out count))
+                        return true;
+                    if (count == 0)
+                        return false;
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Hiba");
+                    return true;
+                }
+            }
+        }
     }
 }

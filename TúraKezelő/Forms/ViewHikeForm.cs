@@ -15,9 +15,10 @@ namespace HikeHandler.Forms
     public partial class ViewHikeForm : Form
     {
         private int IDhike;
+        private List<int> cpList;
         private HikeType typeOfHike;
         private MySqlConnection sqlConnection;
-
+        
         public ViewHikeForm()
         {
             InitializeComponent();
@@ -70,8 +71,16 @@ namespace HikeHandler.Forms
             typeComboBox.SelectedValue = (int)hikeData.HikeType;
             dateBox.Value = hikeData.HikeDate;
             descriptionBox.Text = hikeData.Description;
+
+            checkPointHandler.RegionID = hikeData.IDRegion;
             checkPointHandler.LoadCPs(hikeData.CPString);
-            Text = hikeData.Position.ToString() + ". túra adatai";
+            checkPointHandler.RefreshControl();
+            cpList = checkPointHandler.CPList;
+
+            if (hikeData.HikeType == HikeType.túra)
+                Text = hikeData.Position.ToString() + ". túra adatai";
+            if (hikeData.HikeType == HikeType.séta)
+                Text = "Séta adatai";
             positionBox.Text = hikeData.Position.ToString();
             typeOfHike = hikeData.HikeType;
         }
@@ -99,6 +108,9 @@ namespace HikeHandler.Forms
                     Hike hikeData = new Hike(IDhike);
                     hikeData.CountryName = (string)row["countryname"];
                     hikeData.RegionName = (string)row["regionname"];
+                    int regID;
+                    if (int.TryParse(row["idregion"].ToString(), out regID))
+                        hikeData.IDRegion = regID;
                     int posInt;
                     if (int.TryParse(row["position"].ToString(), out posInt))
                         hikeData.Position = posInt;
@@ -185,6 +197,10 @@ namespace HikeHandler.Forms
 
                     if (hikeData.HikeType != HikeType.túra && typeOfHike == HikeType.túra)
                         Hike.MovePositions(hikeData.HikeDate, sqlConnection, false);
+                    foreach (int item in cpList)
+                        CP.UpdateHikeCount(item, sqlConnection);
+                    foreach (int item in checkPointHandler.CPList)
+                        CP.UpdateHikeCount(item, sqlConnection);
                     RefreshForm();
                     MakeUneditable();
                 }

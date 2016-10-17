@@ -189,14 +189,15 @@ namespace HikeHandler.Forms
                     DataTable resultTable = new DataTable();
                     adapter.Fill(resultTable);
                     resultView.DataSource = resultTable;
-                    resultView.Columns[0].Visible = false;
-                    resultView.Columns[1].HeaderText = "Sorszám";
-                    resultView.Columns[2].HeaderText = "Dátum";
-                    resultView.Columns[3].HeaderText = "Tájegység";
-                    resultView.Columns[4].HeaderText = "Ország";
-                    resultView.Columns[5].HeaderText = "Típus";
-                    resultView.Columns[6].Visible = false;
-                    resultView.Columns[7].Visible = false;
+                    resultView.Columns["idhike"].Visible = false;
+                    resultView.Columns["position"].HeaderText = "Sorszám";
+                    resultView.Columns["date"].HeaderText = "Dátum";
+                    resultView.Columns["idregion"].Visible = false;
+                    resultView.Columns["regionname"].HeaderText = "Tájegység";
+                    resultView.Columns["countryname"].HeaderText = "Ország";
+                    resultView.Columns["type"].HeaderText = "Típus";
+                    resultView.Columns["description"].Visible = false;
+                    resultView.Columns["cpstring"].Visible = false;
                 }
                 catch (Exception ex)
                 {

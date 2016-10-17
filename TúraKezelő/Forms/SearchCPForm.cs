@@ -141,7 +141,13 @@ namespace HikeHandler.Forms
 
         private void Clear()
         {
-            throw new NotImplementedException();
+            resultView.DataSource = null;
+            hikeNumberBox.Text = string.Empty;
+            nameBox.Text = string.Empty;
+            countryComboBox.Text = string.Empty;
+            typeComboBox.Text = string.Empty;
+            regionComboBox.DataSource = null;
+            resultGroupBox.Text = "Találatok";
         }
 
         private void MakeSearch(CPTemplate template)
@@ -170,6 +176,7 @@ namespace HikeHandler.Forms
                     resultView.Columns[4].HeaderText = "Tájegység";
                     resultView.Columns[5].HeaderText = "Ország";
                     resultView.Columns[6].Visible = false;
+                    resultGroupBox.Text = "Találatok száma: " + resultTable.Rows.Count;
                 }
                 catch (Exception ex)
                 {
@@ -209,6 +216,8 @@ namespace HikeHandler.Forms
 
         private void countryComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
+            if (countryComboBox.SelectedValue == null)
+                return;
             int a;
             if (!int.TryParse(countryComboBox.SelectedValue.ToString(),out a))
                 return;

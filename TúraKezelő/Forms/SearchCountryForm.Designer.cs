@@ -34,13 +34,13 @@
             this.searchButton = new System.Windows.Forms.Button();
             this.hikeNumberBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.resultGroupBox = new System.Windows.Forms.GroupBox();
             this.resultView = new System.Windows.Forms.DataGridView();
             this.clearButton = new System.Windows.Forms.Button();
             this.closeButton = new System.Windows.Forms.Button();
             this.detailsButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.resultGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.resultView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -101,15 +101,15 @@
             this.label2.TabIndex = 4;
             this.label2.Text = "Túrák száma:";
             // 
-            // groupBox2
+            // resultGroupBox
             // 
-            this.groupBox2.Controls.Add(this.resultView);
-            this.groupBox2.Location = new System.Drawing.Point(3, 93);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(233, 128);
-            this.groupBox2.TabIndex = 6;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Találatok";
+            this.resultGroupBox.Controls.Add(this.resultView);
+            this.resultGroupBox.Location = new System.Drawing.Point(3, 93);
+            this.resultGroupBox.Name = "resultGroupBox";
+            this.resultGroupBox.Size = new System.Drawing.Size(233, 128);
+            this.resultGroupBox.TabIndex = 6;
+            this.resultGroupBox.TabStop = false;
+            this.resultGroupBox.Text = "Találatok";
             // 
             // resultView
             // 
@@ -168,7 +168,7 @@
             this.Controls.Add(this.detailsButton);
             this.Controls.Add(this.clearButton);
             this.Controls.Add(this.closeButton);
-            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.resultGroupBox);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "SearchCountryForm";
@@ -176,7 +176,7 @@
             this.Text = "Ország keresése";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
+            this.resultGroupBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.resultView)).EndInit();
             this.ResumeLayout(false);
 
@@ -189,7 +189,7 @@
         private System.Windows.Forms.Button searchButton;
         private System.Windows.Forms.TextBox hikeNumberBox;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox resultGroupBox;
         private System.Windows.Forms.Button clearButton;
         private System.Windows.Forms.Button closeButton;
         private System.Windows.Forms.DataGridView resultView;

@@ -60,6 +60,7 @@ namespace HikeHandler.Forms
             nameBox.Text = string.Empty;
             hikeNumberBox.Text = string.Empty;
             countryComboBox.Text = string.Empty;
+            resultGroupBox.Text = "Találatok";
         }
 
         private void GetCountryList()
@@ -116,6 +117,7 @@ namespace HikeHandler.Forms
                     resultView.Columns[2].HeaderText = "Túrák száma";
                     resultView.Columns[3].Visible = false;
                     resultView.Columns[4].HeaderText = "Ország";
+                    resultGroupBox.Text = "Találatok száma: " + resultTable.Rows.Count;
                 }
                 catch (Exception ex)
                 {

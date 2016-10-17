@@ -154,7 +154,7 @@ namespace HikeHandler.Forms
                 MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
                 return;
             }
-            string commandText = "SELECT idcp, name FROM cp;";
+            string commandText = "SELECT name, idcp FROM cp;";
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
             {
                 try
@@ -184,7 +184,7 @@ namespace HikeHandler.Forms
                 MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
                 return;
             }
-            string commandText = "SELECT idcp, name FROM cp WHERE idregion=" + regionID + ";";
+            string commandText = "SELECT name, idcp FROM cp WHERE idregion=" + regionID + ";";
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
             {
                 try
@@ -233,6 +233,8 @@ namespace HikeHandler.Forms
             if (regionComboBox == null)
                 return;
             int id;
+            if (regionComboBox.SelectedValue == null)
+                return;
             if (!int.TryParse(regionComboBox.SelectedValue.ToString(), out id))
                 return;
             RegionID = id;

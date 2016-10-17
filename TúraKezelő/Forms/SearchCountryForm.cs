@@ -37,6 +37,7 @@ namespace HikeHandler.Forms
             resultView.DataSource = null;
             countryBox.Text = string.Empty;
             hikeNumberBox.Text = string.Empty;
+            resultGroupBox.Text = "Találatok";
             countryBox.Focus();
         }
 
@@ -79,6 +80,7 @@ namespace HikeHandler.Forms
                     resultView.Columns[0].Visible = false;
                     resultView.Columns[1].HeaderText = "Név";
                     resultView.Columns[2].HeaderText = "Túrák száma";
+                    resultGroupBox.Text = "Találatok száma: " + table.Rows.Count;
                 }
                 catch (Exception ex)
                 {

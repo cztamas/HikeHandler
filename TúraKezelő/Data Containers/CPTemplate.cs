@@ -53,7 +53,6 @@ AND cp.name LIKE @name AND c.name LIKE @countryName AND r.name LIKE @regionName"
             command.Parameters.AddWithValue("@regionName", "%" + RegionName + "%");
             if (TypeOfCP != null)
                 command.Parameters.AddWithValue("@type", TypeOfCP.ToString());
-            //MessageBox.Show(commandText);
             return command;
         }        
     }

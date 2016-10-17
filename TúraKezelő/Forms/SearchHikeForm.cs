@@ -124,7 +124,7 @@ namespace HikeHandler.Forms
             row["name"] = string.Empty;
             hikeTypesTable.Rows.Add(row);
 
-            Array cpTypes = Enum.GetValues(typeof(CPType));
+            Array cpTypes = Enum.GetValues(typeof(HikeType));
             foreach (CPType item in cpTypes)
             {
                 row = hikeTypesTable.NewRow();
@@ -162,6 +162,7 @@ namespace HikeHandler.Forms
             resultView.DataSource = null;
             countryComboBox.Text = string.Empty;
             regionComboBox.Text = string.Empty;
+            resultGroupBox.Text = "Találatok";
         }
 
         private void MakeSearch(HikeTemplate template)
@@ -192,6 +193,7 @@ namespace HikeHandler.Forms
                     resultView.Columns["type"].HeaderText = "Típus";
                     resultView.Columns["description"].Visible = false;
                     resultView.Columns["cpstring"].Visible = false;
+                    resultGroupBox.Text = "Találatok száma: " + resultTable.Rows.Count;
                 }
                 catch (Exception ex)
                 {
@@ -272,6 +274,8 @@ namespace HikeHandler.Forms
 
         private void countryComboBox_SelectedValueChanged(object sender, EventArgs e)
         {
+            if (countryComboBox.SelectedValue == null)
+                return;
             int countryID;
             if (!int.TryParse(countryComboBox.SelectedValue.ToString(), out countryID))
                 return;

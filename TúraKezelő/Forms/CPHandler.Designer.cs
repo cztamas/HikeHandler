@@ -141,6 +141,7 @@
             this.cpGridView.AllowUserToResizeRows = false;
             this.cpGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.cpGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.cpGridView.ColumnHeadersVisible = false;
             this.cpGridView.Location = new System.Drawing.Point(6, 73);
             this.cpGridView.Name = "cpGridView";
             this.cpGridView.ReadOnly = true;

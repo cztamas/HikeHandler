@@ -204,6 +204,12 @@ namespace HikeHandler.Forms
 
         private void deleteCPbutton_Click(object sender, EventArgs e)
         {
+            if (!CP.IsDeletable(idCP, sqlConnection)) 
+            {
+                MessageBox.Show("Csak olyan checkpoint törölhető, amihez nincs túra hozzárendelve.", "Hiba");
+                return;
+            }
+
             throw new NotImplementedException();
         }
     }

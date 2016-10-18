@@ -30,7 +30,6 @@ namespace HikeHandler.Forms
         }
 
         private MySqlConnection sqlConnection;
-        private DataTable cpTable;
 
         private void GetCountryList()
         {
@@ -152,10 +151,6 @@ namespace HikeHandler.Forms
             hike.HikeDate = dateBox.Value.Date;
             hike.Description = descriptionBox.Text;
             hike.CPList = checkPointHandler.CPList;
-            foreach (DataRow row in cpTable.Rows)
-            {
-                hike.CPList.Add((int)row["idcp"]);
-            }
             using (MySqlCommand command = hike.SaveCommand(sqlConnection))
             {
                 try

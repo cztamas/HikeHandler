@@ -11,9 +11,9 @@ namespace HikeHandler.Data_Containers
 {
     public class Country
     {
-        public int ID { get; }
+        public int ID { get; set; }
         public string Name { get; set; }
-        public int HikeCount { get; }
+        public int HikeCount { get; set; }
         public string Description { get; set; }
 
         public Country(int countryID, int hikeNumber, string countryName, string countryDescription)
@@ -36,7 +36,9 @@ namespace HikeHandler.Data_Containers
             ID = countryID;
         }
 
-        public static bool UpdateHikeCount(int idCountry, MySqlConnection connection)
+        // Finds the correct hikecount, and stores it in the DB.
+        // Returns the updated value of the hikecount, or -1 in case of an error.
+        public static int UpdateHikeCount(int idCountry, MySqlConnection connection)
         {
             string commandText = "SELECT COUNT(*) AS count FROM hike WHERE idcountry=" + idCountry + ";";
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, connection))
@@ -47,24 +49,70 @@ namespace HikeHandler.Data_Containers
                     adapter.Fill(table);
                     int count;
                     if (!int.TryParse(table.Rows[0]["count"].ToString(), out count))
-                        return false;                    
+                        return -1;                    
                     commandText = "UPDATE country SET hikecount=@hikecount WHERE idcountry=@idcountry;";
                     using (MySqlCommand command = new MySqlCommand(commandText, connection))
                     {
                         command.Parameters.AddWithValue("@hikecount", count);
                         command.Parameters.AddWithValue("@idcountry", idCountry);
                         command.ExecuteNonQuery();
-                        return true;
+                        return count;
                     }
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "Hiba");
-                    return false;
+                    return -1;
                 }
             }
         }
         
+        // Returns the number of regions corresponding to the given country, or -1 in case of an error.
+        public static int CountRegions(int idCountry, MySqlConnection connection)
+        {
+            string commandText = "SELECT COUNT(*) AS count FROM region WHERE idcountry=@idCountry;";
+            using (MySqlCommand command = new MySqlCommand(commandText, connection))
+            {                
+                try
+                {
+                    command.Parameters.AddWithValue("@idcountry", idCountry);
+                    object result = command.ExecuteScalar();
+                    int count;
+                    if (!int.TryParse(result.ToString(), out count))
+                        return -1;
+                    return count;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    return -1;
+                }
+            }
+        }
+
+        // Returns the number of checkpoints corresponding to the given country, or -1 in case of an error.
+        public static int CountCPs(int idCountry, MySqlConnection connection)
+        {
+            string commandText = "SELECT COUNT(*) AS count FROM cp WHERE idcountry=@idCountry;";
+            using (MySqlCommand command = new MySqlCommand(commandText, connection))
+            {
+                try
+                {
+                    command.Parameters.AddWithValue("@idcountry", idCountry);
+                    object result = command.ExecuteScalar();
+                    int count;
+                    if (!int.TryParse(result.ToString(), out count))
+                        return -1;
+                    return count;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    return -1;
+                }
+            }
+        }
+
         public MySqlCommand SaveCommand(MySqlConnection connection)
         {
             string commandText = "INSERT INTO country (NAME, HIKECOUNT, DESCRIPTION) VALUES (@name, 0, @description);";
@@ -115,6 +163,20 @@ namespace HikeHandler.Data_Containers
             }
                 
             
+        }
+
+        // Checks whether the given country can be deleted.
+        // Returns false in case of an error.
+        // Deletable only if no region, CP or hike belongs to it.
+        public static bool IsDeletable(MySqlConnection connection, int idCountry)
+        {
+            if (UpdateHikeCount(idCountry, connection) != 0)
+                return false;
+            if (CountRegions(idCountry, connection) != 0)
+                return false;
+            if (CountCPs(idCountry, connection) != 0)
+                return false;
+            return true;
         }
     }
 }

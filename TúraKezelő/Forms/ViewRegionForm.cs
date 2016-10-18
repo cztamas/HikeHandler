@@ -66,6 +66,7 @@ namespace HikeHandler.Forms
             HikeRegion region = GetRegionData(regionID);
             if (region == null)
                 return;
+            regionName = region.Name;
             nameBox.Text = region.Name;
             countryBox.Text = region.CountryName;
             hikeCountBox.Text = region.HikeCount.ToString();
@@ -177,6 +178,12 @@ namespace HikeHandler.Forms
 
         private void deleteButton_Click(object sender, EventArgs e)
         {
+            if (!HikeRegion.IsDeletable(regionID, sqlConnection))
+            {
+                MessageBox.Show("Csak olyan tájegység törölhető, amihez nincs checkpoint vagy túra hozzárendelve");
+                return;
+            }
+
             throw new NotImplementedException();
         }
     }

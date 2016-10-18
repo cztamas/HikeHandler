@@ -172,6 +172,21 @@ namespace HikeHandler.Forms
 
         private void deleteCountryButton_Click(object sender, EventArgs e)
         {
+            if (sqlConnection == null)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
+            if (!Country.IsDeletable(sqlConnection, countryID))
+            {
+                MessageBox.Show("Csak olyan ország törölhető, amihez nincs tájegység, checkpoint vagy túra hozzárendelve", "Hiba");
+                return;
+            }
             throw new NotImplementedException();
         }
     }

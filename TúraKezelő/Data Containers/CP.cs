@@ -28,7 +28,9 @@ namespace HikeHandler.Data_Containers
             CPID = idCP;
         }
 
-        public static bool UpdateHikeCount(int idCP, MySqlConnection connection)
+        // Finds the correct hikecount, and stores it in the DB.
+        // Returns the updated value of the hikecount, or -1 in case of an error.
+        public static int UpdateHikeCount(int idCP, MySqlConnection connection)
         {
             string commandText = "SELECT COUNT(*) AS count FROM hike WHERE cpstring LIKE '%." + idCP + ".%';";
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, connection))
@@ -39,20 +41,20 @@ namespace HikeHandler.Data_Containers
                     adapter.Fill(table);
                     int count;
                     if (!int.TryParse(table.Rows[0]["count"].ToString(), out count))
-                        return false;
+                        return -1;
                     commandText = "UPDATE cp SET hikecount=@hikecount WHERE idcp=@idcp;";
                     using (MySqlCommand command = new MySqlCommand(commandText, connection))
                     {
                         command.Parameters.AddWithValue("@hikecount", count);
                         command.Parameters.AddWithValue("@idcp", idCP);
                         command.ExecuteNonQuery();
-                        return true;
+                        return count;
                     }
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "Hiba");
-                    return false;
+                    return -1;
                 }
             }
         }
@@ -108,6 +110,13 @@ VALUES (@name, @idcountry, @idregion, @type, 0, @description);";
                     return true;
                 }
             }
+        }
+
+        public static bool IsDeletable(int idCP, MySqlConnection connection)
+        {
+            if (UpdateHikeCount(idCP, connection) != 0)
+                return false;
+            return true;
         }
     }
 }

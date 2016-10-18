@@ -27,7 +27,9 @@ namespace HikeHandler.Data_Containers
             Description = regionDescription;
         }
 
-        public static bool UpdateHikeCount(int idRegion, MySqlConnection connection)
+        // Finds the correct hikecount, and stores it in the DB.
+        // Returns the updated value of the hikecount, or -1 in case of an error.
+        public static int UpdateHikeCount(int idRegion, MySqlConnection connection)
         {
             string commandText = "SELECT COUNT(*) AS count FROM hike WHERE idregion=" + idRegion + ";";
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, connection))
@@ -38,20 +40,43 @@ namespace HikeHandler.Data_Containers
                     adapter.Fill(table);
                     int count;
                     if (!int.TryParse(table.Rows[0]["count"].ToString(), out count))
-                        return false;
+                        return -1;
                     commandText = "UPDATE region SET hikecount=@hikecount WHERE idregion=@idregion;";
                     using (MySqlCommand command = new MySqlCommand(commandText, connection))
                     {
                         command.Parameters.AddWithValue("@hikecount", count);
                         command.Parameters.AddWithValue("@idregion", idRegion);
                         command.ExecuteNonQuery();
-                        return true;
+                        return count;
                     }
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "Hiba");
-                    return false;
+                    return -1;
+                }
+            }
+        }
+
+        // Returns the number of checkpoints corresponding to the given region, or -1 in case of an error.
+        public static int CountCPs(int idRegion, MySqlConnection connection)
+        {
+            string commandText = "SELECT COUNT(*) AS count FROM cp WHERE idregion=@idCregion;";
+            using (MySqlCommand command = new MySqlCommand(commandText, connection))
+            {
+                try
+                {
+                    command.Parameters.AddWithValue("@idregion", idRegion);
+                    object result = command.ExecuteScalar();
+                    int count;
+                    if (!int.TryParse(result.ToString(), out count))
+                        return -1;
+                    return count;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    return -1;
                 }
             }
         }
@@ -75,6 +100,15 @@ VALUES (@name, @idCountry, 0, @description);";
             command.Parameters.AddWithValue("@idregion", ID);
             command.Parameters.AddWithValue("@description", Description);
             return command;
+        }
+
+        public static bool IsDeletable(int idRegion, MySqlConnection connection)
+        {
+            if (UpdateHikeCount(idRegion, connection) != 0)
+                return false;
+            if (CountCPs(idRegion, connection) != 0)
+                return false;
+            return true;
         }
     }
 }

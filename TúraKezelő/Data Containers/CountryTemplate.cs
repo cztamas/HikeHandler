@@ -37,7 +37,7 @@ namespace HikeHandler.Data_Containers
             string countCondition = hikeCount.SqlSearchCondition("hikeCount");
             if (countCondition != String.Empty)
                 commandText += (" AND " + countCondition);
-            commandText += ";";
+            commandText += " ORDER BY name ASC;";
             MySqlCommand command = new MySqlCommand(commandText, connection);
             //MessageBox.Show(commandText);
             command.Parameters.AddWithValue("@name", "%" + name + "%");

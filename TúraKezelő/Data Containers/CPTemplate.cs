@@ -46,7 +46,7 @@ AND cp.name LIKE @name AND c.name LIKE @countryName AND r.name LIKE @regionName"
             }
             if (TypeOfCP != null)
                 commandText += " AND cp.type=@type";
-            commandText += ";";
+            commandText += " ORDER BY cp.name ASC;";
             MySqlCommand command = new MySqlCommand(commandText, connection);
             command.Parameters.AddWithValue("@name", "%" + Name + "%");
             command.Parameters.AddWithValue("@countryName", "%" + CountryName + "%");

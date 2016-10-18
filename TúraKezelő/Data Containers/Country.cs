@@ -113,6 +113,7 @@ namespace HikeHandler.Data_Containers
             }
         }
 
+        // Returns the MySql command to save the item to DB.
         public MySqlCommand SaveCommand(MySqlConnection connection)
         {
             string commandText = "INSERT INTO country (NAME, HIKECOUNT, DESCRIPTION) VALUES (@name, 0, @description);";

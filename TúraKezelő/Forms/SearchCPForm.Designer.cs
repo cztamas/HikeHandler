@@ -175,7 +175,7 @@
             this.resultGroupBox.Controls.Add(this.resultView);
             this.resultGroupBox.Location = new System.Drawing.Point(12, 124);
             this.resultGroupBox.Name = "resultGroupBox";
-            this.resultGroupBox.Size = new System.Drawing.Size(379, 128);
+            this.resultGroupBox.Size = new System.Drawing.Size(379, 170);
             this.resultGroupBox.TabIndex = 3;
             this.resultGroupBox.TabStop = false;
             this.resultGroupBox.Text = "Találatok";
@@ -193,13 +193,13 @@
             this.resultView.ReadOnly = true;
             this.resultView.RowHeadersVisible = false;
             this.resultView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.resultView.Size = new System.Drawing.Size(373, 109);
+            this.resultView.Size = new System.Drawing.Size(373, 151);
             this.resultView.TabIndex = 0;
             this.resultView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.resultView_CellDoubleClick);
             // 
             // clearButton
             // 
-            this.clearButton.Location = new System.Drawing.Point(142, 258);
+            this.clearButton.Location = new System.Drawing.Point(142, 300);
             this.clearButton.Name = "clearButton";
             this.clearButton.Size = new System.Drawing.Size(111, 23);
             this.clearButton.TabIndex = 4;
@@ -210,7 +210,7 @@
             // closeButton
             // 
             this.closeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.closeButton.Location = new System.Drawing.Point(259, 258);
+            this.closeButton.Location = new System.Drawing.Point(261, 300);
             this.closeButton.Name = "closeButton";
             this.closeButton.Size = new System.Drawing.Size(129, 23);
             this.closeButton.TabIndex = 5;
@@ -220,7 +220,7 @@
             // 
             // detailsButton
             // 
-            this.detailsButton.Location = new System.Drawing.Point(15, 258);
+            this.detailsButton.Location = new System.Drawing.Point(15, 300);
             this.detailsButton.Name = "detailsButton";
             this.detailsButton.Size = new System.Drawing.Size(121, 23);
             this.detailsButton.TabIndex = 6;
@@ -234,7 +234,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.closeButton;
-            this.ClientSize = new System.Drawing.Size(402, 292);
+            this.ClientSize = new System.Drawing.Size(402, 335);
             this.Controls.Add(this.detailsButton);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.clearButton);

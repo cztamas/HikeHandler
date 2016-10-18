@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.deleteCPbutton = new System.Windows.Forms.Button();
             this.countryBox = new System.Windows.Forms.TextBox();
             this.regionBox = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -47,7 +48,6 @@
             this.saveEditButton = new System.Windows.Forms.Button();
             this.cancelEditButton = new System.Windows.Forms.Button();
             this.refreshButton = new System.Windows.Forms.Button();
-            this.deleteCPbutton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -73,6 +73,16 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Adatok";
+            // 
+            // deleteCPbutton
+            // 
+            this.deleteCPbutton.Location = new System.Drawing.Point(260, 157);
+            this.deleteCPbutton.Name = "deleteCPbutton";
+            this.deleteCPbutton.Size = new System.Drawing.Size(113, 23);
+            this.deleteCPbutton.TabIndex = 20;
+            this.deleteCPbutton.Text = "CP törlése...";
+            this.deleteCPbutton.UseVisualStyleBackColor = true;
+            this.deleteCPbutton.Click += new System.EventHandler(this.deleteCPbutton_Click);
             // 
             // countryBox
             // 
@@ -111,6 +121,8 @@
             // 
             // typeComboBox
             // 
+            this.typeComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.typeComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.typeComboBox.FormattingEnabled = true;
             this.typeComboBox.Location = new System.Drawing.Point(256, 19);
             this.typeComboBox.Name = "typeComboBox";
@@ -237,16 +249,6 @@
             this.refreshButton.Text = "Frissítés";
             this.refreshButton.UseVisualStyleBackColor = true;
             this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
-            // 
-            // deleteCPbutton
-            // 
-            this.deleteCPbutton.Location = new System.Drawing.Point(260, 157);
-            this.deleteCPbutton.Name = "deleteCPbutton";
-            this.deleteCPbutton.Size = new System.Drawing.Size(113, 23);
-            this.deleteCPbutton.TabIndex = 20;
-            this.deleteCPbutton.Text = "CP törlése...";
-            this.deleteCPbutton.UseVisualStyleBackColor = true;
-            this.deleteCPbutton.Click += new System.EventHandler(this.deleteCPbutton_Click);
             // 
             // ViewCPForm
             // 

@@ -36,7 +36,10 @@ namespace HikeHandler.Forms
             if (template.CountryName != string.Empty)
                 countryComboBox.Text = template.CountryName;
             if (template.RegionName != string.Empty)
+            {
+                regionComboBox.SelectedIndex = -1;
                 regionComboBox.Text = template.RegionName;
+            }
             MakeSearch(template);
         }
 
@@ -62,7 +65,7 @@ namespace HikeHandler.Forms
                 MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
                 return;
             }
-            string commandText = "SELECT idcountry, name FROM country;";
+            string commandText = "SELECT idcountry, name FROM country ORDER BY name ASC;";
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
             {
                 try
@@ -92,7 +95,7 @@ namespace HikeHandler.Forms
                 MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
                 return;
             }
-            string commandText = "SELECT idregion, name FROM region WHERE idcountry=" + countryID + ";";
+            string commandText = "SELECT idregion, name FROM region WHERE idcountry=" + countryID + " ORDER BY name ASC;";
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
             {
                 try

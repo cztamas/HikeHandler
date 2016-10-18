@@ -61,7 +61,7 @@ namespace HikeHandler.Data_Containers
         // Returns the number of checkpoints corresponding to the given region, or -1 in case of an error.
         public static int CountCPs(int idRegion, MySqlConnection connection)
         {
-            string commandText = "SELECT COUNT(*) AS count FROM cp WHERE idregion=@idCregion;";
+            string commandText = "SELECT COUNT(*) AS count FROM cp WHERE idregion=@idregion;";
             using (MySqlCommand command = new MySqlCommand(commandText, connection))
             {
                 try

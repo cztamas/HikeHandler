@@ -75,6 +75,8 @@
             // 
             // cpNameComboBox
             // 
+            this.cpNameComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cpNameComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cpNameComboBox.FormattingEnabled = true;
             this.cpNameComboBox.Location = new System.Drawing.Point(42, 23);
             this.cpNameComboBox.Name = "cpNameComboBox";

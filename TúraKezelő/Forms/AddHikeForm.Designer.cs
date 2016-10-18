@@ -74,6 +74,8 @@
             // 
             // typeComboBox
             // 
+            this.typeComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.typeComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.typeComboBox.FormattingEnabled = true;
             this.typeComboBox.Location = new System.Drawing.Point(71, 72);
             this.typeComboBox.Name = "typeComboBox";
@@ -90,6 +92,8 @@
             // 
             // regionComboBox
             // 
+            this.regionComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.regionComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.regionComboBox.FormattingEnabled = true;
             this.regionComboBox.Location = new System.Drawing.Point(71, 45);
             this.regionComboBox.Name = "regionComboBox";
@@ -98,6 +102,8 @@
             // 
             // countryComboBox
             // 
+            this.countryComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.countryComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.countryComboBox.FormattingEnabled = true;
             this.countryComboBox.Location = new System.Drawing.Point(71, 18);
             this.countryComboBox.Name = "countryComboBox";
@@ -178,6 +184,7 @@
             // 
             this.checkPointHandler.Location = new System.Drawing.Point(238, 12);
             this.checkPointHandler.Name = "checkPointHandler";
+            this.checkPointHandler.RegionID = 0;
             this.checkPointHandler.Size = new System.Drawing.Size(254, 206);
             this.checkPointHandler.TabIndex = 11;
             // 

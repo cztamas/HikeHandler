@@ -45,7 +45,7 @@ ON region.idcountry=country.idcountry WHERE region.name LIKE @name AND country.n
                 commandText += (" AND country.idcountry=@idcountry");
             if (IDRegion != null)
                 commandText += (" AND region.idregion=@idregion");
-            commandText += ";";
+            commandText += " ORDER BY name ASC;";
             MySqlCommand command = new MySqlCommand(commandText, connection);
             command.Parameters.AddWithValue("@name", "%" + Name + "%");
             command.Parameters.AddWithValue("@cname", "%" + CountryName + "%");

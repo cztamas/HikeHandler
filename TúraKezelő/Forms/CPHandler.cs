@@ -68,6 +68,7 @@ namespace HikeHandler.Forms
             cpNameComboBox.Enabled = true;
             allRegionCheckBox.Enabled = true;
             allRegionCheckBox.Visible = true;
+            RefreshButton.Enabled = true;
         }
 
         public void MakeUneditable()
@@ -79,6 +80,7 @@ namespace HikeHandler.Forms
             cpNameComboBox.Enabled = false;
             allRegionCheckBox.Enabled = false;
             allRegionCheckBox.Visible = false;
+            RefreshButton.Enabled = false;
         }
 
         public void Clear()
@@ -154,7 +156,7 @@ namespace HikeHandler.Forms
                 MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
                 return;
             }
-            string commandText = "SELECT name, idcp FROM cp;";
+            string commandText = "SELECT name, idcp FROM cp ORDER BY name ASC;";
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
             {
                 try
@@ -184,7 +186,7 @@ namespace HikeHandler.Forms
                 MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
                 return;
             }
-            string commandText = "SELECT name, idcp FROM cp WHERE idregion=" + regionID + ";";
+            string commandText = "SELECT name, idcp FROM cp WHERE idregion=" + regionID + " ORDER BY name ASC;";
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
             {
                 try

@@ -46,12 +46,7 @@ namespace HikeHandler.Forms
             cpTypesTable.Columns.Add(column);
             column = new DataColumn("name", typeof(string));
             cpTypesTable.Columns.Add(column);
-
-            row = cpTypesTable.NewRow();
-            row["id"] = -1;
-            row["name"] = string.Empty;
-            cpTypesTable.Rows.Add(row);
-
+            
             Array cpTypes = Enum.GetValues(typeof(CPType));
             foreach( CPType item in cpTypes)
             {

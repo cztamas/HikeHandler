@@ -183,8 +183,8 @@ namespace HikeHandler.Forms
                 MessageBox.Show("Csak olyan tájegység törölhető, amihez nincs checkpoint vagy túra hozzárendelve");
                 return;
             }
-
-            throw new NotImplementedException();
+            if (HikeRegion.DeleteRegion(regionID, sqlConnection)) 
+                Close();
         }
     }
 }

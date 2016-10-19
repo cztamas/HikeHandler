@@ -118,5 +118,32 @@ VALUES (@name, @idcountry, @idregion, @type, 0, @description);";
                 return false;
             return true;
         }
+
+        public static bool DeleteCP(int idCP, MySqlConnection connection)
+        {
+            string message = "Biztosan törli?";
+            string caption = "CheckPoint törlése";
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            DialogResult result = MessageBox.Show(message, caption, buttons);
+            if (result == DialogResult.No)
+                return false;
+
+            string commandText = "DELETE FROM cp WHERE idcp=@idcp";
+            using (MySqlCommand command = new MySqlCommand(commandText, connection))
+            {
+                try
+                {
+                    command.Parameters.AddWithValue("@idcp", idCP);
+                    command.ExecuteNonQuery();
+                    MessageBox.Show("Törölve.");
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Hiba");
+                    return false;
+                }
+            }
+        }
     }
 }

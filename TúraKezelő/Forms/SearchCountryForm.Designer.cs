@@ -30,7 +30,7 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.countryBox = new System.Windows.Forms.ComboBox();
+            this.countryComboBox = new System.Windows.Forms.ComboBox();
             this.searchButton = new System.Windows.Forms.Button();
             this.hikeNumberBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -55,7 +55,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.countryBox);
+            this.groupBox1.Controls.Add(this.countryComboBox);
             this.groupBox1.Controls.Add(this.searchButton);
             this.groupBox1.Controls.Add(this.hikeNumberBox);
             this.groupBox1.Controls.Add(this.label2);
@@ -67,13 +67,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Keresés";
             // 
-            // countryBox
+            // countryComboBox
             // 
-            this.countryBox.FormattingEnabled = true;
-            this.countryBox.Location = new System.Drawing.Point(83, 18);
-            this.countryBox.Name = "countryBox";
-            this.countryBox.Size = new System.Drawing.Size(144, 21);
-            this.countryBox.TabIndex = 7;
+            this.countryComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.countryComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.countryComboBox.FormattingEnabled = true;
+            this.countryComboBox.Location = new System.Drawing.Point(83, 18);
+            this.countryComboBox.Name = "countryComboBox";
+            this.countryComboBox.Size = new System.Drawing.Size(144, 21);
+            this.countryComboBox.TabIndex = 7;
             // 
             // searchButton
             // 
@@ -193,7 +195,7 @@
         private System.Windows.Forms.Button clearButton;
         private System.Windows.Forms.Button closeButton;
         private System.Windows.Forms.DataGridView resultView;
-        private System.Windows.Forms.ComboBox countryBox;
+        private System.Windows.Forms.ComboBox countryComboBox;
         private System.Windows.Forms.Button detailsButton;
     }
 }

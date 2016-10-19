@@ -78,11 +78,14 @@
             // 
             // descriptionBox
             // 
+            this.descriptionBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.descriptionBox.Location = new System.Drawing.Point(3, 16);
             this.descriptionBox.Name = "descriptionBox";
-            this.descriptionBox.Size = new System.Drawing.Size(276, 71);
+            this.descriptionBox.Size = new System.Drawing.Size(279, 74);
             this.descriptionBox.TabIndex = 5;
             this.descriptionBox.Text = "";
+            this.descriptionBox.Enter += new System.EventHandler(this.descriptionBox_Enter);
+            this.descriptionBox.Leave += new System.EventHandler(this.descriptionBox_Leave);
             // 
             // groupBox1
             // 
@@ -108,6 +111,7 @@
             // 
             // AddCountryForm
             // 
+            this.AcceptButton = this.saveButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.exitButton;
@@ -117,6 +121,7 @@
             this.Controls.Add(this.saveButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "AddCountryForm";
+            this.ShowIcon = false;
             this.Text = "Ország hozzáadása";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

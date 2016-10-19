@@ -187,7 +187,8 @@ namespace HikeHandler.Forms
                 MessageBox.Show("Csak olyan ország törölhető, amihez nincs tájegység, checkpoint vagy túra hozzárendelve", "Hiba");
                 return;
             }
-            throw new NotImplementedException();
+            if (Country.DeleteCountry(countryID, sqlConnection))
+                Close();
         }
     }
 }

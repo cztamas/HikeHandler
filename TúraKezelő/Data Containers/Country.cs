@@ -179,5 +179,32 @@ namespace HikeHandler.Data_Containers
                 return false;
             return true;
         }
+
+        public static bool DeleteCountry(int idCountry, MySqlConnection connection)
+        {
+            string message = "Biztosan törli?";
+            string caption = "Ország törlése";
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            DialogResult result = MessageBox.Show(message, caption, buttons);
+            if (result == DialogResult.No)
+                return false;
+
+            string commandText = "DELETE FROM country WHERE idcountry=@idcountry";
+            using (MySqlCommand command = new MySqlCommand(commandText, connection))
+            {
+                try
+                {
+                    command.Parameters.AddWithValue("@idcountry", idCountry);
+                    command.ExecuteNonQuery();
+                    MessageBox.Show("Törölve.");
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Hiba");
+                    return false;
+                }
+            }
+        }
     }
 }

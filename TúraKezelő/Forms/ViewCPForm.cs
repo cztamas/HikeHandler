@@ -204,8 +204,8 @@ namespace HikeHandler.Forms
                 MessageBox.Show("Csak olyan checkpoint törölhető, amihez nincs túra hozzárendelve.", "Hiba");
                 return;
             }
-
-            throw new NotImplementedException();
+            if (CP.DeleteCP(idCP, sqlConnection))
+                Close();
         }
     }
 }

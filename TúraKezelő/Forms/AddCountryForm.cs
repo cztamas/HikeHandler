@@ -30,6 +30,7 @@ namespace HikeHandler.Forms
         public void Open()
         {
             Show();
+            nameBox.Focus();
         }
 
         private void exitButton_Click(object sender, EventArgs e)
@@ -68,6 +69,16 @@ namespace HikeHandler.Forms
                     MessageBox.Show("Hiba: " + ex.Message);
                 }
             }
+        }
+
+        private void descriptionBox_Enter(object sender, EventArgs e)
+        {
+            AcceptButton = null;
+        }
+
+        private void descriptionBox_Leave(object sender, EventArgs e)
+        {
+            AcceptButton = saveButton;
         }
     }
 }

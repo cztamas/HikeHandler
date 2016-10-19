@@ -14,6 +14,8 @@ namespace HikeHandler.Forms
 {
     public partial class SearchCountryForm : Form
     {
+        private MySqlConnection sqlConnection;
+
         public SearchCountryForm()
         {
             InitializeComponent();
@@ -23,22 +25,53 @@ namespace HikeHandler.Forms
         {
             InitializeComponent();
             sqlConnection = connection;
-        }
-
-        private MySqlConnection sqlConnection;
+            GetCountryList();
+        }        
 
         public void Open()
         {
             Show();
+            countryComboBox.Text = string.Empty;
+            countryComboBox.Focus();
         }
 
         private void Clear()
         {
             resultView.DataSource = null;
-            countryBox.Text = string.Empty;
+            countryComboBox.Text = string.Empty;
             hikeNumberBox.Text = string.Empty;
             resultGroupBox.Text = "Találatok";
-            countryBox.Focus();
+            countryComboBox.Focus();
+        }
+
+        private void GetCountryList()
+        {
+            if (sqlConnection == null)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return;
+            }
+            string commandText = "SELECT idcountry, name FROM country ORDER BY name ASC;";
+            DataTable table = new DataTable();
+            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
+            {
+                try
+                {
+                    adapter.Fill(table);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Hiba");
+                }
+            }
+            countryComboBox.DataSource = table;
+            countryComboBox.ValueMember = "idcountry";
+            countryComboBox.DisplayMember = "name";
         }
 
         private void closeButton_Click(object sender, EventArgs e)
@@ -69,7 +102,7 @@ namespace HikeHandler.Forms
                 MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
                 return;
             }
-            CountryTemplate template = new CountryTemplate(countryBox.Text, hikeNumberBox.Text);
+            CountryTemplate template = new CountryTemplate(countryComboBox.Text, hikeNumberBox.Text);
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(template.SearchCommand(sqlConnection))) 
             {
                 try

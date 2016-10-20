@@ -44,7 +44,7 @@ namespace HikeHandler.Data_Containers
 
         public MySqlCommand SearchCommand(MySqlConnection connection, bool anyCPOrder)
         {
-            string commandText = @"SELECT h.idhike, h.position, h.date, h.idregion, r.name AS 'regionname', c.name AS 'countryname', h.type, 
+            string commandText = @"SELECT h.idhike, h.position, h.date, h.idregion, r.name AS 'regionname', h.idcountry, c.name AS 'countryname', h.type, 
 h.description, h.cpstring FROM hike h, region r, country c WHERE h.idcountry=c.idcountry AND h.idregion=r.idregion 
 AND c.name LIKE @countryName AND r.name LIKE @regionName";
             if (IDHike != null)

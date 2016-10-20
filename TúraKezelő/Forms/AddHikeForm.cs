@@ -30,7 +30,7 @@ namespace HikeHandler.Forms
         }
 
         private MySqlConnection sqlConnection;
-
+        
         private void GetCountryList()
         {
             if (sqlConnection == null)
@@ -184,6 +184,6 @@ namespace HikeHandler.Forms
         private void descriptionBox_Leave(object sender, EventArgs e)
         {
             AcceptButton = addHikeButton;
-        }        
+        }
     }
 }

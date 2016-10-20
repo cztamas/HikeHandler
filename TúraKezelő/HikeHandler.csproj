@@ -48,6 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\HikeDescriptionBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\HikeDescriptionBox.Designer.cs">
+      <DependentUpon>HikeDescriptionBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Data Containers\CountryTemplate.cs" />
     <Compile Include="Data Containers\Country.cs" />
     <Compile Include="Data Containers\CP.cs" />
@@ -56,10 +62,10 @@
     <Compile Include="Data Containers\HikeRegionTemplate.cs" />
     <Compile Include="Data Containers\HikeTemplate.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="Forms\CPHandler.cs">
+    <Compile Include="Controls\CPHandler.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\CPHandler.Designer.cs">
+    <Compile Include="Controls\CPHandler.Designer.cs">
       <DependentUpon>CPHandler.cs</DependentUpon>
     </Compile>
     <Compile Include="Miscellaneous.cs" />
@@ -150,6 +156,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Controls\HikeDescriptionBox.resx">
+      <DependentUpon>HikeDescriptionBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\AddCountryForm.resx">
       <DependentUpon>AddCountryForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -165,7 +174,7 @@
     <EmbeddedResource Include="Forms\BaseForm.resx">
       <DependentUpon>BaseForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\CPHandler.resx">
+    <EmbeddedResource Include="Controls\CPHandler.resx">
       <DependentUpon>CPHandler.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PasswordForm.resx">

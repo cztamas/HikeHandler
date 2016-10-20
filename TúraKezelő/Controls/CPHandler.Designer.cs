@@ -65,6 +65,7 @@
             // 
             // RefreshButton
             // 
+            this.RefreshButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.RefreshButton.Location = new System.Drawing.Point(154, 174);
             this.RefreshButton.Name = "RefreshButton";
             this.RefreshButton.Size = new System.Drawing.Size(90, 23);
@@ -140,7 +141,10 @@
             // 
             this.cpGridView.AllowUserToAddRows = false;
             this.cpGridView.AllowUserToDeleteRows = false;
+            this.cpGridView.AllowUserToResizeColumns = false;
             this.cpGridView.AllowUserToResizeRows = false;
+            this.cpGridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.cpGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.cpGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.cpGridView.ColumnHeadersVisible = false;

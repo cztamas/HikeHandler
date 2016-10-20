@@ -39,16 +39,14 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.descriptionBox = new System.Windows.Forms.RichTextBox();
             this.editButton = new System.Windows.Forms.Button();
             this.closeButton = new System.Windows.Forms.Button();
             this.saveEditButton = new System.Windows.Forms.Button();
             this.cancelEditButton = new System.Windows.Forms.Button();
             this.deleteHikeButton = new System.Windows.Forms.Button();
             this.checkPointHandler = new HikeHandler.Forms.CPHandler();
+            this.descriptionBox = new TúraKezelő.Controls.HikeDescriptionBox();
             this.groupBox1.SuspendLayout();
-            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -157,25 +155,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Ország:";
             // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.descriptionBox);
-            this.groupBox3.Location = new System.Drawing.Point(12, 146);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(242, 136);
-            this.groupBox3.TabIndex = 11;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Leírás";
-            // 
-            // descriptionBox
-            // 
-            this.descriptionBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.descriptionBox.Location = new System.Drawing.Point(3, 16);
-            this.descriptionBox.Name = "descriptionBox";
-            this.descriptionBox.Size = new System.Drawing.Size(236, 117);
-            this.descriptionBox.TabIndex = 9;
-            this.descriptionBox.Text = "";
-            // 
             // editButton
             // 
             this.editButton.Location = new System.Drawing.Point(260, 230);
@@ -235,19 +214,26 @@
             this.checkPointHandler.Size = new System.Drawing.Size(264, 212);
             this.checkPointHandler.TabIndex = 16;
             // 
+            // descriptionBox
+            // 
+            this.descriptionBox.Location = new System.Drawing.Point(12, 146);
+            this.descriptionBox.Name = "descriptionBox";
+            this.descriptionBox.Size = new System.Drawing.Size(242, 136);
+            this.descriptionBox.TabIndex = 17;
+            // 
             // ViewHikeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.closeButton;
             this.ClientSize = new System.Drawing.Size(518, 289);
+            this.Controls.Add(this.descriptionBox);
             this.Controls.Add(this.checkPointHandler);
             this.Controls.Add(this.deleteHikeButton);
             this.Controls.Add(this.cancelEditButton);
             this.Controls.Add(this.saveEditButton);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.editButton);
-            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "ViewHikeForm";
@@ -255,7 +241,6 @@
             this.Text = "ViewHikeForm";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -269,8 +254,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.RichTextBox descriptionBox;
         private System.Windows.Forms.Button editButton;
         private System.Windows.Forms.Button closeButton;
         private System.Windows.Forms.Button saveEditButton;
@@ -281,5 +264,6 @@
         private System.Windows.Forms.TextBox positionBox;
         private System.Windows.Forms.Label label5;
         private CPHandler checkPointHandler;
+        private TúraKezelő.Controls.HikeDescriptionBox descriptionBox;
     }
 }

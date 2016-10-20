@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.frameGroupBox = new System.Windows.Forms.GroupBox();
             this.writeRingButton = new System.Windows.Forms.Button();
             this.writeOmegaButton = new System.Windows.Forms.Button();
             this.writeSquareButton = new System.Windows.Forms.Button();
@@ -36,25 +36,25 @@
             this.writeCircleButton = new System.Windows.Forms.Button();
             this.writeArrowCircleButton = new System.Windows.Forms.Button();
             this.descriptionBox = new System.Windows.Forms.RichTextBox();
-            this.groupBox3.SuspendLayout();
+            this.frameGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
-            // groupBox3
+            // frameGroupBox
             // 
-            this.groupBox3.Controls.Add(this.writeRingButton);
-            this.groupBox3.Controls.Add(this.writeOmegaButton);
-            this.groupBox3.Controls.Add(this.writeSquareButton);
-            this.groupBox3.Controls.Add(this.writeTriangleButton);
-            this.groupBox3.Controls.Add(this.writeCircleButton);
-            this.groupBox3.Controls.Add(this.writeArrowCircleButton);
-            this.groupBox3.Controls.Add(this.descriptionBox);
-            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(0, 0);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(227, 139);
-            this.groupBox3.TabIndex = 11;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Leírás";
+            this.frameGroupBox.Controls.Add(this.writeRingButton);
+            this.frameGroupBox.Controls.Add(this.writeOmegaButton);
+            this.frameGroupBox.Controls.Add(this.writeSquareButton);
+            this.frameGroupBox.Controls.Add(this.writeTriangleButton);
+            this.frameGroupBox.Controls.Add(this.writeCircleButton);
+            this.frameGroupBox.Controls.Add(this.writeArrowCircleButton);
+            this.frameGroupBox.Controls.Add(this.descriptionBox);
+            this.frameGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.frameGroupBox.Location = new System.Drawing.Point(0, 0);
+            this.frameGroupBox.Name = "frameGroupBox";
+            this.frameGroupBox.Size = new System.Drawing.Size(227, 139);
+            this.frameGroupBox.TabIndex = 11;
+            this.frameGroupBox.TabStop = false;
+            this.frameGroupBox.Text = "Leírás";
             // 
             // writeRingButton
             // 
@@ -137,17 +137,17 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.frameGroupBox);
             this.Name = "HikeDescriptionBox";
             this.Size = new System.Drawing.Size(227, 139);
-            this.groupBox3.ResumeLayout(false);
+            this.frameGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox frameGroupBox;
         private System.Windows.Forms.Button writeRingButton;
         private System.Windows.Forms.Button writeOmegaButton;
         private System.Windows.Forms.Button writeSquareButton;

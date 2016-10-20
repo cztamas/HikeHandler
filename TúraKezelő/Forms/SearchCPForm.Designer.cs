@@ -65,7 +65,7 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(379, 106);
+            this.groupBox1.Size = new System.Drawing.Size(419, 106);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Keresés";
@@ -74,7 +74,7 @@
             // 
             this.hikeNumberBox.Location = new System.Drawing.Point(83, 70);
             this.hikeNumberBox.Name = "hikeNumberBox";
-            this.hikeNumberBox.Size = new System.Drawing.Size(93, 20);
+            this.hikeNumberBox.Size = new System.Drawing.Size(114, 20);
             this.hikeNumberBox.TabIndex = 10;
             // 
             // regionComboBox
@@ -82,9 +82,9 @@
             this.regionComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
             this.regionComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.regionComboBox.FormattingEnabled = true;
-            this.regionComboBox.Location = new System.Drawing.Point(244, 43);
+            this.regionComboBox.Location = new System.Drawing.Point(268, 43);
             this.regionComboBox.Name = "regionComboBox";
-            this.regionComboBox.Size = new System.Drawing.Size(121, 21);
+            this.regionComboBox.Size = new System.Drawing.Size(145, 21);
             this.regionComboBox.TabIndex = 9;
             // 
             // countryComboBox
@@ -94,7 +94,7 @@
             this.countryComboBox.FormattingEnabled = true;
             this.countryComboBox.Location = new System.Drawing.Point(55, 43);
             this.countryComboBox.Name = "countryComboBox";
-            this.countryComboBox.Size = new System.Drawing.Size(121, 21);
+            this.countryComboBox.Size = new System.Drawing.Size(142, 21);
             this.countryComboBox.TabIndex = 8;
             this.countryComboBox.SelectedValueChanged += new System.EventHandler(this.countryComboBox_SelectedValueChanged);
             // 
@@ -103,23 +103,23 @@
             this.typeComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.typeComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.typeComboBox.FormattingEnabled = true;
-            this.typeComboBox.Location = new System.Drawing.Point(244, 16);
+            this.typeComboBox.Location = new System.Drawing.Point(268, 17);
             this.typeComboBox.Name = "typeComboBox";
-            this.typeComboBox.Size = new System.Drawing.Size(121, 21);
+            this.typeComboBox.Size = new System.Drawing.Size(145, 21);
             this.typeComboBox.TabIndex = 7;
             // 
             // nameBox
             // 
             this.nameBox.Location = new System.Drawing.Point(55, 17);
             this.nameBox.Name = "nameBox";
-            this.nameBox.Size = new System.Drawing.Size(121, 20);
+            this.nameBox.Size = new System.Drawing.Size(142, 20);
             this.nameBox.TabIndex = 6;
             // 
             // searchButton
             // 
-            this.searchButton.Location = new System.Drawing.Point(185, 70);
+            this.searchButton.Location = new System.Drawing.Point(268, 70);
             this.searchButton.Name = "searchButton";
-            this.searchButton.Size = new System.Drawing.Size(180, 23);
+            this.searchButton.Size = new System.Drawing.Size(145, 23);
             this.searchButton.TabIndex = 5;
             this.searchButton.Text = "Keresés";
             this.searchButton.UseVisualStyleBackColor = true;
@@ -137,7 +137,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(182, 47);
+            this.label4.Location = new System.Drawing.Point(203, 46);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(59, 13);
             this.label4.TabIndex = 3;
@@ -155,7 +155,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(182, 20);
+            this.label2.Location = new System.Drawing.Point(203, 20);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(38, 13);
             this.label2.TabIndex = 1;
@@ -175,7 +175,7 @@
             this.resultGroupBox.Controls.Add(this.resultView);
             this.resultGroupBox.Location = new System.Drawing.Point(12, 124);
             this.resultGroupBox.Name = "resultGroupBox";
-            this.resultGroupBox.Size = new System.Drawing.Size(379, 170);
+            this.resultGroupBox.Size = new System.Drawing.Size(422, 170);
             this.resultGroupBox.TabIndex = 3;
             this.resultGroupBox.TabStop = false;
             this.resultGroupBox.Text = "Találatok";
@@ -185,7 +185,7 @@
             this.resultView.AllowUserToAddRows = false;
             this.resultView.AllowUserToDeleteRows = false;
             this.resultView.AllowUserToResizeRows = false;
-            this.resultView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.resultView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.resultView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.resultView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.resultView.Location = new System.Drawing.Point(3, 16);
@@ -193,15 +193,15 @@
             this.resultView.ReadOnly = true;
             this.resultView.RowHeadersVisible = false;
             this.resultView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.resultView.Size = new System.Drawing.Size(373, 151);
+            this.resultView.Size = new System.Drawing.Size(416, 151);
             this.resultView.TabIndex = 0;
             this.resultView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.resultView_CellDoubleClick);
             // 
             // clearButton
             // 
-            this.clearButton.Location = new System.Drawing.Point(142, 300);
+            this.clearButton.Location = new System.Drawing.Point(151, 300);
             this.clearButton.Name = "clearButton";
-            this.clearButton.Size = new System.Drawing.Size(111, 23);
+            this.clearButton.Size = new System.Drawing.Size(132, 23);
             this.clearButton.TabIndex = 4;
             this.clearButton.Text = "Új keresés";
             this.clearButton.UseVisualStyleBackColor = true;
@@ -210,9 +210,9 @@
             // closeButton
             // 
             this.closeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.closeButton.Location = new System.Drawing.Point(261, 300);
+            this.closeButton.Location = new System.Drawing.Point(289, 300);
             this.closeButton.Name = "closeButton";
-            this.closeButton.Size = new System.Drawing.Size(129, 23);
+            this.closeButton.Size = new System.Drawing.Size(142, 23);
             this.closeButton.TabIndex = 5;
             this.closeButton.Text = "Bezárás";
             this.closeButton.UseVisualStyleBackColor = true;
@@ -222,7 +222,7 @@
             // 
             this.detailsButton.Location = new System.Drawing.Point(15, 300);
             this.detailsButton.Name = "detailsButton";
-            this.detailsButton.Size = new System.Drawing.Size(121, 23);
+            this.detailsButton.Size = new System.Drawing.Size(130, 23);
             this.detailsButton.TabIndex = 6;
             this.detailsButton.Text = "Részletek...";
             this.detailsButton.UseVisualStyleBackColor = true;
@@ -234,12 +234,13 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.closeButton;
-            this.ClientSize = new System.Drawing.Size(402, 335);
+            this.ClientSize = new System.Drawing.Size(446, 335);
             this.Controls.Add(this.detailsButton);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.clearButton);
             this.Controls.Add(this.resultGroupBox);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "SearchCPForm";
             this.ShowIcon = false;
             this.Text = "CheckPoint keresése";

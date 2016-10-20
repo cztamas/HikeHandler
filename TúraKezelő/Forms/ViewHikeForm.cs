@@ -16,7 +16,6 @@ namespace HikeHandler.Forms
     {
         private int IDhike;
         private List<int> cpList;
-        private HikeType typeOfHike;
         private Hike hikeData;
         private MySqlConnection sqlConnection;
         
@@ -38,6 +37,7 @@ namespace HikeHandler.Forms
 
         private void MakeEditable()
         {
+            dateBox.Enabled = true;
             typeComboBox.Enabled = true;
             descriptionBox.Enabled = true;
             saveEditButton.Enabled = true;
@@ -51,6 +51,7 @@ namespace HikeHandler.Forms
 
         private void MakeUneditable()
         {
+            dateBox.Enabled = false;
             typeComboBox.Enabled = false;
             descriptionBox.Enabled = false;
             saveEditButton.Enabled = false;
@@ -83,7 +84,6 @@ namespace HikeHandler.Forms
             if (hikeData.HikeType == HikeType.séta)
                 Text = "Séta adatai";
             positionBox.Text = hikeData.Position.ToString();
-            typeOfHike = hikeData.HikeType;
         }
 
         private Hike GetHikeData(int hikeID)
@@ -191,15 +191,21 @@ namespace HikeHandler.Forms
             tempHike.HikeType = (HikeType)typeComboBox.SelectedValue;
             tempHike.HikeDate = dateBox.Value;
             tempHike.CPList = checkPointHandler.CPList;
-            using (MySqlCommand command = tempHike.UpdateCommand(sqlConnection))
+            tempHike.HikeDate = dateBox.Value;
+            bool dateChanged = (hikeData.HikeDate != tempHike.HikeDate);
+            using (MySqlCommand command = tempHike.UpdateCommand(sqlConnection, dateChanged)) 
             {
                 try
                 {
                     command.ExecuteNonQuery();
-                    if (tempHike.HikeType == HikeType.túra && typeOfHike != HikeType.túra)
+                    if (dateChanged)
+                    {
+                        Hike.MovePositions(hikeData.HikeDate, sqlConnection, false);
                         Hike.UpdatePositions(sqlConnection);
-
-                    if (tempHike.HikeType != HikeType.túra && typeOfHike == HikeType.túra)
+                    }
+                    if (tempHike.HikeType == HikeType.túra && hikeData.HikeType != HikeType.túra)
+                        Hike.UpdatePositions(sqlConnection);
+                    if (tempHike.HikeType != HikeType.túra && hikeData.HikeType == HikeType.túra)
                         Hike.MovePositions(hikeData.HikeDate, sqlConnection, false);
                     foreach (int item in cpList)
                         CP.UpdateHikeCount(item, sqlConnection);

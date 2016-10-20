@@ -128,14 +128,15 @@ VALUES (@date, @idregion, @idcountry, @type, @description, @cpstring)";
             }
         }
 
-        public MySqlCommand UpdateCommand(MySqlConnection connection)
+        public MySqlCommand UpdateCommand(MySqlConnection connection, bool dateChanged)
         {
-            string commandText = "UPDATE hike SET description=@description, type=@type, cpstring=@cpstring";
-            if (HikeType != HikeType.túra)
+            string commandText = "UPDATE hike SET date=@date, description=@description, type=@type, cpstring=@cpstring";
+            if (HikeType != HikeType.túra || dateChanged)
                 commandText += ", position = NULL";
             commandText += " WHERE idhike=@idhike;";
             //MessageBox.Show(commandText);
             MySqlCommand command = new MySqlCommand(commandText, connection);
+            command.Parameters.AddWithValue("@date", HikeDate.ToString("yyyy-MM-dd"));
             command.Parameters.AddWithValue("@description", Description);
             command.Parameters.AddWithValue("@type", HikeType.ToString());
             command.Parameters.AddWithValue("@cpstring", GetCPString());

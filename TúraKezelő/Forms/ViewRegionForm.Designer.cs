@@ -230,6 +230,7 @@
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.editButton);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "ViewRegionForm";
             this.ShowIcon = false;
             this.Text = "tájegységnév";

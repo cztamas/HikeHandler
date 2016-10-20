@@ -167,10 +167,13 @@
             // 
             // descriptionBox
             // 
+            this.descriptionBox.Label = "Leírás";
             this.descriptionBox.Location = new System.Drawing.Point(12, 146);
             this.descriptionBox.Name = "descriptionBox";
             this.descriptionBox.Size = new System.Drawing.Size(220, 133);
             this.descriptionBox.TabIndex = 12;
+            this.descriptionBox.Enter += new System.EventHandler(this.descriptionBox_Enter);
+            this.descriptionBox.Leave += new System.EventHandler(this.descriptionBox_Leave);
             // 
             // AddHikeForm
             // 

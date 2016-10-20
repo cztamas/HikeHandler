@@ -30,6 +30,18 @@ namespace TúraKezelő.Controls
             }
         }
 
+        public string Label
+        {
+            get
+            {
+                return frameGroupBox.Text;
+            }
+            set
+            {
+                frameGroupBox.Text = value;
+            }
+        }
+
         private void InitButtons()
         {
             writeArrowCircleButton.Text = "\u21BB";
@@ -43,31 +55,37 @@ namespace TúraKezelő.Controls
         private void writeOmegaButton_Click(object sender, EventArgs e)
         {
             descriptionBox.Text = descriptionBox.Text.Insert(descriptionBox.SelectionStart, "\u03A9");
+            descriptionBox.Focus();
         }
 
         private void writeSquareButton_Click(object sender, EventArgs e)
         {
             descriptionBox.Text = descriptionBox.Text.Insert(descriptionBox.SelectionStart, "\u25A0");
+            descriptionBox.Focus();
         }
 
         private void writeTriangleButton_Click(object sender, EventArgs e)
         {
             descriptionBox.Text = descriptionBox.Text.Insert(descriptionBox.SelectionStart, "\u25B2");
+            descriptionBox.Focus();
         }
 
         private void writeCircleButton_Click(object sender, EventArgs e)
         {
             descriptionBox.Text = descriptionBox.Text.Insert(descriptionBox.SelectionStart, "\u2B24");
+            descriptionBox.Focus();
         }
 
         private void writeArrowCircleButton_Click(object sender, EventArgs e)
         {
             descriptionBox.Text = descriptionBox.Text.Insert(descriptionBox.SelectionStart, "\u21BB");
+            descriptionBox.Focus();
         }
 
         private void writeRingButton_Click(object sender, EventArgs e)
         {
             descriptionBox.Text = descriptionBox.Text.Insert(descriptionBox.SelectionStart, "\u25CE");
+            descriptionBox.Focus();
         }
     }
 }

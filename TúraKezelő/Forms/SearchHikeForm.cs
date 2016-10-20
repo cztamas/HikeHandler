@@ -193,6 +193,7 @@ namespace HikeHandler.Forms
                     resultView.Columns["type"].HeaderText = "Típus";
                     resultView.Columns["description"].Visible = false;
                     resultView.Columns["cpstring"].Visible = false;
+                    resultView.Columns["idcountry"].Visible = false;
                     resultGroupBox.Text = "Találatok száma: " + resultTable.Rows.Count;
                 }
                 catch (Exception ex)

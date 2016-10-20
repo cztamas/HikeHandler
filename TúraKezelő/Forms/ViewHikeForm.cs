@@ -17,6 +17,7 @@ namespace HikeHandler.Forms
         private int IDhike;
         private List<int> cpList;
         private HikeType typeOfHike;
+        private Hike hikeData;
         private MySqlConnection sqlConnection;
         
         public ViewHikeForm()
@@ -63,7 +64,7 @@ namespace HikeHandler.Forms
 
         private void RefreshForm()
         {
-            Hike hikeData = GetHikeData(IDhike);
+            hikeData = GetHikeData(IDhike);
             if (hikeData == null)
                 return;
             countryBox.Text = hikeData.CountryName;
@@ -105,22 +106,25 @@ namespace HikeHandler.Forms
                     DataTable resultTable = new DataTable();
                     adapter.Fill(resultTable);
                     DataRow row = resultTable.Rows[0];
-                    Hike hikeData = new Hike(IDhike);
-                    hikeData.CountryName = (string)row["countryname"];
-                    hikeData.RegionName = (string)row["regionname"];
+                    Hike tempHike = new Hike(IDhike);
+                    tempHike.CountryName = (string)row["countryname"];
+                    tempHike.RegionName = (string)row["regionname"];
                     int regID;
                     if (int.TryParse(row["idregion"].ToString(), out regID))
-                        hikeData.IDRegion = regID;
+                        tempHike.IDRegion = regID;
+                    int countryID;
+                    if (int.TryParse(row["idcountry"].ToString(), out countryID))
+                        tempHike.IDCountry = countryID;
                     int posInt;
                     if (int.TryParse(row["position"].ToString(), out posInt))
-                        hikeData.Position = posInt;
-                    hikeData.HikeDate = Convert.ToDateTime(row["date"]);
+                        tempHike.Position = posInt;
+                    tempHike.HikeDate = Convert.ToDateTime(row["date"]);
                     HikeType hikeType;
                     Enum.TryParse<HikeType>((string)row["type"], out hikeType);
-                    hikeData.HikeType = hikeType;
-                    hikeData.Description = (string)row["description"];
-                    hikeData.CPString = (string)row["cpstring"];
-                    return hikeData;
+                    tempHike.HikeType = hikeType;
+                    tempHike.Description = (string)row["description"];
+                    tempHike.CPString = (string)row["cpstring"];
+                    return tempHike;
                 }
                 catch (Exception ex)
                 {
@@ -182,20 +186,20 @@ namespace HikeHandler.Forms
                 MessageBox.Show("Nem lehet elérni az adatbázist", "Hiba");
                 return;
             }
-            Hike hikeData = new Hike(IDhike);
-            hikeData.Description = descriptionBox.Text;
-            hikeData.HikeType = (HikeType)typeComboBox.SelectedValue;
-            hikeData.HikeDate = dateBox.Value;
-            hikeData.CPList = checkPointHandler.CPList;
-            using (MySqlCommand command = hikeData.UpdateCommand(sqlConnection))
+            Hike tempHike = new Hike(IDhike);
+            tempHike.Description = descriptionBox.Text;
+            tempHike.HikeType = (HikeType)typeComboBox.SelectedValue;
+            tempHike.HikeDate = dateBox.Value;
+            tempHike.CPList = checkPointHandler.CPList;
+            using (MySqlCommand command = tempHike.UpdateCommand(sqlConnection))
             {
                 try
                 {
                     command.ExecuteNonQuery();
-                    if (hikeData.HikeType == HikeType.túra && typeOfHike != HikeType.túra)
+                    if (tempHike.HikeType == HikeType.túra && typeOfHike != HikeType.túra)
                         Hike.UpdatePositions(sqlConnection);
 
-                    if (hikeData.HikeType != HikeType.túra && typeOfHike == HikeType.túra)
+                    if (tempHike.HikeType != HikeType.túra && typeOfHike == HikeType.túra)
                         Hike.MovePositions(hikeData.HikeDate, sqlConnection, false);
                     foreach (int item in cpList)
                         CP.UpdateHikeCount(item, sqlConnection);
@@ -213,7 +217,18 @@ namespace HikeHandler.Forms
 
         private void deleteHikeButton_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            if (sqlConnection == null)
+            {
+                MessageBox.Show("Nem lehet elérni az adatbázist", "Hiba");
+                return;
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                MessageBox.Show("Nem lehet elérni az adatbázist", "Hiba");
+                return;
+            }
+            if (Hike.DeleteHike(hikeData, sqlConnection))
+                Close();
         }
     }
 }

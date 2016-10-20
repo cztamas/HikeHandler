@@ -142,13 +142,39 @@ VALUES (@date, @idregion, @idcountry, @type, @description, @cpstring)";
             command.Parameters.AddWithValue("@idhike", IDHike);
             return command;
         }
-
-        public MySqlCommand DeleteCommand(MySqlConnection connection)
+        
+        public static bool DeleteHike(Hike hikeData, MySqlConnection connection)
         {
-            throw new NotImplementedException();
-        }
+            string message = "Biztosan törli?";
+            string caption = "Túra törlése";
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            DialogResult result = MessageBox.Show(message, caption, buttons);
+            if (result == DialogResult.No)
+                return false;
 
-        
-        
+            string commandText = "DELETE FROM hike WHERE idhike=@idhike";
+            using (MySqlCommand command = new MySqlCommand(commandText, connection))
+            {
+                try
+                {
+                    command.Parameters.AddWithValue("@idhike", hikeData.IDHike);
+                    command.ExecuteNonQuery();
+                    MovePositions(hikeData.HikeDate, connection, false);
+                    foreach (int item in hikeData.CPList)
+                    {
+                        CP.UpdateHikeCount(item, connection);
+                    }
+                    HikeRegion.UpdateHikeCount(hikeData.IDRegion, connection);
+                    Country.UpdateHikeCount(hikeData.IDCountry, connection);
+                    MessageBox.Show("Törölve.");
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Hiba");
+                    return false;
+                }
+            }
+        }
     }
 }

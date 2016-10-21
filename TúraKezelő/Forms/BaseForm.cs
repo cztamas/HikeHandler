@@ -15,15 +15,15 @@ namespace HikeHandler
 {
     public partial class BaseForm : Form
     {
+        private bool uiTestMode = false;
+        private MySqlConnection sqlConnection;
+
         public BaseForm()
         {
             InitializeComponent();
             EnableButtons(false);
             ConnectToDB();            
-        }        
-        
-        private bool uiTestMode = false;
-        private MySqlConnection sqlConnection;        
+        }       
 
         private void CreateConnection(LoginData loginData)
         {
@@ -68,6 +68,7 @@ namespace HikeHandler
                     connectDBButton.Enabled = false;
                     connectDBButton.Visible = false;
                     EnableButtons(true);
+                    GetSummary();
                 }
             };
             PasswordForm.VoidHandler cancelHandler = delegate ()
@@ -83,6 +84,80 @@ namespace HikeHandler
             pwdForm.LoginCancelled += cancelHandler;
             pwdForm.TestModeSelected += testHandler;
             pwdForm.ShowDialog();
+        }
+
+        private void GetSummary()
+        {
+            if (sqlConnection == null)
+                return;
+            if (sqlConnection.State != ConnectionState.Open)
+                return;
+            string result;
+            int count;
+            string commandText = "SELECT COUNT(*) FROM country;";
+            using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
+            {
+                try
+                {
+                    result = command.ExecuteScalar().ToString();
+                    if (!int.TryParse(result, out count))
+                        return;
+                    countryLabel.Text = count.ToString();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Hiba");
+                    return;
+                }
+            }
+            commandText = "SELECT COUNT(*) FROM region;";
+            using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
+            {
+                try
+                {
+                    result = command.ExecuteScalar().ToString();
+                    if (!int.TryParse(result, out count))
+                        return;
+                    regionLabel.Text = count.ToString();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Hiba");
+                    return;
+                }
+            }
+            commandText = "SELECT COUNT(*) FROM cp;";
+            using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
+            {
+                try
+                {
+                    result = command.ExecuteScalar().ToString();
+                    if (!int.TryParse(result, out count))
+                        return;
+                    cpLabel.Text = count.ToString();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Hiba");
+                    return;
+                }
+            }
+            commandText = "SELECT COUNT(*) FROM hike;";
+            using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
+            {
+                try
+                {
+                    result = command.ExecuteScalar().ToString();
+                    if (!int.TryParse(result, out count))
+                        return;
+                    hikeLabel.Text = count.ToString();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Hiba");
+                    return;
+                }
+            }
         }
 
         private void searchHikeButton_Click(object sender, EventArgs e)

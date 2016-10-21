@@ -102,7 +102,7 @@ namespace HikeHandler.Forms
                 MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
                 return;
             }
-            string commandText = "SELECT idregion, name FROM region WHERE idcountry="+countryID+"ORDER BY name ASC;";
+            string commandText = "SELECT idregion, name FROM region WHERE idcountry="+countryID+" ORDER BY name ASC;";
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
             {
                 try

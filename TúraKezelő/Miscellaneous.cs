@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace HikeHandler
 {
@@ -109,6 +110,7 @@ namespace HikeHandler
 
         public string SqlSearchCondition(string variable)
         {
+            int conditionCount = 0;
             if (intervals == null)
                 return string.Empty;
             string condition = string.Empty;
@@ -119,10 +121,14 @@ namespace HikeHandler
                     if (condition != String.Empty)
                         condition += " OR ";
                     condition += interval.SqlSnippet(variable);
+                    conditionCount++;
                 }
             }
             if (condition == string.Empty)
                 return string.Empty;
+            if (conditionCount == 1)
+                return condition;
+            //MessageBox.Show(condition);
             return "(" + condition + ")";
         }
     }
@@ -155,11 +161,12 @@ namespace HikeHandler
         public string SqlSnippet(string variable)
         {
             if (min != null && max != null)
-                return "(" + min.ToString() + " <= " + variable + " AND " + variable + " <= " + max.ToString() + ")";
+                return "('" + ((DateTime)min).ToString("yyyy-MM-dd") + "' <= " + variable + " AND " 
+                    + variable + " <= '" + ((DateTime)max).ToString("yyyy-MM-dd") + "')";
             if (min == null && max != null)
-                return variable + " <= " + ((DateTime)max).ToString("yyyy-mm-DD");
-            if (min != null && max == null) 
-                return variable + " >= " + ((DateTime)min).ToString("yyyy-mm-DD");
+                return variable + " <= '" + ((DateTime)max).ToString("yyyy-MM-dd") + "' ";
+            if (min != null && max == null)
+                return variable + " >= '" + ((DateTime)min).ToString("yyyy-MM-dd") + "' ";
             return string.Empty;
         }
     }

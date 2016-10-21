@@ -193,6 +193,7 @@ namespace HikeHandler.Forms
             tempHike.CPList = checkPointHandler.CPList;
             tempHike.HikeDate = dateBox.Value;
             bool dateChanged = (hikeData.HikeDate != tempHike.HikeDate);
+            bool typeChanged = (hikeData.HikeType != tempHike.HikeType);
             using (MySqlCommand command = tempHike.UpdateCommand(sqlConnection, dateChanged)) 
             {
                 try
@@ -203,10 +204,17 @@ namespace HikeHandler.Forms
                         Hike.MovePositions(hikeData.HikeDate, sqlConnection, false);
                         Hike.UpdatePositions(sqlConnection);
                     }
-                    if (tempHike.HikeType == HikeType.túra && hikeData.HikeType != HikeType.túra)
-                        Hike.UpdatePositions(sqlConnection);
-                    if (tempHike.HikeType != HikeType.túra && hikeData.HikeType == HikeType.túra)
-                        Hike.MovePositions(hikeData.HikeDate, sqlConnection, false);
+                    if (typeChanged)
+                    {
+                        Country.UpdateHikeCount(hikeData.IDCountry, sqlConnection);
+                        Country.UpdateHikeCount(tempHike.IDCountry, sqlConnection);
+                        HikeRegion.UpdateHikeCount(hikeData.IDRegion, sqlConnection);
+                        HikeRegion.UpdateHikeCount(tempHike.IDRegion, sqlConnection);
+                        if (tempHike.HikeType == HikeType.túra && hikeData.HikeType != HikeType.túra)
+                            Hike.UpdatePositions(sqlConnection);
+                        if (tempHike.HikeType != HikeType.túra && hikeData.HikeType == HikeType.túra)
+                            Hike.MovePositions(hikeData.HikeDate, sqlConnection, false);
+                    }
                     foreach (int item in cpList)
                         CP.UpdateHikeCount(item, sqlConnection);
                     foreach (int item in checkPointHandler.CPList)

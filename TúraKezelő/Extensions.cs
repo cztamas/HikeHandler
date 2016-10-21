@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace HikeHandler
 {
@@ -84,18 +85,34 @@ namespace HikeHandler
             return pile;
         }
 
-        public static bool IsDateInterval(this string text)
+        public static string StandardizeDateInterval(this string text)
         {
             text = Regex.Replace(text, @"\s+", string.Empty);
+            text = Regex.Replace(text, @"\.$", string.Empty);
+            text = Regex.Replace(text, @"\.-", @"-");
             text = Regex.Replace(text, @"\/", @"\.");
-            if (Regex.IsMatch(text, @"^(\d{4}(\.\d{1,2})?(\.\d{1,2})?)?-?(\d{4}(\.\d{1,2})?(\.\d{1,2})?)?$") == false)
+            text = Regex.Replace(text, @"^(\d{4})$", @"$1.1.1-$1.12.31");
+            text = Regex.Replace(text, @"(\d{4})-", @"$1.1.1-");
+            text = Regex.Replace(text, @"-(\d{4})$", @"-$1.12.31");
+            text = Regex.Replace(text, @"(\d{4}\.\d{1,2})-", @"$1.1-");
+            text = Regex.Replace(text, @"-(\d{4}\.\d{1,2})$", @"-$1.e");
+            text = Regex.Replace(text, @"^(\d{4}\.\d{1,2})$", @"$1.1-$1.e");
+            //MessageBox.Show(text);
+            return text;
+        }
+
+        public static bool IsDateInterval(this string text)
+        {
+            text = text.StandardizeDateInterval();
+            if (!Regex.IsMatch(text, @"^(\d{4}(\.\d{1,2})?(\.\d{1,2})?)?-?(\d{4}\.\d{1,2}((\.\d{1,2})|(\.e)))?$"))
                 return false;
             char[] separator = new char[] { '-' };
             string[] dates = text.Split(separator, StringSplitOptions.RemoveEmptyEntries);
             DateTime dateTime;
             foreach (string date in dates)
             {
-                if (DateTime.TryParse(date, out dateTime) == false)
+                string newDate = Regex.Replace(date, @"e", @"28");
+                if (DateTime.TryParse(newDate, out dateTime) == false)
                     return false;
             }
             return true;
@@ -117,8 +134,7 @@ namespace HikeHandler
 
         public static DateInterval ToDateInterval(this string text)
         {
-            text = Regex.Replace(text, @"\s+", string.Empty);
-            text = Regex.Replace(text, @"\/", @"\.");
+            text = text.StandardizeDateInterval();
             if (text.IsDateInterval() == false)
                 return null;
             char[] separator = new char[] { '-' };
@@ -129,18 +145,45 @@ namespace HikeHandler
             {
                 DateTime date;
                 DateInterval interval = null;
-                DateTime.TryParse(dates[0], out date);
+                if (!DateTime.TryParse(dates[0], out date))
+                {
+                    if (!Regex.IsMatch(dates[0], @"^\d{4}\.\d{1,2}\.e$"))
+                        return null;
+                    char[] separatorDot = new char[] { '.' };
+                    string[] datePieces = dates[0].Split(separatorDot);
+                    int year, month, day;
+                    int.TryParse(datePieces[0], out year);
+                    int.TryParse(datePieces[1], out month);
+                    day = DateTime.DaysInMonth(year, month);
+                    date = new DateTime(year, month, day);
+                }
                 if (Regex.IsMatch(text, @"-$"))
                     interval = new DateInterval(date, false);
                 if (Regex.IsMatch(text, @"^-"))
                     interval = new DateInterval(date, true);
+                if (!Regex.IsMatch(text, @"-"))
+                    interval = new DateInterval(date, date);
                 return interval;
             }
             if (dates.Count() == 2)
             {
                 DateTime date1, date2;
                 DateTime.TryParse(dates[0], out date1);
-                DateTime.TryParse(dates[1], out date2);
+                if (Regex.IsMatch(dates[1], @"^\d{4}\.\d{1,2}\.e$"))
+                {
+                    char[] separatorDot = new char[] { '.' };
+                    string[] datePieces = dates[1].Split(separatorDot);
+                    int year, month, day;
+                    int.TryParse(datePieces[0], out year);
+                    int.TryParse(datePieces[1], out month);
+                    day = DateTime.DaysInMonth(year, month);
+                    date2 = new DateTime(year, month, day);
+                }
+                else
+                {
+                    if (!DateTime.TryParse(dates[1], out date2))
+                        return null;
+                }
                 DateInterval interval = new DateInterval(date1, date2);
                 return interval;
             }

@@ -39,8 +39,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.addHikeButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
-            this.checkPointHandler = new HikeHandler.Forms.CPHandler();
             this.descriptionBox = new TúraKezelő.Controls.HikeDescriptionBox();
+            this.checkPointHandler = new HikeHandler.Forms.CPHandler();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -157,14 +157,6 @@
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
-            // checkPointHandler
-            // 
-            this.checkPointHandler.Location = new System.Drawing.Point(238, 12);
-            this.checkPointHandler.Name = "checkPointHandler";
-            this.checkPointHandler.RegionID = 0;
-            this.checkPointHandler.Size = new System.Drawing.Size(254, 232);
-            this.checkPointHandler.TabIndex = 11;
-            // 
             // descriptionBox
             // 
             this.descriptionBox.Label = "Leírás";
@@ -172,8 +164,17 @@
             this.descriptionBox.Name = "descriptionBox";
             this.descriptionBox.Size = new System.Drawing.Size(220, 133);
             this.descriptionBox.TabIndex = 12;
-            this.descriptionBox.Enter += new System.EventHandler(this.descriptionBox_Enter);
+            this.descriptionBox.TextBoxFocusEnter += new System.EventHandler(this.descriptionBox_TextBoxFocusEnter);
+            this.descriptionBox.TextBoxFocusLeave += new System.EventHandler(this.descriptionBox_TextBoxFocusLeave);
             this.descriptionBox.Leave += new System.EventHandler(this.descriptionBox_Leave);
+            // 
+            // checkPointHandler
+            // 
+            this.checkPointHandler.Location = new System.Drawing.Point(238, 12);
+            this.checkPointHandler.Name = "checkPointHandler";
+            this.checkPointHandler.RegionID = 0;
+            this.checkPointHandler.Size = new System.Drawing.Size(254, 232);
+            this.checkPointHandler.TabIndex = 11;
             // 
             // AddHikeForm
             // 

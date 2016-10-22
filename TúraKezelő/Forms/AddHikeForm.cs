@@ -176,14 +176,19 @@ namespace HikeHandler.Forms
             }
         }
 
-        private void descriptionBox_Enter(object sender, EventArgs e)
+        private void descriptionBox_TextBoxFocusEnter(object sender, EventArgs e)
         {
             AcceptButton = null;
         }
 
-        private void descriptionBox_Leave(object sender, EventArgs e)
+        private void descriptionBox_TextBoxFocusLeave(object sender, EventArgs e)
         {
             AcceptButton = addHikeButton;
+        }
+
+        private void descriptionBox_Leave(object sender, EventArgs e)
+        {
+            descriptionBox.IsTextboxActive = false;
         }
     }
 }

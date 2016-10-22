@@ -65,7 +65,7 @@
             // 
             // RefreshButton
             // 
-            this.RefreshButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.RefreshButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.RefreshButton.Location = new System.Drawing.Point(154, 174);
             this.RefreshButton.Name = "RefreshButton";
             this.RefreshButton.Size = new System.Drawing.Size(90, 23);
@@ -76,6 +76,8 @@
             // 
             // cpNameComboBox
             // 
+            this.cpNameComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cpNameComboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cpNameComboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cpNameComboBox.FormattingEnabled = true;
@@ -86,6 +88,7 @@
             // 
             // removeCPButton
             // 
+            this.removeCPButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.removeCPButton.Location = new System.Drawing.Point(154, 131);
             this.removeCPButton.Name = "removeCPButton";
             this.removeCPButton.Size = new System.Drawing.Size(90, 23);
@@ -96,6 +99,7 @@
             // 
             // anyOrderCheckBox
             // 
+            this.anyOrderCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.anyOrderCheckBox.AutoSize = true;
             this.anyOrderCheckBox.Checked = true;
             this.anyOrderCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
@@ -119,6 +123,7 @@
             // 
             // moveDownButton
             // 
+            this.moveDownButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.moveDownButton.Location = new System.Drawing.Point(154, 102);
             this.moveDownButton.Name = "moveDownButton";
             this.moveDownButton.Size = new System.Drawing.Size(90, 23);
@@ -129,6 +134,7 @@
             // 
             // moveUpButton
             // 
+            this.moveUpButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.moveUpButton.Location = new System.Drawing.Point(154, 73);
             this.moveUpButton.Name = "moveUpButton";
             this.moveUpButton.Size = new System.Drawing.Size(90, 23);
@@ -143,8 +149,9 @@
             this.cpGridView.AllowUserToDeleteRows = false;
             this.cpGridView.AllowUserToResizeColumns = false;
             this.cpGridView.AllowUserToResizeRows = false;
-            this.cpGridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.cpGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cpGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.cpGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.cpGridView.ColumnHeadersVisible = false;
@@ -158,6 +165,7 @@
             // 
             // addCPButton
             // 
+            this.addCPButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.addCPButton.Location = new System.Drawing.Point(154, 21);
             this.addCPButton.Name = "addCPButton";
             this.addCPButton.Size = new System.Drawing.Size(90, 23);

@@ -59,7 +59,7 @@
             // writeRingButton
             // 
             this.writeRingButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.writeRingButton.Location = new System.Drawing.Point(194, 12);
+            this.writeRingButton.Location = new System.Drawing.Point(201, 12);
             this.writeRingButton.Name = "writeRingButton";
             this.writeRingButton.Size = new System.Drawing.Size(23, 23);
             this.writeRingButton.TabIndex = 11;
@@ -70,7 +70,7 @@
             // writeOmegaButton
             // 
             this.writeOmegaButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.writeOmegaButton.Location = new System.Drawing.Point(49, 12);
+            this.writeOmegaButton.Location = new System.Drawing.Point(56, 12);
             this.writeOmegaButton.Name = "writeOmegaButton";
             this.writeOmegaButton.Size = new System.Drawing.Size(23, 23);
             this.writeOmegaButton.TabIndex = 10;
@@ -81,18 +81,18 @@
             // writeSquareButton
             // 
             this.writeSquareButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.writeSquareButton.Location = new System.Drawing.Point(78, 12);
+            this.writeSquareButton.Location = new System.Drawing.Point(85, 12);
             this.writeSquareButton.Name = "writeSquareButton";
             this.writeSquareButton.Size = new System.Drawing.Size(23, 23);
             this.writeSquareButton.TabIndex = 9;
-            this.writeSquareButton.Text = "button4";
+            this.writeSquareButton.Text = "b";
             this.writeSquareButton.UseVisualStyleBackColor = true;
             this.writeSquareButton.Click += new System.EventHandler(this.writeSquareButton_Click);
             // 
             // writeTriangleButton
             // 
             this.writeTriangleButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.writeTriangleButton.Location = new System.Drawing.Point(107, 12);
+            this.writeTriangleButton.Location = new System.Drawing.Point(114, 12);
             this.writeTriangleButton.Name = "writeTriangleButton";
             this.writeTriangleButton.Size = new System.Drawing.Size(23, 23);
             this.writeTriangleButton.TabIndex = 8;
@@ -103,7 +103,7 @@
             // writeCircleButton
             // 
             this.writeCircleButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.writeCircleButton.Location = new System.Drawing.Point(136, 12);
+            this.writeCircleButton.Location = new System.Drawing.Point(143, 12);
             this.writeCircleButton.Name = "writeCircleButton";
             this.writeCircleButton.Size = new System.Drawing.Size(23, 23);
             this.writeCircleButton.TabIndex = 7;
@@ -114,7 +114,7 @@
             // writeArrowCircleButton
             // 
             this.writeArrowCircleButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.writeArrowCircleButton.Location = new System.Drawing.Point(165, 12);
+            this.writeArrowCircleButton.Location = new System.Drawing.Point(172, 12);
             this.writeArrowCircleButton.Name = "writeArrowCircleButton";
             this.writeArrowCircleButton.Size = new System.Drawing.Size(23, 23);
             this.writeArrowCircleButton.TabIndex = 6;

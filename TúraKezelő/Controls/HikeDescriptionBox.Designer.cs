@@ -86,6 +86,7 @@
             this.writeSquareButton.Size = new System.Drawing.Size(23, 23);
             this.writeSquareButton.TabIndex = 9;
             this.writeSquareButton.Text = "■";
+            this.writeSquareButton.Text = "b";
             this.writeSquareButton.UseVisualStyleBackColor = true;
             this.writeSquareButton.Click += new System.EventHandler(this.writeSquareButton_Click);
             // 

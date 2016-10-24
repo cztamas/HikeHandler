@@ -38,7 +38,7 @@ namespace HikeHandler.Data_Containers
 
         // Finds the correct hikecount, and stores it in the DB.
         // Returns the updated value of the hikecount, or -1 in case of an error.
-        public static int UpdateHikeCount(int idCountry, MySqlConnection connection)
+        /*public static int UpdateHikeCount(int idCountry, MySqlConnection connection)
         {
             string commandText = "SELECT COUNT(*) AS count FROM hike WHERE idcountry=" + idCountry + ";";
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, connection))
@@ -65,10 +65,10 @@ namespace HikeHandler.Data_Containers
                     return -1;
                 }
             }
-        }
+        }*/
         
         // Returns the number of regions corresponding to the given country, or -1 in case of an error.
-        public static int CountRegions(int idCountry, MySqlConnection connection)
+        /*public static int CountRegions(int idCountry, MySqlConnection connection)
         {
             string commandText = "SELECT COUNT(*) AS count FROM region WHERE idcountry=@idCountry;";
             using (MySqlCommand command = new MySqlCommand(commandText, connection))
@@ -88,10 +88,10 @@ namespace HikeHandler.Data_Containers
                     return -1;
                 }
             }
-        }
+        }*/
 
         // Returns the number of checkpoints corresponding to the given country, or -1 in case of an error.
-        public static int CountCPs(int idCountry, MySqlConnection connection)
+        /*public static int CountCPs(int idCountry, MySqlConnection connection)
         {
             string commandText = "SELECT COUNT(*) AS count FROM cp WHERE idcountry=@idCountry;";
             using (MySqlCommand command = new MySqlCommand(commandText, connection))
@@ -111,17 +111,17 @@ namespace HikeHandler.Data_Containers
                     return -1;
                 }
             }
-        }
+        }*/
 
         // Returns the MySql command to save the item to DB.
-        public MySqlCommand SaveCommand(MySqlConnection connection)
+        /*public MySqlCommand SaveCommand(MySqlConnection connection)
         {
             string commandText = "INSERT INTO country (NAME, HIKECOUNT, DESCRIPTION) VALUES (@name, 0, @description);";
             MySqlCommand command = new MySqlCommand(commandText, connection);
             command.Parameters.AddWithValue("@name", Name);
             command.Parameters.AddWithValue("@description", Description);
             return command;
-        }
+        }*/
 
         public MySqlCommand UpdateCommand(MySqlConnection connection)
         {
@@ -141,7 +141,7 @@ namespace HikeHandler.Data_Containers
             return command;
         }
 
-        public bool IsDuplicateName(MySqlConnection connection)
+        /*public bool IsDuplicateName(MySqlConnection connection)
         {
             string commandText = "SELECT COUNT(*) FROM country WHERE name=@name;";
             using (MySqlCommand command = new MySqlCommand(commandText, connection))
@@ -162,14 +162,12 @@ namespace HikeHandler.Data_Containers
                     return true;
                 }
             }
-                
-            
-        }
+        }*/
 
         // Checks whether the given country can be deleted.
         // Returns false in case of an error.
         // Deletable only if no region, CP or hike belongs to it.
-        public static bool IsDeletable(MySqlConnection connection, int idCountry)
+        /*public static bool IsDeletable(MySqlConnection connection, int idCountry)
         {
             if (UpdateHikeCount(idCountry, connection) != 0)
                 return false;
@@ -178,9 +176,9 @@ namespace HikeHandler.Data_Containers
             if (CountCPs(idCountry, connection) != 0)
                 return false;
             return true;
-        }
+        }*/
 
-        public static bool DeleteCountry(int idCountry, MySqlConnection connection)
+        /*public static bool DeleteCountry(int idCountry, MySqlConnection connection)
         {
             string message = "Biztosan törli?";
             string caption = "Ország törlése";
@@ -205,6 +203,6 @@ namespace HikeHandler.Data_Containers
                     return false;
                 }
             }
-        }
+        }*/
     }
 }

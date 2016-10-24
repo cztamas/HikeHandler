@@ -7,25 +7,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
 using HikeHandler.Data_Containers;
+using HikeHandler.DAOs;
+using HikeHandler.Exceptions;
 
 namespace HikeHandler.Forms
 {
     public partial class AddCountryForm : Form
     {
+        private CountryDao countryDao;
+
         public AddCountryForm()
         {
             InitializeComponent();
         }
 
-        public AddCountryForm(MySqlConnection connection)
+        public AddCountryForm(CountryDao countryDaoObject)
         {
             InitializeComponent();
-            sqlConnection = connection;
+            countryDao = countryDaoObject;
         }
-
-        private MySqlConnection sqlConnection;
 
         public void Open()
         {
@@ -39,34 +40,28 @@ namespace HikeHandler.Forms
         }
 
         private void saveButton_Click(object sender, EventArgs e)
-        {
-            if (sqlConnection == null)
-            {
-                MessageBox.Show(this, "Nincs kapcsolat az adatbázissal.");
-                return;
-            }
-            if (sqlConnection.State!=ConnectionState.Open)
-            {
-                MessageBox.Show(this, "Nincs kapcsolat az adatbázissal.");
-                return;
-            }
+        {   
             Country country = new Country(nameBox.Text, descriptionBox.Text);
-            if (country.IsDuplicateName(sqlConnection))
+            try
             {
-                MessageBox.Show("Már létezik ilyen nevű ország.", "Hiba");
-                return;
+                countryDao.SaveCountry(country);
+                MessageBox.Show("Sikeresen elmentve.");
+                Close();
             }
-            using (MySqlCommand command = country.SaveCommand(sqlConnection))
+            catch (CountryDaoException ex)
             {
-                try
+                switch (ex.Error)
                 {
-                    command.ExecuteNonQuery();
-                    MessageBox.Show("Sikeresen elmentve.");
-                    Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Hiba: " + ex.Message);
+                    case ErrorType.NoDBConnection:
+                        MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                        break;
+                    case ErrorType.DuplicateName:
+                        MessageBox.Show("Már van elmentve ilyen nevű ország.", "Hiba");
+                        nameBox.Focus();
+                        break;
+                    case ErrorType.DBError:
+                        MessageBox.Show(ex.Message, "Hiba");
+                        break;
                 }
             }
         }

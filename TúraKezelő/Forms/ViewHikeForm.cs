@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using HikeHandler.Data_Containers;
+using HikeHandler.DAOs;
 
 namespace HikeHandler.Forms
 {
@@ -18,6 +19,8 @@ namespace HikeHandler.Forms
         private List<int> cpList;
         private Hike hikeData;
         private MySqlConnection sqlConnection;
+
+        private CountryDao countryDao;
         
         public ViewHikeForm()
         {
@@ -27,6 +30,8 @@ namespace HikeHandler.Forms
         public ViewHikeForm(MySqlConnection connection, int hikeID)
         {
             InitializeComponent();
+            countryDao = new CountryDao(connection);
+
             sqlConnection = connection;
             IDhike = hikeID;
             GetHikeTypes();
@@ -206,8 +211,8 @@ namespace HikeHandler.Forms
                     }
                     if (typeChanged)
                     {
-                        Country.UpdateHikeCount(hikeData.IDCountry, sqlConnection);
-                        Country.UpdateHikeCount(tempHike.IDCountry, sqlConnection);
+                        countryDao.UpdateHikeCount(hikeData.IDCountry);
+                        countryDao.UpdateHikeCount(tempHike.IDCountry);
                         HikeRegion.UpdateHikeCount(hikeData.IDRegion, sqlConnection);
                         HikeRegion.UpdateHikeCount(tempHike.IDRegion, sqlConnection);
                         if (tempHike.HikeType == HikeType.túra && hikeData.HikeType != HikeType.túra)

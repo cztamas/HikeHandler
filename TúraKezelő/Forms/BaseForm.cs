@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using HikeHandler.Forms;
 using HikeHandler.Data_Containers;
+using HikeHandler.DAOs;
 using MySql.Data.MySqlClient;
 
 namespace HikeHandler
@@ -267,8 +268,9 @@ namespace HikeHandler
             }
             if (!uiTestMode)
             {
-                AddCountryForm aCForm = new AddCountryForm(sqlConnection);
-                aCForm.Open();
+                CountryDao countryDao = new CountryDao(sqlConnection);
+                AddCountryForm addCountryForm = new AddCountryForm(countryDao);
+                addCountryForm.Open();
             }            
         }
 

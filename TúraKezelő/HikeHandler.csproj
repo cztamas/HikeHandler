@@ -54,6 +54,10 @@
     <Compile Include="Controls\HikeDescriptionBox.Designer.cs">
       <DependentUpon>HikeDescriptionBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="DAOs\CountryDao.cs" />
+    <Compile Include="DAOs\CPDao.cs" />
+    <Compile Include="DAOs\HikeDao.cs" />
+    <Compile Include="DAOs\RegionDao.cs" />
     <Compile Include="Data Containers\CountryTemplate.cs" />
     <Compile Include="Data Containers\Country.cs" />
     <Compile Include="Data Containers\CP.cs" />
@@ -61,6 +65,8 @@
     <Compile Include="Data Containers\Hike.cs" />
     <Compile Include="Data Containers\HikeRegionTemplate.cs" />
     <Compile Include="Data Containers\HikeTemplate.cs" />
+    <Compile Include="Exceptions\CountryDaoException.cs" />
+    <Compile Include="Exceptions\Miscellaneous.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Controls\CPHandler.cs">
       <SubType>UserControl</SubType>
@@ -226,6 +232,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

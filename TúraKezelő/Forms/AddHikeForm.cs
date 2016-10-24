@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using HikeHandler.Data_Containers;
+using HikeHandler.DAOs;
 
 namespace HikeHandler.Forms
 {
@@ -22,6 +23,9 @@ namespace HikeHandler.Forms
         public AddHikeForm(MySqlConnection connection)
         {
             InitializeComponent();
+            countryDao = new CountryDao(connection);
+
+
             sqlConnection = connection;
             checkPointHandler.Init(sqlConnection, CPHandlerStyle.Add);
             regionComboBox.SelectedValueChanged += new EventHandler(checkPointHandler.Region_Refreshed);
@@ -30,6 +34,7 @@ namespace HikeHandler.Forms
         }
 
         private MySqlConnection sqlConnection;
+        private CountryDao countryDao;
         
         private void GetCountryList()
         {
@@ -159,7 +164,7 @@ namespace HikeHandler.Forms
                     if (hike.HikeType == HikeType.túra)
                     {
                         Hike.UpdatePositions(sqlConnection);
-                        Country.UpdateHikeCount(hike.IDCountry, sqlConnection);
+                        countryDao.UpdateHikeCount(hike.IDCountry);
                         HikeRegion.UpdateHikeCount(hike.IDRegion, sqlConnection);
                         foreach (int item in hike.CPList)
                         {

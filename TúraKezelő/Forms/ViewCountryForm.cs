@@ -9,11 +9,15 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using HikeHandler.Data_Containers;
+using HikeHandler.DAOs;
+using HikeHandler.Exceptions;
 
 namespace HikeHandler.Forms
 {
     public partial class ViewCountryForm : Form
     {
+        private CountryDao countryDao;
+
         private MySqlConnection sqlConnection;
         private Country countryData;
         private int countryID;
@@ -27,6 +31,7 @@ namespace HikeHandler.Forms
         public ViewCountryForm(int id, MySqlConnection connection)
         {
             InitializeComponent();
+            countryDao = new CountryDao(connection);
             sqlConnection = connection;
             countryID = id;
             RefreshForm();
@@ -171,24 +176,35 @@ namespace HikeHandler.Forms
         }
 
         private void deleteCountryButton_Click(object sender, EventArgs e)
-        {
-            if (sqlConnection == null)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+        {        
+            // Asks for confirmation of deletion   
+            string message = "Biztosan törli?";
+            string caption = "Ország törlése";
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            DialogResult result = MessageBox.Show(message, caption, buttons);
+            if (result == DialogResult.No)
                 return;
-            }
-            if (sqlConnection.State != ConnectionState.Open)
+
+            try
             {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
+                if (countryDao.DeleteCountry(countryID))
+                {
+                    MessageBox.Show("Törölve");
+                    Close();
+                }
             }
-            if (!Country.IsDeletable(sqlConnection, countryID))
+            catch (CountryDaoException ex)
             {
-                MessageBox.Show("Csak olyan ország törölhető, amihez nincs tájegység, checkpoint vagy túra hozzárendelve", "Hiba");
-                return;
+                if (ex.Error==ErrorType.NoDBConnection)
+                {
+                    MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                }
+                if (ex.Error==ErrorType.NotDeletable)
+                {
+                    MessageBox.Show("Csak olyan ország törölhető, amihez nincs tájegység, checkpoint vagy túra hozzárendelve.", "Hiba");
+                    return;
+                }
             }
-            if (Country.DeleteCountry(countryID, sqlConnection))
-                Close();
         }
     }
 }

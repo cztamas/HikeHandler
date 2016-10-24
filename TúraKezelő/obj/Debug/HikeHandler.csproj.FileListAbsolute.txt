@@ -49,3 +49,4 @@ C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\HikeHandler.Forms.AddHikeForm.res
 C:\prog\c#\HikeHandler\TúraKezelő\obj\Debug\HikeHandler.Forms.AddHikeForm.resources
 C:\prog\c#\HikeHandler\TúraKezelő\obj\Debug\HikeHandler.Forms.CPHandler.resources
 C:\prog\c#\TúraKezelő\TúraKezelő\obj\Debug\TúraKezelő.Controls.HikeDescriptionBox.resources
+C:\prog\c#\HikeHandler\TúraKezelő\obj\Debug\TúraKezelő.Controls.HikeDescriptionBox.resources

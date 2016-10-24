@@ -6,6 +6,7 @@ using System.Data;
 using System.Windows.Forms;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
+using HikeHandler.DAOs;
 
 namespace HikeHandler.Data_Containers
 {
@@ -166,7 +167,9 @@ VALUES (@date, @idregion, @idcountry, @type, @description, @cpstring)";
                         CP.UpdateHikeCount(item, connection);
                     }
                     HikeRegion.UpdateHikeCount(hikeData.IDRegion, connection);
-                    Country.UpdateHikeCount(hikeData.IDCountry, connection);
+
+                    CountryDao countryDao = new CountryDao(connection);
+                    countryDao.UpdateHikeCount(hikeData.IDCountry);
                     MessageBox.Show("Törölve.");
                     return true;
                 }

@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace HikeHandler
 {
-    public static class Extensions
+    public static class StringExtensions
     {
         public static bool IsCPString(this string text)
         {            

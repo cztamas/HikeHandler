@@ -20,7 +20,6 @@ namespace HikeHandler.Forms
 
         private MySqlConnection sqlConnection;
         private Country countryData;
-        private int countryID;
 
         public ViewCountryForm()
         {
@@ -28,12 +27,12 @@ namespace HikeHandler.Forms
             MakeUneditable();
         }
 
-        public ViewCountryForm(int id, MySqlConnection connection)
+        public ViewCountryForm(int idCountry, MySqlConnection connection)
         {
             InitializeComponent();
             countryDao = new CountryDao(connection);
             sqlConnection = connection;
-            countryID = id;
+            countryData = new Country(idCountry);
             RefreshForm();
         }
 
@@ -63,7 +62,7 @@ namespace HikeHandler.Forms
 
         private void RefreshForm()
         {
-            RefreshCountry(countryID);
+            RefreshCountryData(countryData.ID);
             nameBox.Text = countryData.Name;
             hikeCountBox.Text = countryData.HikeCount.ToString();
             descriptionBox.Text = countryData.Description;
@@ -71,31 +70,22 @@ namespace HikeHandler.Forms
             MakeUneditable();
         }
 
-        private void RefreshCountry(int id)
+        private void RefreshCountryData(int idCountry)
         {
-            Country country = new Country(id);
-            if (sqlConnection==null)
+            try
             {
-                MessageBox.Show("Nem lehet elérni az adatbázist", "Hiba");
-                return;
+                countryData = countryDao.GetCountryData(idCountry);
             }
-            if (sqlConnection.State!=ConnectionState.Open)
+            catch (CountryDaoException ex)
             {
-                MessageBox.Show("Nem lehet elérni az adatbázist", "Hiba");
-                return;
-            }
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(country.RefreshCommand(sqlConnection)))
-            {
-                try
+                switch (ex.Error)
                 {
-                    DataTable table = new DataTable();
-                    adapter.Fill(table);
-                    DataRow row = table.Rows[0];
-                    countryData = new Country(id, (int)row["hikecount"],(string)row["name"],(string)row["description"]);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Hiba");
+                    case ErrorType.NoDBConnection:
+                        MessageBox.Show("Nincs kapcslat az adatbázissal", "Hiba");
+                        break;
+                    default:
+                        MessageBox.Show(ex.Message, "Hiba");
+                        break;
                 }
             }
         }
@@ -121,31 +111,27 @@ namespace HikeHandler.Forms
         }
 
         private void saveEditButton_Click(object sender, EventArgs e)
-        {
-            if (sqlConnection == null)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            if (sqlConnection.State != ConnectionState.Open) 
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
+        {   
             countryData.Name = nameBox.Text;
             countryData.Description = descriptionBox.Text;
-            using (MySqlCommand command = countryData.UpdateCommand(sqlConnection))
+            try
             {
-                try
+                countryDao.UpdateCountry(countryData);
+                RefreshForm();
+            }
+            catch (CountryDaoException ex)
+            {
+                switch (ex.Error)
                 {
-                    command.ExecuteNonQuery();
-                    RefreshForm();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Hiba");
+                    case ErrorType.NoDBConnection:
+                        MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                        break;
+                    default:
+                        MessageBox.Show(ex.Message, "Hiba");
+                        break;
                 }
             }
+            
         }
 
         private void regionsOfCountryButton_Click(object sender, EventArgs e)
@@ -187,7 +173,7 @@ namespace HikeHandler.Forms
 
             try
             {
-                if (countryDao.DeleteCountry(countryID))
+                if (countryDao.DeleteCountry(countryData.ID))
                 {
                     MessageBox.Show("Törölve");
                     Close();
@@ -195,14 +181,17 @@ namespace HikeHandler.Forms
             }
             catch (CountryDaoException ex)
             {
-                if (ex.Error==ErrorType.NoDBConnection)
+                switch (ex.Error)
                 {
-                    MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                }
-                if (ex.Error==ErrorType.NotDeletable)
-                {
-                    MessageBox.Show("Csak olyan ország törölhető, amihez nincs tájegység, checkpoint vagy túra hozzárendelve.", "Hiba");
-                    return;
+                    case ErrorType.NoDBConnection:
+                        MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                        break;
+                    case ErrorType.NotDeletable:
+                        MessageBox.Show("Csak olyan ország törölhető, amihez nincs tájegység, checkpoint vagy túra hozzárendelve.", "Hiba");
+                        break;
+                    default:
+                        MessageBox.Show(ex.Message, "Hiba");
+                        break;
                 }
             }
         }

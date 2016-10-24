@@ -57,7 +57,8 @@ namespace HikeHandler.DAOs
             }
         }
 
-        // Returns the number of regions corresponding to the given country, or throws CountryDaoException in case of an error.
+        // Returns the number of regions corresponding to the given country, 
+        // or throws CountryDaoException in case of an error.
         public int CountRegions(int idCountry)
         {
             if (sqlConnection == null)
@@ -87,7 +88,8 @@ namespace HikeHandler.DAOs
             }
         }
 
-        // Returns the number of checkpoints corresponding to the given country, or throws CountryDaoException in case of an error.
+        // Returns the number of checkpoints corresponding to the given country, 
+        // or throws CountryDaoException in case of an error.
         public int CountCPs(int idCountry)
         {
             if (sqlConnection == null)
@@ -118,6 +120,7 @@ namespace HikeHandler.DAOs
         }
 
         // Check whether there is a country in the DB with the given name. Returns true if there is.
+        // Throws CountryDaoException in case of an error.
         public bool IsDuplicateName(string countryName)
         {
             string commandText = "SELECT COUNT(*) FROM country WHERE name=@name;";
@@ -164,7 +167,7 @@ namespace HikeHandler.DAOs
             }
         }
 
-        // Deletes the given country from DB
+        // Deletes the given country from DB, or throws CountryDaoException in case of an error.
         public bool DeleteCountry(int idCountry)
         {
             if (sqlConnection == null)
@@ -194,7 +197,7 @@ namespace HikeHandler.DAOs
         }
 
         // Saves country data to DB, or throws CountryDaoException in case of an error.
-        public bool SaveCountry (Country countryData)
+        public bool SaveCountry (Country country)
         {
             if (sqlConnection == null)
             {
@@ -204,15 +207,15 @@ namespace HikeHandler.DAOs
             {
                 throw new CountryDaoException(ActivityType.Save, ErrorType.NoDBConnection, string.Empty);
             }
-            if (IsDuplicateName(countryData.Name))
+            if (IsDuplicateName(country.Name))
             {
                 throw new CountryDaoException(ActivityType.Save, ErrorType.DuplicateName, string.Empty);
             }
             string commandText = "INSERT INTO country (NAME, HIKECOUNT, DESCRIPTION) VALUES (@name, 0, @description);";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
-                command.Parameters.AddWithValue("@name", countryData.Name);
-                command.Parameters.AddWithValue("@description", countryData.Description);
+                command.Parameters.AddWithValue("@name", country.Name);
+                command.Parameters.AddWithValue("@description", country.Description);
                 try
                 {
                     command.ExecuteNonQuery();
@@ -225,6 +228,91 @@ namespace HikeHandler.DAOs
             }
         }
 
+        // Returns the data of the country with given id, or throws CountryDaoException in case of an error.
+        public Country GetCountryData(int idCountry)
+        {
+            if (idCountry <= 0)
+            {
+                throw new CountryDaoException(ActivityType.GetData, ErrorType.InvalidArgument,
+                    "idCountry parameter should be positive.");
+            }
+            if (sqlConnection == null)
+            {
+                throw new CountryDaoException(ActivityType.GetData, ErrorType.NoDBConnection, string.Empty);
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                throw new CountryDaoException(ActivityType.GetData, ErrorType.NoDBConnection, string.Empty);
+            }
 
+            string commandText = "SELECT name, description, hikecount FROM country WHERE IDCOUNTRY=@id;";
+            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
+            {
+                adapter.SelectCommand.Parameters.AddWithValue("@id", idCountry);
+                DataTable table = new DataTable();
+                try
+                {
+                    adapter.Fill(table);
+                    DataRow row = table.Rows[0];
+                    int count;
+                    if (!int.TryParse(row["hikecount"].ToString(), out count))
+                    {
+                        throw new CountryDaoException(ActivityType.GetData, ErrorType.DBError,
+                            "'hikecount' value should be an integer.");
+                    }
+                    Country countryData = new Country(idCountry, count, 
+                        row["name"].ToString(), row["description"].ToString());
+                    return countryData;
+                }
+                catch (Exception ex)
+                {
+                    throw new CountryDaoException(ActivityType.GetData, ErrorType.DBError, ex.Message);
+                }
+            }
+        }
+
+        // Updates the DB with data in the country object, or throws CountryDaoException in case of an error.
+        public bool UpdateCountry(Country country)
+        {
+            if (sqlConnection == null)
+            {
+                throw new CountryDaoException(ActivityType.Update, ErrorType.NoDBConnection, string.Empty);
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                throw new CountryDaoException(ActivityType.Update, ErrorType.NoDBConnection, string.Empty);
+            }
+            string commandText = 
+                "UPDATE country SET NAME=@name, DESCRIPTION=@description WHERE IDCOUNTRY=@id;";
+            using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
+            {
+                command.Parameters.AddWithValue("@name", country.Name);
+                command.Parameters.AddWithValue("@description", country.Description);
+                command.Parameters.AddWithValue("@id", country.ID);
+                try
+                {
+                    command.ExecuteNonQuery();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    throw new CountryDaoException(ActivityType.Update, ErrorType.DBError, ex.Message);
+                }
+            }
+        }
+
+        /* 
+        public DataTable SearchCountry(CountryTemplate template)
+        {
+            if (sqlConnection == null)
+            {
+                throw new CountryDaoException(ActivityType.Search, ErrorType.NoDBConnection, string.Empty);
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                throw new CountryDaoException(ActivityType.Search, ErrorType.NoDBConnection, string.Empty);
+            }
+        }
+        */
     }
 }

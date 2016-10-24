@@ -9,11 +9,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using HikeHandler.Data_Containers;
+using HikeHandler.DAOs;
 
 namespace HikeHandler.Forms
 {
     public partial class SearchCountryForm : Form
     {
+        private CountryDao countryDao;
         private MySqlConnection sqlConnection;
 
         public SearchCountryForm()
@@ -24,6 +26,7 @@ namespace HikeHandler.Forms
         public SearchCountryForm(MySqlConnection connection)
         {
             InitializeComponent();
+            countryDao = new CountryDao(connection);
             sqlConnection = connection;
             GetCountryList();
         }        

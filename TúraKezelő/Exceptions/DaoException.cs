@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace HikeHandler.Exceptions
 {
-    public class CountryDaoException : Exception
+    public class DaoException : Exception
     {
         public ActivityType Activity { get; }
         public ErrorType Error { get; }
 
-        public CountryDaoException(ActivityType activityType, ErrorType errorType, string message) : base(message)
+        public DaoException(ActivityType activityType, ErrorType errorType, string message) : base(message)
         {
             Activity = activityType;
             Error = errorType;

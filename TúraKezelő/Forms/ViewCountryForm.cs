@@ -76,7 +76,7 @@ namespace HikeHandler.Forms
             {
                 countryData = countryDao.GetCountryData(idCountry);
             }
-            catch (CountryDaoException ex)
+            catch (DaoException ex)
             {
                 switch (ex.Error)
                 {
@@ -119,7 +119,7 @@ namespace HikeHandler.Forms
                 countryDao.UpdateCountry(countryData);
                 RefreshForm();
             }
-            catch (CountryDaoException ex)
+            catch (DaoException ex)
             {
                 switch (ex.Error)
                 {
@@ -179,7 +179,7 @@ namespace HikeHandler.Forms
                     Close();
                 }
             }
-            catch (CountryDaoException ex)
+            catch (DaoException ex)
             {
                 switch (ex.Error)
                 {

@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using HikeHandler.Data_Containers;
 using HikeHandler.DAOs;
+using HikeHandler.Exceptions;
 
 namespace HikeHandler.Forms
 {
@@ -95,33 +96,29 @@ namespace HikeHandler.Forms
                 hikeNumberBox.Focus();
                 return;
             }
-            if (sqlConnection == null)
+            CountryTemplate template = new CountryTemplate(countryComboBox.Text, 
+                hikeNumberBox.Text.ToIntPile());
+            try
             {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
+                DataTable table = countryDao.SearchCountry(template);
+                resultView.DataSource = table;
+                resultView.Columns[0].Visible = false;
+                resultView.Columns[1].HeaderText = "Név";
+                resultView.Columns[2].HeaderText = "Túrák száma";
+                resultGroupBox.Text = "Találatok száma: " + table.Rows.Count;
             }
-            if (sqlConnection.State != ConnectionState.Open)
+            catch (DaoException ex)
             {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
+                if (ex.Error==ErrorType.NoDBConnection)
+                {
+                    MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                    return;
+                }
+                MessageBox.Show(ex.Message, "Hiba");
             }
-            CountryTemplate template = new CountryTemplate(countryComboBox.Text, hikeNumberBox.Text);
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(template.SearchCommand(sqlConnection))) 
+            catch (Exception ex)
             {
-                try
-                {
-                    DataTable table = new DataTable();
-                    adapter.Fill(table);
-                    resultView.DataSource = table;
-                    resultView.Columns[0].Visible = false;
-                    resultView.Columns[1].HeaderText = "Név";
-                    resultView.Columns[2].HeaderText = "Túrák száma";
-                    resultGroupBox.Text = "Találatok száma: " + table.Rows.Count;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Hiba");
-                }
+                MessageBox.Show(ex.Message, "Hiba");
             }
         }
 

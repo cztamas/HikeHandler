@@ -48,7 +48,7 @@ namespace HikeHandler.Forms
                 MessageBox.Show("Sikeresen elmentve.");
                 Close();
             }
-            catch (CountryDaoException ex)
+            catch (DaoException ex)
             {
                 switch (ex.Error)
                 {

@@ -25,11 +25,11 @@ namespace HikeHandler.DAOs
         {
             if (sqlConnection == null)
             {
-                throw new CountryDaoException(ActivityType.UpdateHikeCount, ErrorType.NoDBConnection, string.Empty);
+                throw new DaoException(ActivityType.UpdateHikeCount, ErrorType.NoDBConnection, string.Empty);
             }
             if (sqlConnection.State != ConnectionState.Open)
             {
-                throw new CountryDaoException(ActivityType.UpdateHikeCount, ErrorType.NoDBConnection, string.Empty);
+                throw new DaoException(ActivityType.UpdateHikeCount, ErrorType.NoDBConnection, string.Empty);
             }
             string commandText = "SELECT COUNT(*) AS count FROM hike WHERE idcountry=" + idCountry + ";";
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
@@ -52,7 +52,7 @@ namespace HikeHandler.DAOs
                 }
                 catch (Exception ex)
                 {
-                    throw new CountryDaoException(ActivityType.UpdateHikeCount, ErrorType.DBError, ex.Message);
+                    throw new DaoException(ActivityType.UpdateHikeCount, ErrorType.DBError, ex.Message);
                 }
             }
         }
@@ -63,11 +63,11 @@ namespace HikeHandler.DAOs
         {
             if (sqlConnection == null)
             {
-                throw new CountryDaoException(ActivityType.CountRegions, ErrorType.NoDBConnection, string.Empty);
+                throw new DaoException(ActivityType.CountRegions, ErrorType.NoDBConnection, string.Empty);
             }
             if (sqlConnection.State != ConnectionState.Open)
             {
-                throw new CountryDaoException(ActivityType.CountRegions, ErrorType.NoDBConnection, string.Empty);
+                throw new DaoException(ActivityType.CountRegions, ErrorType.NoDBConnection, string.Empty);
             }
             string commandText = "SELECT COUNT(*) AS count FROM region WHERE idcountry=@idCountry;";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
@@ -83,7 +83,7 @@ namespace HikeHandler.DAOs
                 }
                 catch (Exception ex)
                 {
-                    throw new CountryDaoException(ActivityType.CountRegions, ErrorType.DBError, ex.Message);
+                    throw new DaoException(ActivityType.CountRegions, ErrorType.DBError, ex.Message);
                 }
             }
         }
@@ -94,11 +94,11 @@ namespace HikeHandler.DAOs
         {
             if (sqlConnection == null)
             {
-                throw new CountryDaoException(ActivityType.CountCPs, ErrorType.NoDBConnection, string.Empty);
+                throw new DaoException(ActivityType.CountCPs, ErrorType.NoDBConnection, string.Empty);
             }
             if (sqlConnection.State != ConnectionState.Open)
             {
-                throw new CountryDaoException(ActivityType.CountCPs, ErrorType.NoDBConnection, string.Empty);
+                throw new DaoException(ActivityType.CountCPs, ErrorType.NoDBConnection, string.Empty);
             }
             string commandText = "SELECT COUNT(*) AS count FROM cp WHERE idcountry=@idCountry;";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
@@ -114,7 +114,7 @@ namespace HikeHandler.DAOs
                 }
                 catch (Exception ex)
                 {
-                    throw new CountryDaoException(ActivityType.CountCPs, ErrorType.DBError, ex.Message);
+                    throw new DaoException(ActivityType.CountCPs, ErrorType.DBError, ex.Message);
                 }
             }
         }
@@ -138,7 +138,7 @@ namespace HikeHandler.DAOs
                 }
                 catch (Exception ex)
                 {
-                    throw new CountryDaoException(ActivityType.CheckDuplicateName, ErrorType.DBError, ex.Message);
+                    throw new DaoException(ActivityType.CheckDuplicateName, ErrorType.DBError, ex.Message);
                 }
             }
         }
@@ -159,7 +159,7 @@ namespace HikeHandler.DAOs
                     return false;
                 return true;
             }
-            catch (CountryDaoException ex)
+            catch (DaoException ex)
             {
                 if (ex.Error == ErrorType.NoDBConnection)
                     throw;
@@ -172,14 +172,14 @@ namespace HikeHandler.DAOs
         {
             if (sqlConnection == null)
             {
-                throw new CountryDaoException(ActivityType.Delete, ErrorType.NoDBConnection, string.Empty);
+                throw new DaoException(ActivityType.Delete, ErrorType.NoDBConnection, string.Empty);
             }
             if (sqlConnection.State != ConnectionState.Open)
             {
-                throw new CountryDaoException(ActivityType.Delete, ErrorType.NoDBConnection, string.Empty);
+                throw new DaoException(ActivityType.Delete, ErrorType.NoDBConnection, string.Empty);
             }
             if (!IsDeletable(idCountry))
-                throw new CountryDaoException(ActivityType.Delete, ErrorType.NotDeletable, string.Empty);
+                throw new DaoException(ActivityType.Delete, ErrorType.NotDeletable, string.Empty);
             string commandText = "DELETE FROM country WHERE idcountry=@idcountry";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
@@ -191,7 +191,7 @@ namespace HikeHandler.DAOs
                 }
                 catch (Exception ex)
                 {
-                    throw new CountryDaoException(ActivityType.Delete, ErrorType.DBError, ex.Message);
+                    throw new DaoException(ActivityType.Delete, ErrorType.DBError, ex.Message);
                 }
             }
         }
@@ -201,15 +201,15 @@ namespace HikeHandler.DAOs
         {
             if (sqlConnection == null)
             {
-                throw new CountryDaoException(ActivityType.Save, ErrorType.NoDBConnection, string.Empty);
+                throw new DaoException(ActivityType.Save, ErrorType.NoDBConnection, string.Empty);
             }
             if (sqlConnection.State != ConnectionState.Open)
             {
-                throw new CountryDaoException(ActivityType.Save, ErrorType.NoDBConnection, string.Empty);
+                throw new DaoException(ActivityType.Save, ErrorType.NoDBConnection, string.Empty);
             }
             if (IsDuplicateName(country.Name))
             {
-                throw new CountryDaoException(ActivityType.Save, ErrorType.DuplicateName, string.Empty);
+                throw new DaoException(ActivityType.Save, ErrorType.DuplicateName, string.Empty);
             }
             string commandText = "INSERT INTO country (NAME, HIKECOUNT, DESCRIPTION) VALUES (@name, 0, @description);";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
@@ -223,7 +223,7 @@ namespace HikeHandler.DAOs
                 }
                 catch (Exception ex)
                 {
-                    throw new CountryDaoException(ActivityType.Save, ErrorType.DBError, ex.Message);
+                    throw new DaoException(ActivityType.Save, ErrorType.DBError, ex.Message);
                 }
             }
         }
@@ -233,16 +233,16 @@ namespace HikeHandler.DAOs
         {
             if (idCountry <= 0)
             {
-                throw new CountryDaoException(ActivityType.GetData, ErrorType.InvalidArgument,
+                throw new DaoException(ActivityType.GetData, ErrorType.InvalidArgument,
                     "idCountry parameter should be positive.");
             }
             if (sqlConnection == null)
             {
-                throw new CountryDaoException(ActivityType.GetData, ErrorType.NoDBConnection, string.Empty);
+                throw new DaoException(ActivityType.GetData, ErrorType.NoDBConnection, string.Empty);
             }
             if (sqlConnection.State != ConnectionState.Open)
             {
-                throw new CountryDaoException(ActivityType.GetData, ErrorType.NoDBConnection, string.Empty);
+                throw new DaoException(ActivityType.GetData, ErrorType.NoDBConnection, string.Empty);
             }
 
             string commandText = "SELECT name, description, hikecount FROM country WHERE IDCOUNTRY=@id;";
@@ -257,7 +257,7 @@ namespace HikeHandler.DAOs
                     int count;
                     if (!int.TryParse(row["hikecount"].ToString(), out count))
                     {
-                        throw new CountryDaoException(ActivityType.GetData, ErrorType.DBError,
+                        throw new DaoException(ActivityType.GetData, ErrorType.DBError,
                             "'hikecount' value should be an integer.");
                     }
                     Country countryData = new Country(idCountry, count, 
@@ -266,7 +266,7 @@ namespace HikeHandler.DAOs
                 }
                 catch (Exception ex)
                 {
-                    throw new CountryDaoException(ActivityType.GetData, ErrorType.DBError, ex.Message);
+                    throw new DaoException(ActivityType.GetData, ErrorType.DBError, ex.Message);
                 }
             }
         }
@@ -276,11 +276,11 @@ namespace HikeHandler.DAOs
         {
             if (sqlConnection == null)
             {
-                throw new CountryDaoException(ActivityType.Update, ErrorType.NoDBConnection, string.Empty);
+                throw new DaoException(ActivityType.Update, ErrorType.NoDBConnection, string.Empty);
             }
             if (sqlConnection.State != ConnectionState.Open)
             {
-                throw new CountryDaoException(ActivityType.Update, ErrorType.NoDBConnection, string.Empty);
+                throw new DaoException(ActivityType.Update, ErrorType.NoDBConnection, string.Empty);
             }
             string commandText = 
                 "UPDATE country SET NAME=@name, DESCRIPTION=@description WHERE IDCOUNTRY=@id;";
@@ -296,23 +296,41 @@ namespace HikeHandler.DAOs
                 }
                 catch (Exception ex)
                 {
-                    throw new CountryDaoException(ActivityType.Update, ErrorType.DBError, ex.Message);
+                    throw new DaoException(ActivityType.Update, ErrorType.DBError, ex.Message);
                 }
             }
         }
-
-        /* 
+        
         public DataTable SearchCountry(CountryTemplate template)
         {
             if (sqlConnection == null)
             {
-                throw new CountryDaoException(ActivityType.Search, ErrorType.NoDBConnection, string.Empty);
+                throw new DaoException(ActivityType.Search, ErrorType.NoDBConnection, string.Empty);
             }
             if (sqlConnection.State != ConnectionState.Open)
             {
-                throw new CountryDaoException(ActivityType.Search, ErrorType.NoDBConnection, string.Empty);
+                throw new DaoException(ActivityType.Search, ErrorType.NoDBConnection, string.Empty);
+            }
+            string commandText = "SELECT idcountry, name, hikecount FROM country WHERE name LIKE @name";
+            string countCondition = template.HikeCount.SqlSearchCondition("hikeCount");
+            if (countCondition != String.Empty)
+                commandText += (" AND " + countCondition);
+            commandText += " ORDER BY name ASC;";
+            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
+            {
+                adapter.SelectCommand.Parameters.AddWithValue("@name", "%" + template.Name + "%");
+                DataTable table = new DataTable();
+                try
+                {
+                    adapter.Fill(table);
+                    return table;
+                }   
+                catch (Exception ex)
+                {
+                    throw new DaoException(ActivityType.Search, ErrorType.DBError, ex.Message);
+                }
             }
         }
-        */
+        
     }
 }

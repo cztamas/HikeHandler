@@ -20,6 +20,11 @@ namespace HikeHandler.Data_Containers
 
         public HikeRegion() { }
 
+        public HikeRegion(int regionID)
+        {
+            ID = regionID;
+        }
+
         public HikeRegion(int idOfCountry, string regionName, string regionDescription)
         {
             CountryID = idOfCountry;

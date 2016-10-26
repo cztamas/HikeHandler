@@ -9,25 +9,29 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using HikeHandler.Data_Containers;
+using HikeHandler.DAOs;
+using HikeHandler.Exceptions;
 
 namespace HikeHandler.Forms
 {
     public partial class ViewRegionForm : Form
     {
         private MySqlConnection sqlConnection;
-        private int regionID;
-        private string regionName;
+        private RegionDao regionDao;
+        private HikeRegion currentRegion;
 
         public ViewRegionForm()
         {
             InitializeComponent();
+            currentRegion = new HikeRegion();
         }
 
         public ViewRegionForm(MySqlConnection connection, int idRegion)
         {
             InitializeComponent();
             sqlConnection = connection;
-            regionID = idRegion;
+            regionDao = new RegionDao(connection);
+            currentRegion = new HikeRegion(idRegion);
             RefreshForm();
             MakeUneditable();
         }
@@ -63,10 +67,10 @@ namespace HikeHandler.Forms
 
         private void RefreshForm()
         {
-            HikeRegion region = GetRegionData(regionID);
+            HikeRegion region = GetRegionData(currentRegion.ID);
             if (region == null)
                 return;
-            regionName = region.Name;
+            currentRegion = region;
             nameBox.Text = region.Name;
             countryBox.Text = region.CountryName;
             hikeCountBox.Text = region.HikeCount.ToString();
@@ -75,38 +79,34 @@ namespace HikeHandler.Forms
         }
 
         public HikeRegion GetRegionData(int regionID)
-        {
-            if (sqlConnection == null)
-            {
-                MessageBox.Show("Nem lehet elérni az adatbázist", "Hiba");
-                return null;
-            }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                MessageBox.Show("Nem lehet elérni az adatbázist", "Hiba");
-                return null;
-            }
+        {   
             HikeRegionTemplate template = new HikeRegionTemplate(regionID);
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(template.SearchCommand(sqlConnection)))
+            try
             {
-                try
+                DataTable table = regionDao.SearchRegion(template);
+                DataRow row = table.Rows[0];
+                HikeRegion region = new HikeRegion();
+                region.ID = (int)row["id"];
+                region.Name = (string)row["name"];
+                region.HikeCount = (int)row["hikecount"];
+                region.Description = (string)row["description"];
+                region.CountryName = (string)row["countryname"];
+                return region;
+            }
+            catch (DaoException ex)
+            {
+                if (ex.Error == ErrorType.NoDBConnection)
                 {
-                    DataTable table = new DataTable();
-                    adapter.Fill(table);
-                    DataRow row = table.Rows[0];
-                    HikeRegion region = new HikeRegion();
-                    region.ID = (int)row["id"];
-                    region.Name = (string)row["name"];
-                    region.HikeCount = (int)row["hikecount"];
-                    region.Description = (string)row["description"];
-                    region.CountryName = (string)row["countryname"];
-                    return region;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Hiba");
+                    MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
                     return null;
                 }
+                MessageBox.Show(ex.Message, "Hiba");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+                return null;
             }
         }
 
@@ -140,7 +140,7 @@ namespace HikeHandler.Forms
                 return;
             }
             HikeRegion region = new HikeRegion();
-            region.ID = regionID;
+            region.ID = currentRegion.ID;
             region.Name = nameBox.Text;
             region.Description = descriptionBox.Text;
             using (MySqlCommand command = region.UpdateCommand(sqlConnection))
@@ -161,8 +161,8 @@ namespace HikeHandler.Forms
         private void showHikesButton_Click(object sender, EventArgs e)
         {
             HikeTemplate template = new HikeTemplate();
-            template.IDRegion = regionID;
-            template.RegionName = regionName;
+            template.IDRegion = currentRegion.ID;
+            template.RegionName = currentRegion.Name;
             SearchHikeForm searchHikeForm = new SearchHikeForm(sqlConnection, template);
             searchHikeForm.Show();
         }
@@ -170,20 +170,20 @@ namespace HikeHandler.Forms
         private void showCPsButton_Click(object sender, EventArgs e)
         {
             CPTemplate template = new CPTemplate();
-            template.IDRegion = regionID;
-            template.RegionName = regionName;
+            template.IDRegion = currentRegion.ID;
+            template.RegionName = currentRegion.Name;
             SearchCPForm searchCPForm = new SearchCPForm(sqlConnection, template);
             searchCPForm.Show();
         }
 
         private void deleteButton_Click(object sender, EventArgs e)
         {
-            if (!HikeRegion.IsDeletable(regionID, sqlConnection))
+            if (!HikeRegion.IsDeletable(currentRegion.ID, sqlConnection))
             {
                 MessageBox.Show("Csak olyan tájegység törölhető, amihez nincs checkpoint vagy túra hozzárendelve");
                 return;
             }
-            if (HikeRegion.DeleteRegion(regionID, sqlConnection)) 
+            if (HikeRegion.DeleteRegion(currentRegion.ID, sqlConnection)) 
                 Close();
         }
     }

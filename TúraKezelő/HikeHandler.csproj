@@ -65,9 +65,9 @@
     <Compile Include="Data Containers\Hike.cs" />
     <Compile Include="Data Containers\HikeRegionTemplate.cs" />
     <Compile Include="Data Containers\HikeTemplate.cs" />
-    <Compile Include="Exceptions\CountryDaoException.cs" />
+    <Compile Include="Exceptions\DaoException.cs" />
     <Compile Include="Exceptions\Miscellaneous.cs" />
-    <Compile Include="StringExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Controls\CPHandler.cs">
       <SubType>UserControl</SubType>
     </Compile>

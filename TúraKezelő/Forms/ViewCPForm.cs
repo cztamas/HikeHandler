@@ -9,12 +9,15 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using HikeHandler.Data_Containers;
+using HikeHandler.Exceptions;
+using HikeHandler.DAOs;
 
 namespace HikeHandler.Forms
 {    
     public partial class ViewCPForm : Form
     {
         private MySqlConnection sqlConnection;
+        private CPDao cpDao;
         private int idCP;
 
         public ViewCPForm()
@@ -26,6 +29,7 @@ namespace HikeHandler.Forms
         {
             InitializeComponent();
             sqlConnection = connection;
+            cpDao = new CPDao(connection);
             idCP = cpID;
             RefreshForm();
             MakeUneditable();
@@ -76,38 +80,34 @@ namespace HikeHandler.Forms
 
         private CP GetCPData(int cpID)
         {
-            if (sqlConnection == null)
-            {
-                MessageBox.Show("Nem lehet elérni az adatbázist", "Hiba");
-                return null;
-            }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                MessageBox.Show("Nem lehet elérni az adatbázist", "Hiba");
-                return null;
-            }
             CPTemplate template = new CPTemplate(cpID);
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(template.SearchCommand(sqlConnection)))
+            try
             {
-                try
+                DataTable table = cpDao.SearchCP(template);
+                DataRow row = table.Rows[0];
+                CP resultCP = new CP();
+                resultCP.Name = (string)row["name"];
+                resultCP.CountryName = (string)row["name2"];
+                resultCP.RegionName = (string)row["name1"];
+                resultCP.TypeOfCP = (CPType)Enum.Parse(typeof(CPType), row["type"].ToString());
+                resultCP.HikeCount = (int)row["hikecount"];
+                resultCP.Description = (string)row["description"];
+                return resultCP;
+            }
+            catch (DaoException ex)
+            {
+                if (ex.Error == ErrorType.NoDBConnection)
                 {
-                    DataTable table = new DataTable();
-                    adapter.Fill(table);
-                    DataRow row = table.Rows[0];
-                    CP resultCP = new CP();
-                    resultCP.Name = (string)row["name"];
-                    resultCP.CountryName = (string)row["name2"];
-                    resultCP.RegionName = (string)row["name1"];
-                    resultCP.TypeOfCP = (CPType)Enum.Parse(typeof(CPType), row["type"].ToString());
-                    resultCP.HikeCount = (int)row["hikecount"];
-                    resultCP.Description = (string)row["description"];
-                    return resultCP;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Hiba");
+                    MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
                     return null;
                 }
+                MessageBox.Show(ex.Message, "Hiba");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+                return null;
             }
         }
 

@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using HikeHandler.Data_Containers;
 using HikeHandler.DAOs;
+using HikeHandler.Exceptions;
 
 namespace HikeHandler.Forms
 {
@@ -19,8 +20,8 @@ namespace HikeHandler.Forms
         private List<int> cpList;
         private Hike hikeData;
         private MySqlConnection sqlConnection;
-
         private CountryDao countryDao;
+        private HikeDao hikeDao;
         
         public ViewHikeForm()
         {
@@ -30,8 +31,8 @@ namespace HikeHandler.Forms
         public ViewHikeForm(MySqlConnection connection, int hikeID)
         {
             InitializeComponent();
+            hikeDao = new HikeDao(connection);
             countryDao = new CountryDao(connection);
-
             sqlConnection = connection;
             IDhike = hikeID;
             GetHikeTypes();
@@ -93,50 +94,46 @@ namespace HikeHandler.Forms
 
         private Hike GetHikeData(int hikeID)
         {
-            if (sqlConnection == null)
-            {
-                MessageBox.Show("Nem lehet elérni az adatbázist", "Hiba");
-                return null;
-            }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                MessageBox.Show("Nem lehet elérni az adatbázist", "Hiba");
-                return null;
-            }
             HikeTemplate template = new HikeTemplate(IDhike);
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(template.SearchCommand(sqlConnection,true)))
+            try
             {
-                try
+                DataTable resultTable = hikeDao.SearchHike(template, true);
+                DataRow row = resultTable.Rows[0];
+                Hike tempHike = new Hike(IDhike);
+                tempHike.CountryName = (string)row["countryname"];
+                tempHike.RegionName = (string)row["regionname"];
+                int regID;
+                if (int.TryParse(row["idregion"].ToString(), out regID))
+                    tempHike.IDRegion = regID;
+                int countryID;
+                if (int.TryParse(row["idcountry"].ToString(), out countryID))
+                    tempHike.IDCountry = countryID;
+                int posInt;
+                if (int.TryParse(row["position"].ToString(), out posInt))
+                    tempHike.Position = posInt;
+                tempHike.HikeDate = Convert.ToDateTime(row["date"]);
+                HikeType hikeType;
+                Enum.TryParse<HikeType>((string)row["type"], out hikeType);
+                tempHike.HikeType = hikeType;
+                tempHike.Description = (string)row["description"];
+                tempHike.CPString = (string)row["cpstring"];
+                return tempHike;
+            }
+            catch (DaoException ex)
+            {
+                if (ex.Error == ErrorType.NoDBConnection)
                 {
-                    DataTable resultTable = new DataTable();
-                    adapter.Fill(resultTable);
-                    DataRow row = resultTable.Rows[0];
-                    Hike tempHike = new Hike(IDhike);
-                    tempHike.CountryName = (string)row["countryname"];
-                    tempHike.RegionName = (string)row["regionname"];
-                    int regID;
-                    if (int.TryParse(row["idregion"].ToString(), out regID))
-                        tempHike.IDRegion = regID;
-                    int countryID;
-                    if (int.TryParse(row["idcountry"].ToString(), out countryID))
-                        tempHike.IDCountry = countryID;
-                    int posInt;
-                    if (int.TryParse(row["position"].ToString(), out posInt))
-                        tempHike.Position = posInt;
-                    tempHike.HikeDate = Convert.ToDateTime(row["date"]);
-                    HikeType hikeType;
-                    Enum.TryParse<HikeType>((string)row["type"], out hikeType);
-                    tempHike.HikeType = hikeType;
-                    tempHike.Description = (string)row["description"];
-                    tempHike.CPString = (string)row["cpstring"];
-                    return tempHike;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Hiba");
+                    MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
                     return null;
                 }
-            }   
+                MessageBox.Show(ex.Message, "Hiba");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+                return null;
+            }
         }
 
         private void GetHikeTypes()

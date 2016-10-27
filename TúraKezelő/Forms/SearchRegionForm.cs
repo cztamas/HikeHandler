@@ -28,6 +28,7 @@ namespace HikeHandler.Forms
         {
             InitializeComponent();
             sqlConnection = connection;
+            regionDao = new RegionDao(connection);
             GetCountryList();            
         }
 
@@ -35,6 +36,7 @@ namespace HikeHandler.Forms
         {
             InitializeComponent();
             sqlConnection = connection;
+            regionDao = new RegionDao(connection);
             GetCountryList();
             countryComboBox.Text = template.CountryName;
             MakeSearch(template);

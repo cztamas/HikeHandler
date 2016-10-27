@@ -9,11 +9,16 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using HikeHandler.Data_Containers;
+using HikeHandler.Exceptions;
+using HikeHandler.DAOs;
 
 namespace HikeHandler.Forms
 {
     public partial class SearchHikeForm : Form
     {
+        private MySqlConnection sqlConnection;
+        private HikeDao hikeDao;
+
         public SearchHikeForm()
         {
             InitializeComponent();
@@ -23,6 +28,7 @@ namespace HikeHandler.Forms
         {
             InitializeComponent();
             sqlConnection = connection;
+            hikeDao = new HikeDao(connection);
             checkPointHandler.Init(sqlConnection, CPHandlerStyle.Search);
             regionComboBox.SelectedValueChanged += new EventHandler(checkPointHandler.Region_Refreshed);
             GetCountryList();
@@ -33,6 +39,7 @@ namespace HikeHandler.Forms
         {
             InitializeComponent();
             sqlConnection = connection;
+            hikeDao = new HikeDao(connection);
             checkPointHandler.Init(sqlConnection, CPHandlerStyle.Search);
             regionComboBox.SelectedValueChanged += new EventHandler(checkPointHandler.Region_Refreshed);
             GetCountryList();
@@ -45,9 +52,7 @@ namespace HikeHandler.Forms
                 checkPointHandler.LoadCPs(template.GetCPString());
             MakeSearch(template);
         }
-
-        private MySqlConnection sqlConnection;
-
+        
         private void GetCountryList()
         {
             if (sqlConnection == null)
@@ -167,39 +172,34 @@ namespace HikeHandler.Forms
 
         private void MakeSearch(HikeTemplate template)
         {
-            if (sqlConnection == null)
+            try
             {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
+                DataTable resultTable = hikeDao.SearchHike(template, checkPointHandler.AnyCPOrder);
+                resultView.DataSource = resultTable;
+                resultView.Columns["idhike"].Visible = false;
+                resultView.Columns["position"].HeaderText = "Sorszám";
+                resultView.Columns["date"].HeaderText = "Dátum";
+                resultView.Columns["idregion"].Visible = false;
+                resultView.Columns["regionname"].HeaderText = "Tájegység";
+                resultView.Columns["countryname"].HeaderText = "Ország";
+                resultView.Columns["type"].HeaderText = "Típus";
+                resultView.Columns["description"].Visible = false;
+                resultView.Columns["cpstring"].Visible = false;
+                resultView.Columns["idcountry"].Visible = false;
+                resultGroupBox.Text = "Találatok száma: " + resultTable.Rows.Count;
             }
-            if (sqlConnection.State != ConnectionState.Open)
+            catch (DaoException ex)
             {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
+                if (ex.Error == ErrorType.NoDBConnection)
+                {
+                    MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                    return;
+                }
+                MessageBox.Show(ex.Message, "Hiba");
             }
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(template.SearchCommand(sqlConnection, checkPointHandler.AnyCPOrder)))
+            catch (Exception ex)
             {
-                try
-                {
-                    DataTable resultTable = new DataTable();
-                    adapter.Fill(resultTable);
-                    resultView.DataSource = resultTable;
-                    resultView.Columns["idhike"].Visible = false;
-                    resultView.Columns["position"].HeaderText = "Sorszám";
-                    resultView.Columns["date"].HeaderText = "Dátum";
-                    resultView.Columns["idregion"].Visible = false;
-                    resultView.Columns["regionname"].HeaderText = "Tájegység";
-                    resultView.Columns["countryname"].HeaderText = "Ország";
-                    resultView.Columns["type"].HeaderText = "Típus";
-                    resultView.Columns["description"].Visible = false;
-                    resultView.Columns["cpstring"].Visible = false;
-                    resultView.Columns["idcountry"].Visible = false;
-                    resultGroupBox.Text = "Találatok száma: " + resultTable.Rows.Count;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Hiba");
-                }
+                MessageBox.Show(ex.Message, "Hiba");
             }
         }
 

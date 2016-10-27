@@ -9,11 +9,16 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using HikeHandler.Data_Containers;
+using HikeHandler.Exceptions;
+using HikeHandler.DAOs;
 
 namespace HikeHandler.Forms
 {
     public partial class SearchCPForm : Form
     {
+        private MySqlConnection sqlConnection;
+        private CPDao cpDao;
+
         public SearchCPForm()
         {
             InitializeComponent();
@@ -23,6 +28,7 @@ namespace HikeHandler.Forms
         {
             InitializeComponent();            
             sqlConnection = connection;
+            cpDao=new CPDao(connection);
             GetCountryList();
             GetCPTypes();            
         }
@@ -31,6 +37,7 @@ namespace HikeHandler.Forms
         {
             InitializeComponent();
             sqlConnection = connection;
+            cpDao = new CPDao(connection);
             GetCountryList();
             GetCPTypes();
             if (template.CountryName != string.Empty)
@@ -42,8 +49,6 @@ namespace HikeHandler.Forms
             }
             MakeSearch(template);
         }
-
-        private MySqlConnection sqlConnection;
 
         public void Open()
         {
@@ -155,36 +160,31 @@ namespace HikeHandler.Forms
 
         private void MakeSearch(CPTemplate template)
         {
-            if (sqlConnection == null)
+            try
             {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
+                DataTable resultTable = cpDao.SearchCP(template);
+                resultView.DataSource = resultTable;
+                resultView.Columns[0].Visible = false;
+                resultView.Columns[1].HeaderText = "Név";
+                resultView.Columns[2].HeaderText = "Típus";
+                resultView.Columns[3].HeaderText = "Túrák száma";
+                resultView.Columns[4].HeaderText = "Tájegység";
+                resultView.Columns[5].HeaderText = "Ország";
+                resultView.Columns[6].Visible = false;
+                resultGroupBox.Text = "Találatok száma: " + resultTable.Rows.Count;
             }
-            if (sqlConnection.State != ConnectionState.Open)
+            catch (DaoException ex)
             {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
+                if (ex.Error == ErrorType.NoDBConnection)
+                {
+                    MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                    return;
+                }
+                MessageBox.Show(ex.Message, "Hiba");
             }
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(template.SearchCommand(sqlConnection)))
+            catch (Exception ex)
             {
-                try
-                {
-                    DataTable resultTable = new DataTable();
-                    adapter.Fill(resultTable);
-                    resultView.DataSource = resultTable;
-                    resultView.Columns[0].Visible = false;
-                    resultView.Columns[1].HeaderText = "Név";
-                    resultView.Columns[2].HeaderText = "Típus";
-                    resultView.Columns[3].HeaderText = "Túrák száma";
-                    resultView.Columns[4].HeaderText = "Tájegység";
-                    resultView.Columns[5].HeaderText = "Ország";
-                    resultView.Columns[6].Visible = false;
-                    resultGroupBox.Text = "Találatok száma: " + resultTable.Rows.Count;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Hiba");
-                }
+                MessageBox.Show(ex.Message, "Hiba");
             }
         }
 

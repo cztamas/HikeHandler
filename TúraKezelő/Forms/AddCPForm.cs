@@ -10,12 +10,14 @@ using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using HikeHandler.Data_Containers;
 using HikeHandler.DAOs;
+using HikeHandler.Exceptions;
 
 namespace HikeHandler.Forms
 {
     public partial class AddCPForm : Form
     {
         private MySqlConnection sqlConnection;
+        private CPDao cpDao;
 
         public AddCPForm()
         {
@@ -25,6 +27,7 @@ namespace HikeHandler.Forms
         public AddCPForm(MySqlConnection connection)
         {
             InitializeComponent();
+            cpDao = new CPDao(connection);
             sqlConnection = connection;
             GetCPTypes();
             GetCountries();            
@@ -138,16 +141,7 @@ namespace HikeHandler.Forms
 
         private void saveCPButton_Click(object sender, EventArgs e)
         {
-            if (sqlConnection == null)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
+            
             CP checkPoint = new CP();
             checkPoint.Name = nameBox.Text;
             checkPoint.Description = descriptionBox.Text;
@@ -155,23 +149,27 @@ namespace HikeHandler.Forms
             checkPoint.IDRegion = (int)regionComboBox.SelectedValue;
             if ((int)typeComboBox.SelectedValue != -1)
                 checkPoint.TypeOfCP = (CPType)typeComboBox.SelectedValue;
-            if (checkPoint.IsDuplicateName(sqlConnection))
+            try
             {
-                MessageBox.Show("Már létezik ilyen néven checkpoint.", "Hiba");
-                return;
-            }
-            using (MySqlCommand command = checkPoint.SaveCommand(sqlConnection))
-            {
-                try
+                if (cpDao.SaveCP(checkPoint))
                 {
-                    command.ExecuteNonQuery();
                     MessageBox.Show("Sikeresen elmentve.");
                     Close();
                 }
-                catch (Exception ex)
+            }
+            catch (DaoException ex)
+            {
+                if (ex.Error == ErrorType.NoDBConnection)
                 {
-                    MessageBox.Show(ex.Message, "Hiba");
+                    MessageBox.Show("Nem lehet elérni az adatbázist.", "Hiba");
+                    return;
                 }
+                if (ex.Error == ErrorType.DuplicateName)
+                {
+                    MessageBox.Show("Már van elmentve ilyen nevű ország.", "Hiba");
+                    return;
+                }
+                MessageBox.Show(ex.Message, "Hiba");
             }
         }
 

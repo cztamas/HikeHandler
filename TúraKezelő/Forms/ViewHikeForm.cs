@@ -20,7 +20,10 @@ namespace HikeHandler.Forms
         private List<int> cpList;
         private Hike hikeData;
         private MySqlConnection sqlConnection;
+
         private CountryDao countryDao;
+        private CPDao cpDao;
+        private RegionDao regionDao;
         private HikeDao hikeDao;
         
         public ViewHikeForm()
@@ -33,6 +36,9 @@ namespace HikeHandler.Forms
             InitializeComponent();
             hikeDao = new HikeDao(connection);
             countryDao = new CountryDao(connection);
+            cpDao = new CPDao(connection);
+            regionDao = new RegionDao(connection);
+
             sqlConnection = connection;
             IDhike = hikeID;
             GetHikeTypes();
@@ -210,17 +216,17 @@ namespace HikeHandler.Forms
                     {
                         countryDao.UpdateHikeCount(hikeData.IDCountry);
                         countryDao.UpdateHikeCount(tempHike.IDCountry);
-                        HikeRegion.UpdateHikeCount(hikeData.IDRegion, sqlConnection);
-                        HikeRegion.UpdateHikeCount(tempHike.IDRegion, sqlConnection);
+                        regionDao.UpdateHikeCount(hikeData.IDRegion);
+                        regionDao.UpdateHikeCount(tempHike.IDRegion);
                         if (tempHike.HikeType == HikeType.túra && hikeData.HikeType != HikeType.túra)
                             Hike.UpdatePositions(sqlConnection);
                         if (tempHike.HikeType != HikeType.túra && hikeData.HikeType == HikeType.túra)
                             Hike.MovePositions(hikeData.HikeDate, sqlConnection, false);
                     }
                     foreach (int item in cpList)
-                        CP.UpdateHikeCount(item, sqlConnection);
+                        cpDao.UpdateHikeCount(item);
                     foreach (int item in checkPointHandler.CPList)
-                        CP.UpdateHikeCount(item, sqlConnection);
+                        cpDao.UpdateHikeCount(item);
                     RefreshForm();
                     MakeUneditable();
                 }

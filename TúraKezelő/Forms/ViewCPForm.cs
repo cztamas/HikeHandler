@@ -158,34 +158,33 @@ namespace HikeHandler.Forms
         }
 
         private void saveEditButton_Click(object sender, EventArgs e)
-        {
-            if (sqlConnection == null)
-            {
-                MessageBox.Show("Nem lehet elérni az adatbázist", "Hiba");
-                return;
-            }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                MessageBox.Show("Nem lehet elérni az adatbázist", "Hiba");
-                return;
-            }
+        {   
             CP dataCP = new CP(idCP);
             dataCP.Name = nameBox.Text;
             dataCP.Description = descriptionBox.Text;
             if (typeComboBox.Text != string.Empty)
                 dataCP.TypeOfCP = (CPType)Enum.Parse(typeof(CPType), typeComboBox.Text);
-            using (MySqlCommand command = dataCP.UpdateCommand(sqlConnection))
+            try
             {
-                try
+                if (cpDao.UpdateCP(dataCP))
                 {
-                    command.ExecuteNonQuery();
                     RefreshForm();
                     MakeUneditable();
                 }
-                catch (Exception ex)
+            }
+            catch (DaoException ex)
+            {
+                if (ex.Error == ErrorType.NoDBConnection)
                 {
-                    MessageBox.Show(ex.Message, "Hiba");
+                    MessageBox.Show("Nem lehet elérni az adatbázist.", "Hiba");
+                    return;
                 }
+                if (ex.Error == ErrorType.DuplicateName)
+                {
+                    MessageBox.Show("Már van elmentve ilyen nevű ország.", "Hiba");
+                    return;
+                }
+                MessageBox.Show(ex.Message, "Hiba");
             }
         }
 
@@ -199,13 +198,34 @@ namespace HikeHandler.Forms
 
         private void deleteCPbutton_Click(object sender, EventArgs e)
         {
-            if (!CP.IsDeletable(idCP, sqlConnection)) 
-            {
-                MessageBox.Show("Csak olyan checkpoint törölhető, amihez nincs túra hozzárendelve.", "Hiba");
+            string message = "Biztosan törli?";
+            string caption = "CheckPoint törlése";
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            DialogResult result = MessageBox.Show(message, caption, buttons);
+            if (result == DialogResult.No)
                 return;
+            try
+            {
+                if (cpDao.DeleteCP(idCP))
+                {
+                    MessageBox.Show("Törölve.");
+                    Close();
+                }
             }
-            if (CP.DeleteCP(idCP, sqlConnection))
-                Close();
+            catch (DaoException ex)
+            {
+                if (ex.Error == ErrorType.NotDeletable)
+                {
+                    MessageBox.Show("Csak olyan checkpoint törölhető, amihez nincs túra hozzárendelve.", "Hiba");
+                    return;
+                }
+                if (ex.Error == ErrorType.NoDBConnection)
+                {
+                    MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                    return;
+                }
+                MessageBox.Show(ex.Message, "Hiba");
+            }
         }
     }
 }

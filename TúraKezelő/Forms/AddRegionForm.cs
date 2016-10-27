@@ -10,12 +10,15 @@ using System.Windows.Forms;
 using System.Web.UI.WebControls;
 using MySql.Data.MySqlClient;
 using HikeHandler.Data_Containers;
+using HikeHandler.DAOs;
+using HikeHandler.Exceptions;
 
 namespace HikeHandler.Forms
 {
     public partial class AddRegionForm : Form
     {
         private MySqlConnection sqlConnection;
+        private RegionDao regionDao;
 
         public AddRegionForm()
         {
@@ -25,6 +28,8 @@ namespace HikeHandler.Forms
         public AddRegionForm(MySqlConnection connection)
         {
             InitializeComponent();
+            regionDao = new RegionDao(connection);
+
             sqlConnection = connection;
             GetCountryList();            
         } 
@@ -72,30 +77,29 @@ namespace HikeHandler.Forms
         }
 
         private void saveRegionButton_Click(object sender, EventArgs e)
-        {
-            if (sqlConnection == null)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
+        {   
             HikeRegion region = new HikeRegion((int)countryComboBox.SelectedValue, nameBox.Text, descriptionBox.Text);
-            using (MySqlCommand command = region.SaveCommand(sqlConnection))
+            try
             {
-                try
+                if (regionDao.SaveRegion(region))
                 {
-                    command.ExecuteNonQuery();
                     MessageBox.Show("Sikeresen elmentve");
                     Close();
                 }
-                catch (Exception ex)
+            }
+            catch (DaoException ex)
+            {
+                if (ex.Error == ErrorType.NoDBConnection)
                 {
-                    MessageBox.Show(ex.Message, "Hiba");
+                    MessageBox.Show("Nem lehet elérni az adatbázist.", "Hiba");
+                    return;
                 }
+                if (ex.Error == ErrorType.DuplicateName)
+                {
+                    MessageBox.Show("Már van elmentve ilyen nevű ország.", "Hiba");
+                    return;
+                }
+                MessageBox.Show(ex.Message, "Hiba");
             }
         }
 

@@ -128,34 +128,33 @@ namespace HikeHandler.Forms
         }
 
         private void saveEditButton_Click(object sender, EventArgs e)
-        {
-            if (sqlConnection == null)
-            {
-                MessageBox.Show("Nem lehet elérni az adatbázist", "Hiba");
-                return;
-            }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                MessageBox.Show("Nem lehet elérni az adatbázist", "Hiba");
-                return;
-            }
-            HikeRegion region = new HikeRegion();
-            region.ID = currentRegion.ID;
+        {   
+            HikeRegion region = new HikeRegion(currentRegion.ID);
             region.Name = nameBox.Text;
             region.Description = descriptionBox.Text;
-            using (MySqlCommand command = region.UpdateCommand(sqlConnection))
+            try
             {
-                try
+                if (regionDao.UpdateRegion(region))
                 {
-                    command.ExecuteNonQuery();
                     RefreshForm();
                     MakeUneditable();
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Hiba");
-                }
             }
+            catch (DaoException ex)
+            {
+                if (ex.Error == ErrorType.NoDBConnection)
+                {
+                    MessageBox.Show("Nem lehet elérni az adatbázist.", "Hiba");
+                    return;
+                }
+                if (ex.Error == ErrorType.DuplicateName)
+                {
+                    MessageBox.Show("Már van elmentve ilyen nevű tájegység.", "Hiba");
+                    return;
+                }
+                MessageBox.Show(ex.Message, "Hiba");
+            }
+            
         }
 
         private void showHikesButton_Click(object sender, EventArgs e)
@@ -178,13 +177,34 @@ namespace HikeHandler.Forms
 
         private void deleteButton_Click(object sender, EventArgs e)
         {
-            if (!HikeRegion.IsDeletable(currentRegion.ID, sqlConnection))
-            {
-                MessageBox.Show("Csak olyan tájegység törölhető, amihez nincs checkpoint vagy túra hozzárendelve");
+            string message = "Biztosan törli?";
+            string caption = "Tájegység törlése";
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            DialogResult result = MessageBox.Show(message, caption, buttons);
+            if (result == DialogResult.No)
                 return;
+            try
+            {
+                if (regionDao.DeleteRegion(currentRegion.ID))
+                {
+                    MessageBox.Show("Törölve");
+                    Close();
+                }
             }
-            if (HikeRegion.DeleteRegion(currentRegion.ID, sqlConnection)) 
-                Close();
+            catch (DaoException ex)
+            {
+                if (ex.Error == ErrorType.NotDeletable)
+                {
+                    MessageBox.Show("Csak olyan tájegység törölhető, amihez nincs checkpoint vagy túra hozzárendelve");
+                    return;
+                }
+                if (ex.Error == ErrorType.NoDBConnection)
+                {
+                    MessageBox.Show("Nem lehet elérni az adatbázist.", "Hiba");
+                    return;
+                }
+                MessageBox.Show(ex.Message, "Hiba");
+            }
         }
     }
 }

@@ -15,6 +15,11 @@ namespace HikeHandler.Forms
 {
     public partial class AddHikeForm : Form
     {
+        private MySqlConnection sqlConnection;
+        private CountryDao countryDao;
+        private CPDao cpDao;
+        private RegionDao regionDao;
+
         public AddHikeForm()
         {
             InitializeComponent();
@@ -24,7 +29,8 @@ namespace HikeHandler.Forms
         {
             InitializeComponent();
             countryDao = new CountryDao(connection);
-
+            cpDao = new CPDao(connection);
+            regionDao = new RegionDao(connection);
 
             sqlConnection = connection;
             checkPointHandler.Init(sqlConnection, CPHandlerStyle.Add);
@@ -32,9 +38,6 @@ namespace HikeHandler.Forms
             GetCountryList();
             GetHikeTypes();
         }
-
-        private MySqlConnection sqlConnection;
-        private CountryDao countryDao;
         
         private void GetCountryList()
         {
@@ -165,10 +168,10 @@ namespace HikeHandler.Forms
                     {
                         Hike.UpdatePositions(sqlConnection);
                         countryDao.UpdateHikeCount(hike.IDCountry);
-                        HikeRegion.UpdateHikeCount(hike.IDRegion, sqlConnection);
+                        regionDao.UpdateHikeCount(hike.IDRegion);
                         foreach (int item in hike.CPList)
                         {
-                            CP.UpdateHikeCount(item, sqlConnection);
+                            cpDao.UpdateHikeCount(item);
                         }
                     }
                     MessageBox.Show("Sikeresen elmentve.");

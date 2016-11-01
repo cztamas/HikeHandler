@@ -74,6 +74,10 @@
     <Compile Include="Controls\CPHandler.Designer.cs">
       <DependentUpon>CPHandler.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\ICountryDao.cs" />
+    <Compile Include="Interfaces\ICPDao.cs" />
+    <Compile Include="Interfaces\IHikeDao.cs" />
+    <Compile Include="Interfaces\IRegionDao.cs" />
     <Compile Include="Miscellaneous.cs" />
     <Compile Include="Data Containers\HikeRegion.cs" />
     <Compile Include="Forms\AddCountryForm.cs">
@@ -232,9 +236,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

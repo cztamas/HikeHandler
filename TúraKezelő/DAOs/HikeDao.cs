@@ -86,7 +86,7 @@ AND c.name LIKE @countryName AND r.name LIKE @regionName";
             }
         }
 
-        public void MovePositions(DateTime date, bool upOrDown)
+        private void MovePositions(DateTime date, bool upOrDown)
         {
             if (sqlConnection == null)
             {
@@ -113,7 +113,9 @@ AND c.name LIKE @countryName AND r.name LIKE @regionName";
             }
         }
 
-        public void UpdatePositions()
+        // Recalculates the position of every hike in the DB.
+        // Only for correcting erroneous data in the DB.
+        public void RecalculatePositions()
         {
             if (sqlConnection == null)
             {
@@ -125,9 +127,8 @@ AND c.name LIKE @countryName AND r.name LIKE @regionName";
             }
             DataTable hikesTable = new DataTable();
             DataTable table = new DataTable();
-            int position;
             DateTime date;
-            string commandText = "SELECT idhike, date FROM hike WHERE position IS NULL AND type='túra';";
+            string commandText = "SELECT idhike, date FROM hike WHERE type='túra';";
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
             {
                 try
@@ -142,23 +143,24 @@ AND c.name LIKE @countryName AND r.name LIKE @regionName";
             //MessageBox.Show(hikesTable.Rows.Count.ToString());
             foreach (DataRow row in hikesTable.Rows)
             {
+                int hikeID = int.Parse(row["idhike"].ToString());
                 date = Convert.ToDateTime(row["date"]);
-                commandText = "SELECT COUNT(*) AS count FROM hike WHERE date < '" + date.ToString("yyyy-MM-dd") + "' AND type='túra';";
-                using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
+                commandText = "SELECT COUNT(*) AS count FROM hike WHERE date < '"
+                + date.ToString("yyyy-MM-dd") + "' AND type='túra';";
+                using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
                 {
                     try
                     {
-                        adapter.Fill(table);
-                        int.TryParse((table.Rows[0]["count"]).ToString(), out position);
-                        position++;
-                        commandText = "UPDATE hike SET position=" + position + " WHERE idhike=" + row["idhike"] + " AND type='túra';";
-                        //MessageBox.Show(commandText);
-                        using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
+                        object result = command.ExecuteScalar();
+                        int count;
+                        if (!int.TryParse(result.ToString(), out count))
+                            throw new DaoException(ActivityType.UpdateHikePositions, ErrorType.DBError, string.Empty);
+                        count++;
+                        commandText = "UPDATE hike SET position=" + count + " WHERE idhike=" + hikeID + " AND type='túra';";
+                        using (MySqlCommand updateCommand = new MySqlCommand(commandText, sqlConnection))
                         {
-                            command.ExecuteNonQuery();
+                            updateCommand.ExecuteNonQuery();
                         }
-                        date = Convert.ToDateTime(row["date"]);
-                        MovePositions(date, true);
                     }
                     catch (Exception ex)
                     {
@@ -204,7 +206,7 @@ AND c.name LIKE @countryName AND r.name LIKE @regionName";
             }
         }
 
-        public bool IsDuplicateDate(DateTime date)
+        private bool IsDuplicateDate(DateTime date)
         {
             if (sqlConnection == null)
             {
@@ -266,7 +268,7 @@ VALUES (@date, @idregion, @idcountry, @type, @description, @cpstring)";
                     CPDao cpDao = new CPDao(sqlConnection);
                     if (hikeData.HikeType == HikeType.túra)
                     {
-                        UpdatePositions();
+                        InsertIntoPositionList(hikeData.IDHike, hikeData.HikeDate);
                         countryDao.UpdateHikeCount(hikeData.IDCountry);
                         regionDao.UpdateHikeCount(hikeData.IDRegion);
                         foreach (int item in hikeData.CPList)
@@ -303,10 +305,8 @@ VALUES (@date, @idregion, @idcountry, @type, @description, @cpstring)";
             CountryDao countryDao = new CountryDao(sqlConnection);
             RegionDao regionDao = new RegionDao(sqlConnection);
             CPDao cpDao = new CPDao(sqlConnection);
-            string commandText = "UPDATE hike SET date=@date, description=@description, type=@type, cpstring=@cpstring";
-            if (newHikeData.HikeType != HikeType.túra || dateChanged)
-                commandText += ", position = NULL";
-            commandText += " WHERE idhike=@idhike;";
+            string commandText = @"UPDATE hike SET date=@date, description=@description, type=@type, cpstring=@cpstring
+                WHERE idhike=@idhike;";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
                 command.Parameters.AddWithValue("@date", newHikeData.HikeDate.ToString("yyyy-MM-dd"));
@@ -317,10 +317,13 @@ VALUES (@date, @idregion, @idcountry, @type, @description, @cpstring)";
                 try
                 {
                     command.ExecuteNonQuery();
-                    if (dateChanged)
+                    if ((typeChanged || dateChanged) && oldHikeData.HikeType == HikeType.túra) 
                     {
-                        MovePositions(oldHikeData.HikeDate, false);
-                        UpdatePositions();
+                        RemoveFromPositionList(oldHikeData.IDHike, oldHikeData.HikeDate);
+                    }
+                    if (newHikeData.HikeType == HikeType.túra)
+                    {
+                        InsertIntoPositionList(newHikeData.IDHike, newHikeData.HikeDate);
                     }
                     if (typeChanged)
                     {
@@ -328,10 +331,6 @@ VALUES (@date, @idregion, @idcountry, @type, @description, @cpstring)";
                         countryDao.UpdateHikeCount(oldHikeData.IDCountry);
                         regionDao.UpdateHikeCount(newHikeData.IDRegion);
                         regionDao.UpdateHikeCount(oldHikeData.IDRegion);
-                        if (newHikeData.HikeType == HikeType.túra && oldHikeData.HikeType != HikeType.túra)
-                            UpdatePositions();
-                        if (newHikeData.HikeType != HikeType.túra && oldHikeData.HikeType == HikeType.túra)
-                            MovePositions(oldHikeData.HikeDate, false);
                     }
                     foreach (int item in oldHikeData.CPList)
                         cpDao.UpdateHikeCount(item);
@@ -342,6 +341,66 @@ VALUES (@date, @idregion, @idcountry, @type, @description, @cpstring)";
                 catch (Exception ex)
                 {
                     throw new DaoException(ActivityType.Update, ErrorType.DBError, ex.Message);
+                }
+            }
+        }
+
+        private void RemoveFromPositionList(int hikeID, DateTime date)
+        {
+            if (sqlConnection == null)
+            {
+                throw new DaoException(ActivityType.UpdateHikePositions, ErrorType.NoDBConnection, string.Empty);
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                throw new DaoException(ActivityType.UpdateHikePositions, ErrorType.NoDBConnection, string.Empty);
+            }
+            string commandText = "UPDATE hike SET position = NULL WHERE idhike=" + hikeID + ";";
+            using (MySqlCommand updateCommand = new MySqlCommand(commandText, sqlConnection))
+            {
+                try
+                {
+                    updateCommand.ExecuteNonQuery();
+                    MovePositions(date, false);
+                }
+                catch (Exception ex)
+                {
+                    throw new DaoException(ActivityType.UpdateHikePositions, ErrorType.DBError, ex.Message);
+                }
+            }
+        }
+
+        private void InsertIntoPositionList(int hikeID, DateTime date)
+        {
+            if (sqlConnection == null)
+            {
+                throw new DaoException(ActivityType.UpdateHikePositions, ErrorType.NoDBConnection, string.Empty);
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                throw new DaoException(ActivityType.UpdateHikePositions, ErrorType.NoDBConnection, string.Empty);
+            }
+            string commandText = "SELECT COUNT(*) AS count FROM hike WHERE date < '" 
+                + date.ToString("yyyy-MM-dd") + "' AND type='túra';";
+            using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
+            {
+                try
+                {
+                    object result = command.ExecuteScalar();
+                    int count;
+                    if (!int.TryParse(result.ToString(), out count))
+                        throw new DaoException(ActivityType.UpdateHikePositions, ErrorType.DBError, string.Empty);
+                    count++;
+                    commandText = "UPDATE hike SET position=" + count + " WHERE idhike=" + hikeID + " AND type='túra';";
+                    using (MySqlCommand updateCommand = new MySqlCommand(commandText, sqlConnection))
+                    {
+                        updateCommand.ExecuteNonQuery();
+                    }
+                    MovePositions(date, true);
+                }
+                catch (Exception ex)
+                {
+                    throw new DaoException(ActivityType.UpdateHikePositions, ErrorType.DBError, ex.Message);
                 }
             }
         }

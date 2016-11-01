@@ -32,7 +32,8 @@ namespace HikeHandler.Forms
             checkPointHandler.Init(sqlConnection, CPHandlerStyle.Search);
             regionComboBox.SelectedValueChanged += new EventHandler(checkPointHandler.Region_Refreshed);
             GetCountryList();
-            GetHikeTypes();            
+            GetHikeTypes();
+            //hikeDao.RecalculatePositions();
         }
 
         public SearchHikeForm(MySqlConnection connection, HikeTemplate template)

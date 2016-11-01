@@ -145,16 +145,6 @@ namespace HikeHandler.Forms
 
         private void addHikeButton_Click(object sender, EventArgs e)
         {
-            if (sqlConnection == null)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
             Hike hike = new Hike();
             hike.IDCountry = (int)countryComboBox.SelectedValue;
             hike.IDRegion = (int)regionComboBox.SelectedValue;

@@ -23,7 +23,8 @@ namespace HikeHandler
         {
             InitializeComponent();
             EnableButtons(false);
-            ConnectToDB();            
+            ConnectToDB();
+            //RecalculateDBData();
         }       
 
         private void CreateConnection(LoginData loginData)
@@ -159,6 +160,23 @@ namespace HikeHandler
                     return;
                 }
             }
+        }
+
+        // Only for correcting erroneous data in the DB.
+        private void RecalculateDBData()
+        {
+            if (sqlConnection == null)
+                return;
+            if (sqlConnection.State != ConnectionState.Open)
+                return;
+            HikeDao hikeDao = new HikeDao(sqlConnection);
+            CountryDao countryDao = new CountryDao(sqlConnection);
+            CPDao cpDao = new CPDao(sqlConnection);
+            RegionDao regionDao = new RegionDao(sqlConnection);
+            countryDao.RecalculateHikeCounts();
+            cpDao.RecalculateHikeCounts();
+            regionDao.RecalculateHikeCounts();
+            hikeDao.RecalculatePositions();
         }
 
         private void searchHikeButton_Click(object sender, EventArgs e)

@@ -66,6 +66,46 @@ AND cp.name LIKE @name AND c.name LIKE @countryName AND r.name LIKE @regionName"
             }
         }
 
+        // Recalculates the hike count of every cp in the DB.
+        // Only for correcting erroneous data in the DB.
+        public void RecalculateHikeCounts()
+        {
+            if (sqlConnection == null)
+            {
+                throw new DaoException(ActivityType.UpdateHikeCount, ErrorType.NoDBConnection, string.Empty);
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                throw new DaoException(ActivityType.UpdateHikeCount, ErrorType.NoDBConnection, string.Empty);
+            }
+            DataTable table = new DataTable();
+            int id;
+            string commandText = "SELECT idcp FROM cp;";
+            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
+            {
+                try
+                {
+                    adapter.Fill(table);
+                }
+                catch (Exception ex)
+                {
+                    throw new DaoException(ActivityType.UpdateHikeCount, ErrorType.DBError, ex.Message);
+                }
+            }
+            foreach (DataRow row in table.Rows)
+            {
+                id = int.Parse(row["idcp"].ToString());
+                try
+                {
+                    UpdateHikeCount(id);
+                }
+                catch (Exception ex)
+                {
+                    throw new DaoException(ActivityType.UpdateHikeCount, ErrorType.DBError, ex.Message);
+                }
+            }
+        }
+
         // Finds the correct hikecount, and stores it in the DB.
         // Returns the updated value of the hikecount, or throws DaoException in case of an error.
         public int UpdateHikeCount(int idCP)

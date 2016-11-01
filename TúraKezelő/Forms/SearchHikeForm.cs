@@ -129,8 +129,8 @@ namespace HikeHandler.Forms
             row["name"] = string.Empty;
             hikeTypesTable.Rows.Add(row);
 
-            Array cpTypes = Enum.GetValues(typeof(HikeType));
-            foreach (CPType item in cpTypes)
+            Array hikeTypes = Enum.GetValues(typeof(HikeType));
+            foreach (HikeType item in hikeTypes)
             {
                 row = hikeTypesTable.NewRow();
                 row["id"] = (int)item;

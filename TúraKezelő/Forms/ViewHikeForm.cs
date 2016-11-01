@@ -16,8 +16,8 @@ namespace HikeHandler.Forms
 {
     public partial class ViewHikeForm : Form
     {
-        private int IDhike;
-        private List<int> cpList;
+        //private int IDhike;
+        //private List<int> cpList;
         private Hike hikeData;
         private MySqlConnection sqlConnection;
 
@@ -38,9 +38,8 @@ namespace HikeHandler.Forms
             countryDao = new CountryDao(connection);
             cpDao = new CPDao(connection);
             regionDao = new RegionDao(connection);
-
+            hikeData = new Hike(hikeID);
             sqlConnection = connection;
-            IDhike = hikeID;
             GetHikeTypes();
             checkPointHandler.Init(sqlConnection, CPHandlerStyle.View);
             RefreshForm();
@@ -77,7 +76,7 @@ namespace HikeHandler.Forms
 
         private void RefreshForm()
         {
-            hikeData = GetHikeData(IDhike);
+            hikeData = GetHikeData(hikeData.IDHike);
             if (hikeData == null)
                 return;
             countryBox.Text = hikeData.CountryName;
@@ -89,7 +88,7 @@ namespace HikeHandler.Forms
             checkPointHandler.RegionID = hikeData.IDRegion;
             checkPointHandler.LoadCPs(hikeData.CPString);
             checkPointHandler.RefreshControl();
-            cpList = checkPointHandler.CPList;
+            //cpList = checkPointHandler.CPList;
 
             if (hikeData.HikeType == HikeType.túra)
                 Text = hikeData.Position.ToString() + ". túra adatai";
@@ -100,12 +99,12 @@ namespace HikeHandler.Forms
 
         private Hike GetHikeData(int hikeID)
         {
-            HikeTemplate template = new HikeTemplate(IDhike);
+            HikeTemplate template = new HikeTemplate(hikeData.IDHike);
             try
             {
                 DataTable resultTable = hikeDao.SearchHike(template, true);
                 DataRow row = resultTable.Rows[0];
-                Hike tempHike = new Hike(IDhike);
+                Hike tempHike = new Hike(hikeData.IDHike);
                 tempHike.CountryName = (string)row["countryname"];
                 tempHike.RegionName = (string)row["regionname"];
                 int regID;
@@ -194,63 +193,81 @@ namespace HikeHandler.Forms
                 MessageBox.Show("Nem lehet elérni az adatbázist", "Hiba");
                 return;
             }
-            Hike tempHike = new Hike(IDhike);
-            tempHike.Description = descriptionBox.Text;
-            tempHike.HikeType = (HikeType)typeComboBox.SelectedValue;
-            tempHike.HikeDate = dateBox.Value;
-            tempHike.CPList = checkPointHandler.CPList;
-            tempHike.HikeDate = dateBox.Value;
-            bool dateChanged = (hikeData.HikeDate != tempHike.HikeDate);
-            bool typeChanged = (hikeData.HikeType != tempHike.HikeType);
-            using (MySqlCommand command = tempHike.UpdateCommand(sqlConnection, dateChanged)) 
+            Hike newHikeData = new Hike(hikeData.IDHike);
+            newHikeData.Description = descriptionBox.Text;
+            newHikeData.HikeType = (HikeType)typeComboBox.SelectedValue;
+            newHikeData.HikeDate = dateBox.Value;
+            newHikeData.CPList = checkPointHandler.CPList;
+            newHikeData.HikeDate = dateBox.Value;
+            try
             {
-                try
+                hikeDao.UpdateHike(newHikeData, hikeData);
+                /*command.ExecuteNonQuery();
+                if (dateChanged)
                 {
-                    command.ExecuteNonQuery();
-                    if (dateChanged)
-                    {
-                        Hike.MovePositions(hikeData.HikeDate, sqlConnection, false);
-                        Hike.UpdatePositions(sqlConnection);
-                    }
-                    if (typeChanged)
-                    {
-                        countryDao.UpdateHikeCount(hikeData.IDCountry);
-                        countryDao.UpdateHikeCount(tempHike.IDCountry);
-                        regionDao.UpdateHikeCount(hikeData.IDRegion);
-                        regionDao.UpdateHikeCount(tempHike.IDRegion);
-                        if (tempHike.HikeType == HikeType.túra && hikeData.HikeType != HikeType.túra)
-                            Hike.UpdatePositions(sqlConnection);
-                        if (tempHike.HikeType != HikeType.túra && hikeData.HikeType == HikeType.túra)
-                            Hike.MovePositions(hikeData.HikeDate, sqlConnection, false);
-                    }
-                    foreach (int item in cpList)
-                        cpDao.UpdateHikeCount(item);
-                    foreach (int item in checkPointHandler.CPList)
-                        cpDao.UpdateHikeCount(item);
-                    RefreshForm();
-                    MakeUneditable();
+                    hikeDao.MovePositions(hikeData.HikeDate, false);
+                    hikeDao.UpdatePositions();
                 }
-                catch (Exception ex)
+                if (typeChanged)
                 {
-                    MessageBox.Show(ex.Message, "Hiba");
+                    countryDao.UpdateHikeCount(hikeData.IDCountry);
+                    countryDao.UpdateHikeCount(tempHike.IDCountry);
+                    regionDao.UpdateHikeCount(hikeData.IDRegion);
+                    regionDao.UpdateHikeCount(tempHike.IDRegion);
+                    if (tempHike.HikeType == HikeType.túra && hikeData.HikeType != HikeType.túra)
+                        hikeDao.UpdatePositions();
+                    if (tempHike.HikeType != HikeType.túra && hikeData.HikeType == HikeType.túra)
+                        hikeDao.MovePositions(hikeData.HikeDate, false);
                 }
+                foreach (int item in cpList)
+                    cpDao.UpdateHikeCount(item);
+                foreach (int item in checkPointHandler.CPList)
+                    cpDao.UpdateHikeCount(item);*/
+                RefreshForm();
+                MakeUneditable();
+            }
+            catch (DaoException ex)
+            {
+                if (ex.Error == ErrorType.NoDBConnection)
+                {
+                    MessageBox.Show("Nem lehet elérni az adatbázist.", "Hiba");
+                    return;
+                }
+                if (ex.Error == ErrorType.DuplicateName)
+                {
+                    MessageBox.Show("Ezzel a dátummal már van elmentve túra.", "Hiba");
+                    return;
+                }
+                MessageBox.Show(ex.Message, "Hiba");
             }
         }
 
         private void deleteHikeButton_Click(object sender, EventArgs e)
         {
-            if (sqlConnection == null)
-            {
-                MessageBox.Show("Nem lehet elérni az adatbázist", "Hiba");
+            string message = "Biztosan törli?";
+            string caption = "Túra törlése";
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            DialogResult result = MessageBox.Show(message, caption, buttons);
+            if (result == DialogResult.No)
                 return;
-            }
-            if (sqlConnection.State != ConnectionState.Open)
+
+            try
             {
-                MessageBox.Show("Nem lehet elérni az adatbázist", "Hiba");
-                return;
+                if (hikeDao.DeleteHike(hikeData))
+                {
+                    MessageBox.Show("Törölve");
+                    Close();
+                }
             }
-            if (Hike.DeleteHike(hikeData, sqlConnection))
-                Close();
+            catch (DaoException ex)
+            {
+                if (ex.Error == ErrorType.NoDBConnection)
+                {
+                    MessageBox.Show("Nem lehet elérni az adatbázist.", "Hiba");
+                    return;
+                }
+                MessageBox.Show(ex.Message, "Hiba");
+            }
         }
     }
 }

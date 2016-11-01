@@ -10,12 +10,14 @@ using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using HikeHandler.Data_Containers;
 using HikeHandler.DAOs;
+using HikeHandler.Exceptions;
 
 namespace HikeHandler.Forms
 {
     public partial class AddHikeForm : Form
     {
         private MySqlConnection sqlConnection;
+        private HikeDao hikeDao;
         private CountryDao countryDao;
         private CPDao cpDao;
         private RegionDao regionDao;
@@ -28,6 +30,7 @@ namespace HikeHandler.Forms
         public AddHikeForm(MySqlConnection connection)
         {
             InitializeComponent();
+            hikeDao = new HikeDao(connection);
             countryDao = new CountryDao(connection);
             cpDao = new CPDao(connection);
             regionDao = new RegionDao(connection);
@@ -159,28 +162,27 @@ namespace HikeHandler.Forms
             hike.HikeDate = dateBox.Value.Date;
             hike.Description = descriptionBox.Text;
             hike.CPList = checkPointHandler.CPList;
-            using (MySqlCommand command = hike.SaveCommand(sqlConnection))
+            try
             {
-                try
+                if (hikeDao.SaveHike(hike))
                 {
-                    command.ExecuteNonQuery();
-                    if (hike.HikeType == HikeType.túra)
-                    {
-                        Hike.UpdatePositions(sqlConnection);
-                        countryDao.UpdateHikeCount(hike.IDCountry);
-                        regionDao.UpdateHikeCount(hike.IDRegion);
-                        foreach (int item in hike.CPList)
-                        {
-                            cpDao.UpdateHikeCount(item);
-                        }
-                    }
                     MessageBox.Show("Sikeresen elmentve.");
                     Close();
                 }
-                catch (Exception ex)
+            }
+            catch (DaoException ex)
+            {
+                if (ex.Error == ErrorType.NoDBConnection)
                 {
-                    MessageBox.Show(ex.Message, "Hiba");
+                    MessageBox.Show("Nem lehet elérni az adatbázist.", "Hiba");
+                    return;
                 }
+                if (ex.Error == ErrorType.DuplicateDate)
+                {
+                    MessageBox.Show("Ezzel a dátummal már van elmentve túra.", "Hiba");
+                    return;
+                }
+                MessageBox.Show(ex.Message, "Hiba");
             }
         }
 

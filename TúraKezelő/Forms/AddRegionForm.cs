@@ -96,7 +96,7 @@ namespace HikeHandler.Forms
                 }
                 if (ex.Error == ErrorType.DuplicateName)
                 {
-                    MessageBox.Show("Már van elmentve ilyen nevű ország.", "Hiba");
+                    MessageBox.Show("Már van elmentve ilyen nevű tájegység.", "Hiba");
                     return;
                 }
                 MessageBox.Show(ex.Message, "Hiba");

@@ -8,11 +8,12 @@ namespace HikeHandler.Exceptions
 {
     public enum ActivityType
     {
-        Save, Update, Search, Delete, GetData, UpdateHikeCount, CountCPs, CountRegions, CheckDuplicateName
+        Save, Update, Search, Delete, GetData, UpdateHikeCount, CountCPs, CheckDuplicateDate,
+        CountRegions, CheckDuplicateName, UpdateHikePositions, MoveHikePositions
     }
 
     public enum ErrorType
     {
-        DuplicateName, InvalidArgument, DBError, NoDBConnection, NotDeletable
+        DuplicateName, DuplicateDate, InvalidArgument, DBError, NoDBConnection, NotDeletable
     }
 }

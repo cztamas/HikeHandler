@@ -7,19 +7,21 @@ using System.Data;
 
 namespace HikeHandler.Data_Containers
 {
-    public class Country
+    public class CountryForView
     {
         public int ID { get; set; }
         public string Name { get; set; }
         public int HikeCount { get; set; }
+        public int RegionCount { get; set; }
+        public int CPCount { get; set; }
         public string Description { get; set; }
 
-        public Country(int countryID)
+        public CountryForView(int countryID)
         {
             ID = countryID;
         }
 
-        public Country(int countryID, int hikeNumber, string countryName, string countryDescription)
+        public CountryForView(int countryID, int hikeNumber, string countryName, string countryDescription)
         {
             ID = countryID;
             HikeCount = hikeNumber;
@@ -27,7 +29,7 @@ namespace HikeHandler.Data_Containers
             Description = countryDescription;
         }
 
-        public Country(string countryName, string countryDescription)
+        public CountryForView(string countryName, string countryDescription)
         {
             Name = countryName;
             Description = countryDescription;

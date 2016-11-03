@@ -41,7 +41,7 @@ namespace HikeHandler.Forms
 
         private void saveButton_Click(object sender, EventArgs e)
         {   
-            Country country = new Country(nameBox.Text, descriptionBox.Text);
+            CountryForView country = new CountryForView(nameBox.Text, descriptionBox.Text);
             try
             {
                 countryDao.SaveCountry(country);

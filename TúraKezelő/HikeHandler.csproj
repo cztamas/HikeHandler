@@ -59,13 +59,17 @@
     <Compile Include="DAOs\DBHandler.cs" />
     <Compile Include="DAOs\HikeDao.cs" />
     <Compile Include="DAOs\RegionDao.cs" />
-    <Compile Include="Data Containers\CountryTemplate.cs" />
-    <Compile Include="Data Containers\Country.cs" />
-    <Compile Include="Data Containers\CP.cs" />
-    <Compile Include="Data Containers\CPTemplate.cs" />
-    <Compile Include="Data Containers\Hike.cs" />
-    <Compile Include="Data Containers\HikeRegionTemplate.cs" />
-    <Compile Include="Data Containers\HikeTemplate.cs" />
+    <Compile Include="Data Containers\Country\CountryForSave.cs" />
+    <Compile Include="Data Containers\Country\CountryForSearch.cs" />
+    <Compile Include="Data Containers\Country\CountryForView.cs" />
+    <Compile Include="Data Containers\CP\CP.cs" />
+    <Compile Include="Data Containers\CP\CPForSave.cs" />
+    <Compile Include="Data Containers\CP\CPTemplate.cs" />
+    <Compile Include="Data Containers\HikeRegion\HikeRegionForSave.cs" />
+    <Compile Include="Data Containers\Hike\Hike.cs" />
+    <Compile Include="Data Containers\HikeRegion\HikeRegionTemplate.cs" />
+    <Compile Include="Data Containers\Hike\HikeForSave.cs" />
+    <Compile Include="Data Containers\Hike\HikeTemplate.cs" />
     <Compile Include="Exceptions\DaoException.cs" />
     <Compile Include="Exceptions\Miscellaneous.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
@@ -80,7 +84,7 @@
     <Compile Include="Interfaces\IHikeDao.cs" />
     <Compile Include="Interfaces\IRegionDao.cs" />
     <Compile Include="Miscellaneous.cs" />
-    <Compile Include="Data Containers\HikeRegion.cs" />
+    <Compile Include="Data Containers\HikeRegion\HikeRegion.cs" />
     <Compile Include="Forms\AddCountryForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -96,7 +96,7 @@ namespace HikeHandler.Forms
                 hikeNumberBox.Focus();
                 return;
             }
-            CountryTemplate template = new CountryTemplate(countryComboBox.Text, 
+            CountryForSearch template = new CountryForSearch(countryComboBox.Text, 
                 hikeNumberBox.Text.ToIntPile());
             try
             {

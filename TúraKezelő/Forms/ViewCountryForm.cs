@@ -19,7 +19,7 @@ namespace HikeHandler.Forms
         private CountryDao countryDao;
 
         private MySqlConnection sqlConnection;
-        private Country countryData;
+        private CountryForView countryData;
 
         public ViewCountryForm()
         {
@@ -32,7 +32,7 @@ namespace HikeHandler.Forms
             InitializeComponent();
             countryDao = new CountryDao(connection);
             sqlConnection = connection;
-            countryData = new Country(idCountry);
+            countryData = new CountryForView(idCountry);
             RefreshForm();
         }
 

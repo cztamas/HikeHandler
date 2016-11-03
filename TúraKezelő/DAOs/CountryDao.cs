@@ -161,7 +161,7 @@ namespace HikeHandler.DAOs
 
         // Check whether there is a country in the DB with the given name. Returns true if there is.
         // Throws CountryDaoException in case of an error.
-        public bool IsDuplicateName(string countryName)
+        private bool IsDuplicateName(string countryName)
         {
             string commandText = "SELECT COUNT(*) FROM country WHERE name=@name;";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
@@ -237,7 +237,7 @@ namespace HikeHandler.DAOs
         }
 
         // Saves country data to DB, or throws CountryDaoException in case of an error.
-        public bool SaveCountry (Country country)
+        public bool SaveCountry (CountryForView country)
         {
             if (sqlConnection == null)
             {
@@ -269,7 +269,7 @@ namespace HikeHandler.DAOs
         }
 
         // Returns the data of the country with given id, or throws CountryDaoException in case of an error.
-        public Country GetCountryData(int idCountry)
+        public CountryForView GetCountryData(int idCountry)
         {
             if (idCountry <= 0)
             {
@@ -300,7 +300,7 @@ namespace HikeHandler.DAOs
                         throw new DaoException(ActivityType.GetData, ErrorType.DBError,
                             "'hikecount' value should be an integer.");
                     }
-                    Country countryData = new Country(idCountry, count, 
+                    CountryForView countryData = new CountryForView(idCountry, count, 
                         row["name"].ToString(), row["description"].ToString());
                     return countryData;
                 }
@@ -312,7 +312,7 @@ namespace HikeHandler.DAOs
         }
 
         // Updates the DB with data in the country object, or throws CountryDaoException in case of an error.
-        public bool UpdateCountry(Country country)
+        public bool UpdateCountry(CountryForView country)
         {
             if (sqlConnection == null)
             {
@@ -341,7 +341,7 @@ namespace HikeHandler.DAOs
             }
         }
         
-        public DataTable SearchCountry(CountryTemplate template)
+        public DataTable SearchCountry(CountryForSearch template)
         {
             if (sqlConnection == null)
             {

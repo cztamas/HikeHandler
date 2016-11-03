@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace HikeHandler.Data_Containers
 {
-    public class CountryTemplate
+    public class CountryForSearch
     {
         public string Name { get; set; }
         public IntPile HikeCount { get; set; }
 
-        public CountryTemplate()
+        public CountryForSearch()
         {
             HikeCount = new IntPile();
             Name = String.Empty;
         }
 
-        public CountryTemplate(string countryName, IntPile hikePile)
+        public CountryForSearch(string countryName, IntPile hikePile)
         {
             HikeCount = hikePile;
             Name = countryName;

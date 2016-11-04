@@ -56,7 +56,7 @@
     </Compile>
     <Compile Include="DAOs\CountryDao.cs" />
     <Compile Include="DAOs\CPDao.cs" />
-    <Compile Include="DAOs\DBHandler.cs" />
+    <Compile Include="DAOs\DBManager.cs" />
     <Compile Include="DAOs\HikeDao.cs" />
     <Compile Include="DAOs\RegionDao.cs" />
     <Compile Include="Data Containers\Country\CountryForSave.cs" />
@@ -72,6 +72,7 @@
     <Compile Include="Data Containers\Hike\HikeTemplate.cs" />
     <Compile Include="Exceptions\DaoException.cs" />
     <Compile Include="Exceptions\Miscellaneous.cs" />
+    <Compile Include="Exceptions\NoDBConnectionException.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Controls\CPHandler.cs">
       <SubType>UserControl</SubType>

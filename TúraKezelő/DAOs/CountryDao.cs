@@ -118,7 +118,7 @@ namespace HikeHandler.DAOs
                     object result = command.ExecuteScalar();
                     int count;
                     if (!int.TryParse(result.ToString(), out count))
-                        return -1;
+                        throw new DaoException(ActivityType.CountRegions, ErrorType.DBError, string.Empty);
                     return count;
                 }
                 catch (Exception ex)

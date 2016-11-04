@@ -8,14 +8,14 @@ using MySql.Data.MySqlClient;
 
 namespace TúraKezelő.DAOs
 {
-    public class DBHandler
+    public class DBManager
     {
         private CountryDao countryDao;
         private RegionDao regionDao;
         private CPDao cpDao;
         private HikeDao hikeDao;
 
-        public DBHandler(MySqlConnection connection)
+        public DBManager(MySqlConnection connection)
         {
             countryDao = new CountryDao(connection);
             regionDao = new RegionDao(connection);

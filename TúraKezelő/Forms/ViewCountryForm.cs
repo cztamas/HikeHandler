@@ -19,7 +19,7 @@ namespace HikeHandler.Forms
         private CountryDao countryDao;
 
         private MySqlConnection sqlConnection;
-        private CountryForView countryData;
+        private CountryForView currentCountry;
 
         public ViewCountryForm()
         {
@@ -32,7 +32,7 @@ namespace HikeHandler.Forms
             InitializeComponent();
             countryDao = new CountryDao(connection);
             sqlConnection = connection;
-            countryData = new CountryForView(idCountry);
+            currentCountry = new CountryForView(idCountry);
             RefreshForm();
         }
 
@@ -42,7 +42,7 @@ namespace HikeHandler.Forms
             descriptionBox.Enabled = true;
             saveEditButton.Enabled = true;
             saveEditButton.Visible = true;
-            cancelEditButton.Enabled = true; ;
+            cancelEditButton.Enabled = true; 
             cancelEditButton.Visible = true;
             editButton.Enabled = false;
             editButton.Visible = false;
@@ -62,11 +62,11 @@ namespace HikeHandler.Forms
 
         private void RefreshForm()
         {
-            RefreshCountryData(countryData.ID);
-            nameBox.Text = countryData.Name;
-            hikeCountBox.Text = countryData.HikeCount.ToString();
-            descriptionBox.Text = countryData.Description;
-            Text = countryData.Name + " adatai";
+            RefreshCountryData(currentCountry.ID);
+            nameBox.Text = currentCountry.Name;
+            hikeCountLabel.Text = currentCountry.HikeCount.ToString();
+            descriptionBox.Text = currentCountry.Description;
+            Text = currentCountry.Name + " adatai";
             MakeUneditable();
         }
 
@@ -74,7 +74,7 @@ namespace HikeHandler.Forms
         {
             try
             {
-                countryData = countryDao.GetCountryData(idCountry);
+                currentCountry = countryDao.GetCountryData(idCountry);
             }
             catch (DaoException ex)
             {
@@ -112,11 +112,11 @@ namespace HikeHandler.Forms
 
         private void saveEditButton_Click(object sender, EventArgs e)
         {   
-            countryData.Name = nameBox.Text;
-            countryData.Description = descriptionBox.Text;
+            currentCountry.Name = nameBox.Text;
+            currentCountry.Description = descriptionBox.Text;
             try
             {
-                countryDao.UpdateCountry(countryData);
+                countryDao.UpdateCountry(currentCountry);
                 RefreshForm();
             }
             catch (DaoException ex)
@@ -137,8 +137,8 @@ namespace HikeHandler.Forms
         private void regionsOfCountryButton_Click(object sender, EventArgs e)
         {
             HikeRegionTemplate template = new HikeRegionTemplate();
-            template.IDcountry = countryData.ID;
-            template.CountryName = countryData.Name;
+            template.IDcountry = currentCountry.ID;
+            template.CountryName = currentCountry.Name;
             SearchRegionForm searchRegionForm = new SearchRegionForm(sqlConnection, template);
             searchRegionForm.Show();
         }
@@ -146,8 +146,8 @@ namespace HikeHandler.Forms
         private void cpsOfCountryButton_Click(object sender, EventArgs e)
         {
             CPTemplate template = new CPTemplate();
-            template.IDCountry = countryData.ID;
-            template.CountryName = countryData.Name;
+            template.IDCountry = currentCountry.ID;
+            template.CountryName = currentCountry.Name;
             SearchCPForm searchCPForm = new SearchCPForm(sqlConnection, template);
             searchCPForm.Show();
         }
@@ -155,8 +155,8 @@ namespace HikeHandler.Forms
         private void hikesOfCountryButton_Click(object sender, EventArgs e)
         {
             HikeTemplate template = new HikeTemplate();
-            template.IDCountry = countryData.ID;
-            template.CountryName = countryData.Name;
+            template.IDCountry = currentCountry.ID;
+            template.CountryName = currentCountry.Name;
             SearchHikeForm searchHikeForm = new SearchHikeForm(sqlConnection, template);
             searchHikeForm.Show();
         }
@@ -173,7 +173,7 @@ namespace HikeHandler.Forms
 
             try
             {
-                if (countryDao.DeleteCountry(countryData.ID))
+                if (countryDao.DeleteCountry(currentCountry.ID))
                 {
                     MessageBox.Show("Törölve");
                     Close();

@@ -32,7 +32,6 @@
             this.deleteCountryButton = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.descriptionBox = new System.Windows.Forms.RichTextBox();
-            this.hikeCountBox = new System.Windows.Forms.TextBox();
             this.nameBox = new System.Windows.Forms.TextBox();
             this.hikesOfCountryButton = new System.Windows.Forms.Button();
             this.cpsOfCountryButton = new System.Windows.Forms.Button();
@@ -44,15 +43,27 @@
             this.editButton = new System.Windows.Forms.Button();
             this.closeButton = new System.Windows.Forms.Button();
             this.refreshButton = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.regionCountLabel = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.cpCountLabel = new System.Windows.Forms.Label();
+            this.hikeCountLabel = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.hikeCountLabel);
+            this.groupBox1.Controls.Add(this.cpCountLabel);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.regionCountLabel);
+            this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.deleteCountryButton);
             this.groupBox1.Controls.Add(this.groupBox2);
-            this.groupBox1.Controls.Add(this.hikeCountBox);
             this.groupBox1.Controls.Add(this.nameBox);
             this.groupBox1.Controls.Add(this.hikesOfCountryButton);
             this.groupBox1.Controls.Add(this.cpsOfCountryButton);
@@ -61,14 +72,15 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(5, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(410, 134);
+            this.groupBox1.Size = new System.Drawing.Size(391, 164);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Adatok";
             // 
             // deleteCountryButton
             // 
-            this.deleteCountryButton.Location = new System.Drawing.Point(294, 103);
+            this.deleteCountryButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.deleteCountryButton.Location = new System.Drawing.Point(275, 133);
             this.deleteCountryButton.Name = "deleteCountryButton";
             this.deleteCountryButton.Size = new System.Drawing.Size(109, 23);
             this.deleteCountryButton.TabIndex = 12;
@@ -78,10 +90,13 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.descriptionBox);
-            this.groupBox2.Location = new System.Drawing.Point(0, 45);
+            this.groupBox2.Location = new System.Drawing.Point(0, 74);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(281, 89);
+            this.groupBox2.Size = new System.Drawing.Size(269, 90);
             this.groupBox2.TabIndex = 14;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Leírás";
@@ -91,17 +106,9 @@
             this.descriptionBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.descriptionBox.Location = new System.Drawing.Point(3, 16);
             this.descriptionBox.Name = "descriptionBox";
-            this.descriptionBox.Size = new System.Drawing.Size(275, 70);
+            this.descriptionBox.Size = new System.Drawing.Size(263, 71);
             this.descriptionBox.TabIndex = 5;
             this.descriptionBox.Text = "";
-            // 
-            // hikeCountBox
-            // 
-            this.hikeCountBox.Enabled = false;
-            this.hikeCountBox.Location = new System.Drawing.Point(235, 19);
-            this.hikeCountBox.Name = "hikeCountBox";
-            this.hikeCountBox.Size = new System.Drawing.Size(46, 20);
-            this.hikeCountBox.TabIndex = 13;
             // 
             // nameBox
             // 
@@ -112,7 +119,8 @@
             // 
             // hikesOfCountryButton
             // 
-            this.hikesOfCountryButton.Location = new System.Drawing.Point(294, 74);
+            this.hikesOfCountryButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.hikesOfCountryButton.Location = new System.Drawing.Point(275, 74);
             this.hikesOfCountryButton.Name = "hikesOfCountryButton";
             this.hikesOfCountryButton.Size = new System.Drawing.Size(109, 23);
             this.hikesOfCountryButton.TabIndex = 8;
@@ -122,7 +130,8 @@
             // 
             // cpsOfCountryButton
             // 
-            this.cpsOfCountryButton.Location = new System.Drawing.Point(294, 45);
+            this.cpsOfCountryButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cpsOfCountryButton.Location = new System.Drawing.Point(275, 45);
             this.cpsOfCountryButton.Name = "cpsOfCountryButton";
             this.cpsOfCountryButton.Size = new System.Drawing.Size(109, 23);
             this.cpsOfCountryButton.TabIndex = 7;
@@ -132,7 +141,8 @@
             // 
             // regionsOfCountryButton
             // 
-            this.regionsOfCountryButton.Location = new System.Drawing.Point(294, 16);
+            this.regionsOfCountryButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.regionsOfCountryButton.Location = new System.Drawing.Point(275, 16);
             this.regionsOfCountryButton.Name = "regionsOfCountryButton";
             this.regionsOfCountryButton.Size = new System.Drawing.Size(109, 23);
             this.regionsOfCountryButton.TabIndex = 6;
@@ -160,7 +170,8 @@
             // 
             // saveEditButton
             // 
-            this.saveEditButton.Location = new System.Drawing.Point(8, 152);
+            this.saveEditButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.saveEditButton.Location = new System.Drawing.Point(8, 176);
             this.saveEditButton.Name = "saveEditButton";
             this.saveEditButton.Size = new System.Drawing.Size(111, 23);
             this.saveEditButton.TabIndex = 11;
@@ -170,9 +181,10 @@
             // 
             // cancelEditButton
             // 
-            this.cancelEditButton.Location = new System.Drawing.Point(125, 152);
+            this.cancelEditButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cancelEditButton.Location = new System.Drawing.Point(125, 176);
             this.cancelEditButton.Name = "cancelEditButton";
-            this.cancelEditButton.Size = new System.Drawing.Size(80, 23);
+            this.cancelEditButton.Size = new System.Drawing.Size(65, 23);
             this.cancelEditButton.TabIndex = 10;
             this.cancelEditButton.Text = "Mégse";
             this.cancelEditButton.UseVisualStyleBackColor = true;
@@ -180,9 +192,10 @@
             // 
             // editButton
             // 
-            this.editButton.Location = new System.Drawing.Point(8, 152);
+            this.editButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.editButton.Location = new System.Drawing.Point(8, 176);
             this.editButton.Name = "editButton";
-            this.editButton.Size = new System.Drawing.Size(197, 23);
+            this.editButton.Size = new System.Drawing.Size(182, 23);
             this.editButton.TabIndex = 9;
             this.editButton.Text = "Szerkesztés...";
             this.editButton.UseVisualStyleBackColor = true;
@@ -190,8 +203,9 @@
             // 
             // closeButton
             // 
+            this.closeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.closeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.closeButton.Location = new System.Drawing.Point(299, 152);
+            this.closeButton.Location = new System.Drawing.Point(280, 176);
             this.closeButton.Name = "closeButton";
             this.closeButton.Size = new System.Drawing.Size(109, 23);
             this.closeButton.TabIndex = 1;
@@ -201,20 +215,66 @@
             // 
             // refreshButton
             // 
-            this.refreshButton.Location = new System.Drawing.Point(211, 152);
+            this.refreshButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.refreshButton.Location = new System.Drawing.Point(196, 176);
             this.refreshButton.Name = "refreshButton";
-            this.refreshButton.Size = new System.Drawing.Size(82, 23);
+            this.refreshButton.Size = new System.Drawing.Size(75, 23);
             this.refreshButton.TabIndex = 15;
             this.refreshButton.Text = "Frissítés";
             this.refreshButton.UseVisualStyleBackColor = true;
             this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(7, 50);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(71, 13);
+            this.label3.TabIndex = 15;
+            this.label3.Text = "Tájegységek:";
+            // 
+            // regionCountLabel
+            // 
+            this.regionCountLabel.AutoSize = true;
+            this.regionCountLabel.Location = new System.Drawing.Point(84, 50);
+            this.regionCountLabel.Name = "regionCountLabel";
+            this.regionCountLabel.Size = new System.Drawing.Size(25, 13);
+            this.regionCountLabel.TabIndex = 16;
+            this.regionCountLabel.Text = "???";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(158, 50);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(77, 13);
+            this.label5.TabIndex = 17;
+            this.label5.Text = "CheckPointok:";
+            // 
+            // cpCountLabel
+            // 
+            this.cpCountLabel.AutoSize = true;
+            this.cpCountLabel.Location = new System.Drawing.Point(241, 50);
+            this.cpCountLabel.Name = "cpCountLabel";
+            this.cpCountLabel.Size = new System.Drawing.Size(25, 13);
+            this.cpCountLabel.TabIndex = 18;
+            this.cpCountLabel.Text = "???";
+            // 
+            // hikeCountLabel
+            // 
+            this.hikeCountLabel.AutoSize = true;
+            this.hikeCountLabel.Location = new System.Drawing.Point(241, 22);
+            this.hikeCountLabel.Name = "hikeCountLabel";
+            this.hikeCountLabel.Size = new System.Drawing.Size(25, 13);
+            this.hikeCountLabel.TabIndex = 19;
+            this.hikeCountLabel.Text = "???";
             // 
             // ViewCountryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.closeButton;
-            this.ClientSize = new System.Drawing.Size(421, 184);
+            this.ClientSize = new System.Drawing.Size(402, 207);
             this.Controls.Add(this.refreshButton);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.groupBox1);
@@ -244,10 +304,14 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button closeButton;
-        private System.Windows.Forms.TextBox hikeCountBox;
         private System.Windows.Forms.TextBox nameBox;
         private System.Windows.Forms.Button deleteCountryButton;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button refreshButton;
+        private System.Windows.Forms.Label cpCountLabel;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label regionCountLabel;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label hikeCountLabel;
     }
 }

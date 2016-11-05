@@ -1,4 +1,4 @@
-﻿namespace HikeHandler.Forms
+﻿namespace HikeHandler.UI
 {
     partial class ViewHikeForm
     {
@@ -45,7 +45,7 @@
             this.cancelEditButton = new System.Windows.Forms.Button();
             this.deleteHikeButton = new System.Windows.Forms.Button();
             this.descriptionBox = new HikeHandler.Controls.HikeDescriptionBox();
-            this.checkPointHandler = new HikeHandler.Forms.CPHandler();
+            this.checkPointHandler = new HikeHandler.UI.CPHandler();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 

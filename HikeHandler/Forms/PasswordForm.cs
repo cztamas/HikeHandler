@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using HikeHandler.ModelObjects;
 
-namespace HikeHandler.Forms
+namespace HikeHandler.UI
 {
     public partial class PasswordForm : Form
     {

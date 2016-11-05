@@ -12,7 +12,7 @@ using HikeHandler.ModelObjects;
 using HikeHandler.DAOs;
 using HikeHandler.Exceptions;
 
-namespace HikeHandler.Forms
+namespace HikeHandler.UI
 {
     public partial class AddHikeForm : Form
     {

@@ -1,4 +1,4 @@
-﻿namespace HikeHandler.Forms
+﻿namespace HikeHandler.UI
 {
     partial class SearchHikeForm
     {
@@ -45,7 +45,7 @@
             this.clearButton = new System.Windows.Forms.Button();
             this.closeButton = new System.Windows.Forms.Button();
             this.detailsButton = new System.Windows.Forms.Button();
-            this.checkPointHandler = new HikeHandler.Forms.CPHandler();
+            this.checkPointHandler = new HikeHandler.UI.CPHandler();
             this.groupBox1.SuspendLayout();
             this.resultGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.resultView)).BeginInit();

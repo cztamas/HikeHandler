@@ -10,11 +10,13 @@ using System.Windows.Forms;
 using HikeHandler.ModelObjects;
 using HikeHandler.DAOs;
 using HikeHandler.Exceptions;
+using HikeHandler.ServiceLayer;
 
-namespace HikeHandler.Forms
+namespace HikeHandler.UI
 {
     public partial class AddCountryForm : Form
     {
+        private DAOManager daoManager;
         private CountryDao countryDao;
 
         public AddCountryForm()
@@ -26,6 +28,12 @@ namespace HikeHandler.Forms
         {
             InitializeComponent();
             countryDao = countryDaoObject;
+        }
+
+        public AddCountryForm(DAOManager manager)
+        {
+            InitializeComponent();
+            daoManager = manager;
         }
 
         public void Open()
@@ -40,11 +48,20 @@ namespace HikeHandler.Forms
         }
 
         private void saveButton_Click(object sender, EventArgs e)
-        {   
-            CountryForView country = new CountryForView(nameBox.Text, descriptionBox.Text);
+        {
+            if (string.IsNullOrWhiteSpace(nameBox.Text))
+            {
+                MessageBox.Show("Nincs megadva az ország neve.", "Hiba");
+                nameBox.Focus();
+            }
+            CountryForSave country = new CountryForSave(nameBox.Text, descriptionBox.Text);
+            if (daoManager.SaveCountry(country))
+                Close();
+
+            CountryForView countryData = new CountryForView(nameBox.Text, descriptionBox.Text);
             try
             {
-                countryDao.SaveCountry(country);
+                countryDao.SaveCountry(countryData);
                 MessageBox.Show("Sikeresen elmentve.");
                 Close();
             }

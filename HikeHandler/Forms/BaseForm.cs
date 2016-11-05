@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using HikeHandler.Forms;
+using HikeHandler.UI;
 using HikeHandler.ModelObjects;
 using HikeHandler.DAOs;
 using MySql.Data.MySqlClient;

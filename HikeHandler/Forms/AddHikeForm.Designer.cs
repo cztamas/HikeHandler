@@ -1,4 +1,4 @@
-﻿namespace HikeHandler.Forms
+﻿namespace HikeHandler.UI
 {
     partial class AddHikeForm
     {
@@ -40,7 +40,7 @@
             this.addHikeButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.descriptionBox = new HikeHandler.Controls.HikeDescriptionBox();
-            this.checkPointHandler = new HikeHandler.Forms.CPHandler();
+            this.checkPointHandler = new HikeHandler.UI.CPHandler();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -212,7 +212,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button addHikeButton;
         private System.Windows.Forms.Button cancelButton;
-        private Forms.CPHandler checkPointHandler;
+        private UI.CPHandler checkPointHandler;
         private HikeHandler.Controls.HikeDescriptionBox descriptionBox;
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace HikeHandler.Forms
+﻿namespace HikeHandler.UI
 {
     partial class ViewCountryForm
     {

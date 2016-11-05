@@ -12,7 +12,7 @@ using HikeHandler.ModelObjects;
 using HikeHandler.Exceptions;
 using HikeHandler.DAOs;
 
-namespace HikeHandler.Forms
+namespace HikeHandler.UI
 {    
     public partial class ViewCPForm : Form
     {

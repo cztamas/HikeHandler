@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HikeHandler.ModelObjects
 {
-    public class CountryForUpdate
+    public class CountryForUpdate : CountryForSave
     {
         // Validity is checked in set accessors.
         public int CountryID
@@ -22,25 +22,10 @@ namespace HikeHandler.ModelObjects
                 CountryID = value;
             }
         }
-        public string Name
-        {
-            get
-            {
-                return Name;
-            }
-            set
-            {
-                if (string.IsNullOrWhiteSpace(value))
-                    throw new ArgumentNullException("name", "Country name cannot be empty.");
-            }
-        }
-        public string Description { get; set; }
-
-        public CountryForUpdate(int countryID, string name, string description)
+        
+        public CountryForUpdate(int countryID, string name, string description) : base(name, description)
         {
             CountryID = countryID;
-            Name = name;
-            Description = description;
         }
     }
 }

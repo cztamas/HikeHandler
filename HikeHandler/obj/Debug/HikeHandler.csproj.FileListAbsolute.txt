@@ -76,3 +76,6 @@ C:\prog\c#\TúraKezelő\HikeHandler\obj\Debug\HikeHandler.Properties.Resources.r
 C:\prog\c#\TúraKezelő\HikeHandler\obj\Debug\HikeHandler.csproj.GenerateResource.Cache
 C:\prog\c#\TúraKezelő\HikeHandler\obj\Debug\HikeHandler.exe
 C:\prog\c#\TúraKezelő\HikeHandler\obj\Debug\HikeHandler.pdb
+C:\prog\c#\HikeHandler\HikeHandler\bin\Debug\HikeHandler.exe.config
+C:\prog\c#\HikeHandler\HikeHandler\obj\Debug\HikeHandler.exe
+C:\prog\c#\HikeHandler\HikeHandler\obj\Debug\HikeHandler.pdb

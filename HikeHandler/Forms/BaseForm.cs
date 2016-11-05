@@ -279,11 +279,11 @@ namespace HikeHandler
 
         private void addCountryButton_Click(object sender, EventArgs e)
         {
-            if (uiTestMode)
+            /*if (uiTestMode)
             {
                 AddCountryForm aCForm = new AddCountryForm();
                 aCForm.Open();
-            }
+            }*/
             if (!uiTestMode)
             {
                 CountryDao countryDao = new CountryDao(sqlConnection);

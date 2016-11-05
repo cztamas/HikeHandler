@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HikeHandler.ModelObjects
 {
-    public class CountryForUpdate : CountryForSave
+    public class CountryForUpdate
     {
         // Validity is checked in set accessors.
         public int CountryID
@@ -22,10 +22,40 @@ namespace HikeHandler.ModelObjects
                 CountryID = value;
             }
         }
-        
-        public CountryForUpdate(int countryID, string name, string description) : base(name, description)
+        public string OldName
+        {
+            get
+            {
+                return OldName;
+            }
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    throw new ArgumentNullException("OldName", "Country name cannot be whitespace or empty");
+                OldName = value;
+            }
+        }
+        public string NewName
+        {
+            get
+            {
+                return NewName;
+            }
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    throw new ArgumentNullException("NewName", "Country name cannot be whitespace or empty");
+                NewName = value;
+            }
+        }
+        public string Description { get; set; }
+
+        public CountryForUpdate(int countryID, string oldName, string newName, string description)
         {
             CountryID = countryID;
+            OldName = oldName;
+            NewName = newName;
+            Description = description;
         }
     }
 }

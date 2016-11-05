@@ -17,19 +17,7 @@ namespace HikeHandler.UI
     public partial class AddCountryForm : Form
     {
         private DAOManager daoManager;
-        private CountryDao countryDao;
-
-        public AddCountryForm()
-        {
-            InitializeComponent();
-        }
-
-        public AddCountryForm(CountryDao countryDaoObject)
-        {
-            InitializeComponent();
-            countryDao = countryDaoObject;
-        }
-
+        
         public AddCountryForm(DAOManager manager)
         {
             InitializeComponent();
@@ -56,33 +44,12 @@ namespace HikeHandler.UI
             }
             CountryForSave country = new CountryForSave(nameBox.Text, descriptionBox.Text);
             if (daoManager.SaveCountry(country))
-                Close();
-
-            CountryForView countryData = new CountryForView(nameBox.Text, descriptionBox.Text);
-            try
             {
-                countryDao.SaveCountry(countryData);
                 MessageBox.Show("Sikeresen elmentve.");
                 Close();
             }
-            catch (DaoException ex)
-            {
-                switch (ex.Error)
-                {
-                    case ErrorType.NoDBConnection:
-                        MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                        break;
-                    case ErrorType.DuplicateName:
-                        MessageBox.Show("Már van elmentve ilyen nevű ország.", "Hiba");
-                        nameBox.Focus();
-                        break;
-                    case ErrorType.DBError:
-                        MessageBox.Show(ex.Message, "Hiba");
-                        break;
-                }
-            }
         }
-
+        
         private void descriptionBox_Enter(object sender, EventArgs e)
         {
             AcceptButton = null;

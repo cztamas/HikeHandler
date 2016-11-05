@@ -11,11 +11,14 @@ using MySql.Data.MySqlClient;
 using HikeHandler.ModelObjects;
 using HikeHandler.DAOs;
 using HikeHandler.Exceptions;
+using HikeHandler.ServiceLayer;
 
 namespace HikeHandler.UI
 {
     public partial class AddCPForm : Form
     {
+        private DAOManager daoManager;
+
         private MySqlConnection sqlConnection;
         private CPDao cpDao;
 
@@ -32,6 +35,12 @@ namespace HikeHandler.UI
             GetCPTypes();
             GetCountries();            
         } 
+
+        public AddCPForm(DAOManager manager)
+        {
+            InitializeComponent();
+            daoManager = manager;
+        }
 
         public void Open()
         {

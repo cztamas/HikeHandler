@@ -161,7 +161,7 @@ namespace HikeHandler.DAOs
 
         // Check whether there is a country in the DB with the given name. Returns true if there is.
         // Throws CountryDaoException in case of an error.
-        private bool IsDuplicateName(string countryName)
+        public bool IsDuplicateName(string countryName)
         {
             string commandText = "SELECT COUNT(*) FROM country WHERE name=@name;";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
@@ -212,11 +212,11 @@ namespace HikeHandler.DAOs
         {
             if (sqlConnection == null)
             {
-                throw new DaoException(ActivityType.Delete, ErrorType.NoDBConnection, string.Empty);
+                throw new NoDBConnectionException();
             }
             if (sqlConnection.State != ConnectionState.Open)
             {
-                throw new DaoException(ActivityType.Delete, ErrorType.NoDBConnection, string.Empty);
+                throw new NoDBConnectionException();
             }
             if (!IsDeletable(idCountry))
                 throw new DaoException(ActivityType.Delete, ErrorType.NotDeletable, string.Empty);
@@ -236,35 +236,25 @@ namespace HikeHandler.DAOs
             }
         }
 
-        // Saves country data to DB, or throws CountryDaoException in case of an error.
-        public bool SaveCountry (CountryForView country)
+        // Saves country data to DB.
+        public bool SaveCountry (CountryForSave country)
         {
             if (sqlConnection == null)
             {
-                throw new DaoException(ActivityType.Save, ErrorType.NoDBConnection, string.Empty);
+                throw new NoDBConnectionException();
             }
             if (sqlConnection.State != ConnectionState.Open)
             {
-                throw new DaoException(ActivityType.Save, ErrorType.NoDBConnection, string.Empty);
+                throw new NoDBConnectionException();
             }
-            if (IsDuplicateName(country.Name))
-            {
-                throw new DaoException(ActivityType.Save, ErrorType.DuplicateName, string.Empty);
-            }
-            string commandText = "INSERT INTO country (NAME, HIKECOUNT, DESCRIPTION) VALUES (@name, 0, @description);";
+            string commandText = @"INSERT INTO country (name, hikecount, regioncount, cpcount, description) 
+VALUES (@name, 0, 0, 0, @description);";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
                 command.Parameters.AddWithValue("@name", country.Name);
                 command.Parameters.AddWithValue("@description", country.Description);
-                try
-                {
-                    command.ExecuteNonQuery();
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    throw new DaoException(ActivityType.Save, ErrorType.DBError, ex.Message);
-                }
+                command.ExecuteNonQuery();
+                return true;
             }
         }
 

@@ -11,29 +11,22 @@ using MySql.Data.MySqlClient;
 using HikeHandler.ModelObjects;
 using HikeHandler.DAOs;
 using HikeHandler.Exceptions;
+using HikeHandler.ServiceLayer;
 
 namespace HikeHandler.UI
 {
     public partial class ViewCountryForm : Form
     {
-        private CountryDao countryDao;
-
-        private MySqlConnection sqlConnection;
+        private DAOManager daoManager;
         private CountryForView currentCountry;
-
-        public ViewCountryForm()
+        
+        public ViewCountryForm(DAOManager manager, CountryForView country)
         {
             InitializeComponent();
-            MakeUneditable();
-        }
-
-        public ViewCountryForm(int idCountry, MySqlConnection connection)
-        {
-            InitializeComponent();
-            countryDao = new CountryDao(connection);
-            sqlConnection = connection;
-            currentCountry = new CountryForView(idCountry);
+            daoManager = manager;
+            currentCountry = country;
             RefreshForm();
+            MakeUneditable();
         }
 
         private void MakeEditable()
@@ -62,32 +55,16 @@ namespace HikeHandler.UI
 
         private void RefreshForm()
         {
-            RefreshCountryData(currentCountry.ID);
             nameBox.Text = currentCountry.Name;
             hikeCountLabel.Text = currentCountry.HikeCount.ToString();
+            regionCountLabel.Text = currentCountry.RegionCount.ToString();
             descriptionBox.Text = currentCountry.Description;
             Text = currentCountry.Name + " adatai";
-            MakeUneditable();
         }
 
-        private void RefreshCountryData(int idCountry)
+        private void RefreshCountryData()
         {
-            try
-            {
-                currentCountry = countryDao.GetCountryData(idCountry);
-            }
-            catch (DaoException ex)
-            {
-                switch (ex.Error)
-                {
-                    case ErrorType.NoDBConnection:
-                        MessageBox.Show("Nincs kapcslat az adatbázissal", "Hiba");
-                        break;
-                    default:
-                        MessageBox.Show(ex.Message, "Hiba");
-                        break;
-                }
-            }
+            currentCountry = daoManager.SearchCountry(currentCountry.CountryID);
         }
 
         private void closeButton_Click(object sender, EventArgs e)
@@ -102,68 +79,72 @@ namespace HikeHandler.UI
 
         private void refreshButton_Click(object sender, EventArgs e)
         {
+            RefreshCountryData();
             RefreshForm();
         }
 
         private void cancelEditButton_Click(object sender, EventArgs e)
         {
+            MakeUneditable();
             RefreshForm();
         }
 
         private void saveEditButton_Click(object sender, EventArgs e)
-        {   
-            currentCountry.Name = nameBox.Text;
-            currentCountry.Description = descriptionBox.Text;
-            try
+        {
+            if (string.IsNullOrWhiteSpace(nameBox.Text))
             {
-                countryDao.UpdateCountry(currentCountry);
+                MessageBox.Show("Nincs megadva az ország neve.", "Hiba");
+                nameBox.Focus();
+            }
+            CountryForUpdate country =
+                new CountryForUpdate(currentCountry.CountryID, currentCountry.Name, nameBox.Text, descriptionBox.Text);
+            if (daoManager.UpdateCountry(country))
+            {
+                MakeUneditable();
+                RefreshCountryData();
                 RefreshForm();
             }
-            catch (DaoException ex)
-            {
-                switch (ex.Error)
-                {
-                    case ErrorType.NoDBConnection:
-                        MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                        break;
-                    default:
-                        MessageBox.Show(ex.Message, "Hiba");
-                        break;
-                }
-            }
-            
         }
-
+        
         private void regionsOfCountryButton_Click(object sender, EventArgs e)
         {
             HikeRegionForSearch template = new HikeRegionForSearch();
-            template.IDcountry = currentCountry.ID;
+            template.IDcountry = currentCountry.CountryID;
             template.CountryName = currentCountry.Name;
-            SearchRegionForm searchRegionForm = new SearchRegionForm(sqlConnection, template);
-            searchRegionForm.Show();
+
+            throw new NotImplementedException();
         }
 
         private void cpsOfCountryButton_Click(object sender, EventArgs e)
         {
             CPForSearch template = new CPForSearch();
-            template.IDCountry = currentCountry.ID;
+            template.IDCountry = currentCountry.CountryID;
             template.CountryName = currentCountry.Name;
-            SearchCPForm searchCPForm = new SearchCPForm(sqlConnection, template);
-            searchCPForm.Show();
+
+            throw new NotImplementedException();
         }
 
         private void hikesOfCountryButton_Click(object sender, EventArgs e)
         {
             HikeForSearch template = new HikeForSearch();
-            template.IDCountry = currentCountry.ID;
+            template.IDCountry = currentCountry.CountryID;
             template.CountryName = currentCountry.Name;
-            SearchHikeForm searchHikeForm = new SearchHikeForm(sqlConnection, template);
-            searchHikeForm.Show();
+
+            throw new NotImplementedException();
         }
 
         private void deleteCountryButton_Click(object sender, EventArgs e)
-        {        
-            // Asks for confirmation of deletion   
+        {
+            if (daoManager.DeleteCountry(currentCountry.CountryID))
+            {
+                MessageBox.Show("Törölve.");
+                Close();
+            }
+        }
+
+
+
+            /*// Asks for confirmation of deletion   
             string message = "Biztosan törli?";
             string caption = "Ország törlése";
             MessageBoxButtons buttons = MessageBoxButtons.YesNo;
@@ -193,7 +174,7 @@ namespace HikeHandler.UI
                         MessageBox.Show(ex.Message, "Hiba");
                         break;
                 }
-            }
-        }
+            }*/
+        
     }
 }

@@ -29,6 +29,11 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.hikeCountLabel = new System.Windows.Forms.Label();
+            this.cpCountLabel = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.regionCountLabel = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.deleteCountryButton = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.descriptionBox = new System.Windows.Forms.RichTextBox();
@@ -43,11 +48,6 @@
             this.editButton = new System.Windows.Forms.Button();
             this.closeButton = new System.Windows.Forms.Button();
             this.refreshButton = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.regionCountLabel = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.cpCountLabel = new System.Windows.Forms.Label();
-            this.hikeCountLabel = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -76,6 +76,51 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Adatok";
+            // 
+            // hikeCountLabel
+            // 
+            this.hikeCountLabel.AutoSize = true;
+            this.hikeCountLabel.Location = new System.Drawing.Point(241, 22);
+            this.hikeCountLabel.Name = "hikeCountLabel";
+            this.hikeCountLabel.Size = new System.Drawing.Size(25, 13);
+            this.hikeCountLabel.TabIndex = 19;
+            this.hikeCountLabel.Text = "???";
+            // 
+            // cpCountLabel
+            // 
+            this.cpCountLabel.AutoSize = true;
+            this.cpCountLabel.Location = new System.Drawing.Point(241, 50);
+            this.cpCountLabel.Name = "cpCountLabel";
+            this.cpCountLabel.Size = new System.Drawing.Size(25, 13);
+            this.cpCountLabel.TabIndex = 18;
+            this.cpCountLabel.Text = "???";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(158, 50);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(77, 13);
+            this.label5.TabIndex = 17;
+            this.label5.Text = "CheckPointok:";
+            // 
+            // regionCountLabel
+            // 
+            this.regionCountLabel.AutoSize = true;
+            this.regionCountLabel.Location = new System.Drawing.Point(117, 50);
+            this.regionCountLabel.Name = "regionCountLabel";
+            this.regionCountLabel.Size = new System.Drawing.Size(25, 13);
+            this.regionCountLabel.TabIndex = 16;
+            this.regionCountLabel.Text = "???";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(7, 50);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(104, 13);
+            this.label3.TabIndex = 15;
+            this.label3.Text = "Tájegységek száma:";
             // 
             // deleteCountryButton
             // 
@@ -223,51 +268,6 @@
             this.refreshButton.Text = "Frissítés";
             this.refreshButton.UseVisualStyleBackColor = true;
             this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(7, 50);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(71, 13);
-            this.label3.TabIndex = 15;
-            this.label3.Text = "Tájegységek:";
-            // 
-            // regionCountLabel
-            // 
-            this.regionCountLabel.AutoSize = true;
-            this.regionCountLabel.Location = new System.Drawing.Point(84, 50);
-            this.regionCountLabel.Name = "regionCountLabel";
-            this.regionCountLabel.Size = new System.Drawing.Size(25, 13);
-            this.regionCountLabel.TabIndex = 16;
-            this.regionCountLabel.Text = "???";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(158, 50);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(77, 13);
-            this.label5.TabIndex = 17;
-            this.label5.Text = "CheckPointok:";
-            // 
-            // cpCountLabel
-            // 
-            this.cpCountLabel.AutoSize = true;
-            this.cpCountLabel.Location = new System.Drawing.Point(241, 50);
-            this.cpCountLabel.Name = "cpCountLabel";
-            this.cpCountLabel.Size = new System.Drawing.Size(25, 13);
-            this.cpCountLabel.TabIndex = 18;
-            this.cpCountLabel.Text = "???";
-            // 
-            // hikeCountLabel
-            // 
-            this.hikeCountLabel.AutoSize = true;
-            this.hikeCountLabel.Location = new System.Drawing.Point(241, 22);
-            this.hikeCountLabel.Name = "hikeCountLabel";
-            this.hikeCountLabel.Size = new System.Drawing.Size(25, 13);
-            this.hikeCountLabel.TabIndex = 19;
-            this.hikeCountLabel.Text = "???";
             // 
             // ViewCountryForm
             // 

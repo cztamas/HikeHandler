@@ -1,5 +1,6 @@
 ﻿using HikeHandler.DAOs;
 using HikeHandler.ModelObjects;
+using HikeHandler.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
+using System.Windows.Forms;
 
 namespace HikeHandler.ServiceLayer
 {
@@ -29,7 +31,25 @@ namespace HikeHandler.ServiceLayer
 
         public bool SaveCountry(CountryForSave country)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (countryDao.IsDuplicateName(country.Name))
+                {
+                    MessageBox.Show("Már van elmentve ilyen nevű ország.", "Hiba");
+                    return false;
+                }
+                if (countryDao.SaveCountry(country))
+                    return true;
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+            }
+            return false;
         }
 
         public DataTable SearchCountry(CountryForSearch country)

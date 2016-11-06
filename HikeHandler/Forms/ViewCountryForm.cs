@@ -7,10 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
 using HikeHandler.ModelObjects;
-using HikeHandler.DAOs;
-using HikeHandler.Exceptions;
 using HikeHandler.ServiceLayer;
 
 namespace HikeHandler.UI
@@ -145,40 +142,5 @@ namespace HikeHandler.UI
                 Close();
             }
         }
-
-
-
-            /*// Asks for confirmation of deletion   
-            string message = "Biztosan törli?";
-            string caption = "Ország törlése";
-            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
-            DialogResult result = MessageBox.Show(message, caption, buttons);
-            if (result == DialogResult.No)
-                return;
-
-            try
-            {
-                if (countryDao.DeleteCountry(currentCountry.ID))
-                {
-                    MessageBox.Show("Törölve");
-                    Close();
-                }
-            }
-            catch (DaoException ex)
-            {
-                switch (ex.Error)
-                {
-                    case ErrorType.NoDBConnection:
-                        MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                        break;
-                    case ErrorType.NotDeletable:
-                        MessageBox.Show("Csak olyan ország törölhető, amihez nincs tájegység, checkpoint vagy túra hozzárendelve.", "Hiba");
-                        break;
-                    default:
-                        MessageBox.Show(ex.Message, "Hiba");
-                        break;
-                }
-            }*/
-        
     }
 }

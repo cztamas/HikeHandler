@@ -60,101 +60,95 @@ namespace HikeHandler.DAOs
         }
 
         // Finds the correct hikecount, and stores it in the DB.
-        // Returns the updated value of the hikecount, or throws CountryDaoException in case of an error.
+        // Returns the updated value of hikecount.
         public int UpdateHikeCount(int idCountry)
         {
             if (sqlConnection == null)
             {
-                throw new DaoException(ActivityType.UpdateHikeCount, ErrorType.NoDBConnection, string.Empty);
+                throw new NoDBConnectionException();
             }
             if (sqlConnection.State != ConnectionState.Open)
             {
-                throw new DaoException(ActivityType.UpdateHikeCount, ErrorType.NoDBConnection, string.Empty);
+                throw new NoDBConnectionException();
             }
             string commandText = "SELECT COUNT(*) AS count FROM hike WHERE idcountry=" + idCountry + ";";
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
+            using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
-                try
+                object result = command.ExecuteScalar();
+                int count;
+                if (!int.TryParse(result.ToString(), out count))
+                    throw new DBErrorException("SELECT COUNT return value should be integer.");
+                commandText = "UPDATE country SET hikecount=@hikecount WHERE idcountry=@idcountry;";
+                using (MySqlCommand updateCommand = new MySqlCommand(commandText, sqlConnection))
                 {
-                    DataTable table = new DataTable();
-                    adapter.Fill(table);
-                    int count;
-                    if (!int.TryParse(table.Rows[0]["count"].ToString(), out count))
-                        return -1;
-                    commandText = "UPDATE country SET hikecount=@hikecount WHERE idcountry=@idcountry;";
-                    using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
-                    {
-                        command.Parameters.AddWithValue("@hikecount", count);
-                        command.Parameters.AddWithValue("@idcountry", idCountry);
-                        command.ExecuteNonQuery();
-                        return count;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw new DaoException(ActivityType.UpdateHikeCount, ErrorType.DBError, ex.Message);
+                    updateCommand.Parameters.AddWithValue("@hikecount", count);
+                    updateCommand.Parameters.AddWithValue("@idcountry", idCountry);
+                    updateCommand.ExecuteNonQuery();
+                    return count;
                 }
             }
         }
 
-        // Returns the number of regions corresponding to the given country, 
-        // or throws CountryDaoException in case of an error.
-        public int CountRegions(int idCountry)
+        // Finds the correct region count, and stores it in the DB.
+        // Returns the updated value of regioncount.
+        public int UpdateRegionCount(int idCountry)
         {
             if (sqlConnection == null)
             {
-                throw new DaoException(ActivityType.CountRegions, ErrorType.NoDBConnection, string.Empty);
+                throw new NoDBConnectionException();
             }
             if (sqlConnection.State != ConnectionState.Open)
             {
-                throw new DaoException(ActivityType.CountRegions, ErrorType.NoDBConnection, string.Empty);
+                throw new NoDBConnectionException();
             }
             string commandText = "SELECT COUNT(*) AS count FROM region WHERE idcountry=@idCountry;";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
-                try
+                command.Parameters.AddWithValue("@idcountry", idCountry);
+                object result = command.ExecuteScalar();
+                int count;
+                if (!int.TryParse(result.ToString(), out count))
+                    throw new DBErrorException("SELECT COUNT return value should be integer.");
+
+                commandText = "UPDATE country SET regioncount=@regioncount WHERE idcountry=@idcountry;";
+                using (MySqlCommand updateCommand = new MySqlCommand(commandText, sqlConnection))
                 {
-                    command.Parameters.AddWithValue("@idcountry", idCountry);
-                    object result = command.ExecuteScalar();
-                    int count;
-                    if (!int.TryParse(result.ToString(), out count))
-                        throw new DaoException(ActivityType.CountRegions, ErrorType.DBError, string.Empty);
+                    updateCommand.Parameters.AddWithValue("@regioncount", count);
+                    updateCommand.Parameters.AddWithValue("@idcountry", idCountry);
+                    updateCommand.ExecuteNonQuery();
                     return count;
-                }
-                catch (Exception ex)
-                {
-                    throw new DaoException(ActivityType.CountRegions, ErrorType.DBError, ex.Message);
                 }
             }
         }
 
-        // Returns the number of checkpoints corresponding to the given country, 
-        // or throws CountryDaoException in case of an error.
-        public int CountCPs(int idCountry)
+        // Finds the correct cp count, and stores it in the DB.
+        // Returns the updated value of cpcount.
+        public int UpdateCPCount(int idCountry)
         {
             if (sqlConnection == null)
             {
-                throw new DaoException(ActivityType.CountCPs, ErrorType.NoDBConnection, string.Empty);
+                throw new NoDBConnectionException();
             }
             if (sqlConnection.State != ConnectionState.Open)
             {
-                throw new DaoException(ActivityType.CountCPs, ErrorType.NoDBConnection, string.Empty);
+                throw new NoDBConnectionException();
             }
             string commandText = "SELECT COUNT(*) AS count FROM cp WHERE idcountry=@idCountry;";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
-                try
+                command.Parameters.AddWithValue("@idcountry", idCountry);
+                object result = command.ExecuteScalar();
+                int count;
+                if (!int.TryParse(result.ToString(), out count))
+                    throw new DBErrorException("SELECT COUNT return value should be integer.");
+
+                commandText = "UPDATE country SET cpcount=@cpcount WHERE idcountry=@idcountry;";
+                using (MySqlCommand updateCommand = new MySqlCommand(commandText, sqlConnection))
                 {
-                    command.Parameters.AddWithValue("@idcountry", idCountry);
-                    object result = command.ExecuteScalar();
-                    int count;
-                    if (!int.TryParse(result.ToString(), out count))
-                        return -1;
+                    updateCommand.Parameters.AddWithValue("@cpcount", count);
+                    updateCommand.Parameters.AddWithValue("@idcountry", idCountry);
+                    updateCommand.ExecuteNonQuery();
                     return count;
-                }
-                catch (Exception ex)
-                {
-                    throw new DaoException(ActivityType.CountCPs, ErrorType.DBError, ex.Message);
                 }
             }
         }
@@ -163,52 +157,40 @@ namespace HikeHandler.DAOs
         // Throws CountryDaoException in case of an error.
         public bool IsDuplicateName(string countryName)
         {
+            if (sqlConnection == null)
+            {
+                throw new NoDBConnectionException();
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                throw new NoDBConnectionException();
+            }
             string commandText = "SELECT COUNT(*) FROM country WHERE name=@name;";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
                 command.Parameters.AddWithValue("@name", countryName);
-                try
-                {
-                    int count;
-                    if (!int.TryParse(command.ExecuteScalar().ToString(), out count))
-                        return true;
-                    if (count == 0)
-                        return false;
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    throw new DaoException(ActivityType.CheckDuplicateName, ErrorType.DBError, ex.Message);
-                }
+                int count;
+                if (!int.TryParse(command.ExecuteScalar().ToString(), out count))
+                    throw new DBErrorException("SELECT COUNT return value should be integer.");
+                if (count == 0)
+                    return false;
+                return true;
             }
         }
 
         // Checks whether the given country can be deleted.
-        // Returns false in case of an error.
-        // Throws CountryDaoException if there is no DB connection.
         // Deletable only if no region, CP or hike belongs to it.
-        private bool IsDeletable(int idCountry)
+        public bool IsDeletable(int idCountry)
         {
-            try
-            {
-                if (UpdateHikeCount(idCountry) != 0)
-                    return false;
-                if (CountRegions(idCountry) != 0)
-                    return false;
-                if (CountCPs(idCountry) != 0)
-                    return false;
-                return true;
-            }
-            catch (DaoException ex)
-            {
-                if (ex.Error == ErrorType.NoDBConnection)
-                    throw;
+            CountryForView country = GetCountryData(idCountry);
+            if (country.HikeCount > 0 || country.RegionCount > 0 || country.CPCount > 0)
                 return false;
-            }
+            else
+                return true;
         }
 
         // Deletes the given country from DB, or throws CountryDaoException in case of an error.
-        public bool DeleteCountry(int idCountry)
+        public void DeleteCountry(int idCountry)
         {
             if (sqlConnection == null)
             {
@@ -218,21 +200,11 @@ namespace HikeHandler.DAOs
             {
                 throw new NoDBConnectionException();
             }
-            if (!IsDeletable(idCountry))
-                throw new DaoException(ActivityType.Delete, ErrorType.NotDeletable, string.Empty);
             string commandText = "DELETE FROM country WHERE idcountry=@idcountry";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
-                try
-                {
-                    command.Parameters.AddWithValue("@idcountry", idCountry);
-                    command.ExecuteNonQuery();
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    throw new DaoException(ActivityType.Delete, ErrorType.DBError, ex.Message);
-                }
+                command.Parameters.AddWithValue("@idcountry", idCountry);
+                command.ExecuteNonQuery();
             }
         }
 
@@ -274,7 +246,7 @@ VALUES (@name, 0, 0, 0, @description);";
                 throw new NoDBConnectionException();
             }
 
-            string commandText = "SELECT name, description, hikecount, cpcount, regioncount FROM country WHERE IDCOUNTRY=@id;";
+            string commandText = "SELECT name, description, hikecount, cpcount, regioncount FROM country WHERE idcountry=@id;";
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
             {
                 adapter.SelectCommand.Parameters.AddWithValue("@id", idCountry);
@@ -318,32 +290,25 @@ VALUES (@name, 0, 0, 0, @description);";
         }
 
         // Updates the DB with data in the country object, or throws CountryDaoException in case of an error.
-        public bool UpdateCountry(CountryForView country)
+        public void UpdateCountry(CountryForUpdate country)
         {
             if (sqlConnection == null)
             {
-                throw new DaoException(ActivityType.Update, ErrorType.NoDBConnection, string.Empty);
+                throw new NoDBConnectionException();
             }
             if (sqlConnection.State != ConnectionState.Open)
             {
-                throw new DaoException(ActivityType.Update, ErrorType.NoDBConnection, string.Empty);
+                throw new NoDBConnectionException();
             }
             string commandText = 
                 "UPDATE country SET NAME=@name, DESCRIPTION=@description WHERE IDCOUNTRY=@id;";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
-                command.Parameters.AddWithValue("@name", country.Name);
+                command.Parameters.AddWithValue("@name", country.NewName);
                 command.Parameters.AddWithValue("@description", country.Description);
-                command.Parameters.AddWithValue("@id", country.ID);
-                try
-                {
-                    command.ExecuteNonQuery();
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    throw new DaoException(ActivityType.Update, ErrorType.DBError, ex.Message);
-                }
+                command.Parameters.AddWithValue("@id", country.CountryID);
+
+                command.ExecuteNonQuery();
             }
         }
         
@@ -377,6 +342,25 @@ VALUES (@name, 0, 0, 0, @description);";
                 }
             }
         }
-        
+
+        // Gets the list of all countries in a datatable
+        public DataTable GetCountryTable()
+        {
+            if (sqlConnection == null)
+            {
+                throw new NoDBConnectionException();
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                throw new NoDBConnectionException();
+            }
+            string commandText = "SELECT idcountry, name FROM country ORDER BY name ASC;";
+            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
+            {
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                return table;
+            }
+        }
     }
 }

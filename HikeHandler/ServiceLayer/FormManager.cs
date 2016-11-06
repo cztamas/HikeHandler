@@ -31,6 +31,7 @@ namespace HikeHandler.ServiceLayer
                     isConnected = CreateConnection(pwdForm.loginData);
                 }
             }
+            pwdForm.Dispose();
             DAOManager manager = new DAOManager(sqlConnection);
             BaseForm baseForm = new BaseForm(manager);
             return baseForm;

@@ -102,3 +102,4 @@ C:\prog\c#\HikeHandler\HikeHandler\obj\Debug\HikeHandler.UI.ViewHikeForm.resourc
 C:\prog\c#\HikeHandler\HikeHandler\obj\Debug\HikeHandler.UI.ViewRegionForm.resources
 C:\prog\c#\HikeHandler\HikeHandler\obj\Debug\HikeHandler.Properties.Resources.resources
 C:\prog\c#\HikeHandler\HikeHandler\obj\Debug\HikeHandler.csproj.GenerateResource.Cache
+C:\prog\c#\HikeHandler\HikeHandler\obj\Debug\HikeHandler.UI.BaseForm.resources

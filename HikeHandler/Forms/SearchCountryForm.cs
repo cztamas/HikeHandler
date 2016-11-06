@@ -7,34 +7,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
 using HikeHandler.ModelObjects;
-using HikeHandler.DAOs;
-using HikeHandler.Exceptions;
+using HikeHandler.ServiceLayer;
 
 namespace HikeHandler.UI
 {
     public partial class SearchCountryForm : Form
     {
-        private CountryDao countryDao;
-        private MySqlConnection sqlConnection;
+        private DAOManager daoManager;
 
-        public SearchCountryForm()
+        public SearchCountryForm(DAOManager manager)
         {
             InitializeComponent();
-        }
-
-        public SearchCountryForm(MySqlConnection connection)
-        {
-            InitializeComponent();
-            countryDao = new CountryDao(connection);
-            sqlConnection = connection;
-            GetCountryList();
+            daoManager = manager;
         }        
 
         public void Open()
         {
             Show();
+            GetCountryList();
             countryComboBox.Text = string.Empty;
             countryComboBox.Focus();
         }
@@ -50,28 +41,10 @@ namespace HikeHandler.UI
 
         private void GetCountryList()
         {
-            if (sqlConnection == null)
+            DataTable table = daoManager.GetAllCountryNames();
+            if (table == null)
             {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            string commandText = "SELECT idcountry, name FROM country ORDER BY name ASC;";
-            DataTable table = new DataTable();
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
-            {
-                try
-                {
-                    adapter.Fill(table);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Hiba");
-                }
+                Close();
             }
             countryComboBox.DataSource = table;
             countryComboBox.ValueMember = "idcountry";
@@ -96,30 +69,15 @@ namespace HikeHandler.UI
                 hikeNumberBox.Focus();
                 return;
             }
-            CountryForSearch template = new CountryForSearch(countryComboBox.Text, 
+            CountryForSearch template = new CountryForSearch(countryComboBox.Text,
                 hikeNumberBox.Text.ToIntPile());
-            try
-            {
-                DataTable table = countryDao.SearchCountry(template);
-                resultView.DataSource = table;
-                resultView.Columns[0].Visible = false;
-                resultView.Columns[1].HeaderText = "Név";
-                resultView.Columns[2].HeaderText = "Túrák száma";
-                resultGroupBox.Text = "Találatok száma: " + table.Rows.Count;
-            }
-            catch (DaoException ex)
-            {
-                if (ex.Error==ErrorType.NoDBConnection)
-                {
-                    MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                    return;
-                }
-                MessageBox.Show(ex.Message, "Hiba");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-            }
+            DataTable table = daoManager.SearchCountry(template);
+
+            resultView.DataSource = table;
+            resultView.Columns[0].Visible = false;
+            resultView.Columns[1].HeaderText = "Név";
+            resultView.Columns[2].HeaderText = "Túrák száma";
+            resultGroupBox.Text = "Találatok száma: " + table.Rows.Count;
         }
 
         private void resultView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)

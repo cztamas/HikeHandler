@@ -77,6 +77,30 @@ namespace HikeHandler.ServiceLayer
             return false;
         }
 
+        public DataTable GetAllCountryNames()
+        {
+            try
+            {
+                DataTable table = countryDao.GetCountryTable();
+                return table;
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return null;
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+                return null;
+            }
+        }
+
         public DataTable SearchCountry(CountryForSearch country)
         {
             throw new NotImplementedException();
@@ -112,12 +136,69 @@ namespace HikeHandler.ServiceLayer
 
         public bool UpdateCountry(CountryForUpdate country)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (country.NewName != country.OldName)
+                {
+                    if (countryDao.IsDuplicateName(country.NewName))
+                    {
+                        MessageBox.Show("Már van elmentve ilyen nevű ország.");
+                        return false;
+                    }
+                }
+                countryDao.UpdateCountry(country);
+                return true;
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return false;
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+                return false;
+            }
         }
 
         public bool DeleteCountry(int countryID)
         {
-            throw new NotImplementedException();
+            string message = "Biztosan törli?";
+            string caption = "Ország törlése";
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            DialogResult result = MessageBox.Show(message, caption, buttons);
+            if (result == DialogResult.No)
+                return false;
+            try
+            {
+                if (!countryDao.IsDeletable(countryID))
+                {
+                    MessageBox.Show("Csak olyan ország törölhető, amihez nem tartozik tájegység, checkpoint vagy túra.");
+                    return false;
+                }
+                countryDao.DeleteCountry(countryID);
+                return true;
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return false;
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+                return false;
+            }
         }
 
         #endregion

@@ -56,6 +56,8 @@
     </Compile>
     <Compile Include="DAOs\CountryDao.cs" />
     <Compile Include="DAOs\CPDao.cs" />
+    <Compile Include="Exceptions\DBErrorException.cs" />
+    <Compile Include="ModelObjects\BaseFormSummary.cs" />
     <Compile Include="ModelObjects\Country\CountryForUpdate.cs" />
     <Compile Include="ModelObjects\CP\CPForUpdate.cs" />
     <Compile Include="ModelObjects\HikeRegion\HikeRegionForUpdate.cs" />
@@ -74,8 +76,6 @@
     <Compile Include="ModelObjects\HikeRegion\HikeRegionForSearch.cs" />
     <Compile Include="ModelObjects\Hike\HikeForSave.cs" />
     <Compile Include="ModelObjects\Hike\HikeForSearch.cs" />
-    <Compile Include="Exceptions\DaoException.cs" />
-    <Compile Include="Exceptions\Miscellaneous.cs" />
     <Compile Include="Exceptions\NoDBConnectionException.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Controls\CPHandler.cs">

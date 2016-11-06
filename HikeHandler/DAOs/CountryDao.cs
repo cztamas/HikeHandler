@@ -19,43 +19,32 @@ namespace HikeHandler.DAOs
             sqlConnection = connection;
         }
 
-        // Recalculates the hike count of every country in the DB.
+        // Recalculates the hike, region and cp count of every country in the DB.
         // Only for correcting erroneous data in the DB.
-        public void RecalculateHikeCounts()
+        public void RecalculateCountryData()
         {
             if (sqlConnection == null)
             {
-                throw new DaoException(ActivityType.UpdateHikeCount, ErrorType.NoDBConnection, string.Empty);
+                throw new NoDBConnectionException();
             }
             if (sqlConnection.State != ConnectionState.Open)
             {
-                throw new DaoException(ActivityType.UpdateHikeCount, ErrorType.NoDBConnection, string.Empty);
+                throw new NoDBConnectionException();
             }
             DataTable table = new DataTable();
             int id;
             string commandText = "SELECT idcountry FROM country;";
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
             {
-                try
-                {
-                    adapter.Fill(table);
-                }
-                catch (Exception ex)
-                {
-                    throw new DaoException(ActivityType.UpdateHikeCount, ErrorType.DBError, ex.Message);
-                }
+                adapter.Fill(table);
             }
             foreach (DataRow row in table.Rows)
             {
-                id = int.Parse(row["idcountry"].ToString());
-                try
-                {
-                    UpdateHikeCount(id);
-                }
-                catch (Exception ex)
-                {
-                    throw new DaoException(ActivityType.UpdateHikeCount, ErrorType.DBError, ex.Message);
-                }
+                if (!int.TryParse(row["idcountry"].ToString(), out id))
+                    throw new DBErrorException("'idcountry' value should be an integer.");
+                UpdateHikeCount(id);
+                UpdateRegionCount(id);
+                UpdateCPCount(id);
             }
         }
 
@@ -153,8 +142,8 @@ namespace HikeHandler.DAOs
             }
         }
 
-        // Check whether there is a country in the DB with the given name. Returns true if there is.
-        // Throws CountryDaoException in case of an error.
+        // Check whether there is a country in the DB with the given name. 
+        // Returns true if there is.
         public bool IsDuplicateName(string countryName)
         {
             if (sqlConnection == null)
@@ -189,7 +178,7 @@ namespace HikeHandler.DAOs
                 return true;
         }
 
-        // Deletes the given country from DB, or throws CountryDaoException in case of an error.
+        // Deletes the given country from DB.
         public void DeleteCountry(int idCountry)
         {
             if (sqlConnection == null)
@@ -230,7 +219,7 @@ VALUES (@name, 0, 0, 0, @description);";
             }
         }
 
-        // Returns the data of the country with given id, or throws CountryDaoException in case of an error.
+        // Returns the data of the country with the given id.
         public CountryForView GetCountryData(int idCountry)
         {
             if (idCountry <= 0)
@@ -289,7 +278,7 @@ VALUES (@name, 0, 0, 0, @description);";
             }
         }
 
-        // Updates the DB with data in the country object, or throws CountryDaoException in case of an error.
+        // Updates the DB with data in the country object.
         public void UpdateCountry(CountryForUpdate country)
         {
             if (sqlConnection == null)
@@ -312,17 +301,18 @@ VALUES (@name, 0, 0, 0, @description);";
             }
         }
         
+        // Performs a search in DB
         public DataTable SearchCountry(CountryForSearch template)
         {
             if (sqlConnection == null)
             {
-                throw new DaoException(ActivityType.Search, ErrorType.NoDBConnection, string.Empty);
+                throw new NoDBConnectionException();
             }
             if (sqlConnection.State != ConnectionState.Open)
             {
-                throw new DaoException(ActivityType.Search, ErrorType.NoDBConnection, string.Empty);
+                throw new NoDBConnectionException();
             }
-            string commandText = "SELECT idcountry, name, hikecount FROM country WHERE name LIKE @name";
+            string commandText = "SELECT idcountry, name, hikecount, regioncount, cpcount FROM country WHERE name LIKE @name";
             string countCondition = template.HikeCount.SqlSearchCondition("hikeCount");
             if (countCondition != String.Empty)
                 commandText += (" AND " + countCondition);
@@ -331,19 +321,12 @@ VALUES (@name, 0, 0, 0, @description);";
             {
                 adapter.SelectCommand.Parameters.AddWithValue("@name", "%" + template.Name + "%");
                 DataTable table = new DataTable();
-                try
-                {
-                    adapter.Fill(table);
-                    return table;
-                }   
-                catch (Exception ex)
-                {
-                    throw new DaoException(ActivityType.Search, ErrorType.DBError, ex.Message);
-                }
+                adapter.Fill(table);
+                return table;
             }
         }
 
-        // Gets the list of all countries in a datatable
+        // Gets the names and ids of all countries.
         public DataTable GetCountryTable()
         {
             if (sqlConnection == null)

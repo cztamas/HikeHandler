@@ -77,6 +77,11 @@ namespace HikeHandler.ModelObjects
         }
         public string Description { get; set; }
         
+        public CountryForView(int countryID)
+        {
+            CountryID = countryID;
+        }
+
         public CountryForView(int countryID, string name, int hikeCount, int regionCount, int cpCount, string description)
         {
             CountryID = countryID;

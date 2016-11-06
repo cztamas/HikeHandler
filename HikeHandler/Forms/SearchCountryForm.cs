@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using HikeHandler.ModelObjects;
 using HikeHandler.ServiceLayer;
@@ -20,11 +14,10 @@ namespace HikeHandler.UI
         {
             InitializeComponent();
             daoManager = manager;
-        }        
+        }
 
-        public void Open()
+        private void SearchCountryForm_Load(object sender, EventArgs e)
         {
-            Show();
             GetCountryList();
             countryComboBox.Text = string.Empty;
             countryComboBox.Focus();
@@ -72,11 +65,15 @@ namespace HikeHandler.UI
             CountryForSearch template = new CountryForSearch(countryComboBox.Text,
                 hikeNumberBox.Text.ToIntPile());
             DataTable table = daoManager.SearchCountry(template);
+            if (table == null)
+                return;
 
             resultView.DataSource = table;
-            resultView.Columns[0].Visible = false;
-            resultView.Columns[1].HeaderText = "Név";
-            resultView.Columns[2].HeaderText = "Túrák száma";
+            resultView.Columns["idcountry"].Visible = false;
+            resultView.Columns["name"].HeaderText = "Név";
+            resultView.Columns["hikecount"].HeaderText = "Túrák száma";
+            resultView.Columns["regioncount"].HeaderText = "Tájegységek";
+            resultView.Columns["cpcount"].HeaderText = "CheckPointok";
             resultGroupBox.Text = "Találatok száma: " + table.Rows.Count;
         }
 
@@ -84,18 +81,13 @@ namespace HikeHandler.UI
         {
             if (e.RowIndex < 0)
                 return;
-            if (sqlConnection == null)
+            int index;
+            if (!int.TryParse(resultView.Rows[e.RowIndex].Cells["idcountry"].Value.ToString(), out index))
             {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                MessageBox.Show("Nem sikerült megjeleníteni a kiválasztott országot.", "Hiba");
                 return;
             }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            int index = (int)resultView.Rows[e.RowIndex].Cells[0].Value;
-            ViewCountryForm vForm = new ViewCountryForm(index, sqlConnection);
+            ViewCountryForm vForm = new ViewCountryForm(daoManager, index);
             vForm.Show();
         }
 
@@ -103,23 +95,19 @@ namespace HikeHandler.UI
         {
             if (resultView.SelectedRows == null)
                 return;
-            if (sqlConnection == null)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
             foreach (DataGridViewRow row in resultView.SelectedRows)
             {
-                int index = (int)row.Cells[0].Value;
-                ViewCountryForm vForm = new ViewCountryForm(index, sqlConnection);
+                int index;
+                if (!int.TryParse(row.Cells["idcountry"].Value.ToString(), out index))
+                {
+                    MessageBox.Show("Nem sikerült megjeleníteni a kiválasztott országot.", "Hiba");
+                    return;
+                }
+                ViewCountryForm vForm = new ViewCountryForm(daoManager, index);
                 vForm.Show();
             }
             
         }
+        
     }
 }

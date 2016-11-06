@@ -32,7 +32,7 @@ namespace HikeHandler.ServiceLayer
         {
             try
             {
-                countryDao.RecalculateHikeCounts();
+                countryDao.RecalculateCountryData();
                 cpDao.RecalculateHikeCounts();
                 regionDao.RecalculateHikeCounts();
                 hikeDao.RecalculatePositions();
@@ -103,7 +103,26 @@ namespace HikeHandler.ServiceLayer
 
         public DataTable SearchCountry(CountryForSearch country)
         {
-            throw new NotImplementedException();
+            try
+            {
+                DataTable table = countryDao.SearchCountry(country);
+                return table;
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return null;
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+                return null;
+            }
         }
 
         public CountryForView SearchCountry(int countryID)

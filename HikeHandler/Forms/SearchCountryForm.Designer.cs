@@ -176,6 +176,7 @@
             this.Name = "SearchCountryForm";
             this.ShowIcon = false;
             this.Text = "Ország keresése";
+            this.Load += new System.EventHandler(this.SearchCountryForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.resultGroupBox.ResumeLayout(false);

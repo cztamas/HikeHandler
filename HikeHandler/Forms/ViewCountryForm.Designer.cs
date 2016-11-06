@@ -284,6 +284,7 @@
             this.Name = "ViewCountryForm";
             this.ShowIcon = false;
             this.Text = "országnév";
+            this.Load += new System.EventHandler(this.ViewCountryForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

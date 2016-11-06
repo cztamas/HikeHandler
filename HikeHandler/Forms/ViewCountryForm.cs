@@ -17,11 +17,16 @@ namespace HikeHandler.UI
         private DAOManager daoManager;
         private CountryForView currentCountry;
         
-        public ViewCountryForm(DAOManager manager, CountryForView country)
+        public ViewCountryForm(DAOManager manager, int countryID)
         {
             InitializeComponent();
             daoManager = manager;
-            currentCountry = country;
+            currentCountry = new CountryForView(countryID);
+        }
+
+        private void ViewCountryForm_Load(object sender, EventArgs e)
+        {
+            RefreshCountryData();
             RefreshForm();
             MakeUneditable();
         }
@@ -67,7 +72,7 @@ namespace HikeHandler.UI
                 Close();
             }
         }
-
+        
         private void closeButton_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -142,5 +147,7 @@ namespace HikeHandler.UI
                 Close();
             }
         }
+
+        
     }
 }

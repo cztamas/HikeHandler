@@ -7,40 +7,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
 using HikeHandler.ModelObjects;
-using HikeHandler.Exceptions;
-using HikeHandler.DAOs;
+using HikeHandler.ServiceLayer;
 
 namespace HikeHandler.UI
 {
     public partial class SearchHikeForm : Form
     {
-        private MySqlConnection sqlConnection;
-        private HikeDao hikeDao;
+        private DAOManager daoManager;
 
-        public SearchHikeForm()
+        public SearchHikeForm(DAOManager manager)
         {
             InitializeComponent();
-        }
-
-        public SearchHikeForm(MySqlConnection connection)
-        {
-            InitializeComponent();
-            sqlConnection = connection;
-            hikeDao = new HikeDao(connection);
+            daoManager = manager;
             checkPointHandler.Init(sqlConnection, CPHandlerStyle.Search);
             regionComboBox.SelectedValueChanged += new EventHandler(checkPointHandler.Region_Refreshed);
             GetCountryList();
             GetHikeTypes();
-            //hikeDao.RecalculatePositions();
         }
 
-        public SearchHikeForm(MySqlConnection connection, HikeForSearch template)
+        public SearchHikeForm(DAOManager manager, HikeForSearch template)
         {
             InitializeComponent();
-            sqlConnection = connection;
-            hikeDao = new HikeDao(connection);
+            daoManager = manager;
             checkPointHandler.Init(sqlConnection, CPHandlerStyle.Search);
             regionComboBox.SelectedValueChanged += new EventHandler(checkPointHandler.Region_Refreshed);
             GetCountryList();

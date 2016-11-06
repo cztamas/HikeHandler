@@ -1,14 +1,14 @@
-﻿using HikeHandler.DAOs;
-using HikeHandler.ModelObjects;
-using HikeHandler.Exceptions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MySql.Data.MySqlClient;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
+using HikeHandler.DAOs;
+using HikeHandler.ModelObjects;
+using HikeHandler.Exceptions;
 
 namespace HikeHandler.ServiceLayer
 {
@@ -25,6 +25,31 @@ namespace HikeHandler.ServiceLayer
             regionDao = new RegionDao(connection);
             cpDao = new CPDao(connection);
             hikeDao = new HikeDao(connection);
+        }
+
+        // Only for correcting erroneous data in the DB.
+        private void RecalculateDBData()
+        {
+            try
+            {
+                countryDao.RecalculateHikeCounts();
+                cpDao.RecalculateHikeCounts();
+                regionDao.RecalculateHikeCounts();
+                hikeDao.RecalculatePositions();
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs lehet elérni adatbázist.", "Hiba");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+            }
+        }
+
+        public BaseFormSummary GetBaseFormSummary()
+        {
+            throw new NotImplementedException();
         }
 
         #region Country Methods
@@ -59,7 +84,30 @@ namespace HikeHandler.ServiceLayer
 
         public CountryForView SearchCountry(int countryID)
         {
-            throw new NotImplementedException();
+            try
+            {
+                CountryForView country = countryDao.GetCountryData(countryID);
+                if (country == null)
+                {
+                    MessageBox.Show("Nem található a keresett ország.", "Hiba");
+                }
+                return country;
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return null;
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+                return null;
+            }
         }
 
         public bool UpdateCountry(CountryForUpdate country)

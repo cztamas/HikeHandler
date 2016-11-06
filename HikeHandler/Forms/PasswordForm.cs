@@ -13,36 +13,17 @@ namespace HikeHandler.UI
 {
     public partial class PasswordForm : Form
     {
+        public LoginData loginData;
+
         public PasswordForm()
         {
             InitializeComponent();
-            pwdBox.Select();
+            pwdBox.Focus();
         }
-
-        public delegate void LoginHandler(LoginData data);
-        public delegate void VoidHandler();
-
-        public event LoginHandler LoginPerformed;
-        public event VoidHandler LoginCancelled;
-        public event VoidHandler TestModeSelected;
 
         private void okButton_Click(object sender, EventArgs e)
         {
-            LoginData data = new LoginData(userBox.Text, pwdBox.Text);
-            LoginPerformed(data);
-            Close();
-        }
-
-        private void cancelButton_Click(object sender, EventArgs e)
-        {
-            LoginCancelled();
-            Close();
-        }
-
-        private void testButton_Click(object sender, EventArgs e)
-        {
-            TestModeSelected();
-            Close();
+            loginData = new LoginData(userBox.Text, pwdBox.Text);
         }
     }
 }

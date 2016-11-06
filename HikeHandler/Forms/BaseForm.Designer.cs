@@ -1,4 +1,4 @@
-﻿namespace HikeHandler
+﻿namespace HikeHandler.UI
 {
     partial class BaseForm
     {
@@ -38,18 +38,17 @@
             this.addCPButton = new System.Windows.Forms.Button();
             this.addHikeButton = new System.Windows.Forms.Button();
             this.addRegionButton = new System.Windows.Forms.Button();
-            this.connectionStateLabel = new System.Windows.Forms.Label();
-            this.connectDBButton = new System.Windows.Forms.Button();
+            this.refreshButton = new System.Windows.Forms.Button();
             this.closeButton = new System.Windows.Forms.Button();
             this.summaryBox = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.countryLabel = new System.Windows.Forms.Label();
-            this.hikeLabel = new System.Windows.Forms.Label();
-            this.cpLabel = new System.Windows.Forms.Label();
             this.regionLabel = new System.Windows.Forms.Label();
+            this.cpLabel = new System.Windows.Forms.Label();
+            this.hikeLabel = new System.Windows.Forms.Label();
+            this.countryLabel = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.searchBox.SuspendLayout();
             this.addBox.SuspendLayout();
             this.summaryBox.SuspendLayout();
@@ -135,9 +134,9 @@
             // 
             // addCPButton
             // 
-            this.addCPButton.Location = new System.Drawing.Point(7, 57);
+            this.addCPButton.Location = new System.Drawing.Point(6, 57);
             this.addCPButton.Name = "addCPButton";
-            this.addCPButton.Size = new System.Drawing.Size(75, 23);
+            this.addCPButton.Size = new System.Drawing.Size(76, 23);
             this.addCPButton.TabIndex = 1;
             this.addCPButton.Text = "CheckPoint";
             this.addCPButton.UseVisualStyleBackColor = true;
@@ -163,34 +162,24 @@
             this.addRegionButton.UseVisualStyleBackColor = true;
             this.addRegionButton.Click += new System.EventHandler(this.addRegionButton_Click);
             // 
-            // connectionStateLabel
+            // refreshButton
             // 
-            this.connectionStateLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.connectionStateLabel.AutoSize = true;
-            this.connectionStateLabel.Location = new System.Drawing.Point(2, 267);
-            this.connectionStateLabel.Name = "connectionStateLabel";
-            this.connectionStateLabel.Size = new System.Drawing.Size(83, 13);
-            this.connectionStateLabel.TabIndex = 2;
-            this.connectionStateLabel.Text = "Nincs kapcsolat";
-            // 
-            // connectDBButton
-            // 
-            this.connectDBButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.connectDBButton.Location = new System.Drawing.Point(88, 262);
-            this.connectDBButton.Name = "connectDBButton";
-            this.connectDBButton.Size = new System.Drawing.Size(75, 23);
-            this.connectDBButton.TabIndex = 3;
-            this.connectDBButton.Text = "Csatlakozás";
-            this.connectDBButton.UseVisualStyleBackColor = true;
-            this.connectDBButton.Click += new System.EventHandler(this.connectDBButton_Click);
+            this.refreshButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.refreshButton.Location = new System.Drawing.Point(6, 262);
+            this.refreshButton.Name = "refreshButton";
+            this.refreshButton.Size = new System.Drawing.Size(110, 23);
+            this.refreshButton.TabIndex = 3;
+            this.refreshButton.Text = "Frissítés";
+            this.refreshButton.UseVisualStyleBackColor = true;
+            this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
             // 
             // closeButton
             // 
             this.closeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.closeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.closeButton.Location = new System.Drawing.Point(169, 262);
+            this.closeButton.Location = new System.Drawing.Point(122, 262);
             this.closeButton.Name = "closeButton";
-            this.closeButton.Size = new System.Drawing.Size(72, 23);
+            this.closeButton.Size = new System.Drawing.Size(119, 23);
             this.closeButton.TabIndex = 4;
             this.closeButton.Text = "Bezárás";
             this.closeButton.UseVisualStyleBackColor = true;
@@ -214,59 +203,14 @@
             this.summaryBox.TabStop = false;
             this.summaryBox.Text = "Összesítés";
             // 
-            // label1
+            // regionLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(11, 25);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Túrák:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(113, 25);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(77, 13);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "CheckPointok:";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(11, 47);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(55, 13);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Országok:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(113, 47);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(71, 13);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "Tájegységek:";
-            // 
-            // countryLabel
-            // 
-            this.countryLabel.AutoSize = true;
-            this.countryLabel.Location = new System.Drawing.Point(72, 47);
-            this.countryLabel.Name = "countryLabel";
-            this.countryLabel.Size = new System.Drawing.Size(13, 13);
-            this.countryLabel.TabIndex = 4;
-            this.countryLabel.Text = "?";
-            // 
-            // hikeLabel
-            // 
-            this.hikeLabel.AutoSize = true;
-            this.hikeLabel.Location = new System.Drawing.Point(72, 25);
-            this.hikeLabel.Name = "hikeLabel";
-            this.hikeLabel.Size = new System.Drawing.Size(13, 13);
-            this.hikeLabel.TabIndex = 5;
-            this.hikeLabel.Text = "?";
+            this.regionLabel.AutoSize = true;
+            this.regionLabel.Location = new System.Drawing.Point(196, 47);
+            this.regionLabel.Name = "regionLabel";
+            this.regionLabel.Size = new System.Drawing.Size(13, 13);
+            this.regionLabel.TabIndex = 7;
+            this.regionLabel.Text = "?";
             // 
             // cpLabel
             // 
@@ -277,14 +221,59 @@
             this.cpLabel.TabIndex = 6;
             this.cpLabel.Text = "?";
             // 
-            // regionLabel
+            // hikeLabel
             // 
-            this.regionLabel.AutoSize = true;
-            this.regionLabel.Location = new System.Drawing.Point(196, 47);
-            this.regionLabel.Name = "regionLabel";
-            this.regionLabel.Size = new System.Drawing.Size(13, 13);
-            this.regionLabel.TabIndex = 7;
-            this.regionLabel.Text = "?";
+            this.hikeLabel.AutoSize = true;
+            this.hikeLabel.Location = new System.Drawing.Point(72, 25);
+            this.hikeLabel.Name = "hikeLabel";
+            this.hikeLabel.Size = new System.Drawing.Size(13, 13);
+            this.hikeLabel.TabIndex = 5;
+            this.hikeLabel.Text = "?";
+            // 
+            // countryLabel
+            // 
+            this.countryLabel.AutoSize = true;
+            this.countryLabel.Location = new System.Drawing.Point(72, 47);
+            this.countryLabel.Name = "countryLabel";
+            this.countryLabel.Size = new System.Drawing.Size(13, 13);
+            this.countryLabel.TabIndex = 4;
+            this.countryLabel.Text = "?";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(113, 47);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(71, 13);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "Tájegységek:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(11, 47);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(55, 13);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "Országok:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(113, 25);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(77, 13);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "CheckPointok:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(11, 25);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(38, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Túrák:";
             // 
             // BaseForm
             // 
@@ -294,8 +283,7 @@
             this.ClientSize = new System.Drawing.Size(247, 290);
             this.Controls.Add(this.summaryBox);
             this.Controls.Add(this.closeButton);
-            this.Controls.Add(this.connectDBButton);
-            this.Controls.Add(this.connectionStateLabel);
+            this.Controls.Add(this.refreshButton);
             this.Controls.Add(this.addBox);
             this.Controls.Add(this.searchBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -307,7 +295,6 @@
             this.summaryBox.ResumeLayout(false);
             this.summaryBox.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -323,8 +310,7 @@
         private System.Windows.Forms.Button addCPButton;
         private System.Windows.Forms.Button addHikeButton;
         private System.Windows.Forms.Button addRegionButton;
-        private System.Windows.Forms.Label connectionStateLabel;
-        private System.Windows.Forms.Button connectDBButton;
+        private System.Windows.Forms.Button refreshButton;
         private System.Windows.Forms.Button closeButton;
         private System.Windows.Forms.GroupBox summaryBox;
         private System.Windows.Forms.Label regionLabel;

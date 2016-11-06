@@ -11,32 +11,25 @@ using MySql.Data.MySqlClient;
 using HikeHandler.ModelObjects;
 using HikeHandler.DAOs;
 using HikeHandler.Exceptions;
+using HikeHandler.ServiceLayer;
 
 namespace HikeHandler.UI
 {
     public partial class SearchRegionForm : Form
     {
-        private MySqlConnection sqlConnection;
-        private RegionDao regionDao;
-
-        public SearchRegionForm()
-        {
-            InitializeComponent();
-        }
+        private DAOManager daoManager;
         
-        public SearchRegionForm(MySqlConnection connection)
+        public SearchRegionForm(DAOManager manager)
         {
             InitializeComponent();
-            sqlConnection = connection;
-            regionDao = new RegionDao(connection);
+            daoManager = manager;
             GetCountryList();            
         }
 
-        public SearchRegionForm(MySqlConnection connection, HikeRegionForSearch template)
+        public SearchRegionForm(DAOManager manager, HikeRegionForSearch template)
         {
             InitializeComponent();
-            sqlConnection = connection;
-            regionDao = new RegionDao(connection);
+            daoManager = manager;
             GetCountryList();
             countryComboBox.Text = template.CountryName;
             MakeSearch(template);

@@ -7,27 +7,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using HikeHandler.UI;
 using HikeHandler.ModelObjects;
-using HikeHandler.DAOs;
-using MySql.Data.MySqlClient;
+using HikeHandler.ServiceLayer;
 
-namespace HikeHandler
+namespace HikeHandler.UI
 {
     public partial class BaseForm : Form
     {
-        private bool uiTestMode = false;
-        private MySqlConnection sqlConnection;
-
-        public BaseForm()
+        private DAOManager daoManager;
+        
+        public BaseForm(DAOManager manager)
         {
             InitializeComponent();
-            EnableButtons(false);
-            ConnectToDB();
-            //RecalculateDBData();
-        }       
+            daoManager = manager;
+            GetSummary();
+        }
 
-        private void CreateConnection(LoginData loginData)
+        /*private void CreateConnection(LoginData loginData)
         {
             string connectionString = "server=localhost; database=hikehandler; uid=" + loginData.username + "; pwd=" + loginData.password + ";";
             sqlConnection = new MySqlConnection(connectionString);
@@ -86,9 +82,9 @@ namespace HikeHandler
             pwdForm.LoginCancelled += cancelHandler;
             pwdForm.TestModeSelected += testHandler;
             pwdForm.ShowDialog();
-        }
+        }*/
 
-        private void GetSummary()
+        private void GetSummary2()
         {
             if (sqlConnection == null)
                 return;
@@ -162,144 +158,71 @@ namespace HikeHandler
             }
         }
 
-        // Only for correcting erroneous data in the DB.
-        private void RecalculateDBData()
+        private void GetSummary()
         {
-            if (sqlConnection == null)
-                return;
-            if (sqlConnection.State != ConnectionState.Open)
-                return;
-            HikeDao hikeDao = new HikeDao(sqlConnection);
-            CountryDao countryDao = new CountryDao(sqlConnection);
-            CPDao cpDao = new CPDao(sqlConnection);
-            RegionDao regionDao = new RegionDao(sqlConnection);
-            countryDao.RecalculateHikeCounts();
-            cpDao.RecalculateHikeCounts();
-            regionDao.RecalculateHikeCounts();
-            hikeDao.RecalculatePositions();
+            BaseFormSummary summary = daoManager.GetBaseFormSummary();
+            hikeLabel.Text = summary.HikeCount.ToString();
+            regionLabel.Text = summary.RegionCount.ToString();
+            cpLabel.Text = summary.CPCount.ToString();
+            countryLabel.Text = summary.CountryCount.ToString();
         }
 
         private void searchHikeButton_Click(object sender, EventArgs e)
         {
-            if (uiTestMode)
-            {
-                SearchHikeForm sHForm = new SearchHikeForm();
-                sHForm.Open();
-            }
-            if (!uiTestMode)
-            {
-                SearchHikeForm sHForm = new SearchHikeForm(sqlConnection);
-                sHForm.Open();
-            }
+            SearchHikeForm sHForm = new SearchHikeForm(daoManager);
+            sHForm.Open();
         }
 
         private void searchCPButton_Click(object sender, EventArgs e)
         {
-            if (uiTestMode)
-            {
-                SearchCPForm sCPForm = new SearchCPForm();
-                sCPForm.Open();
-            }
-            if (!uiTestMode)
-            {
-                SearchCPForm sCPForm = new SearchCPForm(sqlConnection);
-                sCPForm.Open();
-            }            
+            SearchCPForm sCPForm = new SearchCPForm(daoManager);
+            sCPForm.Open();
         }
 
         private void searchRegionButton_Click(object sender, EventArgs e)
         {
-            if (uiTestMode)
-            {
-                SearchRegionForm sRForm = new SearchRegionForm();
-                sRForm.Open();
-            }
-            if (!uiTestMode)
-            {
-                SearchRegionForm sRForm = new SearchRegionForm(sqlConnection);
-                sRForm.Open();
-            }            
+            SearchRegionForm sRForm = new SearchRegionForm(daoManager);
+            sRForm.Open();
         }
 
         private void searchCountryButton_Click(object sender, EventArgs e)
         {
-            if (uiTestMode)
-            {
-                SearchCountryForm sCForm = new SearchCountryForm();
-                sCForm.Open();
-            }
-            if (!uiTestMode)
-            {
-                SearchCountryForm sCForm = new SearchCountryForm(sqlConnection);
-                sCForm.Open();
-            }            
+            SearchCountryForm sCForm = new SearchCountryForm(daoManager);
+            sCForm.Open();
         }
 
         private void addHikeButton_Click(object sender, EventArgs e)
         {
-            if (uiTestMode)
-            {
-                AddHikeForm aHForm = new AddHikeForm();
-                aHForm.Open();
-            }
-            if (!uiTestMode)
-            {
-                AddHikeForm aHForm = new AddHikeForm(sqlConnection);
-                aHForm.Open();
-            }            
+            AddHikeForm aHForm = new AddHikeForm(daoManager);
+            aHForm.Open();
         }
 
         private void addCPButton_Click(object sender, EventArgs e)
         {
-            if (uiTestMode)
-            {
-                AddCPForm aCPForm = new AddCPForm();
-                aCPForm.Open();
-            }
-            if (!uiTestMode)
-            {
-                AddCPForm aCPForm = new AddCPForm(sqlConnection);
-                aCPForm.Open();
-            }            
+            AddCPForm aCPForm = new AddCPForm(daoManager);
+            aCPForm.Open();
         }
 
         private void addRegionButton_Click(object sender, EventArgs e)
         {
-            if (uiTestMode)
-            {
-                AddRegionForm aRForm = new AddRegionForm();
-                aRForm.Open();
-            }
-            if (!uiTestMode)
-            {
-                AddRegionForm aRForm = new AddRegionForm(sqlConnection);
-                aRForm.Open();
-            }            
+            AddRegionForm aRForm = new AddRegionForm(daoManager);
+            aRForm.Open();
         }
 
         private void addCountryButton_Click(object sender, EventArgs e)
         {
-            /*if (uiTestMode)
-            {
-                AddCountryForm aCForm = new AddCountryForm();
-                aCForm.Open();
-            }*/
-            if (!uiTestMode)
-            {
-                CountryDao countryDao = new CountryDao(sqlConnection);
-                AddCountryForm addCountryForm = new AddCountryForm(countryDao);
-                addCountryForm.Open();
-            }            
-        }
-
-        private void connectDBButton_Click(object sender, EventArgs e)
-        {
-            ConnectToDB();
+            AddCountryForm addCountryForm = new AddCountryForm(daoManager);
+            addCountryForm.Open();
         }
 
         private void closeButton_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void refreshButton_Click(object sender, EventArgs e)
+        {
+            GetSummary();
         }
     }
 }

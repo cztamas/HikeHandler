@@ -263,41 +263,57 @@ VALUES (@name, 0, 0, 0, @description);";
         {
             if (idCountry <= 0)
             {
-                throw new DaoException(ActivityType.GetData, ErrorType.InvalidArgument,
-                    "idCountry parameter should be positive.");
+                throw new ArgumentException("idCountry parameter should be positive.", "idCountry");
             }
             if (sqlConnection == null)
             {
-                throw new DaoException(ActivityType.GetData, ErrorType.NoDBConnection, string.Empty);
+                throw new NoDBConnectionException();
             }
             if (sqlConnection.State != ConnectionState.Open)
             {
-                throw new DaoException(ActivityType.GetData, ErrorType.NoDBConnection, string.Empty);
+                throw new NoDBConnectionException();
             }
 
-            string commandText = "SELECT name, description, hikecount FROM country WHERE IDCOUNTRY=@id;";
+            string commandText = "SELECT name, description, hikecount, cpcount, regioncount FROM country WHERE IDCOUNTRY=@id;";
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
             {
                 adapter.SelectCommand.Parameters.AddWithValue("@id", idCountry);
                 DataTable table = new DataTable();
-                try
+                adapter.Fill(table);
+                if (table.Rows.Count == 0)
                 {
-                    adapter.Fill(table);
-                    DataRow row = table.Rows[0];
-                    int count;
-                    if (!int.TryParse(row["hikecount"].ToString(), out count))
-                    {
-                        throw new DaoException(ActivityType.GetData, ErrorType.DBError,
-                            "'hikecount' value should be an integer.");
-                    }
-                    CountryForView countryData = new CountryForView(idCountry, count, 
-                        row["name"].ToString(), row["description"].ToString());
-                    return countryData;
+                    return null; 
                 }
-                catch (Exception ex)
+                if (table.Rows.Count > 1)
                 {
-                    throw new DaoException(ActivityType.GetData, ErrorType.DBError, ex.Message);
+                    throw new DBErrorException("More than one country found with the given id.");
                 }
+                DataRow row = table.Rows[0];
+
+                string name;
+                string description;
+                int hikeCount;
+                int regionCount;
+                int cpCount;
+
+                if (!int.TryParse(row["hikecount"].ToString(), out hikeCount))
+                {
+                    throw new DBErrorException("country.hikecount should be an integer.");
+                }
+                if (!int.TryParse(row["regioncount"].ToString(), out regionCount))
+                {
+                    throw new DBErrorException("country.regioncount should be an integer.");
+                }
+                if (!int.TryParse(row["cpcount"].ToString(), out cpCount))
+                {
+                    throw new DBErrorException("country.cpcount should be an integer.");
+                }
+                name = row["name"].ToString();
+                description = row["description"].ToString();
+
+                CountryForView countryData =
+                    new CountryForView(idCountry, name, hikeCount, regionCount, cpCount, description);
+                return countryData;
             }
         }
 

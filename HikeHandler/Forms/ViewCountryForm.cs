@@ -65,6 +65,10 @@ namespace HikeHandler.UI
         private void RefreshCountryData()
         {
             currentCountry = daoManager.SearchCountry(currentCountry.CountryID);
+            if (currentCountry == null)
+            {
+                Close();
+            }
         }
 
         private void closeButton_Click(object sender, EventArgs e)
@@ -111,8 +115,8 @@ namespace HikeHandler.UI
             HikeRegionForSearch template = new HikeRegionForSearch();
             template.IDcountry = currentCountry.CountryID;
             template.CountryName = currentCountry.Name;
-
-            throw new NotImplementedException();
+            SearchRegionForm sRForm = new SearchRegionForm(daoManager, template);
+            sRForm.Open();
         }
 
         private void cpsOfCountryButton_Click(object sender, EventArgs e)
@@ -120,8 +124,8 @@ namespace HikeHandler.UI
             CPForSearch template = new CPForSearch();
             template.IDCountry = currentCountry.CountryID;
             template.CountryName = currentCountry.Name;
-
-            throw new NotImplementedException();
+            SearchCPForm sCPForm = new SearchCPForm(daoManager, template);
+            sCPForm.Open();
         }
 
         private void hikesOfCountryButton_Click(object sender, EventArgs e)
@@ -129,8 +133,8 @@ namespace HikeHandler.UI
             HikeForSearch template = new HikeForSearch();
             template.IDCountry = currentCountry.CountryID;
             template.CountryName = currentCountry.Name;
-
-            throw new NotImplementedException();
+            SearchHikeForm sHForm = new SearchHikeForm(daoManager, template);
+            sHForm.Open();
         }
 
         private void deleteCountryButton_Click(object sender, EventArgs e)

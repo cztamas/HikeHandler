@@ -7,37 +7,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
 using HikeHandler.ModelObjects;
-using HikeHandler.Exceptions;
-using HikeHandler.DAOs;
+using HikeHandler.ServiceLayer;
 
 namespace HikeHandler.UI
 {
     public partial class SearchCPForm : Form
     {
-        private MySqlConnection sqlConnection;
-        private CPDao cpDao;
+        private DAOManager daoManager;
 
-        public SearchCPForm()
+        public SearchCPForm(DAOManager manager)
         {
             InitializeComponent();
-        }
-
-        public SearchCPForm(MySqlConnection connection)
-        {
-            InitializeComponent();            
-            sqlConnection = connection;
-            cpDao=new CPDao(connection);
+            daoManager = manager;
             GetCountryList();
             GetCPTypes();            
         }
 
-        public SearchCPForm(MySqlConnection connection, CPForSearch template)
+        public SearchCPForm(DAOManager manager, CPForSearch template)
         {
             InitializeComponent();
-            sqlConnection = connection;
-            cpDao = new CPDao(connection);
+            daoManager = manager;
             GetCountryList();
             GetCPTypes();
             if (template.CountryName != string.Empty)

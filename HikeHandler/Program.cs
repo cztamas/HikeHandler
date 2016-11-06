@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using HikeHandler.ServiceLayer;
 
 namespace HikeHandler
 {
@@ -16,7 +17,12 @@ namespace HikeHandler
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new BaseForm());
+
+            FormManager formManager = new FormManager();
+            BaseForm baseForm = formManager.ConnectToDB();
+            if (baseForm == null)
+                return;
+            Application.Run(baseForm);
         }
     }
 }

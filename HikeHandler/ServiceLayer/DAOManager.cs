@@ -34,7 +34,7 @@ namespace HikeHandler.ServiceLayer
             {
                 countryDao.RecalculateCountryData();
                 cpDao.RecalculateHikeCounts();
-                regionDao.RecalculateHikeCounts();
+                regionDao.RecalculateRegionData();
                 hikeDao.RecalculatePositions();
             }
             catch (NoDBConnectionException)
@@ -63,8 +63,8 @@ namespace HikeHandler.ServiceLayer
                     MessageBox.Show("Már van elmentve ilyen nevű ország.", "Hiba");
                     return false;
                 }
-                if (countryDao.SaveCountry(country))
-                    return true;
+                countryDao.SaveCountry(country);
+                return true;
             }
             catch (NoDBConnectionException)
             {

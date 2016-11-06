@@ -160,9 +160,13 @@ namespace HikeHandler.DAOs
                 command.Parameters.AddWithValue("@name", countryName);
                 int count;
                 if (!int.TryParse(command.ExecuteScalar().ToString(), out count))
-                    throw new DBErrorException("SELECT COUNT return value should be integer.");
+                    throw new DBErrorException("'SELECT COUNT' return value should be an integer.");
                 if (count == 0)
                     return false;
+                if (count > 1)
+                {
+                    throw new DBErrorException("More than one country found with the same name.");
+                }
                 return true;
             }
         }
@@ -198,7 +202,7 @@ namespace HikeHandler.DAOs
         }
 
         // Saves country data to DB.
-        public bool SaveCountry (CountryForSave country)
+        public void SaveCountry (CountryForSave country)
         {
             if (sqlConnection == null)
             {
@@ -215,7 +219,6 @@ VALUES (@name, 0, 0, 0, @description);";
                 command.Parameters.AddWithValue("@name", country.Name);
                 command.Parameters.AddWithValue("@description", country.Description);
                 command.ExecuteNonQuery();
-                return true;
             }
         }
 

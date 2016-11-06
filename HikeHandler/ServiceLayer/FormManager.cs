@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using HikeHandler.UI;
+using HikeHandler.ModelObjects;
 
 namespace HikeHandler.ServiceLayer
 {

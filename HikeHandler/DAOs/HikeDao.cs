@@ -23,11 +23,11 @@ namespace HikeHandler.DAOs
         {
             if (sqlConnection == null)
             {
-                throw new DaoException(ActivityType.Search, ErrorType.NoDBConnection, string.Empty);
+                throw new NoDBConnectionException();
             }
             if (sqlConnection.State != ConnectionState.Open)
             {
-                throw new DaoException(ActivityType.Search, ErrorType.NoDBConnection, string.Empty);
+                throw new NoDBConnectionException();
             }
             string commandText = @"SELECT h.idhike, h.position, h.date, h.idregion, r.name AS 'regionname', h.idcountry, c.name AS 'countryname', h.type, 
 h.description, h.cpstring FROM hike h, region r, country c WHERE h.idcountry=c.idcountry AND h.idregion=r.idregion 

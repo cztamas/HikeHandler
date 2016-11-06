@@ -7,65 +7,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Web.UI.WebControls;
-using MySql.Data.MySqlClient;
 using HikeHandler.ModelObjects;
-using HikeHandler.DAOs;
-using HikeHandler.Exceptions;
+using HikeHandler.ServiceLayer;
 
 namespace HikeHandler.UI
 {
     public partial class AddRegionForm : Form
     {
-        private MySqlConnection sqlConnection;
-        private RegionDao regionDao;
+        private DAOManager daoManager;
 
-        public AddRegionForm()
+        public AddRegionForm(DAOManager manager)
         {
             InitializeComponent();
+            daoManager = manager;
         }
 
-        public AddRegionForm(MySqlConnection connection)
+        private void AddRegionForm_Load(object sender, EventArgs e)
         {
-            InitializeComponent();
-            regionDao = new RegionDao(connection);
-
-            sqlConnection = connection;
-            GetCountryList();            
-        } 
-        
-        public void Open()
-        {
-            Show();
+            GetCountryList();
             countryComboBox.Text = string.Empty;
             nameBox.Focus();
         }
 
         private void GetCountryList()
         {
-            if (sqlConnection == null)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            string commandText = "SELECT idcountry, name FROM country ORDER BY name ASC;";
-            DataTable table = new DataTable();
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
-            {                
-                try
-                {
-                    adapter.Fill(table);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Hiba");
-                }
-            }
+            DataTable table = daoManager.GetAllCountryNames();
             countryComboBox.DataSource = table;
             countryComboBox.ValueMember = "idcountry";
             countryComboBox.DisplayMember = "name";
@@ -78,28 +44,27 @@ namespace HikeHandler.UI
 
         private void saveRegionButton_Click(object sender, EventArgs e)
         {   
-            HikeRegionForView region = new HikeRegionForView((int)countryComboBox.SelectedValue, nameBox.Text, descriptionBox.Text);
-            try
+            if (string.IsNullOrWhiteSpace(nameBox.Text))
             {
-                if (regionDao.SaveRegion(region))
-                {
-                    MessageBox.Show("Sikeresen elmentve");
-                    Close();
-                }
+                MessageBox.Show("A tájegység neve nincs megadva.", "Hiba");
+                nameBox.Focus();
+                return;
             }
-            catch (DaoException ex)
+            if (countryComboBox.SelectedValue == null)
             {
-                if (ex.Error == ErrorType.NoDBConnection)
-                {
-                    MessageBox.Show("Nem lehet elérni az adatbázist.", "Hiba");
-                    return;
-                }
-                if (ex.Error == ErrorType.DuplicateName)
-                {
-                    MessageBox.Show("Már van elmentve ilyen nevű tájegység.", "Hiba");
-                    return;
-                }
-                MessageBox.Show(ex.Message, "Hiba");
+                MessageBox.Show("Nincs ország megadva.", "Hiba");
+            }
+            int index = 0;
+            if (!int.TryParse(countryComboBox.SelectedValue.ToString(), out index) || index <= 0) 
+            {
+                MessageBox.Show("Nem sikerült elmenteni a tájegységet.", "Hiba");
+                return;
+            }
+            HikeRegionForSave region = new HikeRegionForSave(index, nameBox.Text, descriptionBox.Text);
+            if (daoManager.SaveRegion(region))
+            {
+                MessageBox.Show("Sikeresen elmentve");
+                Close();
             }
         }
 

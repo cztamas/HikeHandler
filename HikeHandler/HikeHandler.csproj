@@ -88,7 +88,7 @@
     <Compile Include="Interfaces\ICPDao.cs" />
     <Compile Include="Interfaces\IHikeDao.cs" />
     <Compile Include="Interfaces\IRegionDao.cs" />
-    <Compile Include="Miscellaneous.cs" />
+    <Compile Include="ModelObjects\Miscellaneous.cs" />
     <Compile Include="ModelObjects\HikeRegion\HikeRegionForView.cs" />
     <Compile Include="Forms\AddCountryForm.cs">
       <SubType>Form</SubType>

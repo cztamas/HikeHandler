@@ -25,7 +25,7 @@ namespace HikeHandler.DAOs
             {
                 throw new NoDBConnectionException();
             }
-            string commandText = @"SELECT cp.idcp, cp.name, cp.type, cp.hikecount, r.name, c.name, cp.description
+            string commandText = @"SELECT cp.idcp, cp.name, cp.type, cp.hikecount, r.name AS regionname, c.name AS countryname
 FROM cp, region r, country c WHERE cp.idregion=r.idregion AND cp.idcountry=c.idcountry
 AND cp.name LIKE @name AND c.name LIKE @countryName AND r.name LIKE @regionName";
             if (template.CPID != null)
@@ -126,6 +126,7 @@ AND cp.name LIKE @name AND c.name LIKE @countryName AND r.name LIKE @regionName"
                 return true;
         }
 
+        // NOT IMPLEMENTED
         public CPForView GetCPData(int cpID)
         {
             throw new NotImplementedException();
@@ -219,6 +220,30 @@ VALUES (@name, @idcountry, @idregion, @type, 0, @description);";
                 command.Parameters.AddWithValue("@description", cpData.Description);
                 command.ExecuteNonQuery();
             }
+        }
+
+        // Returns the number of checkpoints in the DB.
+        public int GetCountOfCPs()
+        {
+            if (sqlConnection == null)
+            {
+                throw new NoDBConnectionException();
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                throw new NoDBConnectionException();
+            }
+            int count;
+            string commandText = "SELECT COUNT(*) FROM cp;";
+            using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
+            {
+                object result = command.ExecuteScalar();
+                if (!int.TryParse(result.ToString(), out count))
+                {
+                    throw new DBErrorException("'SELECT COUNT' return value should be an integer.");
+                }
+            }
+            return count;
         }
     }
 }

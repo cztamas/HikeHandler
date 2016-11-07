@@ -153,7 +153,7 @@ WHERE region.idcountry=country.idcountry AND region.name LIKE @name AND country.
 
         // Checks whether the given region can be deleted.
         // Deletable only if no CP or hike belongs to it.
-        private bool IsDeletable(int regionID)
+        public bool IsDeletable(int regionID)
         {
             HikeRegionForView region = GetRegionData(regionID);
             if (region.HikeCount > 0 || region.CPCount > 0)
@@ -252,6 +252,30 @@ VALUES (@name, @idCountry, 0, 0, @description);";
                 command.Parameters.AddWithValue("@description", regionData.Description);
                 command.ExecuteNonQuery();
             }
+        }
+
+        // Returns the number of regions in the DB.
+        public int GetCountOfRegions()
+        {
+            if (sqlConnection == null)
+            {
+                throw new NoDBConnectionException();
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                throw new NoDBConnectionException();
+            }
+            int count;
+            string commandText = "SELECT COUNT(*) FROM region;";
+            using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
+            {
+                object result = command.ExecuteScalar();
+                if (!int.TryParse(result.ToString(), out count))
+                {
+                    throw new DBErrorException("'SELECT COUNT' return value should be an integer.");
+                }
+            }
+            return count;
         }
     }
 }

@@ -67,7 +67,7 @@ namespace HikeHandler.UI
 
         private void RefreshForm()
         {
-            HikeRegionForView region = GetRegionData(currentRegion.ID);
+            HikeRegionForView region = GetRegionData(currentRegion.RegionID);
             if (region == null)
                 return;
             currentRegion = region;
@@ -86,7 +86,7 @@ namespace HikeHandler.UI
                 DataTable table = regionDao.SearchRegion(template);
                 DataRow row = table.Rows[0];
                 HikeRegionForView region = new HikeRegionForView();
-                region.ID = (int)row["id"];
+                region.RegionID = (int)row["id"];
                 region.Name = (string)row["name"];
                 region.HikeCount = (int)row["hikecount"];
                 region.Description = (string)row["description"];
@@ -129,7 +129,7 @@ namespace HikeHandler.UI
 
         private void saveEditButton_Click(object sender, EventArgs e)
         {   
-            HikeRegionForView region = new HikeRegionForView(currentRegion.ID);
+            HikeRegionForView region = new HikeRegionForView(currentRegion.RegionID);
             region.Name = nameBox.Text;
             region.Description = descriptionBox.Text;
             try
@@ -160,7 +160,7 @@ namespace HikeHandler.UI
         private void showHikesButton_Click(object sender, EventArgs e)
         {
             HikeForSearch template = new HikeForSearch();
-            template.IDRegion = currentRegion.ID;
+            template.IDRegion = currentRegion.RegionID;
             template.RegionName = currentRegion.Name;
             SearchHikeForm searchHikeForm = new SearchHikeForm(sqlConnection, template);
             searchHikeForm.Show();
@@ -169,7 +169,7 @@ namespace HikeHandler.UI
         private void showCPsButton_Click(object sender, EventArgs e)
         {
             CPForSearch template = new CPForSearch();
-            template.IDRegion = currentRegion.ID;
+            template.IDRegion = currentRegion.RegionID;
             template.RegionName = currentRegion.Name;
             SearchCPForm searchCPForm = new SearchCPForm(sqlConnection, template);
             searchCPForm.Show();
@@ -185,7 +185,7 @@ namespace HikeHandler.UI
                 return;
             try
             {
-                if (regionDao.DeleteRegion(currentRegion.ID))
+                if (regionDao.DeleteRegion(currentRegion.RegionID))
                 {
                     MessageBox.Show("Törölve");
                     Close();

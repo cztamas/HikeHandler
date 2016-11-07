@@ -7,34 +7,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
 using HikeHandler.ModelObjects;
-using HikeHandler.Exceptions;
-using HikeHandler.DAOs;
+using HikeHandler.ServiceLayer;
 
 namespace HikeHandler.UI
 {    
     public partial class ViewCPForm : Form
     {
-        private MySqlConnection sqlConnection;
-        private CPDao cpDao;
-        private int idCP;
+        private DAOManager daoManager;
+        private CPForView currentCP;
 
-        public ViewCPForm()
+        public ViewCPForm(DAOManager manager, int cpID)
         {
             InitializeComponent();
+            daoManager = manager;
+            currentCP = new CPForView(cpID);
         }
 
-        public ViewCPForm(MySqlConnection connection, int cpID)
+        private void ViewCPForm_Load(object sender, EventArgs e)
         {
-            InitializeComponent();
-            sqlConnection = connection;
-            cpDao = new CPDao(connection);
-            idCP = cpID;
+            RefreshCPData();
             RefreshForm();
             MakeUneditable();
-        }  
-        
+        }
+
         private void MakeEditable()
         {
             editButton.Enabled = false;
@@ -66,19 +62,16 @@ namespace HikeHandler.UI
 
         private void RefreshForm()
         {
-            CPForView cpData = GetCPData(idCP);
-            if (cpData == null)
-                return;
-            nameBox.Text = cpData.Name;
-            regionBox.Text = cpData.RegionName;
-            countryBox.Text = cpData.CountryName;
-            hikeCountBox.Text = cpData.HikeCount.ToString();
-            descriptionBox.Text = cpData.Description;
-            typeComboBox.Text = cpData.TypeOfCP.ToString();
-            Text = cpData.Name + " adatai";
+            nameBox.Text = currentCP.Name;
+            regionBox.Text = currentCP.RegionName;
+            countryBox.Text = currentCP.CountryName;
+            hikeCountBox.Text = currentCP.HikeCount.ToString();
+            descriptionBox.Text = currentCP.Description;
+            typeComboBox.Text = currentCP.TypeOfCP.ToString();
+            Text = currentCP.Name + " adatai";
         }
 
-        private CPForView GetCPData(int cpID)
+        private void RefreshCPData()
         {
             CPForSearch template = new CPForSearch(cpID);
             try
@@ -135,6 +128,12 @@ namespace HikeHandler.UI
             typeComboBox.DisplayMember = "name";
         }
 
+        // NOT IMPLEMENTED
+        private CPForUpdate GetDataForUpdate()
+        {
+            throw new NotImplementedException();
+        }
+
         private void closeButton_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -158,41 +157,23 @@ namespace HikeHandler.UI
         }
 
         private void saveEditButton_Click(object sender, EventArgs e)
-        {   
-            CPForView dataCP = new CPForView(idCP);
-            dataCP.Name = nameBox.Text;
-            dataCP.Description = descriptionBox.Text;
-            if (typeComboBox.Text != string.Empty)
-                dataCP.TypeOfCP = (CPType)Enum.Parse(typeof(CPType), typeComboBox.Text);
-            try
+        {
+            CPForUpdate cp = GetDataForUpdate();
+            if (cp == null)
+                return;
+            if (daoManager.UpdateCP(cp))
             {
-                if (cpDao.UpdateCP(dataCP))
-                {
-                    RefreshForm();
-                    MakeUneditable();
-                }
-            }
-            catch (DaoException ex)
-            {
-                if (ex.Error == ErrorType.NoDBConnection)
-                {
-                    MessageBox.Show("Nem lehet elérni az adatbázist.", "Hiba");
-                    return;
-                }
-                if (ex.Error == ErrorType.DuplicateName)
-                {
-                    MessageBox.Show("Már van elmentve ilyen nevű ország.", "Hiba");
-                    return;
-                }
-                MessageBox.Show(ex.Message, "Hiba");
+                MakeUneditable();
+                RefreshCPData();
+                RefreshForm();
             }
         }
 
         private void showHikesButton_Click(object sender, EventArgs e)
         {
             HikeForSearch template = new HikeForSearch();
-            template.CPList.Add(idCP);
-            SearchHikeForm searchHikeForm = new SearchHikeForm(sqlConnection, template);
+            template.CPList.Add(currentCP.CPID);
+            SearchHikeForm searchHikeForm = new SearchHikeForm(daoManager, template);
             searchHikeForm.Show();
         }
 
@@ -227,5 +208,7 @@ namespace HikeHandler.UI
                 MessageBox.Show(ex.Message, "Hiba");
             }
         }
+
+        
     }
 }

@@ -50,32 +50,10 @@ namespace HikeHandler.UI
 
         private void GetCountryList()
         {
-            if (sqlConnection == null)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            string commandText = "SELECT idcountry, name FROM country ORDER BY name ASC;";
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
-            {
-                try
-                {
-                    DataTable table = new DataTable();
-                    adapter.Fill(table);
-                    countryComboBox.DataSource = table;
-                    countryComboBox.ValueMember = "idcountry";
-                    countryComboBox.DisplayMember = "name";
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Hiba");
-                }
-            }
+            DataTable table = daoManager.GetAllCountryNames();
+            countryComboBox.DataSource = table;
+            countryComboBox.ValueMember = "idcountry";
+            countryComboBox.DisplayMember = "name";
         }
 
         private void GetRegions(int countryID)
@@ -150,32 +128,17 @@ namespace HikeHandler.UI
 
         private void MakeSearch(CPForSearch template)
         {
-            try
-            {
-                DataTable resultTable = cpDao.SearchCP(template);
-                resultView.DataSource = resultTable;
-                resultView.Columns[0].Visible = false;
-                resultView.Columns[1].HeaderText = "Név";
-                resultView.Columns[2].HeaderText = "Típus";
-                resultView.Columns[3].HeaderText = "Túrák száma";
-                resultView.Columns[4].HeaderText = "Tájegység";
-                resultView.Columns[5].HeaderText = "Ország";
-                resultView.Columns[6].Visible = false;
-                resultGroupBox.Text = "Találatok száma: " + resultTable.Rows.Count;
-            }
-            catch (DaoException ex)
-            {
-                if (ex.Error == ErrorType.NoDBConnection)
-                {
-                    MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                    return;
-                }
-                MessageBox.Show(ex.Message, "Hiba");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-            }
+            DataTable resultTable = daoManager.SearchCP(template);
+            if (resultTable == null)
+                return;
+            resultView.DataSource = resultTable;
+            resultView.Columns["idcp"].Visible = false;
+            resultView.Columns["name"].HeaderText = "Név";
+            resultView.Columns["type"].HeaderText = "Típus";
+            resultView.Columns["hikecount"].HeaderText = "Túrák száma";
+            resultView.Columns["regionname"].HeaderText = "Tájegység";
+            resultView.Columns["countryname"].HeaderText = "Ország";
+            resultGroupBox.Text = "Találatok száma: " + resultTable.Rows.Count;
         }
 
         private void closeButton_Click(object sender, EventArgs e)
@@ -224,20 +187,15 @@ namespace HikeHandler.UI
         {
             if (resultView.SelectedRows == null)
                 return;
-            if (sqlConnection == null)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
+            int index;
             foreach (DataGridViewRow row in resultView.SelectedRows)
-            {
-                int cpID = (int)row.Cells[0].Value;
-                ViewCPForm viewCPForm = new ViewCPForm(sqlConnection, cpID);
+            {   
+                if (!int.TryParse(row.Cells["idcp"].Value.ToString(), out index))
+                {
+                    MessageBox.Show("Nem sikerült megjeleníteni a kiválasztott checkpointot.", "Hiba");
+                    return;
+                }
+                ViewCPForm viewCPForm = new ViewCPForm(daoManager, index);
                 viewCPForm.Show();
             }
         }
@@ -246,18 +204,13 @@ namespace HikeHandler.UI
         {
             if (e.RowIndex < 0)
                 return;
-            if (sqlConnection == null)
+            int index;
+            if (!int.TryParse(resultView.Rows[e.RowIndex].Cells["idcp"].Value.ToString(), out index))
             {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                MessageBox.Show("Nem sikerült megjeleníteni a kiválasztott országot.", "Hiba");
                 return;
             }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            int cpID = (int)resultView.Rows[e.RowIndex].Cells[0].Value;
-            ViewCPForm viewCPForm = new ViewCPForm(sqlConnection, cpID);
+            ViewCPForm viewCPForm = new ViewCPForm(daoManager, index);
             viewCPForm.Show();
         }
     }

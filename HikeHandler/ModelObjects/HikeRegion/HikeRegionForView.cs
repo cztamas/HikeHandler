@@ -10,7 +10,7 @@ namespace HikeHandler.ModelObjects
 {
     public class HikeRegionForView
     {
-        public int ID { get; set; }
+        public int RegionID { get; set; }
         public int CountryID { get; set; }
         public int HikeCount { get; set; }
         public int CPCount { get; set; }
@@ -22,7 +22,7 @@ namespace HikeHandler.ModelObjects
 
         public HikeRegionForView(int regionID)
         {
-            ID = regionID;
+            RegionID = regionID;
         }
 
         public HikeRegionForView(int idOfCountry, string regionName, string regionDescription)

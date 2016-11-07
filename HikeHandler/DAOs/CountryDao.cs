@@ -348,5 +348,29 @@ VALUES (@name, 0, 0, 0, @description);";
                 return table;
             }
         }
+
+        // Returns the number of countries in the DB.
+        public int GetCountOfCountries()
+        {
+            if (sqlConnection == null)
+            {
+                throw new NoDBConnectionException();
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                throw new NoDBConnectionException();
+            }
+            int count;
+            string commandText = "SELECT COUNT(*) FROM country;";
+            using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
+            {
+                object result = command.ExecuteScalar();
+                if (!int.TryParse(result.ToString(), out count))
+                {
+                    throw new DBErrorException("SELECT COUNT return value should be integer.");
+                }
+            }
+            return count;
+        }
     }
 }

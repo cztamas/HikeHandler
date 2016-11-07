@@ -154,8 +154,8 @@ namespace HikeHandler.UI
             CPForView checkPoint = new CPForView();
             checkPoint.Name = nameBox.Text;
             checkPoint.Description = descriptionBox.Text;
-            checkPoint.IDCountry = (int)countryComboBox.SelectedValue;
-            checkPoint.IDRegion = (int)regionComboBox.SelectedValue;
+            checkPoint.CountryID = (int)countryComboBox.SelectedValue;
+            checkPoint.RegionID = (int)regionComboBox.SelectedValue;
             if ((int)typeComboBox.SelectedValue != -1)
                 checkPoint.TypeOfCP = (CPType)typeComboBox.SelectedValue;
             try

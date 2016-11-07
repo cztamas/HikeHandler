@@ -266,6 +266,7 @@
             this.Name = "ViewCPForm";
             this.ShowIcon = false;
             this.Text = "cpnév";
+            this.Load += new System.EventHandler(this.ViewCPForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

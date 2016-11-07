@@ -89,7 +89,6 @@ C:\prog\c#\HikeHandler\HikeHandler\obj\Debug\HikeHandler.UI.AddCountryForm.resou
 C:\prog\c#\HikeHandler\HikeHandler\obj\Debug\HikeHandler.UI.AddCPForm.resources
 C:\prog\c#\HikeHandler\HikeHandler\obj\Debug\HikeHandler.UI.AddHikeForm.resources
 C:\prog\c#\HikeHandler\HikeHandler\obj\Debug\HikeHandler.UI.AddRegionForm.resources
-C:\prog\c#\HikeHandler\HikeHandler\obj\Debug\HikeHandler.BaseForm.resources
 C:\prog\c#\HikeHandler\HikeHandler\obj\Debug\HikeHandler.UI.CPHandler.resources
 C:\prog\c#\HikeHandler\HikeHandler\obj\Debug\HikeHandler.UI.PasswordForm.resources
 C:\prog\c#\HikeHandler\HikeHandler\obj\Debug\HikeHandler.UI.SearchCountryForm.resources

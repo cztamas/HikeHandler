@@ -290,6 +290,7 @@
             this.Name = "BaseForm";
             this.ShowIcon = false;
             this.Text = "TúraKezelő";
+            this.Load += new System.EventHandler(this.BaseForm_Load);
             this.searchBox.ResumeLayout(false);
             this.addBox.ResumeLayout(false);
             this.summaryBox.ResumeLayout(false);

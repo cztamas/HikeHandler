@@ -151,7 +151,8 @@ r.name AS regionname, c.name AS countryname FROM hike, region r, country c WHERE
                 {
                     throw new DBErrorException("'hike.cpstring' value not valid.");
                 }
-                return new HikeForView(hikeID, countryID, regionID, position, countryName, regionName, description, hikeDate, hikeType, cpString);
+                return new HikeForView(hikeID, countryID, regionID, position, countryName, regionName, 
+                    description, hikeDate, hikeType, cpString);
             }
         }
 

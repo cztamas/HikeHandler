@@ -59,6 +59,8 @@ namespace HikeHandler.UI
             }            
         }
 
+        #region Auxiliary Methods
+
         public void MakeEditable()
         {
             addCPButton.Enabled = true;
@@ -89,43 +91,13 @@ namespace HikeHandler.UI
             cpTable.Clear();
         }
 
-        public void LoadCPs(string cpString)
+        public void LoadCPs(List<int> cpIDList)
         {
             InitCPTable();
-            if (!cpString.IsCPString())
-                return;
-            if (sqlConnection == null)
+            cpTable = daoManager.GetCPsFromList(cpIDList);
+            if (cpTable == null)
             {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
                 return;
-            }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            char[] separator = new char[] { '.' };
-            int id;
-            string[] cpInts = cpString.Split(separator, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string item in cpInts)
-            {
-                if (!int.TryParse(item, out id))
-                    continue;
-                string commandText = "SELECT name, idcp FROM cp WHERE idcp=" + id + ";";
-                using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
-                {
-                    try
-                    {
-                        DataTable table = new DataTable();
-                        adapter.Fill(table);
-                        DataRow row = table.Rows[0];
-                        cpTable.Rows.Add(row.ItemArray);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
-                }
             }
             RefreshCPList();
         }
@@ -146,62 +118,26 @@ namespace HikeHandler.UI
 
         private void GetCPList()
         {
-            if (sqlConnection == null)
+            DataTable table = daoManager.GetAllCPs();
+            if (table == null)
             {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
                 return;
             }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            string commandText = "SELECT name, idcp FROM cp ORDER BY name ASC;";
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
-            {
-                try
-                {
-                    DataTable table = new DataTable();
-                    adapter.Fill(table);
-                    cpNameComboBox.DataSource = table;
-                    cpNameComboBox.ValueMember = "idcp";
-                    cpNameComboBox.DisplayMember = "name";
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Hiba");
-                }
-            }
+            cpNameComboBox.DataSource = table;
+            cpNameComboBox.ValueMember = "idcp";
+            cpNameComboBox.DisplayMember = "name";
         }
 
         private void GetCPList(int regionID)
         {
-            if (sqlConnection == null)
+            DataTable table = daoManager.GetAllCPsOfRegion(regionID);
+            if (table == null)
             {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
                 return;
             }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            string commandText = "SELECT name, idcp FROM cp WHERE idregion=" + regionID + " ORDER BY name ASC;";
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
-            {
-                try
-                {
-                    DataTable table = new DataTable();
-                    adapter.Fill(table);
-                    cpNameComboBox.DataSource = table;
-                    cpNameComboBox.ValueMember = "idcp";
-                    cpNameComboBox.DisplayMember = "name";
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Hiba");
-                }
-            }
+            cpNameComboBox.DataSource = table;
+            cpNameComboBox.ValueMember = "idcp";
+            cpNameComboBox.DisplayMember = "name";
         }
 
         private void InitCPTable()
@@ -226,6 +162,10 @@ namespace HikeHandler.UI
             }
             GetCPList(RegionID);
         }
+
+        #endregion
+
+        #region Eventhandler Methods
 
         public void Region_Refreshed(object sender, EventArgs e)
         {
@@ -337,7 +277,9 @@ namespace HikeHandler.UI
         private void allRegionCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             RefreshCPList();
-        }        
+        }
+
+        #endregion
     }
 
     public enum CPHandlerStyle

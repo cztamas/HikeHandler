@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using MySql.Data.MySqlClient;
 using HikeHandler.ModelObjects;
@@ -212,6 +213,56 @@ c.name AS countryname FROM cp, region r, country c WHERE cp.idregion=r.idregion 
                 adapter.Fill(table);
                 return table;
             }
+        }
+
+        // Returns in a datatable the names and ids of every cp in the DB.
+        public DataTable GetCPNameTable()
+        {
+            if (sqlConnection == null)
+            {
+                throw new NoDBConnectionException();
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                throw new NoDBConnectionException();
+            }
+            string commandText = "SELECT idcp, name FROM cp ORDER BY name ASC;";
+            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
+            {
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                return table;
+            }
+        }
+
+        // Returns in a datatable the names and ids of the cps specified in the given list.
+        public DataTable GetCPNameTable(List<int> cpIDList)
+        {
+            DataTable resultTable = new DataTable();
+            resultTable.Clear();
+            resultTable.Columns.Add("name");
+            resultTable.Columns.Add("idcp");
+            foreach (int item in cpIDList)
+            {
+                string commandText = "SELECT name, idcp FROM cp WHERE idcp=@idcp;";
+                using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
+                {
+                    adapter.SelectCommand.Parameters.AddWithValue("@idcp", item);
+                    DataTable table = new DataTable();
+                    adapter.Fill(table);
+                    if (table.Rows.Count == 0)
+                    {
+                        throw new DBErrorException("The given cp cannot be found.");
+                    }
+                    if (table.Rows.Count > 0)
+                    {
+                        throw new DBErrorException("More than one checkpoint found with the given id.");
+                    }
+                    DataRow row = table.Rows[0];
+                    resultTable.Rows.Add(row.ItemArray);
+                }
+            }
+            return resultTable;
         }
 
         public void DeleteCP(int idCP)

@@ -15,38 +15,45 @@ namespace HikeHandler.UI
     public partial class SearchCPForm : Form
     {
         private DAOManager daoManager;
+        private CPForSearch templateToShow;
 
         public SearchCPForm(DAOManager manager)
         {
             InitializeComponent();
             daoManager = manager;
-            GetCountryList();
-            GetCPTypes();            
         }
 
         public SearchCPForm(DAOManager manager, CPForSearch template)
         {
             InitializeComponent();
             daoManager = manager;
-            GetCountryList();
-            GetCPTypes();
-            if (template.CountryName != string.Empty)
-                countryComboBox.Text = template.CountryName;
-            if (template.RegionName != string.Empty)
-            {
-                regionComboBox.SelectedIndex = -1;
-                regionComboBox.Text = template.RegionName;
-            }
-            MakeSearch(template);
+            templateToShow = template;
         }
 
-        public void Open()
+        private void SearchCPForm_Load(object sender, EventArgs e)
         {
-            Show();
-            countryComboBox.Text = string.Empty;
-            regionComboBox.Text = string.Empty;
-            nameBox.Focus();
+            GetCountryList();
+            GetCPTypes();
+            if (templateToShow != null)
+            {
+                if (templateToShow.CountryName != string.Empty)
+                    countryComboBox.Text = templateToShow.CountryName;
+                if (templateToShow.RegionName != string.Empty)
+                {
+                    regionComboBox.SelectedIndex = -1;
+                    regionComboBox.Text = templateToShow.RegionName;
+                }
+                MakeSearch(templateToShow);
+            }
+            else
+            {
+                countryComboBox.Text = string.Empty;
+                regionComboBox.Text = string.Empty;
+                nameBox.Focus();
+            }
         }
+
+        #region Auxiliary Methods
 
         private void GetCountryList()
         {
@@ -58,32 +65,15 @@ namespace HikeHandler.UI
 
         private void GetRegions(int countryID)
         {
-            if (sqlConnection == null)
+
+            DataTable table = daoManager.GetAllRegionsOfCountry(countryID);
+            if (table == null)
             {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
+                Close();
             }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            string commandText = "SELECT idregion, name FROM region WHERE idcountry=" + countryID + " ORDER BY name ASC;";
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
-            {
-                try
-                {
-                    DataTable table = new DataTable();
-                    adapter.Fill(table);
-                    regionComboBox.DataSource = table;
-                    regionComboBox.ValueMember = "idregion";
-                    regionComboBox.DisplayMember = "name";
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Hiba");
-                }
-            }
+            regionComboBox.DataSource = table;
+            regionComboBox.ValueMember = "idregion";
+            regionComboBox.DisplayMember = "name";
         }
 
         private void GetCPTypes()
@@ -140,6 +130,10 @@ namespace HikeHandler.UI
             resultView.Columns["countryname"].HeaderText = "Ország";
             resultGroupBox.Text = "Találatok száma: " + resultTable.Rows.Count;
         }
+
+        #endregion
+
+        #region Eventhandler Methods
 
         private void closeButton_Click(object sender, EventArgs e)
         {
@@ -213,5 +207,7 @@ namespace HikeHandler.UI
             ViewCPForm viewCPForm = new ViewCPForm(daoManager, index);
             viewCPForm.Show();
         }
+
+        #endregion
     }
 }

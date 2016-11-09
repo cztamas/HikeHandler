@@ -244,6 +244,7 @@
             this.Name = "SearchCPForm";
             this.ShowIcon = false;
             this.Text = "CheckPoint keresése";
+            this.Load += new System.EventHandler(this.SearchCPForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.resultGroupBox.ResumeLayout(false);

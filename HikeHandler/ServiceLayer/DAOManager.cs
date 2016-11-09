@@ -467,6 +467,54 @@ namespace HikeHandler.ServiceLayer
             }
         }
 
+        public DataTable GetAllCPs()
+        {
+            try
+            {
+                DataTable table = cpDao.GetCPNameTable();
+                return table;
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return null;
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+                return null;
+            }
+        }
+
+        public DataTable GetCPsFromList(List<int> cpIDList)
+        {
+            try
+            {
+                DataTable table = cpDao.GetCPNameTable(cpIDList);
+                return table;
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return null;
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+                return null;
+            }
+        }
+
         public bool SaveCP(CPForSave cp)
         {
             try

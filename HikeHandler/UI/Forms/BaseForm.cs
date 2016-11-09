@@ -43,19 +43,19 @@ namespace HikeHandler.UI
         private void searchHikeButton_Click(object sender, EventArgs e)
         {
             SearchHikeForm sHForm = new SearchHikeForm(daoManager);
-            sHForm.Open();
+            sHForm.Show();
         }
 
         private void searchCPButton_Click(object sender, EventArgs e)
         {
             SearchCPForm sCPForm = new SearchCPForm(daoManager);
-            sCPForm.Open();
+            sCPForm.Show();
         }
 
         private void searchRegionButton_Click(object sender, EventArgs e)
         {
             SearchRegionForm sRForm = new SearchRegionForm(daoManager);
-            sRForm.Open();
+            sRForm.Show();
         }
 
         private void searchCountryButton_Click(object sender, EventArgs e)
@@ -67,25 +67,25 @@ namespace HikeHandler.UI
         private void addHikeButton_Click(object sender, EventArgs e)
         {
             AddHikeForm aHForm = new AddHikeForm(daoManager);
-            aHForm.Open();
+            aHForm.Show();
         }
 
         private void addCPButton_Click(object sender, EventArgs e)
         {
             AddCPForm aCPForm = new AddCPForm(daoManager);
-            aCPForm.Open();
+            aCPForm.Show();
         }
 
         private void addRegionButton_Click(object sender, EventArgs e)
         {
             AddRegionForm aRForm = new AddRegionForm(daoManager);
-            aRForm.Open();
+            aRForm.Show();
         }
 
         private void addCountryButton_Click(object sender, EventArgs e)
         {
             AddCountryForm addCountryForm = new AddCountryForm(daoManager);
-            addCountryForm.Open();
+            addCountryForm.Show();
         }
 
         private void closeButton_Click(object sender, EventArgs e)

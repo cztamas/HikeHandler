@@ -126,7 +126,7 @@ namespace HikeHandler.UI
             template.IDcountry = currentCountry.CountryID;
             template.CountryName = currentCountry.Name;
             SearchRegionForm sRForm = new SearchRegionForm(daoManager, template);
-            sRForm.Open();
+            sRForm.Show();
         }
 
         private void cpsOfCountryButton_Click(object sender, EventArgs e)
@@ -135,7 +135,7 @@ namespace HikeHandler.UI
             template.IDCountry = currentCountry.CountryID;
             template.CountryName = currentCountry.Name;
             SearchCPForm sCPForm = new SearchCPForm(daoManager, template);
-            sCPForm.Open();
+            sCPForm.Show();
         }
 
         private void hikesOfCountryButton_Click(object sender, EventArgs e)
@@ -144,7 +144,7 @@ namespace HikeHandler.UI
             template.IDCountry = currentCountry.CountryID;
             template.CountryName = currentCountry.Name;
             SearchHikeForm sHForm = new SearchHikeForm(daoManager, template);
-            sHForm.Open();
+            sHForm.Show();
         }
 
         private void deleteCountryButton_Click(object sender, EventArgs e)

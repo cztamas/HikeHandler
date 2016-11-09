@@ -30,7 +30,7 @@ namespace HikeHandler.UI
         {
             InitializeComponent();
             daoManager = manager;
-            checkPointHandler.Init(sqlConnection, CPHandlerStyle.Search);
+            checkPointHandler.Init(daoManager, CPHandlerStyle.Search);
             regionComboBox.SelectedValueChanged += new EventHandler(checkPointHandler.Region_Refreshed);
             GetCountryList();
             GetHikeTypes();
@@ -39,7 +39,7 @@ namespace HikeHandler.UI
             if (template.RegionName != string.Empty)
                 regionComboBox.Text = template.RegionName;
             if (template.GetCPString() != string.Empty)
-                checkPointHandler.LoadCPs(template.GetCPString());
+                checkPointHandler.LoadCPs(template.CPList);
             MakeSearch(template);
         }
         

@@ -64,10 +64,52 @@ namespace HikeHandler.UI
             typeComboBox.DisplayMember = "name";
         }
 
-        // NOT IMPLEMENTED
+        // Collects the data on the form into a HikeForSave object.
         private HikeForSave GetDataForSave()
         {
-            throw new NotImplementedException();
+            int countryID;
+            if (countryComboBox.SelectedValue == null)
+            {
+                MessageBox.Show("Az ország nincs megadva.", "Hiba");
+                countryComboBox.Focus();
+                return null;
+            }
+            if (!int.TryParse(countryComboBox.SelectedValue.ToString(), out countryID))
+            {
+                MessageBox.Show("Nem sikerült elmenteni a túrát.", "Hiba");
+                countryComboBox.Focus();
+                return null;
+            }
+            int regionID;
+            if (regionComboBox.SelectedValue == null)
+            {
+                MessageBox.Show("A tájegység nincs megadva.", "Hiba");
+                regionComboBox.Focus();
+                return null;
+            }
+            if (!int.TryParse(regionComboBox.SelectedValue.ToString(), out regionID))
+            {
+                MessageBox.Show("Nem sikerült elmenteni a túrát.", "Hiba");
+                regionComboBox.Focus();
+                return null;
+            }
+            HikeType hikeType;
+            if (typeComboBox.SelectedValue == null)
+            {
+                MessageBox.Show("Nincs megadva a túra típusa.", "Hiba");
+                typeComboBox.Focus();
+                return null;
+            }
+            if (!Enum.TryParse(regionComboBox.SelectedItem.ToString(), out hikeType))
+            {
+                MessageBox.Show("Nem sikerült elmenteni a túrát.", "Hiba");
+                typeComboBox.Focus();
+                return null;
+            }
+            string description = descriptionBox.Text;
+            DateTime hikeDate = dateBox.Value.Date;
+            List<int> cpList = checkPointHandler.CPList;
+            return new HikeForSave(countryID, regionID, hikeType, hikeDate, cpList, description);
         }
 
         #endregion
@@ -88,34 +130,11 @@ namespace HikeHandler.UI
 
         private void addHikeButton_Click(object sender, EventArgs e)
         {
-            HikeForView hike = new HikeForView();
-            hike.CountryID = (int)countryComboBox.SelectedValue;
-            hike.RegionID = (int)regionComboBox.SelectedValue;
-            hike.HikeType = (HikeType)typeComboBox.SelectedValue;
-            hike.HikeDate = dateBox.Value.Date;
-            hike.Description = descriptionBox.Text;
-            hike.CPList = checkPointHandler.CPList;
-            try
+            HikeForSave hike = GetDataForSave();
+            if (daoManager.SaveHike(hike))
             {
-                if (hikeDao.SaveHike(hike))
-                {
-                    MessageBox.Show("Sikeresen elmentve.");
-                    Close();
-                }
-            }
-            catch (DaoException ex)
-            {
-                if (ex.Error == ErrorType.NoDBConnection)
-                {
-                    MessageBox.Show("Nem lehet elérni az adatbázist.", "Hiba");
-                    return;
-                }
-                if (ex.Error == ErrorType.DuplicateDate)
-                {
-                    MessageBox.Show("Ezzel a dátummal már van elmentve túra.", "Hiba");
-                    return;
-                }
-                MessageBox.Show(ex.Message, "Hiba");
+                MessageBox.Show("Sikeresen elmentve.");
+                Close();
             }
         }
 

@@ -240,6 +240,7 @@
             this.Name = "ViewHikeForm";
             this.ShowIcon = false;
             this.Text = "ViewHikeForm";
+            this.Load += new System.EventHandler(this.ViewHikeForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);

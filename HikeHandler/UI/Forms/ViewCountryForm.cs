@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using HikeHandler.ModelObjects;
 using HikeHandler.ServiceLayer;
@@ -30,6 +23,8 @@ namespace HikeHandler.UI
             RefreshForm();
             MakeUneditable();
         }
+
+        #region Auxiliary Methods
 
         private void MakeEditable()
         {
@@ -72,7 +67,22 @@ namespace HikeHandler.UI
                 Close();
             }
         }
-        
+
+        private CountryForUpdate GetDataForUpdate()
+        {
+            if (string.IsNullOrWhiteSpace(nameBox.Text))
+            {
+                MessageBox.Show("Nincs megadva az ország neve.", "Hiba");
+                nameBox.Focus();
+                return null;
+            }
+            return new CountryForUpdate(currentCountry.CountryID, currentCountry.Name, nameBox.Text, descriptionBox.Text);
+        }
+
+        #endregion
+
+        #region Eventhandler methods
+
         private void closeButton_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -97,13 +107,11 @@ namespace HikeHandler.UI
 
         private void saveEditButton_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(nameBox.Text))
+            CountryForUpdate country = GetDataForUpdate();
+            if (country == null)
             {
-                MessageBox.Show("Nincs megadva az ország neve.", "Hiba");
-                nameBox.Focus();
+                return;
             }
-            CountryForUpdate country =
-                new CountryForUpdate(currentCountry.CountryID, currentCountry.Name, nameBox.Text, descriptionBox.Text);
             if (daoManager.UpdateCountry(country))
             {
                 MakeUneditable();
@@ -148,6 +156,6 @@ namespace HikeHandler.UI
             }
         }
 
-        
+        #endregion
     }
 }

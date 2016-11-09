@@ -23,6 +23,8 @@ namespace HikeHandler.UI
             countryComboBox.Focus();
         }
 
+        #region Auxiliary Methods
+
         private void Clear()
         {
             resultView.DataSource = null;
@@ -44,6 +46,21 @@ namespace HikeHandler.UI
             countryComboBox.DisplayMember = "name";
         }
 
+        private CountryForSearch GetDataForSearch()
+        {
+            if (!hikeNumberBox.Text.IsIntPile())
+            {
+                MessageBox.Show("Nem megfelelő számformátum.", "Hiba");
+                hikeNumberBox.Focus();
+                return null;
+            }
+            return new CountryForSearch(countryComboBox.Text, hikeNumberBox.Text.ToIntPile());
+        }
+
+        #endregion
+
+        #region Eventhandler Methods
+
         private void closeButton_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -56,17 +73,16 @@ namespace HikeHandler.UI
 
         private void searchButton_Click(object sender, EventArgs e)
         {
-            if (!hikeNumberBox.Text.IsIntPile())
+            CountryForSearch template = GetDataForSearch();
+            if (template == null)
             {
-                MessageBox.Show("Nem megfelelő számformátum.", "Hiba");
-                hikeNumberBox.Focus();
                 return;
             }
-            CountryForSearch template = new CountryForSearch(countryComboBox.Text,
-                hikeNumberBox.Text.ToIntPile());
             DataTable table = daoManager.SearchCountry(template);
             if (table == null)
+            {
                 return;
+            }
 
             resultView.DataSource = table;
             resultView.Columns["idcountry"].Visible = false;
@@ -108,6 +124,7 @@ namespace HikeHandler.UI
             }
             
         }
-        
+
+        #endregion
     }
 }

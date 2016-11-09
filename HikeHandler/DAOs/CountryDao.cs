@@ -223,11 +223,11 @@ VALUES (@name, 0, 0, 0, @description);";
         }
 
         // Returns the data of the country with the given id.
-        public CountryForView GetCountryData(int idCountry)
+        public CountryForView GetCountryData(int countryID)
         {
-            if (idCountry <= 0)
+            if (countryID <= 0)
             {
-                throw new ArgumentException("idCountry parameter should be positive.", "idCountry");
+                throw new ArgumentException("countryID parameter should be positive.", "countryID");
             }
             if (sqlConnection == null)
             {
@@ -241,7 +241,7 @@ VALUES (@name, 0, 0, 0, @description);";
             string commandText = "SELECT name, description, hikecount, cpcount, regioncount FROM country WHERE idcountry=@id;";
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
             {
-                adapter.SelectCommand.Parameters.AddWithValue("@id", idCountry);
+                adapter.SelectCommand.Parameters.AddWithValue("@id", countryID);
                 DataTable table = new DataTable();
                 adapter.Fill(table);
                 if (table.Rows.Count == 0)
@@ -276,7 +276,7 @@ VALUES (@name, 0, 0, 0, @description);";
                 description = row["description"].ToString();
 
                 CountryForView countryData =
-                    new CountryForView(idCountry, name, hikeCount, regionCount, cpCount, description);
+                    new CountryForView(countryID, name, hikeCount, regionCount, cpCount, description);
                 return countryData;
             }
         }
@@ -330,7 +330,7 @@ VALUES (@name, 0, 0, 0, @description);";
         }
 
         // Gets the names and ids of all countries.
-        public DataTable GetCountryTable()
+        public DataTable GetCountryNameTable()
         {
             if (sqlConnection == null)
             {

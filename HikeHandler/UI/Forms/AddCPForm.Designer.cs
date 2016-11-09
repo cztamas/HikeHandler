@@ -192,6 +192,7 @@
             this.Name = "AddCPForm";
             this.ShowIcon = false;
             this.Text = "CheckPoint hozzáadása";
+            this.Load += new System.EventHandler(this.AddCPForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

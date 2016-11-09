@@ -16,6 +16,25 @@ namespace HikeHandler
             return Regex.IsMatch(text, @"^(\.\d+\.)*$");
         }
 
+        public static List<int> ToCPList(this string text)
+        {
+            if (!IsCPString(text))
+            {
+                throw new ArgumentException("Invalid cpstring.", "text");
+            }
+            char[] separator = new char[] { '.' };
+            string[] listItems = text.Split(separator, StringSplitOptions.RemoveEmptyEntries);
+            int item;
+            List<int> cpList = new List<int>();
+            foreach (string piece in listItems)
+            {
+                if (!int.TryParse(piece, out item))
+                    throw new ArgumentException("Invalid cpstring.", "text");
+                cpList.Add(item);
+            }
+            return cpList;
+        }
+
          public static bool IsIntPile(this string text)
         {
             text = Regex.Replace(text, @"\s+", "");

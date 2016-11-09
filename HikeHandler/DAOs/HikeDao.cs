@@ -79,10 +79,80 @@ AND c.name LIKE @countryName AND r.name LIKE @regionName";
             }
         }
 
-        // NOT IMPLEMENTED
+        // Returns the data of the hike with the given id.
         public HikeForView GetHikeData(int hikeID)
         {
-            throw new NotImplementedException();
+            if (hikeID <= 0)
+            {
+                throw new ArgumentException("hikeID parameter should be positive.", "cpID");
+            }
+            if (sqlConnection == null)
+            {
+                throw new NoDBConnectionException();
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                throw new NoDBConnectionException();
+            }
+
+            string commandText = @"SELECT hike.idregion, hike.idcountry, hike.date, hike.position, hike.cpstring, hike.hiketype, hike.description, 
+r.name AS regionname, c.name AS countryname FROM hike, region r, country c WHERE hike.idregion=r.idregion AND hike.idcountry=c.idcountry AND hike.idhike=@idhike;";
+            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
+            {
+                adapter.SelectCommand.Parameters.AddWithValue("@idhike", hikeID);
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                if (table.Rows.Count == 0)
+                {
+                    return null;
+                }
+                if (table.Rows.Count > 1)
+                {
+                    throw new DBErrorException("More than one hike found with the given id.");
+                }
+                DataRow row = table.Rows[0];
+
+                string countryName;
+                string regionName;
+                string description;
+                string cpString;
+                int countryID;
+                int regionID;
+                int position;
+                HikeType hikeType;
+                DateTime hikeDate;
+
+                if (!int.TryParse(row["position"].ToString(), out position))
+                {
+                    throw new DBErrorException("'hike.position' should be an integer.");
+                }
+                if (!int.TryParse(row["idregion"].ToString(), out regionID))
+                {
+                    throw new DBErrorException("'hike.idregion' should be an integer.");
+                }
+                if (!int.TryParse(row["idcountry"].ToString(), out countryID))
+                {
+                    throw new DBErrorException("'hike.idcountry' should be an integer.");
+                }
+                if (!Enum.TryParse<HikeType>(row["hiketype"].ToString(), out hikeType))
+                {
+                    throw new DBErrorException("'hike.hiketype' value not valid.");
+                }
+                if (!DateTime.TryParse(row["date"].ToString(), out hikeDate))
+                {
+                    throw new DBErrorException("'hike.date' value not valid.");
+                }
+                description = row["description"].ToString();
+                countryName = row["countryname"].ToString();
+                regionName = row["regionname"].ToString();
+                cpString = row["cpString"].ToString();
+
+                if (!cpString.IsCPString())
+                {
+                    throw new DBErrorException("'hike.cpstring' value not valid.");
+                }
+                return new HikeForView(hikeID, countryID, regionID, position, countryName, regionName, description, hikeDate, hikeType, cpString);
+            }
         }
 
         public void MovePositions(DateTime date, bool upOrDown)
@@ -151,7 +221,7 @@ AND c.name LIKE @countryName AND r.name LIKE @regionName";
                 }
             }
         }
-        
+
         public void DeleteHike(HikeForView hikeData)
         {
             if (sqlConnection == null)
@@ -165,7 +235,7 @@ AND c.name LIKE @countryName AND r.name LIKE @regionName";
             string commandText = "DELETE FROM hike WHERE idhike=@idhike";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
-                command.Parameters.AddWithValue("@idhike", hikeData.IDHike);
+                command.Parameters.AddWithValue("@idhike", hikeData.HikeID);
                 command.ExecuteNonQuery();
 
 
@@ -178,8 +248,8 @@ AND c.name LIKE @countryName AND r.name LIKE @regionName";
                 {
                     cpDao.UpdateHikeCount(item);
                 }
-                regionDao.UpdateHikeCount(hikeData.IDRegion);
-                countryDao.UpdateHikeCount(hikeData.IDCountry);
+                regionDao.UpdateHikeCount(hikeData.RegionID);
+                countryDao.UpdateHikeCount(hikeData.CountryID);
             }
         }
 
@@ -237,7 +307,7 @@ VALUES (@date, @idregion, @idcountry, @type, @description, @cpstring)";
                 command.ExecuteNonQuery();
             }
         }
-        
+
         public void UpdateHike(HikeForUpdate hike)
         {
             if (sqlConnection == null)
@@ -248,7 +318,7 @@ VALUES (@date, @idregion, @idcountry, @type, @description, @cpstring)";
             {
                 throw new NoDBConnectionException();
             }
-            string commandText = 
+            string commandText =
                 @"UPDATE hike SET date=@date, description=@description, type=@type, cpstring=@cpstring WHERE idhike=@idhike;";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
@@ -297,7 +367,7 @@ VALUES (@date, @idregion, @idcountry, @type, @description, @cpstring)";
             {
                 throw new NoDBConnectionException();
             }
-            string commandText = "SELECT COUNT(*) AS count FROM hike WHERE date < '" 
+            string commandText = "SELECT COUNT(*) AS count FROM hike WHERE date < '"
                 + date.ToString("yyyy-MM-dd") + "' AND type='túra';";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
@@ -347,6 +417,28 @@ VALUES (@date, @idregion, @idcountry, @type, @description, @cpstring)";
                 }
             }
             return count;
+        }
+
+        public DataTable GetHikeTypes()
+        {
+            DataTable hikeTypesTable = new DataTable();
+            DataColumn column;
+            DataRow row;
+
+            column = new DataColumn("id", typeof(int));
+            hikeTypesTable.Columns.Add(column);
+            column = new DataColumn("name", typeof(string));
+            hikeTypesTable.Columns.Add(column);
+
+            Array hikeTypes = Enum.GetValues(typeof(HikeType));
+            foreach (HikeType item in hikeTypes)
+            {
+                row = hikeTypesTable.NewRow();
+                row["id"] = (int)item;
+                row["name"] = item.ToString();
+                hikeTypesTable.Rows.Add(row);
+            }
+            return hikeTypesTable;
         }
     }
 }

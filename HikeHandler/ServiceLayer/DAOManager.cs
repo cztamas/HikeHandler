@@ -109,7 +109,7 @@ namespace HikeHandler.ServiceLayer
         {
             try
             {
-                DataTable table = countryDao.GetCountryTable();
+                DataTable table = countryDao.GetCountryNameTable();
                 return table;
             }
             catch (NoDBConnectionException)
@@ -254,10 +254,29 @@ namespace HikeHandler.ServiceLayer
 
         #region HikeRegion Methods
 
-        // NOT IMPLEMENTED
+        // Returns in a datatable the names and ids of every region of the given country.
         public DataTable GetAllRegionsOfCountry(int countryID)
         {
-            throw new NotImplementedException();
+            try
+            {
+                DataTable table = regionDao.GetRegionNameTable(countryID);
+                return table;
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return null;
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+                return null;
+            }
         }
 
         public bool SaveRegion(HikeRegionForSave region)
@@ -410,10 +429,42 @@ namespace HikeHandler.ServiceLayer
 
         #region CP Methods
 
-        // NOT IMPLEMENTED
+        public DataTable GetCPTypes()
+        {
+            try
+            {
+                return cpDao.GetCPTypes();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+                return null;
+            }
+        }
+
+        // Returns in a datatable the names and ids of every cp of the given region.
         public DataTable GetAllCPsOfRegion(int regionID)
         {
-            throw new NotImplementedException();
+            try
+            {
+                DataTable table = cpDao.GetCPNameTable(regionID);
+                return table;
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                return null;
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+                return null;
+            }
         }
 
         public bool SaveCP(CPForSave cp)
@@ -572,6 +623,19 @@ namespace HikeHandler.ServiceLayer
 
         #region Hike Methods
 
+        public DataTable GetHikeTypes()
+        {
+            try
+            {
+                return hikeDao.GetHikeTypes();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+                return null;
+            }
+        }
+
         public bool SaveHike(HikeForSave hike)
         {
             try
@@ -726,8 +790,8 @@ namespace HikeHandler.ServiceLayer
                 {
                     cpDao.UpdateHikeCount(item);
                 }
-                regionDao.UpdateHikeCount(hike.IDRegion);
-                countryDao.UpdateHikeCount(hike.IDCountry);
+                regionDao.UpdateHikeCount(hike.RegionID);
+                countryDao.UpdateHikeCount(hike.CountryID);
                 return true;
             }
             catch (NoDBConnectionException)

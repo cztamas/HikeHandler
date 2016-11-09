@@ -7,130 +7,73 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
 using HikeHandler.ModelObjects;
-using HikeHandler.DAOs;
-using HikeHandler.Exceptions;
+using HikeHandler.ServiceLayer;
 
 namespace HikeHandler.UI
 {
     public partial class AddHikeForm : Form
     {
-        private MySqlConnection sqlConnection;
-        private HikeDao hikeDao;
-        private CountryDao countryDao;
-        private CPDao cpDao;
-        private RegionDao regionDao;
+        private DAOManager daoManager;
 
-        public AddHikeForm()
+        public AddHikeForm(DAOManager manager)
         {
             InitializeComponent();
+            daoManager = manager;
         }
 
-        public AddHikeForm(MySqlConnection connection)
+        private void AddHikeForm_Load(object sender, EventArgs e)
         {
-            InitializeComponent();
-            hikeDao = new HikeDao(connection);
-            countryDao = new CountryDao(connection);
-            cpDao = new CPDao(connection);
-            regionDao = new RegionDao(connection);
-
-            sqlConnection = connection;
-            checkPointHandler.Init(sqlConnection, CPHandlerStyle.Add);
+            checkPointHandler.Init(daoManager, CPHandlerStyle.Add);
             regionComboBox.SelectedValueChanged += new EventHandler(checkPointHandler.Region_Refreshed);
             GetCountryList();
             GetHikeTypes();
         }
-        
+
+        #region Auxiliary Methods
+
         private void GetCountryList()
         {
-            if (sqlConnection == null)
+            DataTable table = daoManager.GetAllCountryNames();
+            if (table == null)
             {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            string commandText = "SELECT idcountry, name FROM country ORDER BY name ASC;";
-            DataTable table = new DataTable();
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
-            {
-                try
-                {
-                    adapter.Fill(table);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Hiba");
-                }
+                Close();
             }
             countryComboBox.DataSource = table;
             countryComboBox.ValueMember = "idcountry";
             countryComboBox.DisplayMember = "name";
         }
-        
+
         private void GetRegionList(int countryID)
         {
-            if (sqlConnection == null)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            string commandText = "SELECT idregion, name FROM region WHERE idcountry=" + countryID + " ORDER BY name ASC;";
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
-            {
-                try
-                {
-                    DataTable table = new DataTable();
-                    adapter.Fill(table);
-                    regionComboBox.DataSource = table;
-                    regionComboBox.ValueMember = "idregion";
-                    regionComboBox.DisplayMember = "name";
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Hiba");
-                }
-            }
+            DataTable table = daoManager.GetAllRegionsOfCountry(countryID);
+            regionComboBox.DataSource = table;
+            regionComboBox.ValueMember = "idregion";
+            regionComboBox.DisplayMember = "name";
         }
 
         private void GetHikeTypes()
         {
-            DataTable hikeTypesTable = new DataTable();
-            DataColumn column;
-            DataRow row;
-
-            column = new DataColumn("id", typeof(int));
-            hikeTypesTable.Columns.Add(column);
-            column = new DataColumn("name", typeof(string));
-            hikeTypesTable.Columns.Add(column);            
-
-            Array hikeTypes = Enum.GetValues(typeof(HikeType));
-            foreach (HikeType item in hikeTypes)
+            DataTable hikeTypesTable = daoManager.GetHikeTypes();
+            if (hikeTypesTable == null)
             {
-                row = hikeTypesTable.NewRow();
-                row["id"] = (int)item;
-                row["name"] = item.ToString();
-                hikeTypesTable.Rows.Add(row);
+                Close();
             }
             typeComboBox.DataSource = hikeTypesTable;
             typeComboBox.ValueMember = "id";
             typeComboBox.DisplayMember = "name";
         }
-        
-        public void Open()
+
+        // NOT IMPLEMENTED
+        private HikeForSave GetDataForSave()
         {
-            Show();
+            throw new NotImplementedException();
         }
-        
+
+        #endregion
+
+        #region Eventhandler Methods
+
         private void cancelButton_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -146,8 +89,8 @@ namespace HikeHandler.UI
         private void addHikeButton_Click(object sender, EventArgs e)
         {
             HikeForView hike = new HikeForView();
-            hike.IDCountry = (int)countryComboBox.SelectedValue;
-            hike.IDRegion = (int)regionComboBox.SelectedValue;
+            hike.CountryID = (int)countryComboBox.SelectedValue;
+            hike.RegionID = (int)regionComboBox.SelectedValue;
             hike.HikeType = (HikeType)typeComboBox.SelectedValue;
             hike.HikeDate = dateBox.Value.Date;
             hike.Description = descriptionBox.Text;
@@ -190,5 +133,7 @@ namespace HikeHandler.UI
         {
             descriptionBox.IsTextboxActive = false;
         }
+
+        #endregion
     }
 }

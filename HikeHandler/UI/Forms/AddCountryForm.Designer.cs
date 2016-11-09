@@ -123,6 +123,7 @@
             this.Name = "AddCountryForm";
             this.ShowIcon = false;
             this.Text = "Ország hozzáadása";
+            this.Load += new System.EventHandler(this.AddCountryForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

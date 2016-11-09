@@ -76,7 +76,7 @@ namespace HikeHandler.UI
 
         private void RefreshForm()
         {
-            hikeData = GetHikeData(hikeData.IDHike);
+            hikeData = GetHikeData(hikeData.HikeID);
             if (hikeData == null)
                 return;
             countryBox.Text = hikeData.CountryName;
@@ -85,7 +85,7 @@ namespace HikeHandler.UI
             dateBox.Value = hikeData.HikeDate;
             descriptionBox.Text = hikeData.Description;
 
-            checkPointHandler.RegionID = hikeData.IDRegion;
+            checkPointHandler.RegionID = hikeData.RegionID;
             checkPointHandler.LoadCPs(hikeData.CPString);
             checkPointHandler.RefreshControl();
             //cpList = checkPointHandler.CPList;
@@ -99,20 +99,20 @@ namespace HikeHandler.UI
 
         private HikeForView GetHikeData(int hikeID)
         {
-            HikeForSearch template = new HikeForSearch(hikeData.IDHike);
+            HikeForSearch template = new HikeForSearch(hikeData.HikeID);
             try
             {
                 DataTable resultTable = hikeDao.SearchHike(template, true);
                 DataRow row = resultTable.Rows[0];
-                HikeForView tempHike = new HikeForView(hikeData.IDHike);
+                HikeForView tempHike = new HikeForView(hikeData.HikeID);
                 tempHike.CountryName = (string)row["countryname"];
                 tempHike.RegionName = (string)row["regionname"];
                 int regID;
                 if (int.TryParse(row["idregion"].ToString(), out regID))
-                    tempHike.IDRegion = regID;
+                    tempHike.RegionID = regID;
                 int countryID;
                 if (int.TryParse(row["idcountry"].ToString(), out countryID))
-                    tempHike.IDCountry = countryID;
+                    tempHike.CountryID = countryID;
                 int posInt;
                 if (int.TryParse(row["position"].ToString(), out posInt))
                     tempHike.Position = posInt;
@@ -193,7 +193,7 @@ namespace HikeHandler.UI
                 MessageBox.Show("Nem lehet elérni az adatbázist", "Hiba");
                 return;
             }
-            HikeForView newHikeData = new HikeForView(hikeData.IDHike);
+            HikeForView newHikeData = new HikeForView(hikeData.HikeID);
             newHikeData.Description = descriptionBox.Text;
             newHikeData.HikeType = (HikeType)typeComboBox.SelectedValue;
             newHikeData.HikeDate = dateBox.Value;

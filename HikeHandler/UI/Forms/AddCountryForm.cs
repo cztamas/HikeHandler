@@ -1,15 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using HikeHandler.ModelObjects;
-using HikeHandler.DAOs;
-using HikeHandler.Exceptions;
 using HikeHandler.ServiceLayer;
 
 namespace HikeHandler.UI
@@ -24,11 +15,27 @@ namespace HikeHandler.UI
             daoManager = manager;
         }
 
-        public void Open()
+        private void AddCountryForm_Load(object sender, EventArgs e)
         {
-            Show();
             nameBox.Focus();
         }
+
+        #region Auxiliary Methods
+
+        private CountryForSave GetDataForSave()
+        {
+            if (string.IsNullOrWhiteSpace(nameBox.Text))
+            {
+                MessageBox.Show("Nincs megadva az ország neve.", "Hiba");
+                nameBox.Focus();
+                return null;
+            }
+            return new CountryForSave(nameBox.Text, descriptionBox.Text);
+        }
+
+        #endregion
+
+        #region Eventhandler Methods
 
         private void exitButton_Click(object sender, EventArgs e)
         {
@@ -37,12 +44,9 @@ namespace HikeHandler.UI
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(nameBox.Text))
-            {
-                MessageBox.Show("Nincs megadva az ország neve.", "Hiba");
-                nameBox.Focus();
-            }
-            CountryForSave country = new CountryForSave(nameBox.Text, descriptionBox.Text);
+            CountryForSave country = GetDataForSave();
+            if (country == null)
+                return;
             if (daoManager.SaveCountry(country))
             {
                 MessageBox.Show("Sikeresen elmentve.");
@@ -59,5 +63,7 @@ namespace HikeHandler.UI
         {
             AcceptButton = saveButton;
         }
+
+        #endregion
     }
 }

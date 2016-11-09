@@ -193,6 +193,7 @@
             this.Name = "AddHikeForm";
             this.ShowIcon = false;
             this.Text = "Túra hozzáadása";
+            this.Load += new System.EventHandler(this.AddHikeForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);

@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
+using HikeHandler.ServiceLayer;
 
 namespace HikeHandler.UI
 {
     public partial class CPHandler : UserControl
     {
-        private MySqlConnection sqlConnection;
+        private DAOManager daoManager;
         private DataTable cpTable;
         public int RegionID { get; set; }
         public bool AnyCPOrder
@@ -36,9 +36,9 @@ namespace HikeHandler.UI
             InitializeComponent();
         }        
 
-        public void Init(MySqlConnection connection, CPHandlerStyle style)
+        public void Init(DAOManager manager, CPHandlerStyle style)
         {
-            sqlConnection = connection;
+            daoManager = manager;
             InitCPTable();
             switch (style)
             {

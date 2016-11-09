@@ -126,10 +126,92 @@ AND cp.name LIKE @name AND c.name LIKE @countryName AND r.name LIKE @regionName"
                 return true;
         }
 
-        // NOT IMPLEMENTED
+        // Returns the data of the cp with the given id.
         public CPForView GetCPData(int cpID)
         {
-            throw new NotImplementedException();
+            if (cpID <= 0)
+            {
+                throw new ArgumentException("cpID parameter should be positive.", "cpID");
+            }
+            if (sqlConnection == null)
+            {
+                throw new NoDBConnectionException();
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                throw new NoDBConnectionException();
+            }
+
+            string commandText = @"SELECT cp.idregion, cp.idcountry, cp.name, cp.type, cp.hikecount, cp.description, r.name AS regionname, 
+c.name AS countryname FROM cp, region r, country c WHERE cp.idregion=r.idregion AND cp.idcountry=c.idcountry AND cp.idcp=@idcp;";
+            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
+            {
+                adapter.SelectCommand.Parameters.AddWithValue("@idcp", cpID);
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                if (table.Rows.Count == 0)
+                {
+                    return null;
+                }
+                if (table.Rows.Count > 1)
+                {
+                    throw new DBErrorException("More than one checkpoint found with the given id.");
+                }
+                DataRow row = table.Rows[0];
+
+                string name;
+                string countryName;
+                string regionName;
+                string description;
+                int countryID;
+                int regionID;
+                int hikeCount;
+                CPType typeOfCP;
+
+                if (!int.TryParse(row["hikecount"].ToString(), out hikeCount))
+                {
+                    throw new DBErrorException("'cp.hikecount' should be an integer.");
+                }
+                if (!int.TryParse(row["idregion"].ToString(), out regionID))
+                {
+                    throw new DBErrorException("'cp.idregion' should be an integer.");
+                }
+                if (!int.TryParse(row["idcountry"].ToString(), out countryID))
+                {
+                    throw new DBErrorException("'cp.idcountry' should be an integer.");
+                }
+                if (!Enum.TryParse<CPType>(row["type"].ToString(), out typeOfCP))
+                {
+                    throw new DBErrorException("'cp.cptype' value not valid.");
+                }
+                name = row["name"].ToString();
+                description = row["description"].ToString();
+                countryName = row["countryname"].ToString();
+                regionName = row["regionname"].ToString();
+
+                return new CPForView(cpID, countryID, regionID, name, countryName, regionName, typeOfCP, hikeCount, description);
+            }
+        }
+
+        // Returns in a datatable the names and ids of every cp of the given region.
+        public DataTable GetCPNameTable(int regionID)
+        {
+            if (sqlConnection == null)
+            {
+                throw new NoDBConnectionException();
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                throw new NoDBConnectionException();
+            }
+            string commandText = "SELECT idcp, name FROM cp WHERE idregion=@idregion ORDER BY name ASC;";
+            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
+            {
+                adapter.SelectCommand.Parameters.AddWithValue("@idregion", regionID);
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                return table;
+            }
         }
 
         public void DeleteCP(int idCP)
@@ -244,6 +326,28 @@ VALUES (@name, @idcountry, @idregion, @type, 0, @description);";
                 }
             }
             return count;
+        }
+
+        public DataTable GetCPTypes()
+        {
+            DataTable cpTypesTable = new DataTable();
+            DataColumn column;
+            DataRow row;
+
+            column = new DataColumn("id", typeof(int));
+            cpTypesTable.Columns.Add(column);
+            column = new DataColumn("name", typeof(string));
+            cpTypesTable.Columns.Add(column);
+
+            Array cpTypes = Enum.GetValues(typeof(CPType));
+            foreach (CPType item in cpTypes)
+            {
+                row = cpTypesTable.NewRow();
+                row["id"] = (int)item;
+                row["name"] = item.ToString();
+                cpTypesTable.Rows.Add(row);
+            }
+            return cpTypesTable;
         }
     }
 }

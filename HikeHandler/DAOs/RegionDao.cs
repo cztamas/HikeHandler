@@ -162,9 +162,85 @@ WHERE region.idcountry=country.idcountry AND region.name LIKE @name AND country.
                 return true;
         }
 
+        // Returns the data of the region with the given id.
         public HikeRegionForView GetRegionData(int regionID)
         {
-            throw new NotImplementedException();
+            if (regionID <= 0)
+            {
+                throw new ArgumentException("regionID parameter should be positive.", "regionID");
+            }
+            if (sqlConnection == null)
+            {
+                throw new NoDBConnectionException();
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                throw new NoDBConnectionException();
+            }
+
+            string commandText = @"SELECT r.idcountry, r.name, r.hikecount, r.cpcount, r.description, c.name AS countryname 
+FROM region r, country c WHERE c.idcountry=r.idcountry AND r.idregion=@idregion;";
+            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
+            {
+                adapter.SelectCommand.Parameters.AddWithValue("@idregion", regionID);
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                if (table.Rows.Count == 0)
+                {
+                    return null;
+                }
+                if (table.Rows.Count > 1)
+                {
+                    throw new DBErrorException("More than one region found with the given id.");
+                }
+                DataRow row = table.Rows[0];
+
+                string name;
+                string countryName;
+                string description;
+                int countryID;
+                int hikeCount;
+                int cpCount;
+
+                if (!int.TryParse(row["hikecount"].ToString(), out hikeCount))
+                {
+                    throw new DBErrorException("'region.hikecount' should be an integer.");
+                }
+                if (!int.TryParse(row["cpcount"].ToString(), out cpCount))
+                {
+                    throw new DBErrorException("'region.cpcount' should be an integer.");
+                }
+                if (!int.TryParse(row["idcountry"].ToString(), out countryID))
+                {
+                    throw new DBErrorException("'region.idcountry' should be an integer.");
+                }
+                name = row["name"].ToString();
+                description = row["description"].ToString();
+                countryName = row["countryname"].ToString();
+
+                return new HikeRegionForView(regionID, countryID, name, countryName, hikeCount, cpCount, description);
+            }
+        }
+
+        // Returns in a datatable the names and ids of every region of the given country
+        public DataTable GetRegionNameTable(int countryID)
+        {
+            if (sqlConnection == null)
+            {
+                throw new NoDBConnectionException();
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                throw new NoDBConnectionException();
+            }
+            string commandText = "SELECT idregion, name FROM region WHERE idcountry=@idcountry ORDER BY name ASC;";
+            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
+            {
+                adapter.SelectCommand.Parameters.AddWithValue("@idcountry", countryID);
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                return table;
+            }
         }
 
         public bool IsDuplicateName(string regionName)

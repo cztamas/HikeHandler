@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using HikeHandler.ModelObjects;
 using HikeHandler.ServiceLayer;
@@ -28,6 +22,8 @@ namespace HikeHandler.UI
             countryComboBox.Text = string.Empty;
             nameBox.Focus();
         }
+
+        #region Auxiliary Methods
 
         private void GetCountryList()
         {
@@ -61,6 +57,10 @@ namespace HikeHandler.UI
             return region;
         }
 
+        #endregion
+
+        #region Eventhandler Methods
+
         private void cancelButton_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -89,5 +89,7 @@ namespace HikeHandler.UI
         {
             AcceptButton = saveRegionButton;
         }
+
+        #endregion
     }
 }

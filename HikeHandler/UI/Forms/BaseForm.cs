@@ -61,7 +61,7 @@ namespace HikeHandler.UI
         private void searchCountryButton_Click(object sender, EventArgs e)
         {
             SearchCountryForm sCForm = new SearchCountryForm(daoManager);
-            sCForm.Open();
+            sCForm.Show();
         }
 
         private void addHikeButton_Click(object sender, EventArgs e)

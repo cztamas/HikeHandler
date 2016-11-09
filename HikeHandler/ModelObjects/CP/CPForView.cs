@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Data;
-using System.Windows.Forms;
-using System.Threading.Tasks;
 
 namespace HikeHandler.ModelObjects
 {
@@ -25,12 +19,15 @@ namespace HikeHandler.ModelObjects
             CPID = idCP;
         }
 
-        public CPForView(int cpID, int countryID, int regionID, string name, CPType typeOfCP, int hikeCount, string description)
+        public CPForView(int cpID, int countryID, int regionID, string name, string countryName, string regionName, CPType typeOfCP, 
+            int hikeCount, string description)
         {
             CPID = cpID;
             CountryID = countryID;
             RegionID = regionID;
             Name = name;
+            CountryName = countryName;
+            RegionName = regionName;
             TypeOfCP = typeOfCP;
             HikeCount = hikeCount;
             Description = description;

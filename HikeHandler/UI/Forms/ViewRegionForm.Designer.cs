@@ -234,6 +234,7 @@
             this.Name = "ViewRegionForm";
             this.ShowIcon = false;
             this.Text = "tájegységnév";
+            this.Load += new System.EventHandler(this.ViewRegionForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

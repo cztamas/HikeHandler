@@ -1,45 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
 using HikeHandler.ModelObjects;
-using HikeHandler.DAOs;
-using HikeHandler.Exceptions;
+using HikeHandler.ServiceLayer;
 
 namespace HikeHandler.UI
 {
     public partial class ViewRegionForm : Form
     {
-        private MySqlConnection sqlConnection;
-        private RegionDao regionDao;
+        private DAOManager daoManager;
         private HikeRegionForView currentRegion;
 
-        public ViewRegionForm()
+        public ViewRegionForm(DAOManager manager, int idRegion)
         {
             InitializeComponent();
-            currentRegion = new HikeRegionForView();
+            daoManager = manager;
+            currentRegion = new HikeRegionForView(idRegion);
         }
 
-        public ViewRegionForm(MySqlConnection connection, int idRegion)
+        private void ViewRegionForm_Load(object sender, EventArgs e)
         {
-            InitializeComponent();
-            sqlConnection = connection;
-            regionDao = new RegionDao(connection);
-            currentRegion = new HikeRegionForView(idRegion);
+            RefreshRegionData();
             RefreshForm();
             MakeUneditable();
         }
 
-        private void closeButton_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+        #region Auxiliary Methods
 
         private void MakeEditable()
         {
@@ -67,48 +52,40 @@ namespace HikeHandler.UI
 
         private void RefreshForm()
         {
-            HikeRegionForView region = GetRegionData(currentRegion.RegionID);
-            if (region == null)
-                return;
-            currentRegion = region;
-            nameBox.Text = region.Name;
-            countryBox.Text = region.CountryName;
-            hikeCountBox.Text = region.HikeCount.ToString();
-            descriptionBox.Text = region.Description;
-            Text = region.Name + " adatai";
+            nameBox.Text = currentRegion.Name;
+            countryBox.Text = currentRegion.CountryName;
+            hikeCountBox.Text = currentRegion.HikeCount.ToString();
+            descriptionBox.Text = currentRegion.Description;
+            Text = currentRegion.Name + " adatai";
         }
 
-        public HikeRegionForView GetRegionData(int regionID)
-        {   
-            HikeRegionForSearch template = new HikeRegionForSearch(regionID);
-            try
+        private void RefreshRegionData()
+        {
+            currentRegion = daoManager.SearchRegion(currentRegion.RegionID);
+            if (currentRegion == null)
             {
-                DataTable table = regionDao.SearchRegion(template);
-                DataRow row = table.Rows[0];
-                HikeRegionForView region = new HikeRegionForView();
-                region.RegionID = (int)row["id"];
-                region.Name = (string)row["name"];
-                region.HikeCount = (int)row["hikecount"];
-                region.Description = (string)row["description"];
-                region.CountryName = (string)row["countryname"];
-                return region;
-            }
-            catch (DaoException ex)
-            {
-                if (ex.Error == ErrorType.NoDBConnection)
-                {
-                    MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                    return null;
-                }
-                MessageBox.Show(ex.Message, "Hiba");
-                return null;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-                return null;
+                Close();
             }
         }
+
+        private HikeRegionForUpdate GetDataForUpdate()
+        {
+            if (string.IsNullOrWhiteSpace(nameBox.Text))
+            {
+                MessageBox.Show("Nincs megadva a tájegység neve;", "Hiba");
+                nameBox.Focus();
+                return null;
+            }
+            string newName = nameBox.Text;
+            string oldName = currentRegion.Name;
+            string description = descriptionBox.Text;
+            int regionID = currentRegion.RegionID;
+            return new HikeRegionForUpdate(regionID, oldName, newName, description);
+        }
+
+        #endregion
+
+        #region Eventhandler Methods
 
         private void editButton_Click(object sender, EventArgs e)
         {
@@ -123,38 +100,29 @@ namespace HikeHandler.UI
 
         private void refreshButton_Click(object sender, EventArgs e)
         {
+            RefreshRegionData();
             RefreshForm();
             MakeUneditable();
         }
 
+        private void closeButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
         private void saveEditButton_Click(object sender, EventArgs e)
-        {   
-            HikeRegionForView region = new HikeRegionForView(currentRegion.RegionID);
-            region.Name = nameBox.Text;
-            region.Description = descriptionBox.Text;
-            try
+        {
+            HikeRegionForUpdate region = GetDataForUpdate();
+            if (region == null)
             {
-                if (regionDao.UpdateRegion(region))
-                {
-                    RefreshForm();
-                    MakeUneditable();
-                }
+                return;
             }
-            catch (DaoException ex)
+            if (daoManager.UpdateRegion(region))
             {
-                if (ex.Error == ErrorType.NoDBConnection)
-                {
-                    MessageBox.Show("Nem lehet elérni az adatbázist.", "Hiba");
-                    return;
-                }
-                if (ex.Error == ErrorType.DuplicateName)
-                {
-                    MessageBox.Show("Már van elmentve ilyen nevű tájegység.", "Hiba");
-                    return;
-                }
-                MessageBox.Show(ex.Message, "Hiba");
+                RefreshRegionData();
+                RefreshForm();
+                MakeUneditable();
             }
-            
         }
 
         private void showHikesButton_Click(object sender, EventArgs e)
@@ -177,34 +145,13 @@ namespace HikeHandler.UI
 
         private void deleteButton_Click(object sender, EventArgs e)
         {
-            string message = "Biztosan törli?";
-            string caption = "Tájegység törlése";
-            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
-            DialogResult result = MessageBox.Show(message, caption, buttons);
-            if (result == DialogResult.No)
-                return;
-            try
+            if (daoManager.DeleteRegion(currentRegion))
             {
-                if (regionDao.DeleteRegion(currentRegion.RegionID))
-                {
-                    MessageBox.Show("Törölve");
-                    Close();
-                }
-            }
-            catch (DaoException ex)
-            {
-                if (ex.Error == ErrorType.NotDeletable)
-                {
-                    MessageBox.Show("Csak olyan tájegység törölhető, amihez nincs checkpoint vagy túra hozzárendelve");
-                    return;
-                }
-                if (ex.Error == ErrorType.NoDBConnection)
-                {
-                    MessageBox.Show("Nem lehet elérni az adatbázist.", "Hiba");
-                    return;
-                }
-                MessageBox.Show(ex.Message, "Hiba");
+                MessageBox.Show("Törölve");
+                Close();
             }
         }
+
+        #endregion
     }
 }

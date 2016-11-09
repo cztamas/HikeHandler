@@ -197,6 +197,7 @@
             this.Name = "SearchRegionForm";
             this.ShowIcon = false;
             this.Text = "Tájegység keresése";
+            this.Load += new System.EventHandler(this.SearchRegionForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.resultGroupBox.ResumeLayout(false);

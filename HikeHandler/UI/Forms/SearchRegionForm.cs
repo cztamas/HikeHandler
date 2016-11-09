@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
 using HikeHandler.ModelObjects;
-using HikeHandler.DAOs;
-using HikeHandler.Exceptions;
 using HikeHandler.ServiceLayer;
 
 namespace HikeHandler.UI
@@ -18,39 +9,38 @@ namespace HikeHandler.UI
     public partial class SearchRegionForm : Form
     {
         private DAOManager daoManager;
+        private HikeRegionForSearch templateToShow;
         
         public SearchRegionForm(DAOManager manager)
         {
             InitializeComponent();
-            daoManager = manager;
-            GetCountryList();            
+            daoManager = manager;     
         }
 
         public SearchRegionForm(DAOManager manager, HikeRegionForSearch template)
         {
             InitializeComponent();
             daoManager = manager;
+            templateToShow = template;
+        }
+
+        private void SearchRegionForm_Load(object sender, EventArgs e)
+        {
             GetCountryList();
-            countryComboBox.Text = template.CountryName;
-            MakeSearch(template);
+            if (templateToShow != null)
+            {
+                countryComboBox.Text = templateToShow.CountryName;
+                MakeSearch(templateToShow);
+                return;
+            }
+            else
+            {
+                countryComboBox.Text = string.Empty;
+                nameBox.Focus();
+            }
         }
 
-        public void Open()
-        {
-            Show();
-            countryComboBox.Text = string.Empty;
-            nameBox.Focus();
-        }
-
-        private void closeButton_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void clearButton_Click(object sender, EventArgs e)
-        {
-            this.Clear();
-        }
+        #region Auxiliary Methods
 
         private void Clear()
         {
@@ -63,72 +53,60 @@ namespace HikeHandler.UI
 
         private void GetCountryList()
         {
-            if (sqlConnection == null)
+            DataTable table = daoManager.GetAllCountryNames();
+            if (table == null)
             {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            string commandText = "SELECT idcountry, name FROM country ORDER BY name ASC;";
-            DataTable table = new DataTable();
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
-            {
-                try
-                {
-                    adapter.Fill(table);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Hiba");
-                }
+                Close();
             }
             countryComboBox.DataSource = table;
             countryComboBox.ValueMember = "idcountry";
             countryComboBox.DisplayMember = "name";
         }
-           
+
         private void MakeSearch(HikeRegionForSearch template)
         {
-            try
-            {
-                DataTable resultTable = regionDao.SearchRegion(template);
-                resultView.DataSource = resultTable;
-                resultView.Columns[0].Visible = false;
-                resultView.Columns[1].HeaderText = "Név";
-                resultView.Columns[2].HeaderText = "Túrák száma";
-                resultView.Columns[3].Visible = false;
-                resultView.Columns[4].HeaderText = "Ország";
-                resultGroupBox.Text = "Találatok száma: " + resultTable.Rows.Count;
-            }
-            catch (DaoException ex)
-            {
-                if (ex.Error == ErrorType.NoDBConnection)
-                {
-                    MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                    return;
-                }
-                MessageBox.Show(ex.Message, "Hiba");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-            }
+            DataTable resultTable = daoManager.SearchRegion(template);
+            resultView.DataSource = resultTable;
+            resultView.Columns["id"].Visible = false;
+            resultView.Columns["name"].HeaderText = "Név";
+            resultView.Columns["hikecount"].HeaderText = "Túrák száma";
+            resultView.Columns["countryname"].HeaderText = "Ország";
+            resultGroupBox.Text = "Találatok száma: " + resultTable.Rows.Count;
         }
-             
-        private void searchButton_Click(object sender, EventArgs e)
-        {
+
+        private HikeRegionForSearch GetDataForSearch()
+        { 
             if (!hikeNumberBox.Text.IsIntPile())
             {
                 MessageBox.Show("Nem megfelelő számformátum.", "Hiba");
                 hikeNumberBox.Focus();
+                return null;
+            }
+            IntPile hikeCount = hikeNumberBox.Text.ToIntPile();
+            return new HikeRegionForSearch(countryComboBox.Text, nameBox.Text, hikeCount);
+        }
+
+        #endregion
+
+        #region Eventhandler Methods
+
+        private void closeButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void clearButton_Click(object sender, EventArgs e)
+        {
+            this.Clear();
+        }
+    
+        private void searchButton_Click(object sender, EventArgs e)
+        {
+            HikeRegionForSearch template = GetDataForSearch();
+            if (template == null)
+            {
                 return;
             }
-            
-            HikeRegionForSearch template = new HikeRegionForSearch(countryComboBox.Text, nameBox.Text, hikeNumberBox.Text.ToIntPile());
             MakeSearch(template);
         }
 
@@ -136,20 +114,15 @@ namespace HikeHandler.UI
         {
             if (resultView.SelectedRows == null)
                 return;
-            if (sqlConnection == null)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
+            int regionID;
             foreach (DataGridViewRow row in resultView.SelectedRows)
             {
-                int regionID = (int)row.Cells[0].Value;
-                ViewRegionForm viewRegionForm = new ViewRegionForm(sqlConnection, regionID);
+                if (!int.TryParse(row.Cells["id"].Value.ToString(), out regionID))
+                {
+                    MessageBox.Show("Nem sikerült megjeleníteni a kért tájegységet.", "Hiba");
+                    return;
+                }
+                ViewRegionForm viewRegionForm = new ViewRegionForm(daoManager, regionID);
                 viewRegionForm.Show();
             }
         }
@@ -158,20 +131,16 @@ namespace HikeHandler.UI
         {
             if (e.RowIndex < 0)
                 return;
-            if (sqlConnection == null)
+            int regionID;
+            if (!int.TryParse(resultView.Rows[e.RowIndex].Cells[0].Value.ToString(), out regionID))
             {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                MessageBox.Show("Nem sikerült megjeleníteni a kért tájegységet.", "Hiba");
                 return;
             }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            int regionID = (int)resultView.Rows[e.RowIndex].Cells[0].Value;
-            ViewRegionForm viewRegionForm = new ViewRegionForm(sqlConnection, regionID);
+            ViewRegionForm viewRegionForm = new ViewRegionForm(daoManager, regionID);
             viewRegionForm.Show();
         }
-                
+
+        #endregion
     }
 }

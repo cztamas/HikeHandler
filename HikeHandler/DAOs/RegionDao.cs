@@ -30,7 +30,7 @@ namespace HikeHandler.DAOs
                 throw new NoDBConnectionException();
             }
             string commandText = @"SELECT r.idregion AS id, r.name AS name, r.hikecount AS hikecount, 
-r.description AS description, c.name AS countryname FROM region r, country c 
+ c.name AS countryname FROM region r, country c 
 WHERE region.idcountry=country.idcountry AND region.name LIKE @name AND country.name LIKE @cname";
             if (template.HikeCount != null)
             {

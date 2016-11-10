@@ -130,7 +130,7 @@ namespace HikeHandler.UI
             HikeForSearch template = new HikeForSearch();
             template.IDRegion = currentRegion.RegionID;
             template.RegionName = currentRegion.Name;
-            SearchHikeForm searchHikeForm = new SearchHikeForm(sqlConnection, template);
+            SearchHikeForm searchHikeForm = new SearchHikeForm(daoManager, template);
             searchHikeForm.Show();
         }
 
@@ -139,7 +139,7 @@ namespace HikeHandler.UI
             CPForSearch template = new CPForSearch();
             template.IDRegion = currentRegion.RegionID;
             template.RegionName = currentRegion.Name;
-            SearchCPForm searchCPForm = new SearchCPForm(sqlConnection, template);
+            SearchCPForm searchCPForm = new SearchCPForm(daoManager, template);
             searchCPForm.Show();
         }
 

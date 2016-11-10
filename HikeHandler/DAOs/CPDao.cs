@@ -242,19 +242,20 @@ c.name AS countryname FROM cp, region r, country c WHERE cp.idregion=r.idregion 
             resultTable.Clear();
             resultTable.Columns.Add("name");
             resultTable.Columns.Add("idcp");
+            DataTable table = new DataTable();
             foreach (int item in cpIDList)
             {
                 string commandText = "SELECT name, idcp FROM cp WHERE idcp=@idcp;";
                 using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
                 {
                     adapter.SelectCommand.Parameters.AddWithValue("@idcp", item);
-                    DataTable table = new DataTable();
+                    table.Clear();
                     adapter.Fill(table);
                     if (table.Rows.Count == 0)
                     {
                         throw new DBErrorException("The given cp cannot be found.");
                     }
-                    if (table.Rows.Count > 0)
+                    if (table.Rows.Count > 1)
                     {
                         throw new DBErrorException("More than one checkpoint found with the given id.");
                     }

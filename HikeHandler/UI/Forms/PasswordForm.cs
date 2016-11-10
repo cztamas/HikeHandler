@@ -18,6 +18,10 @@ namespace HikeHandler.UI
         public PasswordForm()
         {
             InitializeComponent();
+        }
+
+        private void PasswordForm_Load(object sender, EventArgs e)
+        {
             pwdBox.Focus();
         }
 

@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using HikeHandler.ModelObjects;
 using HikeHandler.ServiceLayer;
@@ -15,58 +10,54 @@ namespace HikeHandler.UI
     public partial class SearchHikeForm : Form
     {
         private DAOManager daoManager;
+        private HikeForSearch templateToShow;
 
         public SearchHikeForm(DAOManager manager)
         {
             InitializeComponent();
             daoManager = manager;
-            checkPointHandler.Init(sqlConnection, CPHandlerStyle.Search);
-            regionComboBox.SelectedValueChanged += new EventHandler(checkPointHandler.Region_Refreshed);
-            GetCountryList();
-            GetHikeTypes();
         }
 
         public SearchHikeForm(DAOManager manager, HikeForSearch template)
         {
             InitializeComponent();
             daoManager = manager;
+            templateToShow = template;
+        }
+
+        private void SearchHikeForm_Load(object sender, EventArgs e)
+        {
             checkPointHandler.Init(daoManager, CPHandlerStyle.Search);
             regionComboBox.SelectedValueChanged += new EventHandler(checkPointHandler.Region_Refreshed);
             GetCountryList();
             GetHikeTypes();
-            if (template.CountryName != string.Empty)
-                countryComboBox.Text = template.CountryName;
-            if (template.RegionName != string.Empty)
-                regionComboBox.Text = template.RegionName;
-            if (template.GetCPString() != string.Empty)
-                checkPointHandler.LoadCPs(template.CPList);
-            MakeSearch(template);
+            if (templateToShow != null)
+            { 
+                if (templateToShow.CountryName != string.Empty)
+                    countryComboBox.Text = templateToShow.CountryName;
+                if (templateToShow.RegionName != string.Empty)
+                    regionComboBox.Text = templateToShow.RegionName;
+                if (templateToShow.CPList.Count != 0)
+                    checkPointHandler.LoadCPs(templateToShow.CPList);
+                MakeSearch(templateToShow);
+            }
+            else
+            {
+                typeComboBox.SelectedValue = -1;
+                countryComboBox.Text = string.Empty;
+                regionComboBox.Text = string.Empty;
+                countryComboBox.Focus();
+            }
         }
-        
+
+        #region Auxiliary Methods
+
         private void GetCountryList()
         {
-            if (sqlConnection == null)
+            DataTable table = daoManager.GetAllCountryNames();
+            if (table == null)
             {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            string commandText = "SELECT idcountry, name FROM country ORDER BY name ASC;";
-            DataTable table = new DataTable();
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
-            {
-                try
-                {
-                    adapter.Fill(table);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Hiba");
-                }
+                Close();
             }
             countryComboBox.DataSource = table;
             countryComboBox.ValueMember = "idcountry";
@@ -75,82 +66,28 @@ namespace HikeHandler.UI
 
         private void GetRegionList(int countryID)
         {
-            if (sqlConnection == null)
+            DataTable table = daoManager.GetAllRegionsOfCountry(countryID);
+            if (table == null)
             {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
+                Close();
             }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            string commandText = "SELECT idregion, name FROM region WHERE idcountry=" + countryID + " ORDER BY name ASC;";
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
-            {
-                try
-                {
-                    DataTable table = new DataTable();
-                    adapter.Fill(table);
-                    regionComboBox.DataSource = table;
-                    regionComboBox.ValueMember = "idregion";
-                    regionComboBox.DisplayMember = "name";
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Hiba");
-                }
-            }
+            regionComboBox.DataSource = table;
+            regionComboBox.ValueMember = "idregion";
+            regionComboBox.DisplayMember = "name";
         }
 
         private void GetHikeTypes()
         {
-            DataTable hikeTypesTable = new DataTable();
-            DataColumn column;
-            DataRow row;
-
-            column = new DataColumn("id", typeof(int));
-            hikeTypesTable.Columns.Add(column);
-            column = new DataColumn("name", typeof(string));
-            hikeTypesTable.Columns.Add(column);
-
-            row = hikeTypesTable.NewRow();
-            row["id"] = -1;
-            row["name"] = string.Empty;
-            hikeTypesTable.Rows.Add(row);
-
-            Array hikeTypes = Enum.GetValues(typeof(HikeType));
-            foreach (HikeType item in hikeTypes)
+            DataTable hikeTypesTable = daoManager.GetHikeTypes();
+            if (hikeTypesTable == null)
             {
-                row = hikeTypesTable.NewRow();
-                row["id"] = (int)item;
-                row["name"] = item.ToString();
-                hikeTypesTable.Rows.Add(row);
+                Close();
             }
             typeComboBox.DataSource = hikeTypesTable;
             typeComboBox.ValueMember = "id";
             typeComboBox.DisplayMember = "name";
         }
-
-        public void Open()
-        {
-            Show();
-            typeComboBox.SelectedValue = -1;            
-            countryComboBox.Text = string.Empty;
-            regionComboBox.Text = string.Empty;
-            countryComboBox.Focus();
-        }
         
-        private void closeButton_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void clearButton_Click(object sender, EventArgs e)
-        {
-            this.Clear();
-        }
-
         private void Clear()
         {
             checkPointHandler.Clear();
@@ -162,84 +99,93 @@ namespace HikeHandler.UI
 
         private void MakeSearch(HikeForSearch template)
         {
-            try
+            DataTable resultTable = daoManager.SearchHike(template, checkPointHandler.AnyCPOrder);
+            if (resultTable == null)
             {
-                DataTable resultTable = hikeDao.SearchHike(template, checkPointHandler.AnyCPOrder);
-                resultView.DataSource = resultTable;
-                resultView.Columns["idhike"].Visible = false;
-                resultView.Columns["position"].HeaderText = "Sorszám";
-                resultView.Columns["date"].HeaderText = "Dátum";
-                resultView.Columns["idregion"].Visible = false;
-                resultView.Columns["regionname"].HeaderText = "Tájegység";
-                resultView.Columns["countryname"].HeaderText = "Ország";
-                resultView.Columns["type"].HeaderText = "Típus";
-                resultView.Columns["description"].Visible = false;
-                resultView.Columns["cpstring"].Visible = false;
-                resultView.Columns["idcountry"].Visible = false;
-                resultGroupBox.Text = "Találatok száma: " + resultTable.Rows.Count;
+                return;
             }
-            catch (DaoException ex)
-            {
-                if (ex.Error == ErrorType.NoDBConnection)
-                {
-                    MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                    return;
-                }
-                MessageBox.Show(ex.Message, "Hiba");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-            }
+            resultView.DataSource = resultTable;
+            resultView.Columns["idhike"].Visible = false;
+            resultView.Columns["position"].HeaderText = "Sorszám";
+            resultView.Columns["date"].HeaderText = "Dátum";
+            resultView.Columns["idregion"].Visible = false;
+            resultView.Columns["regionname"].HeaderText = "Tájegység";
+            resultView.Columns["countryname"].HeaderText = "Ország";
+            resultView.Columns["type"].HeaderText = "Típus";
+            resultView.Columns["description"].Visible = false;
+            resultView.Columns["cpstring"].Visible = false;
+            resultView.Columns["idcountry"].Visible = false;
+            resultGroupBox.Text = "Találatok száma: " + resultTable.Rows.Count;
         }
 
-        private void searchButton_Click(object sender, EventArgs e)
+        private HikeForSearch GetDataForSearch()
         {
             if (!hikePositionBox.Text.IsIntPile())
             {
                 MessageBox.Show("Hibás számformátum.");
                 hikePositionBox.Focus();
-                return;
+                return null;
             }
             if (!dateBox.Text.IsDatePile())
             {
                 MessageBox.Show("Hibás dátumformátum.");
                 dateBox.Focus();
-                return;
+                return null;
             }
-            
             HikeForSearch template = new HikeForSearch();
             template.CountryName = countryComboBox.Text;
             template.RegionName = regionComboBox.Text;
-            if (typeComboBox.SelectedValue != null)
+            if (typeComboBox.SelectedItem != null)
             {
-                if ((int)typeComboBox.SelectedValue != -1)
-                    template.HikeType = (HikeType)typeComboBox.SelectedValue;
+                HikeType hikeType;
+                if (Enum.TryParse(typeComboBox.SelectedItem.ToString(), out hikeType))
+                    template.HikeType = hikeType;
             }
             template.Position = hikePositionBox.Text.ToIntPile();
             template.HikeDate = dateBox.Text.ToDatePile();
             template.CPList = checkPointHandler.CPList;
+            return template;
+        }
+
+        #endregion
+
+        #region Eventhandler Methods
+
+        private void closeButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void clearButton_Click(object sender, EventArgs e)
+        {
+            this.Clear();
+        }
+
+        private void searchButton_Click(object sender, EventArgs e)
+        {
+            HikeForSearch template = GetDataForSearch();
+            if (template == null)
+            {
+                return;
+            }
             MakeSearch(template);
         }
 
         private void detailsButton_Click(object sender, EventArgs e)
         {
             if (resultView.SelectedRows == null)
-                return;
-            if (sqlConnection == null)
             {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
                 return;
             }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
+            int hikeID;
             foreach (DataGridViewRow row in resultView.SelectedRows)
             {
-                int hikeID = (int)row.Cells[0].Value;
-                ViewHikeForm viewHikeForm = new ViewHikeForm(sqlConnection, hikeID);
+                if (!int.TryParse(row.Cells["idhike"].Value.ToString(), out hikeID))
+                {
+                    MessageBox.Show("Nem sikerült megjeleníteni a kért országot.", "Hiba");
+                    return;
+                }
+                ViewHikeForm viewHikeForm = new ViewHikeForm(daoManager, hikeID);
                 viewHikeForm.Show();
             }
         }
@@ -248,18 +194,13 @@ namespace HikeHandler.UI
         {
             if (e.RowIndex < 0)
                 return;
-            if (sqlConnection == null)
+            int hikeID;
+            if (!int.TryParse(resultView.Rows[e.RowIndex].Cells["idhike"].Value.ToString(), out hikeID))
             {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+                MessageBox.Show("Nem sikerült megjeleníteni a kért országot.", "Hiba");
                 return;
             }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return;
-            }
-            int hikeID = (int)resultView.Rows[e.RowIndex].Cells[0].Value;
-            ViewHikeForm viewHikeForm = new ViewHikeForm(sqlConnection, hikeID);
+            ViewHikeForm viewHikeForm = new ViewHikeForm(daoManager, hikeID);
             viewHikeForm.Show();
         }
 
@@ -272,5 +213,7 @@ namespace HikeHandler.UI
                 return;
             GetRegionList(countryID);
         }
+
+        #endregion
     }
 }

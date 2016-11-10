@@ -132,6 +132,7 @@
             this.Name = "PasswordForm";
             this.ShowIcon = false;
             this.Text = "Bejelentkezés";
+            this.Load += new System.EventHandler(this.PasswordForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);

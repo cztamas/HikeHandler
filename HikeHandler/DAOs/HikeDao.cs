@@ -95,7 +95,7 @@ AND c.name LIKE @countryName AND r.name LIKE @regionName";
                 throw new NoDBConnectionException();
             }
 
-            string commandText = @"SELECT hike.idregion, hike.idcountry, hike.date, hike.position, hike.cpstring, hike.hiketype, hike.description, 
+            string commandText = @"SELECT hike.idregion, hike.idcountry, hike.date, hike.position, hike.cpstring, hike.type, hike.description, 
 r.name AS regionname, c.name AS countryname FROM hike, region r, country c WHERE hike.idregion=r.idregion AND hike.idcountry=c.idcountry AND hike.idhike=@idhike;";
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
             {
@@ -134,9 +134,9 @@ r.name AS regionname, c.name AS countryname FROM hike, region r, country c WHERE
                 {
                     throw new DBErrorException("'hike.idcountry' should be an integer.");
                 }
-                if (!Enum.TryParse<HikeType>(row["hiketype"].ToString(), out hikeType))
+                if (!Enum.TryParse<HikeType>(row["type"].ToString(), out hikeType))
                 {
-                    throw new DBErrorException("'hike.hiketype' value not valid.");
+                    throw new DBErrorException("'hike.type' value not valid.");
                 }
                 if (!DateTime.TryParse(row["date"].ToString(), out hikeDate))
                 {

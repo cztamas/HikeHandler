@@ -26,7 +26,10 @@ namespace HikeHandler.ServiceLayer
             while (!isConnected)
             {
                 if (pwdForm.ShowDialog() == DialogResult.Cancel)
+                {
+                    pwdForm.Dispose();
                     return null;
+                }
                 else
                 {
                     isConnected = CreateConnection(pwdForm.loginData);

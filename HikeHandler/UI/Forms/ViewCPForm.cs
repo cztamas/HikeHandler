@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using HikeHandler.ModelObjects;
 using HikeHandler.ServiceLayer;
@@ -30,6 +25,8 @@ namespace HikeHandler.UI
             RefreshForm();
             MakeUneditable();
         }
+
+        #region Auxiliary Methods
 
         private void MakeEditable()
         {
@@ -73,66 +70,57 @@ namespace HikeHandler.UI
 
         private void RefreshCPData()
         {
-            CPForSearch template = new CPForSearch(cpID);
-            try
+            currentCP = daoManager.SearchCP(currentCP.CPID);
+            if (currentCP == null)
             {
-                DataTable table = cpDao.SearchCP(template);
-                DataRow row = table.Rows[0];
-                CPForView resultCP = new CPForView();
-                resultCP.Name = (string)row["name"];
-                resultCP.CountryName = (string)row["name2"];
-                resultCP.RegionName = (string)row["name1"];
-                resultCP.TypeOfCP = (CPType)Enum.Parse(typeof(CPType), row["type"].ToString());
-                resultCP.HikeCount = (int)row["hikecount"];
-                resultCP.Description = (string)row["description"];
-                return resultCP;
-            }
-            catch (DaoException ex)
-            {
-                if (ex.Error == ErrorType.NoDBConnection)
-                {
-                    MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                    return null;
-                }
-                MessageBox.Show(ex.Message, "Hiba");
-                return null;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-                return null;
+                Close();
             }
         }
 
         private void GetCPTypes()
         {
-            DataTable cpTypesTable = new DataTable();
-            DataColumn column;
-            DataRow row;
-
-            column = new DataColumn("id", typeof(int));
-            cpTypesTable.Columns.Add(column);
-            column = new DataColumn("name", typeof(string));
-            cpTypesTable.Columns.Add(column);
-            
-            Array cpTypes = Enum.GetValues(typeof(CPType));
-            foreach (CPType item in cpTypes)
+            DataTable cpTypesTable = daoManager.GetCPTypes();
+            if (cpTypesTable == null)
             {
-                row = cpTypesTable.NewRow();
-                row["id"] = (int)item;
-                row["name"] = item.ToString();
-                cpTypesTable.Rows.Add(row);
+                Close();
             }
             typeComboBox.DataSource = cpTypesTable;
             typeComboBox.ValueMember = "id";
             typeComboBox.DisplayMember = "name";
         }
 
-        // NOT IMPLEMENTED
+        // Collects the data from the form into a CPForUpdate object
         private CPForUpdate GetDataForUpdate()
         {
-            throw new NotImplementedException();
+            int cpID = currentCP.CPID;
+            string oldName = currentCP.Name;
+            if (string.IsNullOrWhiteSpace(nameBox.Text))
+            {
+                MessageBox.Show("Nincs megadva a checkpoint neve.", "Hiba");
+                nameBox.Focus();
+                return null;
+            }
+            string newName = nameBox.Text;
+            string description = descriptionBox.Text;
+            CPType cpType;
+            if (typeComboBox.SelectedItem == null)
+            {
+                MessageBox.Show("A checkpoint típusa nincs megadva.");
+                typeComboBox.Focus();
+                return null;
+            }
+            if (!Enum.TryParse(typeComboBox.SelectedItem.ToString(), out cpType))
+            {
+                MessageBox.Show("Nem sikerült elmenteni az adatokat.", "Hiba");
+                typeComboBox.Focus();
+                return null;
+            }
+            return new CPForUpdate(cpID, oldName, newName, cpType, description);
         }
+
+        #endregion
+
+        #region Eventhandler Methods
 
         private void closeButton_Click(object sender, EventArgs e)
         {
@@ -179,36 +167,13 @@ namespace HikeHandler.UI
 
         private void deleteCPbutton_Click(object sender, EventArgs e)
         {
-            string message = "Biztosan törli?";
-            string caption = "CheckPoint törlése";
-            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
-            DialogResult result = MessageBox.Show(message, caption, buttons);
-            if (result == DialogResult.No)
-                return;
-            try
+            if (daoManager.DeleteCP(currentCP))
             {
-                if (cpDao.DeleteCP(idCP))
-                {
-                    MessageBox.Show("Törölve.");
-                    Close();
-                }
-            }
-            catch (DaoException ex)
-            {
-                if (ex.Error == ErrorType.NotDeletable)
-                {
-                    MessageBox.Show("Csak olyan checkpoint törölhető, amihez nincs túra hozzárendelve.", "Hiba");
-                    return;
-                }
-                if (ex.Error == ErrorType.NoDBConnection)
-                {
-                    MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                    return;
-                }
-                MessageBox.Show(ex.Message, "Hiba");
+                MessageBox.Show("Törölve.");
+                Close();
             }
         }
 
-        
+        #endregion
     }
 }

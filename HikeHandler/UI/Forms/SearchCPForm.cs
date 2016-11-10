@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using HikeHandler.ModelObjects;
 using HikeHandler.ServiceLayer;
@@ -131,6 +126,31 @@ namespace HikeHandler.UI
             resultGroupBox.Text = "Találatok száma: " + resultTable.Rows.Count;
         }
 
+        private CPForSearch GetDataForSearch()
+        {
+            if (!hikeNumberBox.Text.IsIntPile())
+            {
+                MessageBox.Show("Nem megfelelő számformátum.", "Hiba");
+                hikeNumberBox.Focus();
+                return null;
+            }
+
+            CPForSearch template = new CPForSearch();
+            template.HikeCount = hikeNumberBox.Text.ToIntPile();
+            template.Name = nameBox.Text;
+            template.CountryName = countryComboBox.Text;
+            template.RegionName = regionComboBox.Text;
+            if (typeComboBox.SelectedValue != null)
+            {
+                CPType cpType;
+                if (Enum.TryParse(typeComboBox.SelectedItem.ToString(), out cpType))
+                {
+                    template.TypeOfCP = cpType;
+                }
+            }
+            return template;
+        }
+
         #endregion
 
         #region Eventhandler Methods
@@ -147,21 +167,12 @@ namespace HikeHandler.UI
 
         private void searchButton_Click(object sender, EventArgs e)
         {
-            if (!hikeNumberBox.Text.IsIntPile())
+            CPForSearch cp = GetDataForSearch();
+            if (cp == null)
             {
-                MessageBox.Show("Nem megfelelő számformátum.", "Hiba");
-                hikeNumberBox.Focus();
                 return;
             }
-            
-            CPForSearch template = new CPForSearch();
-            template.HikeCount = hikeNumberBox.Text.ToIntPile();
-            template.Name = nameBox.Text;
-            template.CountryName = countryComboBox.Text;
-            template.RegionName = regionComboBox.Text;
-            if ((int)typeComboBox.SelectedValue != -1)
-                template.TypeOfCP = (CPType)typeComboBox.SelectedValue;
-            MakeSearch(template);
+            MakeSearch(cp);
         }
 
         private void countryComboBox_SelectedValueChanged(object sender, EventArgs e)
@@ -176,7 +187,6 @@ namespace HikeHandler.UI
             regionComboBox.Text = string.Empty;            
         }
         
-
         private void detailsButton_Click(object sender, EventArgs e)
         {
             if (resultView.SelectedRows == null)

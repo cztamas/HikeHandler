@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using HikeHandler.ServiceLayer;
 
@@ -93,8 +88,13 @@ namespace HikeHandler.UI
 
         public void LoadCPs(List<int> cpIDList)
         {
-            InitCPTable();
+            //InitCPTable();
             cpTable = daoManager.GetCPsFromList(cpIDList);
+            BindingSource source = new BindingSource();
+            source.DataSource = cpTable;
+            cpGridView.DataSource = source;
+            cpGridView.Columns["idcp"].Visible = false;
+            cpGridView.Columns["name"].HeaderText = "CheckPoint neve";
             if (cpTable == null)
             {
                 return;
@@ -162,6 +162,35 @@ namespace HikeHandler.UI
             }
             GetCPList(RegionID);
         }
+
+        public string GetCPString()
+        {
+            string cpString = string.Empty;
+            int cpID;
+            foreach (DataRow row in cpTable.Rows)
+            {
+                if (!int.TryParse(row["idcp"].ToString(), out cpID))
+                    continue;
+                cpString += "." + cpID + ".";
+            }
+            return cpString;
+        }
+
+        private void RefreshCPList()
+        {
+            if (allRegionCheckBox.Checked)
+            {
+                GetCPList();
+                return;
+            }
+            if (!allRegionCheckBox.Checked)
+            {
+                if (RegionID == 0)
+                    return;
+                GetCPList(RegionID);
+            }
+        }
+
 
         #endregion
 
@@ -245,35 +274,7 @@ namespace HikeHandler.UI
                 row.Selected = false;
             cpGridView.Rows[index + 1].Selected = true;
         }
-
-        public string GetCPString()
-        {
-            string cpString = string.Empty;
-            int cpID;
-            foreach (DataRow row in cpTable.Rows)
-            {
-                if (!int.TryParse(row["idcp"].ToString(), out cpID))
-                    continue;
-                cpString += "." + cpID + ".";
-            }
-            return cpString;
-        }
         
-        private void RefreshCPList()
-        {
-            if (allRegionCheckBox.Checked)
-            {
-                GetCPList();
-                return;
-            }
-            if (!allRegionCheckBox.Checked)
-            {
-                if (RegionID == 0)
-                    return;
-                GetCPList(RegionID);
-            }
-        }
-
         private void allRegionCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             RefreshCPList();

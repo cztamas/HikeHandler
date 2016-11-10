@@ -257,6 +257,7 @@
             this.Name = "SearchHikeForm";
             this.ShowIcon = false;
             this.Text = "Túra keresése";
+            this.Load += new System.EventHandler(this.SearchHikeForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.resultGroupBox.ResumeLayout(false);

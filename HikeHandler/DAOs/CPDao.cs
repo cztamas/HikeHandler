@@ -205,7 +205,7 @@ c.name AS countryname FROM cp, region r, country c WHERE cp.idregion=r.idregion 
             {
                 throw new NoDBConnectionException();
             }
-            string commandText = "SELECT idcp, name FROM cp WHERE idregion=@idregion ORDER BY name ASC;";
+            string commandText = "SELECT name, idcp FROM cp WHERE idregion=@idregion ORDER BY name ASC;";
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
             {
                 adapter.SelectCommand.Parameters.AddWithValue("@idregion", regionID);
@@ -226,7 +226,7 @@ c.name AS countryname FROM cp, region r, country c WHERE cp.idregion=r.idregion 
             {
                 throw new NoDBConnectionException();
             }
-            string commandText = "SELECT idcp, name FROM cp ORDER BY name ASC;";
+            string commandText = "SELECT name, idcp FROM cp ORDER BY name ASC;";
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
             {
                 DataTable table = new DataTable();

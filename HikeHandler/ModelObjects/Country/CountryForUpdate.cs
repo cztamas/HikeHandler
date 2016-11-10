@@ -22,24 +22,39 @@ namespace HikeHandler.ModelObjects
                 CountryID = value;
             }
         }
-        public string Name
+        public string OldName
         {
             get
             {
-                return Name;
+                return OldName;
             }
             set
             {
                 if (string.IsNullOrWhiteSpace(value))
-                    throw new ArgumentNullException("name", "Country name cannot be empty.");
+                    throw new ArgumentNullException("OldName", "Country name cannot be whitespace or empty");
+                OldName = value;
+            }
+        }
+        public string NewName
+        {
+            get
+            {
+                return NewName;
+            }
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    throw new ArgumentNullException("NewName", "Country name cannot be whitespace or empty");
+                NewName = value;
             }
         }
         public string Description { get; set; }
 
-        public CountryForUpdate(int countryID, string name, string description)
+        public CountryForUpdate(int countryID, string oldName, string newName, string description)
         {
             CountryID = countryID;
-            Name = name;
+            OldName = oldName;
+            NewName = newName;
             Description = description;
         }
     }

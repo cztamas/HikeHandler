@@ -48,14 +48,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\HikeDescriptionBox.cs">
+    <Compile Include="UI\Controls\HikeDescriptionBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\HikeDescriptionBox.Designer.cs">
+    <Compile Include="UI\Controls\HikeDescriptionBox.Designer.cs">
       <DependentUpon>HikeDescriptionBox.cs</DependentUpon>
     </Compile>
     <Compile Include="DAOs\CountryDao.cs" />
     <Compile Include="DAOs\CPDao.cs" />
+    <Compile Include="Other\Exceptions\DBErrorException.cs" />
+    <Compile Include="ModelObjects\BaseFormSummary.cs" />
     <Compile Include="ModelObjects\Country\CountryForUpdate.cs" />
     <Compile Include="ModelObjects\CP\CPForUpdate.cs" />
     <Compile Include="ModelObjects\HikeRegion\HikeRegionForUpdate.cs" />
@@ -74,155 +76,153 @@
     <Compile Include="ModelObjects\HikeRegion\HikeRegionForSearch.cs" />
     <Compile Include="ModelObjects\Hike\HikeForSave.cs" />
     <Compile Include="ModelObjects\Hike\HikeForSearch.cs" />
-    <Compile Include="Exceptions\DaoException.cs" />
-    <Compile Include="Exceptions\Miscellaneous.cs" />
-    <Compile Include="Exceptions\NoDBConnectionException.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Controls\CPHandler.cs">
+    <Compile Include="Other\Exceptions\NoDBConnectionException.cs" />
+    <Compile Include="Other\Extensions\StringExtensions.cs" />
+    <Compile Include="UI\Controls\CPHandler.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\CPHandler.Designer.cs">
+    <Compile Include="UI\Controls\CPHandler.Designer.cs">
       <DependentUpon>CPHandler.cs</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\ICountryDao.cs" />
-    <Compile Include="Interfaces\ICPDao.cs" />
-    <Compile Include="Interfaces\IHikeDao.cs" />
-    <Compile Include="Interfaces\IRegionDao.cs" />
-    <Compile Include="Miscellaneous.cs" />
+    <Compile Include="Other\Interfaces\ICountryDao.cs" />
+    <Compile Include="Other\Interfaces\ICPDao.cs" />
+    <Compile Include="Other\Interfaces\IHikeDao.cs" />
+    <Compile Include="Other\Interfaces\IRegionDao.cs" />
+    <Compile Include="ModelObjects\Miscellaneous.cs" />
     <Compile Include="ModelObjects\HikeRegion\HikeRegionForView.cs" />
-    <Compile Include="Forms\AddCountryForm.cs">
+    <Compile Include="UI\Forms\AddCountryForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\AddCountryForm.Designer.cs">
+    <Compile Include="UI\Forms\AddCountryForm.Designer.cs">
       <DependentUpon>AddCountryForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AddCPForm.cs">
+    <Compile Include="UI\Forms\AddCPForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\AddCPForm.Designer.cs">
+    <Compile Include="UI\Forms\AddCPForm.Designer.cs">
       <DependentUpon>AddCPForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AddHikeForm.cs">
+    <Compile Include="UI\Forms\AddHikeForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\AddHikeForm.Designer.cs">
+    <Compile Include="UI\Forms\AddHikeForm.Designer.cs">
       <DependentUpon>AddHikeForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AddRegionForm.cs">
+    <Compile Include="UI\Forms\AddRegionForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\AddRegionForm.Designer.cs">
+    <Compile Include="UI\Forms\AddRegionForm.Designer.cs">
       <DependentUpon>AddRegionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\BaseForm.cs">
+    <Compile Include="UI\Forms\BaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\BaseForm.Designer.cs">
+    <Compile Include="UI\Forms\BaseForm.Designer.cs">
       <DependentUpon>BaseForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\PasswordForm.cs">
+    <Compile Include="UI\Forms\PasswordForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\PasswordForm.Designer.cs">
+    <Compile Include="UI\Forms\PasswordForm.Designer.cs">
       <DependentUpon>PasswordForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\SearchCountryForm.cs">
+    <Compile Include="UI\Forms\SearchCountryForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\SearchCountryForm.Designer.cs">
+    <Compile Include="UI\Forms\SearchCountryForm.Designer.cs">
       <DependentUpon>SearchCountryForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\SearchCPForm.cs">
+    <Compile Include="UI\Forms\SearchCPForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\SearchCPForm.Designer.cs">
+    <Compile Include="UI\Forms\SearchCPForm.Designer.cs">
       <DependentUpon>SearchCPForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\SearchHikeForm.cs">
+    <Compile Include="UI\Forms\SearchHikeForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\SearchHikeForm.Designer.cs">
+    <Compile Include="UI\Forms\SearchHikeForm.Designer.cs">
       <DependentUpon>SearchHikeForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\SearchRegionForm.cs">
+    <Compile Include="UI\Forms\SearchRegionForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\SearchRegionForm.Designer.cs">
+    <Compile Include="UI\Forms\SearchRegionForm.Designer.cs">
       <DependentUpon>SearchRegionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ViewCountryForm.cs">
+    <Compile Include="UI\Forms\ViewCountryForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ViewCountryForm.Designer.cs">
+    <Compile Include="UI\Forms\ViewCountryForm.Designer.cs">
       <DependentUpon>ViewCountryForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ViewCPForm.cs">
+    <Compile Include="UI\Forms\ViewCPForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ViewCPForm.Designer.cs">
+    <Compile Include="UI\Forms\ViewCPForm.Designer.cs">
       <DependentUpon>ViewCPForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ViewHikeForm.cs">
+    <Compile Include="UI\Forms\ViewHikeForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ViewHikeForm.Designer.cs">
+    <Compile Include="UI\Forms\ViewHikeForm.Designer.cs">
       <DependentUpon>ViewHikeForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ViewRegionForm.cs">
+    <Compile Include="UI\Forms\ViewRegionForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ViewRegionForm.Designer.cs">
+    <Compile Include="UI\Forms\ViewRegionForm.Designer.cs">
       <DependentUpon>ViewRegionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceLayer\FormManager.cs" />
-    <EmbeddedResource Include="Controls\HikeDescriptionBox.resx">
+    <EmbeddedResource Include="UI\Controls\HikeDescriptionBox.resx">
       <DependentUpon>HikeDescriptionBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AddCountryForm.resx">
+    <EmbeddedResource Include="UI\Forms\AddCountryForm.resx">
       <DependentUpon>AddCountryForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AddCPForm.resx">
+    <EmbeddedResource Include="UI\Forms\AddCPForm.resx">
       <DependentUpon>AddCPForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AddHikeForm.resx">
+    <EmbeddedResource Include="UI\Forms\AddHikeForm.resx">
       <DependentUpon>AddHikeForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\AddRegionForm.resx">
+    <EmbeddedResource Include="UI\Forms\AddRegionForm.resx">
       <DependentUpon>AddRegionForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\BaseForm.resx">
+    <EmbeddedResource Include="UI\Forms\BaseForm.resx">
       <DependentUpon>BaseForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\CPHandler.resx">
+    <EmbeddedResource Include="UI\Controls\CPHandler.resx">
       <DependentUpon>CPHandler.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\PasswordForm.resx">
+    <EmbeddedResource Include="UI\Forms\PasswordForm.resx">
       <DependentUpon>PasswordForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SearchCountryForm.resx">
+    <EmbeddedResource Include="UI\Forms\SearchCountryForm.resx">
       <DependentUpon>SearchCountryForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SearchCPForm.resx">
+    <EmbeddedResource Include="UI\Forms\SearchCPForm.resx">
       <DependentUpon>SearchCPForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SearchHikeForm.resx">
+    <EmbeddedResource Include="UI\Forms\SearchHikeForm.resx">
       <DependentUpon>SearchHikeForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SearchRegionForm.resx">
+    <EmbeddedResource Include="UI\Forms\SearchRegionForm.resx">
       <DependentUpon>SearchRegionForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ViewCountryForm.resx">
+    <EmbeddedResource Include="UI\Forms\ViewCountryForm.resx">
       <DependentUpon>ViewCountryForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ViewCPForm.resx">
+    <EmbeddedResource Include="UI\Forms\ViewCPForm.resx">
       <DependentUpon>ViewCPForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ViewHikeForm.resx">
+    <EmbeddedResource Include="UI\Forms\ViewHikeForm.resx">
       <DependentUpon>ViewHikeForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ViewRegionForm.resx">
+    <EmbeddedResource Include="UI\Forms\ViewRegionForm.resx">
       <DependentUpon>ViewRegionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

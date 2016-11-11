@@ -18,9 +18,9 @@ namespace HikeHandler.UI
 
         private void SearchCountryForm_Load(object sender, EventArgs e)
         {
-            GetCountryList();
-            countryComboBox.Text = string.Empty;
-            countryComboBox.Focus();
+            //GetCountryList();
+            countryNameBox.Text = string.Empty;
+            countryNameBox.Focus();
         }
 
         #region Auxiliary Methods
@@ -28,13 +28,15 @@ namespace HikeHandler.UI
         private void Clear()
         {
             resultView.DataSource = null;
-            countryComboBox.Text = string.Empty;
-            hikeNumberBox.Text = string.Empty;
+            countryNameBox.Text = string.Empty;
+            hikeCountBox.Text = string.Empty;
+            cpCountBox.Text = string.Empty;
+            regionCountBox.Text = string.Empty;
             resultGroupBox.Text = "Találatok";
-            countryComboBox.Focus();
+            countryNameBox.Focus();
         }
 
-        private void GetCountryList()
+        /*private void GetCountryList()
         {
             DataTable table = daoManager.GetAllCountryNames();
             if (table == null)
@@ -44,17 +46,30 @@ namespace HikeHandler.UI
             countryComboBox.DataSource = table;
             countryComboBox.ValueMember = "idcountry";
             countryComboBox.DisplayMember = "name";
-        }
+        }*/
 
         private CountryForSearch GetDataForSearch()
         {
-            if (!hikeNumberBox.Text.IsIntPile())
+            if (!cpCountBox.Text.IsIntPile())
             {
                 MessageBox.Show("Nem megfelelő számformátum.", "Hiba");
-                hikeNumberBox.Focus();
+                cpCountBox.Focus();
                 return null;
             }
-            return new CountryForSearch(countryComboBox.Text, hikeNumberBox.Text.ToIntPile());
+            if (!hikeCountBox.Text.IsIntPile())
+            {
+                MessageBox.Show("Nem megfelelő számformátum.", "Hiba");
+                hikeCountBox.Focus();
+                return null;
+            }
+            if (!regionCountBox.Text.IsIntPile())
+            {
+                MessageBox.Show("Nem megfelelő számformátum.", "Hiba");
+                regionCountBox.Focus();
+                return null;
+            }
+            return new CountryForSearch(countryNameBox.Text, hikeCountBox.Text.ToIntPile(), 
+                cpCountBox.Text.ToIntPile(), regionCountBox.Text.ToIntPile());
         }
 
         #endregion

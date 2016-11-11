@@ -28,7 +28,7 @@ namespace HikeHandler.ServiceLayer
         }
 
         // Only for correcting erroneous data in the DB.
-        private void RecalculateDBData()
+        public void RecalculateDBData()
         {
             try
             {

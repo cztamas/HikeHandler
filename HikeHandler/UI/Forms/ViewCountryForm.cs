@@ -55,6 +55,7 @@ namespace HikeHandler.UI
             nameBox.Text = currentCountry.Name;
             hikeCountLabel.Text = currentCountry.HikeCount.ToString();
             regionCountLabel.Text = currentCountry.RegionCount.ToString();
+            cpCountLabel.Text = currentCountry.CPCount.ToString();
             descriptionBox.Text = currentCountry.Description;
             Text = currentCountry.Name + " adatai";
         }

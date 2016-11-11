@@ -38,6 +38,7 @@ namespace HikeHandler.ServiceLayer
             pwdForm.Dispose();
             DAOManager manager = new DAOManager(sqlConnection);
             BaseForm baseForm = new BaseForm(manager);
+            //manager.RecalculateDBData();
             return baseForm;
         }
 

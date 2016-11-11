@@ -31,7 +31,7 @@ namespace HikeHandler.DAOs
             }
             string commandText = @"SELECT r.idregion AS id, r.name AS name, r.hikecount AS hikecount, 
  c.name AS countryname FROM region r, country c 
-WHERE region.idcountry=country.idcountry AND region.name LIKE @name AND country.name LIKE @cname";
+WHERE r.idcountry=c.idcountry AND r.name LIKE @name AND c.name LIKE @cname";
             if (template.HikeCount != null)
             {
                 string countCondition = template.HikeCount.SqlSearchCondition("region.hikecount");
@@ -39,9 +39,9 @@ WHERE region.idcountry=country.idcountry AND region.name LIKE @name AND country.
                     commandText += (" AND " + countCondition);
             }
             if (template.IDcountry != null)
-                commandText += (" AND country.idcountry=@idcountry");
+                commandText += (" AND c.idcountry=@idcountry");
             if (template.IDRegion != null)
-                commandText += (" AND region.idregion=@idregion");
+                commandText += (" AND r.idregion=@idregion");
             commandText += " ORDER BY name ASC;";
 
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))

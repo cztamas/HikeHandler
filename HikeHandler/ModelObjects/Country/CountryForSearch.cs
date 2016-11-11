@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HikeHandler.ModelObjects
 {
@@ -10,10 +7,14 @@ namespace HikeHandler.ModelObjects
     {
         public string Name { get; set; }
         public IntPile HikeCount { get; set; }
+        public IntPile CPCount { get; set; }
+        public IntPile RegionCount { get; set; }
 
-        public CountryForSearch(string countryName, IntPile hikePile)
+        public CountryForSearch(string countryName, IntPile hikePile, IntPile cpCount, IntPile regionCount)
         {
             HikeCount = hikePile;
+            CPCount = cpCount;
+            RegionCount = regionCount;
             Name = countryName;
         }
     }

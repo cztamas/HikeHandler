@@ -316,9 +316,17 @@ VALUES (@name, 0, 0, 0, @description);";
                 throw new NoDBConnectionException();
             }
             string commandText = "SELECT idcountry, name, hikecount, regioncount, cpcount FROM country WHERE name LIKE @name";
-            string countCondition = template.HikeCount.SqlSearchCondition("hikeCount");
-            if (countCondition != String.Empty)
-                commandText += (" AND " + countCondition);
+            string hikeCountCondition = template.HikeCount.SqlSearchCondition("hikeCount");
+            if (hikeCountCondition != String.Empty)
+                commandText += (" AND " + hikeCountCondition);
+
+            string cpCountCondition = template.CPCount.SqlSearchCondition("cpCount");
+            if (cpCountCondition != String.Empty)
+                commandText += (" AND " + cpCountCondition);
+
+            string regionCountCondition = template.RegionCount.SqlSearchCondition("regionCount");
+            if (regionCountCondition != String.Empty)
+                commandText += (" AND " + regionCountCondition);
             commandText += " ORDER BY name ASC;";
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
             {

@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModelObjects\NameAndID.cs" />
     <Compile Include="UI\Controls\HikeDescriptionBox.cs">
       <SubType>UserControl</SubType>
     </Compile>

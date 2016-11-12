@@ -305,7 +305,7 @@ VALUES (@name, 0, 0, 0, @description);";
         }
         
         // Performs a search in DB
-        public DataTable SearchCountry(CountryForSearch template)
+        public List<CountryForView> SearchCountry(CountryForSearch template)
         {
             if (sqlConnection == null)
             {
@@ -315,7 +315,7 @@ VALUES (@name, 0, 0, 0, @description);";
             {
                 throw new NoDBConnectionException();
             }
-            string commandText = "SELECT idcountry, name, hikecount, regioncount, cpcount FROM country WHERE name LIKE @name";
+            string commandText = "SELECT idcountry, name, hikecount, regioncount, cpcount, description FROM country WHERE name LIKE @name";
             string hikeCountCondition = template.HikeCount.SqlSearchCondition("hikeCount");
             if (hikeCountCondition != String.Empty)
                 commandText += (" AND " + hikeCountCondition);
@@ -328,17 +328,36 @@ VALUES (@name, 0, 0, 0, @description);";
             if (regionCountCondition != String.Empty)
                 commandText += (" AND " + regionCountCondition);
             commandText += " ORDER BY name ASC;";
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
+            using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
-                adapter.SelectCommand.Parameters.AddWithValue("@name", "%" + template.Name + "%");
-                DataTable table = new DataTable();
-                adapter.Fill(table);
-                return table;
+                command.Parameters.AddWithValue("@name", "%" + template.Name + "%");
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    List<CountryForView> resultList = new List<CountryForView>();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            int countryID = reader.GetInt32("idcountry");
+                            int hikeCount = reader.GetInt32("hikecount");
+                            int cpCount = reader.GetInt32("cpcount");
+                            int regionCount = reader.GetInt32("regioncount");
+                            string name = reader.GetString("name");
+                            string description = reader.GetString("description");
+                            resultList.Add(new CountryForView(countryID, name, hikeCount, regionCount, cpCount, description));
+                        }
+                    }
+                    else
+                    {
+                        return resultList;
+                    }
+                    return resultList;
+                }
             }
         }
-
+        
         // Gets the names and ids of all countries.
-        public DataTable GetCountryNameTable()
+        public List<NameAndID> GetCountryNames()
         {
             if (sqlConnection == null)
             {
@@ -349,14 +368,27 @@ VALUES (@name, 0, 0, 0, @description);";
                 throw new NoDBConnectionException();
             }
             string commandText = "SELECT idcountry, name FROM country ORDER BY name ASC;";
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
+            using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
-                DataTable table = new DataTable();
-                adapter.Fill(table);
-                return table;
+                List<NameAndID> result = new List<NameAndID>();
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            int id = reader.GetInt32("idcountry");
+                            string name = reader.GetString("name");
+                            result.Add(new NameAndID(name, id));
+                        }
+                    }
+                    else
+                        return result;
+                }
+                return result;
             }
         }
-
+        
         // Returns the number of countries in the DB.
         public int GetCountOfCountries()
         {

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using HikeHandler.ModelObjects;
 using HikeHandler.ServiceLayer;
+using HikeHandler.Exceptions;
 
 namespace HikeHandler.UI
 {
@@ -34,14 +35,27 @@ namespace HikeHandler.UI
 
         private void GetCountryList()
         {
-            DataTable table = daoManager.GetAllCountryNames();
-            if (table == null)
+            try
             {
-                Close();
+                List<NameAndID> countries = daoManager.GetAllCountryNames();
+                countryComboBox.DataSource = countries;
+                countryComboBox.ValueMember = "id";
+                countryComboBox.DisplayMember = "name";
+                return;
             }
-            countryComboBox.DataSource = table;
-            countryComboBox.ValueMember = "idcountry";
-            countryComboBox.DisplayMember = "name";
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+            }
+            Close();
         }
 
         private void GetRegionList(int countryID)

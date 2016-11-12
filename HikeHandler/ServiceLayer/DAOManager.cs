@@ -105,14 +105,12 @@ namespace HikeHandler.ServiceLayer
             return false;
         }
 
-        public DataTable GetAllCountryNames()
+        public List<NameAndID> GetAllCountryNames()
         {
-            try
-            {
-                DataTable table = countryDao.GetCountryNameTable();
-                return table;
-            }
-            catch (NoDBConnectionException)
+            List<NameAndID> result = countryDao.GetCountryNames();
+            return result;
+
+            /*catch (NoDBConnectionException)
             {
                 MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
                 return null;
@@ -126,17 +124,15 @@ namespace HikeHandler.ServiceLayer
             {
                 MessageBox.Show(ex.Message, "Hiba");
                 return null;
-            }
+            }*/
         }
 
-        public DataTable SearchCountry(CountryForSearch country)
+        public List<CountryForView> SearchCountry(CountryForSearch country)
         {
-            try
-            {
-                DataTable table = countryDao.SearchCountry(country);
-                return table;
-            }
-            catch (NoDBConnectionException)
+            List<CountryForView> resultList = countryDao.SearchCountry(country);
+                return resultList;
+            
+            /*catch (NoDBConnectionException)
             {
                 MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
                 return null;
@@ -150,7 +146,7 @@ namespace HikeHandler.ServiceLayer
             {
                 MessageBox.Show(ex.Message, "Hiba");
                 return null;
-            }
+            }*/
         }
 
         public CountryForView SearchCountry(int countryID)

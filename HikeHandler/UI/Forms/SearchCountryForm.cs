@@ -3,17 +3,22 @@ using System.Data;
 using System.Windows.Forms;
 using HikeHandler.ModelObjects;
 using HikeHandler.ServiceLayer;
+using System.Collections.Generic;
+using System.ComponentModel;
+using HikeHandler.Exceptions;
 
 namespace HikeHandler.UI
 {
     public partial class SearchCountryForm : Form
     {
         private DAOManager daoManager;
+        List<CountryForView> resultList;
 
         public SearchCountryForm(DAOManager manager)
         {
             InitializeComponent();
             daoManager = manager;
+            resultList = new List<CountryForView>();
         }
 
         private void SearchCountryForm_Load(object sender, EventArgs e)
@@ -35,19 +40,7 @@ namespace HikeHandler.UI
             resultGroupBox.Text = "Találatok";
             countryNameBox.Focus();
         }
-
-        /*private void GetCountryList()
-        {
-            DataTable table = daoManager.GetAllCountryNames();
-            if (table == null)
-            {
-                Close();
-            }
-            countryComboBox.DataSource = table;
-            countryComboBox.ValueMember = "idcountry";
-            countryComboBox.DisplayMember = "name";
-        }*/
-
+        
         private CountryForSearch GetDataForSearch()
         {
             if (!cpCountBox.Text.IsIntPile())
@@ -93,19 +86,34 @@ namespace HikeHandler.UI
             {
                 return;
             }
-            DataTable table = daoManager.SearchCountry(template);
-            if (table == null)
+            try
             {
+                resultList.Clear();
+                BindingList<CountryForView> bindingList = new BindingList<CountryForView>(resultList);
+                BindingSource source = new BindingSource(bindingList, null);
+                resultView.DataSource = source;
+                resultView.Columns["CountryID"].Visible = false;
+                resultView.Columns["Name"].HeaderText = "Név";
+                resultView.Columns["HikeCount"].HeaderText = "Túrák";
+                resultView.Columns["RegionCount"].HeaderText = "Tájegységek";
+                resultView.Columns["CPCount"].HeaderText = "CheckPointok";
+                resultView.Columns["Description"].Visible = false;
+                resultGroupBox.Text = "Találatok száma: " + resultList.Count;
                 return;
             }
-
-            resultView.DataSource = table;
-            resultView.Columns["idcountry"].Visible = false;
-            resultView.Columns["name"].HeaderText = "Név";
-            resultView.Columns["hikecount"].HeaderText = "Túrák száma";
-            resultView.Columns["regioncount"].HeaderText = "Tájegységek";
-            resultView.Columns["cpcount"].HeaderText = "CheckPointok";
-            resultGroupBox.Text = "Találatok száma: " + table.Rows.Count;
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+            }
+            resultView.DataSource = null;
         }
 
         private void resultView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -113,13 +121,20 @@ namespace HikeHandler.UI
             if (e.RowIndex < 0)
                 return;
             int index;
-            if (!int.TryParse(resultView.Rows[e.RowIndex].Cells["idcountry"].Value.ToString(), out index))
+            if (!int.TryParse(resultView.Rows[e.RowIndex].Cells["countryID"].Value.ToString(), out index))
             {
                 MessageBox.Show("Nem sikerült megjeleníteni a kiválasztott országot.", "Hiba");
                 return;
             }
-            ViewCountryForm vForm = new ViewCountryForm(daoManager, index);
-            vForm.Show();
+            try
+            {
+                ViewCountryForm vForm = new ViewCountryForm(daoManager, index);
+                vForm.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+            }
         }
 
         private void detailsButton_Click(object sender, EventArgs e)
@@ -129,13 +144,20 @@ namespace HikeHandler.UI
             foreach (DataGridViewRow row in resultView.SelectedRows)
             {
                 int index;
-                if (!int.TryParse(row.Cells["idcountry"].Value.ToString(), out index))
+                if (!int.TryParse(row.Cells["countryID"].Value.ToString(), out index))
                 {
                     MessageBox.Show("Nem sikerült megjeleníteni a kiválasztott országot.", "Hiba");
                     return;
                 }
-                ViewCountryForm vForm = new ViewCountryForm(daoManager, index);
-                vForm.Show();
+                try
+                {
+                    ViewCountryForm vForm = new ViewCountryForm(daoManager, index);
+                    vForm.Show();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Hiba");
+                }
             }
             
         }

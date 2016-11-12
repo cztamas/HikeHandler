@@ -89,6 +89,7 @@ namespace HikeHandler.UI
             try
             {
                 resultList.Clear();
+                resultList = daoManager.SearchCountry(template);
                 BindingList<CountryForView> bindingList = new BindingList<CountryForView>(resultList);
                 BindingSource source = new BindingSource(bindingList, null);
                 resultView.DataSource = source;

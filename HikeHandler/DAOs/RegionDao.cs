@@ -19,18 +19,10 @@ namespace HikeHandler.DAOs
             sqlConnection = connection;
         }
 
-        public DataTable SearchRegion(HikeRegionForSearch template)
+        private string GetSearchCommand(HikeRegionForSearch template)
         {
-            if (sqlConnection == null)
-            {
-                throw new NoDBConnectionException();
-            }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                throw new NoDBConnectionException();
-            }
-            string commandText = @"SELECT r.idregion AS id, r.name AS name, r.hikecount AS hikecount, 
- c.name AS countryname FROM region r, country c 
+            string commandText = @"SELECT r.idregion, r.name, r.hikecount, r.cpcount, r.description,
+ c.name AS countryname, c.idcountry FROM region r, country c 
 WHERE r.idcountry=c.idcountry AND r.name LIKE @name AND c.name LIKE @cname";
             if (template.HikeCount != null)
             {
@@ -43,21 +35,53 @@ WHERE r.idcountry=c.idcountry AND r.name LIKE @name AND c.name LIKE @cname";
             if (template.IDRegion != null)
                 commandText += (" AND r.idregion=@idregion");
             commandText += " ORDER BY name ASC;";
-
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
-            {
-                adapter.SelectCommand.Parameters.AddWithValue("@name", "%" + template.Name + "%");
-                adapter.SelectCommand.Parameters.AddWithValue("@cname", "%" + template.CountryName + "%");
-                if (template.IDcountry != null)
-                    adapter.SelectCommand.Parameters.AddWithValue("@idcountry", template.IDcountry);
-                if (template.IDRegion != null)
-                    adapter.SelectCommand.Parameters.AddWithValue("@idregion", template.IDRegion);
-                DataTable resultTable = new DataTable();
-                adapter.Fill(resultTable);
-                return resultTable;
-            }
+            return commandText;
         }
 
+        public List<HikeRegionForView> SearchRegion(HikeRegionForSearch template)
+        {
+            if (sqlConnection == null)
+            {
+                throw new NoDBConnectionException();
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                throw new NoDBConnectionException();
+            }
+            string commandText = GetSearchCommand(template);
+            List<HikeRegionForView> resultList = new List<HikeRegionForView>();
+            using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
+            {
+                command.Parameters.AddWithValue("@name", "%" + template.Name + "%");
+                command.Parameters.AddWithValue("@cname", "%" + template.CountryName + "%");
+                if (template.IDcountry != null)
+                    command.Parameters.AddWithValue("@idcountry", template.IDcountry);
+                if (template.IDRegion != null)
+                    command.Parameters.AddWithValue("@idregion", template.IDRegion);
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        while(reader.Read())
+                        {
+                            int regionID = reader.GetInt32("idregion");
+                            int countryID = reader.GetInt32("idcountry");
+                            string name = reader.GetString("name");
+                            int hikeCount = reader.GetInt32("hikecount");
+                            int cpCount = reader.GetInt32("cpcount");
+                            string countryname = reader.GetString("countryname");
+                            string description = reader.GetString("description");
+                            resultList.Add(new HikeRegionForView(regionID, 
+                                countryID, name, countryname, hikeCount, cpCount, description));
+                        }
+                    }
+                    else
+                        return resultList;
+                }
+                return resultList;
+            }
+        }
+        
         // Recalculates the hike count of every region in the DB.
         // Only for correcting erroneous data in the DB.
         public void RecalculateRegionData()
@@ -223,7 +247,7 @@ FROM region r, country c WHERE c.idcountry=r.idcountry AND r.idregion=@idregion;
         }
 
         // Returns in a datatable the names and ids of every region of the given country
-        public DataTable GetRegionNameTable(int countryID)
+        public List<NameAndID> GetRegionNames(int countryID)
         {
             if (sqlConnection == null)
             {
@@ -234,12 +258,25 @@ FROM region r, country c WHERE c.idcountry=r.idcountry AND r.idregion=@idregion;
                 throw new NoDBConnectionException();
             }
             string commandText = "SELECT idregion, name FROM region WHERE idcountry=@idcountry ORDER BY name ASC;";
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
+            using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
-                adapter.SelectCommand.Parameters.AddWithValue("@idcountry", countryID);
-                DataTable table = new DataTable();
-                adapter.Fill(table);
-                return table;
+                List<NameAndID> result = new List<NameAndID>();
+                command.Parameters.AddWithValue("@idcountry", countryID);
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            int id = reader.GetInt32("idregion");
+                            string name = reader.GetString("name");
+                            result.Add(new NameAndID(name, id));
+                        }
+                    }
+                    else
+                        return result;
+                }
+                return result;
             }
         }
 

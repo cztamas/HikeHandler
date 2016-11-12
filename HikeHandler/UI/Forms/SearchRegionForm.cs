@@ -5,6 +5,7 @@ using HikeHandler.ModelObjects;
 using HikeHandler.ServiceLayer;
 using System.Collections.Generic;
 using HikeHandler.Exceptions;
+using System.ComponentModel;
 
 namespace HikeHandler.UI
 {
@@ -12,11 +13,13 @@ namespace HikeHandler.UI
     {
         private DAOManager daoManager;
         private HikeRegionForSearch templateToShow;
+        private List<HikeRegionForView> resultList;
         
         public SearchRegionForm(DAOManager manager)
         {
             InitializeComponent();
-            daoManager = manager;     
+            daoManager = manager;
+            resultList = new List<HikeRegionForView>();
         }
 
         public SearchRegionForm(DAOManager manager, HikeRegionForSearch template)
@@ -24,6 +27,7 @@ namespace HikeHandler.UI
             InitializeComponent();
             daoManager = manager;
             templateToShow = template;
+            resultList = new List<HikeRegionForView>();
         }
 
         private void SearchRegionForm_Load(object sender, EventArgs e)
@@ -80,13 +84,39 @@ namespace HikeHandler.UI
 
         private void MakeSearch(HikeRegionForSearch template)
         {
-            DataTable resultTable = daoManager.SearchRegion(template);
-            resultView.DataSource = resultTable;
-            resultView.Columns["id"].Visible = false;
-            resultView.Columns["name"].HeaderText = "Név";
-            resultView.Columns["hikecount"].HeaderText = "Túrák száma";
-            resultView.Columns["countryname"].HeaderText = "Ország";
-            resultGroupBox.Text = "Találatok száma: " + resultTable.Rows.Count;
+            try
+            {
+                resultList = daoManager.SearchRegion(template);
+                BindingList<HikeRegionForView> bindingList = new BindingList<HikeRegionForView>();
+                BindingSource source = new BindingSource(bindingList, null);
+                resultView.DataSource = resultList;
+                resultView.Columns["RegionID"].Visible = false;
+                resultView.Columns["CountryID"].Visible = false;
+                resultView.Columns["Name"].HeaderText = "Név";
+                resultView.Columns["HikeCount"].HeaderText = "Túrák";
+                resultView.Columns["CPCount"].HeaderText = "CheckPointok";
+                resultView.Columns["CountryName"].HeaderText = "Ország";
+                resultView.Columns["Description"].Visible = false;
+                resultGroupBox.Text = "Találatok száma: " + resultList.Count;
+                foreach (DataGridViewColumn column in resultView.Columns)
+                {
+                    column.SortMode = DataGridViewColumnSortMode.Automatic;
+                }
+                return;
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+            }
+            resultView.DataSource = null;
         }
 
         private HikeRegionForSearch GetDataForSearch()

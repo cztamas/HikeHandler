@@ -78,15 +78,27 @@ namespace HikeHandler.UI
 
         private void GetRegions(int countryID)
         {
-
-            DataTable table = daoManager.GetAllRegionsOfCountry(countryID);
-            if (table == null)
+            try
             {
-                Close();
+                List<NameAndID> table = daoManager.GetAllRegionsOfCountry(countryID);
+                regionComboBox.DataSource = table;
+                regionComboBox.ValueMember = "ID";
+                regionComboBox.DisplayMember = "Name";
+                return;
             }
-            regionComboBox.DataSource = table;
-            regionComboBox.ValueMember = "idregion";
-            regionComboBox.DisplayMember = "name";
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+            }
+            Close();
         }
 
         private void GetCPTypes()

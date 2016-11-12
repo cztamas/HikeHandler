@@ -6,9 +6,9 @@ namespace HikeHandler.ModelObjects
     {
         public int RegionID { get; set; }
         public int CountryID { get; set; }
+        public string Name { get; set; }
         public int HikeCount { get; set; }
         public int CPCount { get; set; }
-        public string Name { get; set; }
         public string CountryName { get; set; }
         public string Description { get; set; }
 

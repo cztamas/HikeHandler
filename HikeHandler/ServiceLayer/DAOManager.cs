@@ -251,28 +251,10 @@ namespace HikeHandler.ServiceLayer
         #region HikeRegion Methods
 
         // Returns in a datatable the names and ids of every region of the given country.
-        public DataTable GetAllRegionsOfCountry(int countryID)
+        public List<NameAndID> GetAllRegionsOfCountry(int countryID)
         {
-            try
-            {
-                DataTable table = regionDao.GetRegionNameTable(countryID);
-                return table;
-            }
-            catch (NoDBConnectionException)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return null;
-            }
-            catch (DBErrorException ex)
-            {
-                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
-                return null;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-                return null;
-            }
+                List<NameAndID> regions = regionDao.GetRegionNames(countryID);
+                return regions;
         }
 
         public bool SaveRegion(HikeRegionForSave region)
@@ -299,28 +281,10 @@ namespace HikeHandler.ServiceLayer
             return false;
         }
 
-        public DataTable SearchRegion(HikeRegionForSearch region)
+        public List<HikeRegionForView> SearchRegion(HikeRegionForSearch region)
         {
-            try
-            {
-                DataTable table = regionDao.SearchRegion(region);
-                return table;
-            }
-            catch (NoDBConnectionException)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return null;
-            }
-            catch (DBErrorException ex)
-            {
-                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
-                return null;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-                return null;
-            }
+            List<HikeRegionForView> result = regionDao.SearchRegion(region);
+            return result;
         }
 
         public HikeRegionForView SearchRegion(int regionID)

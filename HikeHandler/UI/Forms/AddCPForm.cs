@@ -75,14 +75,18 @@ namespace HikeHandler.UI
 
         private void GetCPTypes()
         {
-            DataTable cpTypesTable = daoManager.GetCPTypes();
-            if (cpTypesTable == null)
+            try
             {
+                List<NameAndID> cpTypesList = daoManager.GetCPTypes();
+                typeComboBox.DataSource = cpTypesList;
+                typeComboBox.ValueMember = "id";
+                typeComboBox.DisplayMember = "name";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
                 Close();
             }
-            typeComboBox.DataSource = cpTypesTable;
-            typeComboBox.ValueMember = "id";
-            typeComboBox.DisplayMember = "name";
         }
 
         private void GetCountries()

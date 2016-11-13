@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
 using HikeHandler.ServiceLayer;
+using HikeHandler.ModelObjects;
+using HikeHandler.Exceptions;
 
 namespace HikeHandler.UI
 {
     public partial class CPHandler : UserControl
     {
         private DAOManager daoManager;
-        private DataTable cpTable;
+        private List<NameAndID> cpNameList;
         public int RegionID { get; set; }
         public bool AnyCPOrder
         {
@@ -34,7 +36,7 @@ namespace HikeHandler.UI
         public void Init(DAOManager manager, CPHandlerStyle style)
         {
             daoManager = manager;
-            InitCPTable();
+            //InitCPTable();
             switch (style)
             {
                 case CPHandlerStyle.Add:
@@ -83,19 +85,19 @@ namespace HikeHandler.UI
         public void Clear()
         {
             cpNameComboBox.DataSource = null;
-            cpTable.Clear();
+            cpNameList.Clear();
         }
 
         public void LoadCPs(List<int> cpIDList)
         {
             //InitCPTable();
-            cpTable = daoManager.GetCPsFromList(cpIDList);
+            cpNameList = daoManager.GetCPsFromList(cpIDList);
             BindingSource source = new BindingSource();
-            source.DataSource = cpTable;
+            source.DataSource = cpNameList;
             cpGridView.DataSource = source;
             cpGridView.Columns["idcp"].Visible = false;
             cpGridView.Columns["name"].HeaderText = "CheckPoint neve";
-            if (cpTable == null)
+            if (cpNameList == null)
             {
                 return;
             }
@@ -104,54 +106,74 @@ namespace HikeHandler.UI
 
         private List<int> GiveCPList()
         {
-            cpTable.AcceptChanges();
+            //cpNameList.AcceptChanges();
             List<int> cpList = new List<int>();
-            int item;
-            foreach (DataRow row in cpTable.Rows)
+            foreach (NameAndID item in cpNameList)
             {
-                if (!int.TryParse(row["idcp"].ToString(), out item))
-                    continue;
-                cpList.Add(item);
+                cpList.Add(item.ID);
             }
             return cpList;
         }
 
         private void GetCPList()
         {
-            DataTable table = daoManager.GetAllCPs();
-            if (table == null)
+            try
             {
+                List<NameAndID> cps = daoManager.GetAllCPs();
+                cpNameComboBox.DataSource = cps;
+                cpNameComboBox.ValueMember = "ID";
+                cpNameComboBox.DisplayMember = "Name";
                 return;
             }
-            cpNameComboBox.DataSource = table;
-            cpNameComboBox.ValueMember = "idcp";
-            cpNameComboBox.DisplayMember = "name";
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+            }
         }
 
         private void GetCPList(int regionID)
         {
-            DataTable table = daoManager.GetAllCPsOfRegion(regionID);
-            if (table == null)
+            try
             {
-                return;
+                List<NameAndID> table = daoManager.GetAllCPsOfRegion(regionID);
+                cpNameComboBox.DataSource = table;
+                cpNameComboBox.ValueMember = "idcp";
+                cpNameComboBox.DisplayMember = "name";
             }
-            cpNameComboBox.DataSource = table;
-            cpNameComboBox.ValueMember = "idcp";
-            cpNameComboBox.DisplayMember = "name";
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+            }
         }
 
-        private void InitCPTable()
+        /*private void InitCPTable()
         {
-            cpTable = new DataTable();
-            cpTable.Clear();
-            cpTable.Columns.Add("name");
-            cpTable.Columns.Add("idcp");
+            cpNameList = new DataTable();
+            cpNameList.Clear();
+            cpNameList.Columns.Add("name");
+            cpNameList.Columns.Add("idcp");
             BindingSource source = new BindingSource();
-            source.DataSource = cpTable;
+            source.DataSource = cpNameList;
             cpGridView.DataSource = source;
             cpGridView.Columns["idcp"].Visible = false;
             cpGridView.Columns["name"].HeaderText = "CheckPoint neve";
-        }
+        }*/
 
         public void RefreshControl()
         {
@@ -163,15 +185,12 @@ namespace HikeHandler.UI
             GetCPList(RegionID);
         }
 
-        public string GetCPString()
+        private string GetCPString()
         {
             string cpString = string.Empty;
-            int cpID;
-            foreach (DataRow row in cpTable.Rows)
+            foreach (NameAndID item in cpNameList)
             {
-                if (!int.TryParse(row["idcp"].ToString(), out cpID))
-                    continue;
-                cpString += "." + cpID + ".";
+                cpString += "." + item.ID + ".";
             }
             return cpString;
         }
@@ -224,7 +243,7 @@ namespace HikeHandler.UI
             if (cpNameComboBox.SelectedIndex == -1)
                 return;
             DataRow row = ((DataTable)cpNameComboBox.DataSource).Rows[cpNameComboBox.SelectedIndex];
-            cpTable.Rows.Add(row.ItemArray);
+            cpNameList.Rows.Add(row.ItemArray);
         }
 
         private void removeCPButton_Click(object sender, EventArgs e)
@@ -233,11 +252,11 @@ namespace HikeHandler.UI
             foreach (DataGridViewRow row in cpGridView.SelectedRows)
             {
                 int index = row.Index;
-                rowsToDelete.Add(cpTable.Rows[index]);
+                rowsToDelete.Add(cpNameList.Rows[index]);
             }
             foreach (DataRow row in rowsToDelete)
             {
-                cpTable.Rows.Remove(row);
+                cpNameList.Rows.Remove(row);
             }
         }
 
@@ -248,11 +267,11 @@ namespace HikeHandler.UI
             int index = cpGridView.SelectedRows[0].Index;
             if (index == 0)
                 return;
-            DataRow tempRow = cpTable.Rows[index];
-            DataRow sameRow = cpTable.NewRow();
+            DataRow tempRow = cpNameList.Rows[index];
+            DataRow sameRow = cpNameList.NewRow();
             sameRow.ItemArray = (object[])tempRow.ItemArray.Clone();
-            cpTable.Rows.InsertAt(sameRow, index - 1);
-            cpTable.Rows.Remove(tempRow);
+            cpNameList.Rows.InsertAt(sameRow, index - 1);
+            cpNameList.Rows.Remove(tempRow);
             foreach (DataGridViewRow row in cpGridView.Rows)
                 row.Selected = false;
             cpGridView.Rows[index - 1].Selected = true;
@@ -265,11 +284,11 @@ namespace HikeHandler.UI
             int index = cpGridView.SelectedRows[0].Index;
             if (index == cpGridView.Rows.Count - 1)
                 return;
-            DataRow tempRow = cpTable.Rows[index];
-            DataRow sameRow = cpTable.NewRow();
+            DataRow tempRow = cpNameList.Rows[index];
+            DataRow sameRow = cpNameList.NewRow();
             sameRow.ItemArray = (object[])tempRow.ItemArray.Clone();
-            cpTable.Rows.Remove(tempRow);
-            cpTable.Rows.InsertAt(sameRow, index + 1);
+            cpNameList.Rows.Remove(tempRow);
+            cpNameList.Rows.InsertAt(sameRow, index + 1);
             foreach (DataGridViewRow row in cpGridView.Rows)
                 row.Selected = false;
             cpGridView.Rows[index + 1].Selected = true;

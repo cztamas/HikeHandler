@@ -79,14 +79,17 @@ namespace HikeHandler.UI
 
         private void GetCPTypes()
         {
-            DataTable cpTypesTable = daoManager.GetCPTypes();
-            if (cpTypesTable == null)
+            try
             {
-                Close();
+                List<NameAndID> cpTypesList = daoManager.GetCPTypes();
+                typeComboBox.DataSource = cpTypesList;
+                typeComboBox.ValueMember = "id";
+                typeComboBox.DisplayMember = "name";
             }
-            typeComboBox.DataSource = cpTypesTable;
-            typeComboBox.ValueMember = "id";
-            typeComboBox.DisplayMember = "name";
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+            }
         }
 
         // Collects the data from the form into a CPForUpdate object

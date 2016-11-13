@@ -195,7 +195,7 @@ c.name AS countryname FROM cp, region r, country c WHERE cp.idregion=r.idregion 
         }
 
         // Returns in a datatable the names and ids of every cp of the given region.
-        public DataTable GetCPNameTable(int regionID)
+        public List<NameAndID> GetCPNameTable(int regionID)
         {
             if (sqlConnection == null)
             {
@@ -205,18 +205,31 @@ c.name AS countryname FROM cp, region r, country c WHERE cp.idregion=r.idregion 
             {
                 throw new NoDBConnectionException();
             }
+            List<NameAndID> result = new List<NameAndID>();
             string commandText = "SELECT name, idcp FROM cp WHERE idregion=@idregion ORDER BY name ASC;";
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
+            using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
-                adapter.SelectCommand.Parameters.AddWithValue("@idregion", regionID);
-                DataTable table = new DataTable();
-                adapter.Fill(table);
-                return table;
+                command.Parameters.AddWithValue("@idregion", regionID);
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            int id = reader.GetInt32("idcp");
+                            string name = reader.GetString("name");
+                            result.Add(new NameAndID(name, id));
+                        }
+                    }
+                    else
+                        return result;
+                }
+                return result;
             }
         }
 
         // Returns in a datatable the names and ids of every cp in the DB.
-        public DataTable GetCPNameTable()
+        public List<NameAndID> GetCPNameTable()
         {
             if (sqlConnection == null)
             {
@@ -226,44 +239,71 @@ c.name AS countryname FROM cp, region r, country c WHERE cp.idregion=r.idregion 
             {
                 throw new NoDBConnectionException();
             }
+            List<NameAndID> result = new List<NameAndID>();
             string commandText = "SELECT name, idcp FROM cp ORDER BY name ASC;";
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
+            using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
-                DataTable table = new DataTable();
-                adapter.Fill(table);
-                return table;
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            int id = reader.GetInt32("idcp");
+                            string name = reader.GetString("name");
+                            result.Add(new NameAndID(name, id));
+                        }
+                    }
+                    else
+                        return result;
+                }
+                return result;
             }
         }
 
         // Returns in a datatable the names and ids of the cps specified in the given list.
-        public DataTable GetCPNameTable(List<int> cpIDList)
+        public List<NameAndID> GetCPNameTable(List<int> cpIDList)
         {
-            DataTable resultTable = new DataTable();
-            resultTable.Clear();
-            resultTable.Columns.Add("name");
-            resultTable.Columns.Add("idcp");
-            DataTable table = new DataTable();
+            if (sqlConnection == null)
+            {
+                throw new NoDBConnectionException();
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                throw new NoDBConnectionException();
+            }
+            List<NameAndID> result = new List<NameAndID>();
+            string commandText = "SELECT name, idcp FROM cp WHERE idcp=@idcp;";
+            int lastID = -1;
             foreach (int item in cpIDList)
             {
-                string commandText = "SELECT name, idcp FROM cp WHERE idcp=@idcp;";
-                using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
+                using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
                 {
-                    adapter.SelectCommand.Parameters.AddWithValue("@idcp", item);
-                    table.Clear();
-                    adapter.Fill(table);
-                    if (table.Rows.Count == 0)
+                    command.Parameters.AddWithValue("@idcp", item);
+                    using (MySqlDataReader reader = command.ExecuteReader())
                     {
-                        throw new DBErrorException("The given cp cannot be found.");
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                int id = reader.GetInt32("idcp");
+                                if (id == lastID)
+                                {
+                                    throw new DBErrorException("More than one cp found with the given ID.");
+                                }
+                                string name = reader.GetString("name");
+                                result.Add(new NameAndID(name, id));
+                                lastID = id;
+                            }
+                        }
+                        else
+                        {
+                            throw new DBErrorException("The given cp cannot be found.");
+                        }
                     }
-                    if (table.Rows.Count > 1)
-                    {
-                        throw new DBErrorException("More than one checkpoint found with the given id.");
-                    }
-                    DataRow row = table.Rows[0];
-                    resultTable.Rows.Add(row.ItemArray);
                 }
             }
-            return resultTable;
+            return result;
         }
 
         public void DeleteCP(int idCP)
@@ -380,26 +420,15 @@ VALUES (@name, @idcountry, @idregion, @type, 0, @description);";
             return count;
         }
 
-        public DataTable GetCPTypes()
+        public List<NameAndID> GetCPTypes()
         {
-            DataTable cpTypesTable = new DataTable();
-            DataColumn column;
-            DataRow row;
-
-            column = new DataColumn("id", typeof(int));
-            cpTypesTable.Columns.Add(column);
-            column = new DataColumn("name", typeof(string));
-            cpTypesTable.Columns.Add(column);
-
+            List<NameAndID> result = new List<NameAndID>();
             Array cpTypes = Enum.GetValues(typeof(CPType));
             foreach (CPType item in cpTypes)
             {
-                row = cpTypesTable.NewRow();
-                row["id"] = (int)item;
-                row["name"] = item.ToString();
-                cpTypesTable.Rows.Add(row);
+                result.Add(new NameAndID(item.ToString(), (int)item));
             }
-            return cpTypesTable;
+            return result;
         }
     }
 }

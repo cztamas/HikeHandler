@@ -389,26 +389,18 @@ namespace HikeHandler.ServiceLayer
 
         #region CP Methods
 
-        public DataTable GetCPTypes()
+        public List<NameAndID> GetCPTypes()
         {
-            try
-            {
-                return cpDao.GetCPTypes();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-                return null;
-            }
+            return cpDao.GetCPTypes();
         }
 
         // Returns in a datatable the names and ids of every cp of the given region.
-        public DataTable GetAllCPsOfRegion(int regionID)
+        public List<NameAndID> GetAllCPsOfRegion(int regionID)
         {
             try
             {
-                DataTable table = cpDao.GetCPNameTable(regionID);
-                return table;
+                List<NameAndID> result = cpDao.GetCPNameTable(regionID);
+                return result;
             }
             catch (NoDBConnectionException)
             {
@@ -427,12 +419,12 @@ namespace HikeHandler.ServiceLayer
             }
         }
 
-        public DataTable GetAllCPs()
+        public List<NameAndID> GetAllCPs()
         {
             try
             {
-                DataTable table = cpDao.GetCPNameTable();
-                return table;
+                List<NameAndID> result = cpDao.GetCPNameTable();
+                return result;
             }
             catch (NoDBConnectionException)
             {
@@ -451,12 +443,12 @@ namespace HikeHandler.ServiceLayer
             }
         }
 
-        public DataTable GetCPsFromList(List<int> cpIDList)
+        public List<NameAndID> GetCPsFromList(List<int> cpIDList)
         {
             try
             {
-                DataTable table = cpDao.GetCPNameTable(cpIDList);
-                return table;
+                List<NameAndID> result = cpDao.GetCPNameTable(cpIDList);
+                return result;
             }
             catch (NoDBConnectionException)
             {

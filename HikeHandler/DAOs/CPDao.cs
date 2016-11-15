@@ -16,7 +16,7 @@ namespace HikeHandler.DAOs
             sqlConnection = connection;
         }
 
-        public DataTable SearchCP(CPForSearch template)
+        public List<CPForView> SearchCP(CPForSearch template)
         {
             if (sqlConnection == null)
             {
@@ -26,8 +26,8 @@ namespace HikeHandler.DAOs
             {
                 throw new NoDBConnectionException();
             }
-            string commandText = @"SELECT cp.idcp, cp.name, cp.type, cp.hikecount, r.name AS regionname, c.name AS countryname
-FROM cp, region r, country c WHERE cp.idregion=r.idregion AND cp.idcountry=c.idcountry
+            string commandText = @"SELECT cp.idcp, cp.name, cp.type, cp.hikecount, cp.idregion, cp.idcountry, r.name AS regionname, 
+c.name AS countryname, cp.description FROM cp, region r, country c WHERE cp.idregion=r.idregion AND cp.idcountry=c.idcountry
 AND cp.name LIKE @name AND c.name LIKE @countryName AND r.name LIKE @regionName";
             if (template.CPID != null)
                 commandText += " AND cp.idcp=" + template.CPID;
@@ -43,16 +43,45 @@ AND cp.name LIKE @name AND c.name LIKE @countryName AND r.name LIKE @regionName"
             if (template.TypeOfCP != null)
                 commandText += " AND cp.type=@type";
             commandText += " ORDER BY cp.name ASC;";
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
+            using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
-                adapter.SelectCommand.Parameters.AddWithValue("@name", "%" + template.Name + "%");
-                adapter.SelectCommand.Parameters.AddWithValue("@countryName", "%" + template.CountryName + "%");
-                adapter.SelectCommand.Parameters.AddWithValue("@regionName", "%" + template.RegionName + "%");
+                command.Parameters.AddWithValue("@name", "%" + template.Name + "%");
+                command.Parameters.AddWithValue("@countryName", "%" + template.CountryName + "%");
+                command.Parameters.AddWithValue("@regionName", "%" + template.RegionName + "%");
                 if (template.TypeOfCP != null)
-                    adapter.SelectCommand.Parameters.AddWithValue("@type", template.TypeOfCP.ToString());
-                DataTable table = new DataTable();
-                adapter.Fill(table);
-                return table;
+                {
+                    command.Parameters.AddWithValue("@type", template.TypeOfCP.ToString());
+                }
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    List<CPForView> resultList = new List<CPForView>();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            int cpID = reader.GetInt32("idcp");
+                            int countryID = reader.GetInt32("idcountry");
+                            int regionID = reader.GetInt32("idregion");
+                            int hikeCount = reader.GetInt32("hikecount");
+                            string name = reader.GetString("name");
+                            string countryName = reader.GetString("countryname");
+                            string regionName = reader.GetString("regionname");
+                            string description = reader.GetString("description");
+                            CPType typeOfCP;
+                            if (!Enum.TryParse(reader.GetString("type"), out typeOfCP))
+                            {
+                                throw new DBErrorException("Invalid CheckPoint type found.");
+                            }
+                            resultList.Add(new CPForView(
+                                cpID, countryID, regionID, name, countryName, regionName, typeOfCP, hikeCount, description));
+                        }
+                    }
+                    else
+                    {
+                        return resultList;
+                    }
+                    return resultList;
+                }
             }
         }
 

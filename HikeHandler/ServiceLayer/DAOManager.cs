@@ -496,28 +496,9 @@ namespace HikeHandler.ServiceLayer
             return false;
         }
 
-        public DataTable SearchCP(CPForSearch cp)
+        public List<CPForView> SearchCP(CPForSearch cp)
         {
-            try
-            {
-                DataTable table = cpDao.SearchCP(cp);
-                return table;
-            }
-            catch (NoDBConnectionException)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return null;
-            }
-            catch (DBErrorException ex)
-            {
-                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
-                return null;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-                return null;
-            }
+            return cpDao.SearchCP(cp);
         }
 
         public CPForView SearchCP(int cpID)
@@ -623,17 +604,9 @@ namespace HikeHandler.ServiceLayer
 
         #region Hike Methods
 
-        public DataTable GetHikeTypes()
+        public List<NameAndID> GetHikeTypes()
         {
-            try
-            {
-                return hikeDao.GetHikeTypes();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-                return null;
-            }
+            return hikeDao.GetHikeTypes();
         }
 
         public bool SaveHike(HikeForSave hike)
@@ -673,28 +646,9 @@ namespace HikeHandler.ServiceLayer
             return false;
         }
 
-        public DataTable SearchHike(HikeForSearch hike, bool anyCPOrder)
+        public List<HikeForView> SearchHike(HikeForSearch hike, bool anyCPOrder)
         {
-            try
-            {
-                DataTable table = hikeDao.SearchHike(hike, anyCPOrder);
-                return table;
-            }
-            catch (NoDBConnectionException)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return null;
-            }
-            catch (DBErrorException ex)
-            {
-                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
-                return null;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-                return null;
-            }
+            return hikeDao.SearchHike(hike, anyCPOrder);
         }
 
         public HikeForView SearchHike(int hikeID)

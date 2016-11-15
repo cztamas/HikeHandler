@@ -85,14 +85,18 @@ namespace HikeHandler.UI
 
         private void GetHikeTypes()
         {
-            DataTable hikeTypesTable = daoManager.GetHikeTypes();
-            if (hikeTypesTable == null)
+            try
             {
+                List<NameAndID> hikeTypesList = daoManager.GetHikeTypes();
+                typeComboBox.DataSource = hikeTypesList;
+                typeComboBox.ValueMember = "ID";
+                typeComboBox.DisplayMember = "Name";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
                 Close();
             }
-            typeComboBox.DataSource = hikeTypesTable;
-            typeComboBox.ValueMember = "id";
-            typeComboBox.DisplayMember = "name";
         }
 
         // Collects the data on the form into a HikeForSave object.

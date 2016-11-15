@@ -143,17 +143,38 @@ namespace HikeHandler.UI
 
         private void MakeSearch(CPForSearch template)
         {
-            DataTable resultTable = daoManager.SearchCP(template);
-            if (resultTable == null)
+            try
+            {
+                List<CPForView> resultList = daoManager.SearchCP(template);
+                if (resultList == null)
+                    return;
+                resultView.DataSource = resultList;
+                resultView.Columns["CPID"].Visible = false;
+                resultView.Columns["CountryID"].Visible = false;
+                resultView.Columns["RegionID"].Visible = false;
+                resultView.Columns["Name"].HeaderText = "Név";
+                resultView.Columns["TypeOfCP"].HeaderText = "Típus";
+                resultView.Columns["HikeCount"].HeaderText = "Túrák";
+                resultView.Columns["HikeCount"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                resultView.Columns["RegionName"].HeaderText = "Tájegység";
+                resultView.Columns["CountryName"].HeaderText = "Ország";
+                resultView.Columns["Description"].Visible = false;
+                resultGroupBox.Text = "Találatok száma: " + resultList.Count;
                 return;
-            resultView.DataSource = resultTable;
-            resultView.Columns["idcp"].Visible = false;
-            resultView.Columns["name"].HeaderText = "Név";
-            resultView.Columns["type"].HeaderText = "Típus";
-            resultView.Columns["hikecount"].HeaderText = "Túrák száma";
-            resultView.Columns["regionname"].HeaderText = "Tájegység";
-            resultView.Columns["countryname"].HeaderText = "Ország";
-            resultGroupBox.Text = "Találatok száma: " + resultTable.Rows.Count;
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+            }
+            Close();
         }
 
         private CPForSearch GetDataForSearch()
@@ -224,7 +245,7 @@ namespace HikeHandler.UI
             int index;
             foreach (DataGridViewRow row in resultView.SelectedRows)
             {   
-                if (!int.TryParse(row.Cells["idcp"].Value.ToString(), out index))
+                if (!int.TryParse(row.Cells["CPID"].Value.ToString(), out index))
                 {
                     MessageBox.Show("Nem sikerült megjeleníteni a kiválasztott checkpointot.", "Hiba");
                     return;
@@ -239,7 +260,7 @@ namespace HikeHandler.UI
             if (e.RowIndex < 0)
                 return;
             int index;
-            if (!int.TryParse(resultView.Rows[e.RowIndex].Cells["idcp"].Value.ToString(), out index))
+            if (!int.TryParse(resultView.Rows[e.RowIndex].Cells["CPID"].Value.ToString(), out index))
             {
                 MessageBox.Show("Nem sikerült megjeleníteni a kiválasztott országot.", "Hiba");
                 return;

@@ -88,10 +88,18 @@ namespace HikeHandler.UI
 
         private void GetHikeTypes()
         {
-            DataTable hikeTypesTable = daoManager.GetHikeTypes();
-            typeComboBox.DataSource = hikeTypesTable;
-            typeComboBox.ValueMember = "id";
-            typeComboBox.DisplayMember = "name";
+            try
+            {
+                List<NameAndID> hikeTypesList = daoManager.GetHikeTypes();
+                typeComboBox.DataSource = hikeTypesList;
+                typeComboBox.ValueMember = "ID";
+                typeComboBox.DisplayMember = "Name";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+                Close();
+            }
         }
 
         private HikeForUpdate GetDataForUpdate()

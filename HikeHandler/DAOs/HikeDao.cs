@@ -19,19 +19,11 @@ namespace HikeHandler.DAOs
             sqlConnection = connection;
         }
 
-        public DataTable SearchHike(HikeForSearch template, bool anyCPOrder)
+        private string GetSearchCommandText(HikeForSearch template, bool anyCPOrder)
         {
-            if (sqlConnection == null)
-            {
-                throw new NoDBConnectionException();
-            }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                throw new NoDBConnectionException();
-            }
-            string commandText = @"SELECT h.idhike, h.position, h.date, h.idregion, r.name AS 'regionname', h.idcountry, c.name AS 'countryname', h.type, 
-h.description, h.cpstring FROM hike h, region r, country c WHERE h.idcountry=c.idcountry AND h.idregion=r.idregion 
-AND c.name LIKE @countryName AND r.name LIKE @regionName";
+            string commandText = @"SELECT h.idhike, h.position, h.date, h.idregion, r.name AS 'regionname', h.idcountry, 
+c.name AS 'countryname', h.type, h.description, h.cpstring FROM hike h, region r, country c WHERE h.idcountry=c.idcountry 
+AND h.idregion=r.idregion AND c.name LIKE @countryName AND r.name LIKE @regionName";
             if (template.IDHike != null)
                 commandText += " AND h.idhike=" + template.IDHike;
             if (template.IDRegion != null)
@@ -67,15 +59,63 @@ AND c.name LIKE @countryName AND r.name LIKE @regionName";
                 commandText += " AND cpstring LIKE '" + condition + "'";
             }
             commandText += " ORDER BY h.date ASC;";
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
+            return commandText;
+        }
+
+        public List<HikeForView> SearchHike(HikeForSearch template, bool anyCPOrder)
+        {
+            if (sqlConnection == null)
             {
-                adapter.SelectCommand.Parameters.AddWithValue("@countryName", "%" + template.CountryName + "%");
-                adapter.SelectCommand.Parameters.AddWithValue("@regionName", "%" + template.RegionName + "%");
+                throw new NoDBConnectionException();
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                throw new NoDBConnectionException();
+            }
+            string commandText = GetSearchCommandText(template, anyCPOrder);
+            using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
+            {
+                command.Parameters.AddWithValue("@countryName", "%" + template.CountryName + "%");
+                command.Parameters.AddWithValue("@regionName", "%" + template.RegionName + "%");
                 if (template.HikeType != null)
-                    adapter.SelectCommand.Parameters.AddWithValue("@type", template.HikeType.ToString());
-                DataTable table = new DataTable();
-                adapter.Fill(table);
-                return table;
+                {
+                    command.Parameters.AddWithValue("@type", template.HikeType.ToString());
+                }
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    List<HikeForView> resultList = new List<HikeForView>();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            int hikeID = reader.GetInt32("idhike");
+                            int countryID = reader.GetInt32("idcountry");
+                            int regionID = reader.GetInt32("idregion");
+                            int position = reader.GetInt32("position");
+                            string countryName = reader.GetString("countryname");
+                            string regionName = reader.GetString("regionname");
+                            string description = reader.GetString("description");
+                            string cpString = reader.GetString("cpstring");
+                            HikeType hikeType;
+                            if (!Enum.TryParse(reader.GetString("type"), out hikeType))
+                            {
+                                throw new DBErrorException("Invalid hiketype found.");
+                            }
+                            DateTime hikeDate;
+                            if (!DateTime.TryParse(reader.GetString("date"), out hikeDate))
+                            {
+                                throw new DBErrorException("Invalid date format.");
+                            }
+                            resultList.Add(new HikeForView(hikeID, countryID, regionID, position, countryName, regionName,
+                                description, hikeDate, hikeType, cpString));
+                        }
+                    }
+                    else
+                    {
+                        return resultList;
+                    }
+                    return resultList;
+                }
             }
         }
 
@@ -420,26 +460,15 @@ VALUES (@date, @idregion, @idcountry, @type, @description, @cpstring)";
             return count;
         }
 
-        public DataTable GetHikeTypes()
+        public List<NameAndID> GetHikeTypes()
         {
-            DataTable hikeTypesTable = new DataTable();
-            DataColumn column;
-            DataRow row;
-
-            column = new DataColumn("id", typeof(int));
-            hikeTypesTable.Columns.Add(column);
-            column = new DataColumn("name", typeof(string));
-            hikeTypesTable.Columns.Add(column);
-
+            List<NameAndID> result = new List<NameAndID>();
             Array hikeTypes = Enum.GetValues(typeof(HikeType));
             foreach (HikeType item in hikeTypes)
             {
-                row = hikeTypesTable.NewRow();
-                row["id"] = (int)item;
-                row["name"] = item.ToString();
-                hikeTypesTable.Rows.Add(row);
+                result.Add(new NameAndID(item.ToString(), (int)item));
             }
-            return hikeTypesTable;
+            return result;
         }
     }
 }

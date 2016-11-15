@@ -58,13 +58,9 @@ namespace HikeHandler.UI
             try
             {
                 List<NameAndID> countries = daoManager.GetAllCountryNames();
-                if (countries == null)
-                {
-                    Close();
-                }
                 countryComboBox.DataSource = countries;
-                countryComboBox.ValueMember = "id";
-                countryComboBox.DisplayMember = "name";
+                countryComboBox.ValueMember = "ID";
+                countryComboBox.DisplayMember = "Name";
                 return;
             }
             catch (NoDBConnectionException)
@@ -113,14 +109,18 @@ namespace HikeHandler.UI
 
         private void GetHikeTypes()
         {
-            DataTable hikeTypesTable = daoManager.GetHikeTypes();
-            if (hikeTypesTable == null)
+            try
             {
+                List<NameAndID> hikeTypesList = daoManager.GetHikeTypes();
+                typeComboBox.DataSource = hikeTypesList;
+                typeComboBox.ValueMember = "ID";
+                typeComboBox.DisplayMember = "Name";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
                 Close();
             }
-            typeComboBox.DataSource = hikeTypesTable;
-            typeComboBox.ValueMember = "id";
-            typeComboBox.DisplayMember = "name";
         }
         
         private void Clear()
@@ -134,23 +134,37 @@ namespace HikeHandler.UI
 
         private void MakeSearch(HikeForSearch template)
         {
-            DataTable resultTable = daoManager.SearchHike(template, checkPointHandler.AnyCPOrder);
-            if (resultTable == null)
+            try
             {
+                List<HikeForView> resultList = daoManager.SearchHike(template, checkPointHandler.AnyCPOrder);
+                resultView.DataSource = resultList;
+                resultView.Columns["HikeID"].Visible = false;
+                resultView.Columns["Position"].HeaderText = "Sorszám";
+                resultView.Columns["HikeDate"].HeaderText = "Dátum";
+                resultView.Columns["RegionID"].Visible = false;
+                resultView.Columns["CountryID"].Visible = false;
+                resultView.Columns["RegionName"].HeaderText = "Tájegység";
+                resultView.Columns["RegionName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                resultView.Columns["CountryName"].HeaderText = "Ország";
+                resultView.Columns["HikeType"].HeaderText = "Típus";
+                resultView.Columns["Description"].Visible = false;
+                resultView.Columns["CPString"].Visible = false;
+                resultGroupBox.Text = "Találatok száma: " + resultList.Count;
                 return;
             }
-            resultView.DataSource = resultTable;
-            resultView.Columns["idhike"].Visible = false;
-            resultView.Columns["position"].HeaderText = "Sorszám";
-            resultView.Columns["date"].HeaderText = "Dátum";
-            resultView.Columns["idregion"].Visible = false;
-            resultView.Columns["regionname"].HeaderText = "Tájegység";
-            resultView.Columns["countryname"].HeaderText = "Ország";
-            resultView.Columns["type"].HeaderText = "Típus";
-            resultView.Columns["description"].Visible = false;
-            resultView.Columns["cpstring"].Visible = false;
-            resultView.Columns["idcountry"].Visible = false;
-            resultGroupBox.Text = "Találatok száma: " + resultTable.Rows.Count;
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+            }
+            Close();
         }
 
         private HikeForSearch GetDataForSearch()
@@ -215,7 +229,7 @@ namespace HikeHandler.UI
             int hikeID;
             foreach (DataGridViewRow row in resultView.SelectedRows)
             {
-                if (!int.TryParse(row.Cells["idhike"].Value.ToString(), out hikeID))
+                if (!int.TryParse(row.Cells["HikeID"].Value.ToString(), out hikeID))
                 {
                     MessageBox.Show("Nem sikerült megjeleníteni a kért országot.", "Hiba");
                     return;
@@ -230,7 +244,7 @@ namespace HikeHandler.UI
             if (e.RowIndex < 0)
                 return;
             int hikeID;
-            if (!int.TryParse(resultView.Rows[e.RowIndex].Cells["idhike"].Value.ToString(), out hikeID))
+            if (!int.TryParse(resultView.Rows[e.RowIndex].Cells["HikeID"].Value.ToString(), out hikeID))
             {
                 MessageBox.Show("Nem sikerült megjeleníteni a kért országot.", "Hiba");
                 return;

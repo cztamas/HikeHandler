@@ -45,70 +45,45 @@ namespace HikeHandler.Controls
         public event EventHandler TextBoxFocusEnter;
         public event EventHandler TextBoxFocusLeave;
 
-        private void writeOmegaButton_Click(object sender, EventArgs e)
+        private void InsertSpecialCharacter(string character)
         {
             int cursorPosition = descriptionBox.Text.Length;
             if (IsTextboxActive)
                 cursorPosition = descriptionBox.SelectionStart;
-            descriptionBox.Text = descriptionBox.Text.Insert(cursorPosition, "\u03A9");
+            descriptionBox.Text = descriptionBox.Text.Insert(cursorPosition, character);
             descriptionBox.Focus();
             descriptionBox.SelectionStart = cursorPosition + 1;
             descriptionBox.SelectionLength = 0;
+        }
+
+        private void writeOmegaButton_Click(object sender, EventArgs e)
+        {
+            InsertSpecialCharacter("\u03A9");
         }
 
         private void writeSquareButton_Click(object sender, EventArgs e)
         {
-            int cursorPosition = descriptionBox.Text.Length;
-            if (IsTextboxActive)
-                cursorPosition = descriptionBox.SelectionStart;
-            descriptionBox.Text = descriptionBox.Text.Insert(descriptionBox.SelectionStart, "\u25A0");
-            descriptionBox.Focus();
-            descriptionBox.SelectionStart = cursorPosition + 1;
-            descriptionBox.SelectionLength = 0;
+            InsertSpecialCharacter("\u25A0");
         }
 
         private void writeTriangleButton_Click(object sender, EventArgs e)
         {
-            int cursorPosition = descriptionBox.Text.Length;
-            if (IsTextboxActive)
-                cursorPosition = descriptionBox.SelectionStart;
-            descriptionBox.Text = descriptionBox.Text.Insert(descriptionBox.SelectionStart, "\u25B2");
-            descriptionBox.Focus();
-            descriptionBox.SelectionStart = cursorPosition + 1;
-            descriptionBox.SelectionLength = 0;
+            InsertSpecialCharacter("\u25B2");
         }
 
         private void writeCircleButton_Click(object sender, EventArgs e)
         {
-            int cursorPosition = descriptionBox.Text.Length;
-            if (IsTextboxActive)
-                cursorPosition = descriptionBox.SelectionStart;
-            descriptionBox.Text = descriptionBox.Text.Insert(descriptionBox.SelectionStart, "\u2B24");
-            descriptionBox.Focus();
-            descriptionBox.SelectionStart = cursorPosition + 1;
-            descriptionBox.SelectionLength = 0;
+            InsertSpecialCharacter("\u2B24");
         }
 
         private void writeArrowCircleButton_Click(object sender, EventArgs e)
         {
-            int cursorPosition = descriptionBox.Text.Length;
-            if (IsTextboxActive)
-                cursorPosition = descriptionBox.SelectionStart;
-            descriptionBox.Text = descriptionBox.Text.Insert(descriptionBox.SelectionStart, "⟲");
-            descriptionBox.Focus();
-            descriptionBox.SelectionStart = cursorPosition + 1;
-            descriptionBox.SelectionLength = 0;
+            InsertSpecialCharacter("⟲");
         }
 
         private void writeRingButton_Click(object sender, EventArgs e)
         {
-            int cursorPosition = descriptionBox.Text.Length;
-            if (IsTextboxActive)
-                cursorPosition = descriptionBox.SelectionStart;
-            descriptionBox.Text = descriptionBox.Text.Insert(descriptionBox.SelectionStart, "⨀");
-            descriptionBox.Focus();
-            descriptionBox.SelectionStart = cursorPosition + 1;
-            descriptionBox.SelectionLength = 0;
+            InsertSpecialCharacter("⨀");
         }
 
         private void descriptionBox_Enter(object sender, EventArgs e)

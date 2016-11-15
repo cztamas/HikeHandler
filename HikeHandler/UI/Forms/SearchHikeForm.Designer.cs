@@ -162,7 +162,7 @@
             // 
             // searchButton
             // 
-            this.searchButton.Location = new System.Drawing.Point(12, 360);
+            this.searchButton.Location = new System.Drawing.Point(12, 357);
             this.searchButton.Name = "searchButton";
             this.searchButton.Size = new System.Drawing.Size(254, 23);
             this.searchButton.TabIndex = 5;
@@ -235,7 +235,7 @@
             this.checkPointHandler.Location = new System.Drawing.Point(12, 148);
             this.checkPointHandler.Name = "checkPointHandler";
             this.checkPointHandler.RegionID = 0;
-            this.checkPointHandler.Size = new System.Drawing.Size(254, 206);
+            this.checkPointHandler.Size = new System.Drawing.Size(254, 203);
             this.checkPointHandler.TabIndex = 10;
             // 
             // SearchHikeForm

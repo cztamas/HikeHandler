@@ -162,7 +162,7 @@ namespace HikeHandler.UI
             int regionID;
             foreach (DataGridViewRow row in resultView.SelectedRows)
             {
-                if (!int.TryParse(row.Cells["id"].Value.ToString(), out regionID))
+                if (!int.TryParse(row.Cells["RegionID"].Value.ToString(), out regionID))
                 {
                     MessageBox.Show("Nem sikerült megjeleníteni a kért tájegységet.", "Hiba");
                     return;
@@ -177,7 +177,7 @@ namespace HikeHandler.UI
             if (e.RowIndex < 0)
                 return;
             int regionID;
-            if (!int.TryParse(resultView.Rows[e.RowIndex].Cells[0].Value.ToString(), out regionID))
+            if (!int.TryParse(resultView.Rows[e.RowIndex].Cells["RegionID"].Value.ToString(), out regionID))
             {
                 MessageBox.Show("Nem sikerült megjeleníteni a kért tájegységet.", "Hiba");
                 return;

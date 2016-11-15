@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HikeHandler.ModelObjects
 {
-    public struct NameAndID
+    public class NameAndID
     {
         public string Name { get; set; }
         public int ID { get; set; }

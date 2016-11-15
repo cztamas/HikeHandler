@@ -122,7 +122,7 @@ namespace HikeHandler.UI
             if (e.RowIndex < 0)
                 return;
             int index;
-            if (!int.TryParse(resultView.Rows[e.RowIndex].Cells["countryID"].Value.ToString(), out index))
+            if (!int.TryParse(resultView.Rows[e.RowIndex].Cells["CountryID"].Value.ToString(), out index))
             {
                 MessageBox.Show("Nem sikerült megjeleníteni a kiválasztott országot.", "Hiba");
                 return;
@@ -145,7 +145,7 @@ namespace HikeHandler.UI
             foreach (DataGridViewRow row in resultView.SelectedRows)
             {
                 int index;
-                if (!int.TryParse(row.Cells["countryID"].Value.ToString(), out index))
+                if (!int.TryParse(row.Cells["CountryID"].Value.ToString(), out index))
                 {
                     MessageBox.Show("Nem sikerült megjeleníteni a kiválasztott országot.", "Hiba");
                     return;

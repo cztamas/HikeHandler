@@ -1,0 +1,1 @@
+C:\prog\c#\HikeHandler\HikeHandlerWebApi\obj\Debug\HikeHandlerWebApi.csprojResolveAssemblyReference.cache

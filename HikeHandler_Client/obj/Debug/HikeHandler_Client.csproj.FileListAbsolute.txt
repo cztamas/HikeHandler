@@ -1,0 +1,8 @@
+C:\prog\c#\HikeHandler\HikeHandler_Client\bin\Debug\HikeHandler_Client.exe.config
+C:\prog\c#\HikeHandler\HikeHandler_Client\bin\Debug\HikeHandler_Client.exe
+C:\prog\c#\HikeHandler\HikeHandler_Client\bin\Debug\HikeHandler_Client.pdb
+C:\prog\c#\HikeHandler\HikeHandler_Client\obj\Debug\HikeHandler_Client.csprojResolveAssemblyReference.cache
+C:\prog\c#\HikeHandler\HikeHandler_Client\obj\Debug\HikeHandler_Client.Properties.Resources.resources
+C:\prog\c#\HikeHandler\HikeHandler_Client\obj\Debug\HikeHandler_Client.csproj.GenerateResource.Cache
+C:\prog\c#\HikeHandler\HikeHandler_Client\obj\Debug\HikeHandler_Client.exe
+C:\prog\c#\HikeHandler\HikeHandler_Client\obj\Debug\HikeHandler_Client.pdb

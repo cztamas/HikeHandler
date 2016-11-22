@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HikeHandler.Interfaces
+namespace HikeHandler.Exceptions
 {
-    interface ICPDao
+    public class NotDeletableException : Exception
     {
+        public NotDeletableException() { }
     }
 }

@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace HikeHandler.Exceptions
 {
-    class DBErrorException : Exception
+    public class DuplicateItemNameException : Exception
     {
-        public DBErrorException(string message) : base(message)
-        { }
+        public DuplicateItemNameException() { }
     }
 }

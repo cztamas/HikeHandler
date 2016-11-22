@@ -86,7 +86,6 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
@@ -236,48 +235,18 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\DaoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
-    <Compile Include="DAOs\CountryDao.cs" />
-    <Compile Include="DAOs\CPDao.cs" />
-    <Compile Include="DAOs\HikeDao.cs" />
-    <Compile Include="DAOs\RegionDao.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="ModelObjects\BaseFormSummary.cs" />
-    <Compile Include="ModelObjects\Country\CountryForSave.cs" />
-    <Compile Include="ModelObjects\Country\CountryForSearch.cs" />
-    <Compile Include="ModelObjects\Country\CountryForUpdate.cs" />
-    <Compile Include="ModelObjects\Country\CountryForView.cs" />
-    <Compile Include="ModelObjects\CP\CPForSave.cs" />
-    <Compile Include="ModelObjects\CP\CPForSearch.cs" />
-    <Compile Include="ModelObjects\CP\CPForUpdate.cs" />
-    <Compile Include="ModelObjects\CP\CPForView.cs" />
-    <Compile Include="ModelObjects\HikeRegion\HikeRegionForSave.cs" />
-    <Compile Include="ModelObjects\HikeRegion\HikeRegionForSearch.cs" />
-    <Compile Include="ModelObjects\HikeRegion\HikeRegionForUpdate.cs" />
-    <Compile Include="ModelObjects\HikeRegion\HikeRegionForView.cs" />
-    <Compile Include="ModelObjects\Hike\HikeForSave.cs" />
-    <Compile Include="ModelObjects\Hike\HikeForSearch.cs" />
-    <Compile Include="ModelObjects\Hike\HikeForUpdate.cs" />
-    <Compile Include="ModelObjects\Hike\HikeForView.cs" />
-    <Compile Include="ModelObjects\Miscellaneous.cs" />
-    <Compile Include="ModelObjects\NameAndID.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Other\Exceptions\DBErrorException.cs" />
-    <Compile Include="Other\Exceptions\NoDBConnectionException.cs" />
-    <Compile Include="Other\Extensions\StringExtensions.cs" />
-    <Compile Include="Other\Interfaces\ICountryDao.cs" />
-    <Compile Include="Other\Interfaces\ICPDao.cs" />
-    <Compile Include="Other\Interfaces\IHikeDao.cs" />
-    <Compile Include="Other\Interfaces\IRegionDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
-    <Compile Include="ServiceLayer\DAOManager.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -338,9 +307,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UI\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -348,6 +315,12 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HikeHandler\HikeHandler.csproj">
+      <Project>{ef14a9dd-697f-4ada-8282-546f32f1e2b1}</Project>
+      <Name>HikeHandler</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

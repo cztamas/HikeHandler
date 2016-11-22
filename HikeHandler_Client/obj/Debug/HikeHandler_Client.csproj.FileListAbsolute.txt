@@ -6,3 +6,7 @@ C:\prog\c#\HikeHandler\HikeHandler_Client\obj\Debug\HikeHandler_Client.Propertie
 C:\prog\c#\HikeHandler\HikeHandler_Client\obj\Debug\HikeHandler_Client.csproj.GenerateResource.Cache
 C:\prog\c#\HikeHandler\HikeHandler_Client\obj\Debug\HikeHandler_Client.exe
 C:\prog\c#\HikeHandler\HikeHandler_Client\obj\Debug\HikeHandler_Client.pdb
+C:\prog\c#\HikeHandler\HikeHandler_Client\bin\Debug\HikeHandler.exe
+C:\prog\c#\HikeHandler\HikeHandler_Client\bin\Debug\MySql.Data.dll
+C:\prog\c#\HikeHandler\HikeHandler_Client\bin\Debug\HikeHandler.pdb
+C:\prog\c#\HikeHandler\HikeHandler_Client\bin\Debug\MySql.Data.xml

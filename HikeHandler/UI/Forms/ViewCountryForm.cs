@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using HikeHandler.Exceptions;
 using HikeHandler.ModelObjects;
 using HikeHandler.ServiceLayer;
 
@@ -62,11 +63,32 @@ namespace HikeHandler.UI
 
         private void RefreshCountryData()
         {
-            currentCountry = daoManager.SearchCountry(currentCountry.CountryID);
-            if (currentCountry == null)
+            try
             {
-                Close();
+                currentCountry = daoManager.SearchCountry(currentCountry.CountryID);
+                if (currentCountry == null)
+                {
+                    Close();
+                }
+                return;
             }
+            catch (NoItemFoundException)
+            {
+                MessageBox.Show("Nem található a keresett ország.", "Hiba");
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+            }
+            Close();
         }
 
         private CountryForUpdate GetDataForUpdate()
@@ -113,11 +135,29 @@ namespace HikeHandler.UI
             {
                 return;
             }
-            if (daoManager.UpdateCountry(country))
+            try
             {
+                daoManager.UpdateCountry(country);
                 MakeUneditable();
                 RefreshCountryData();
                 RefreshForm();
+            }
+            catch (DuplicateItemNameException)
+            {
+                MessageBox.Show("Már van elmentve ilyen nevű ország.", "Hiba");
+                nameBox.Focus();
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
             }
         }
         
@@ -150,10 +190,27 @@ namespace HikeHandler.UI
 
         private void deleteCountryButton_Click(object sender, EventArgs e)
         {
-            if (daoManager.DeleteCountry(currentCountry.CountryID))
+            try
             {
+                daoManager.DeleteCountry(currentCountry.CountryID);
                 MessageBox.Show("Törölve.");
                 Close();
+            }
+            catch (NotDeletableException)
+            {
+                MessageBox.Show("Csak olyan ország törölhető, amihez nem tartozik tájegység, checkpoint vagy túra.");
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
             }
         }
 

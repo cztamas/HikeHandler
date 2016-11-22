@@ -49,6 +49,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ModelObjects\NameAndID.cs" />
+    <Compile Include="Other\Exceptions\DuplicateDateException.cs" />
+    <Compile Include="Other\Exceptions\DuplicateItemNameException.cs" />
+    <Compile Include="Other\Exceptions\NoItemFoundException.cs" />
+    <Compile Include="Other\Exceptions\NotDeletableException.cs" />
     <Compile Include="UI\Controls\HikeDescriptionBox.cs">
       <SubType>UserControl</SubType>
     </Compile>

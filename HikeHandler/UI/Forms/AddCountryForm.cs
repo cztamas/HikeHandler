@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using HikeHandler.Exceptions;
 using HikeHandler.ModelObjects;
 using HikeHandler.ServiceLayer;
 
@@ -47,10 +48,28 @@ namespace HikeHandler.UI
             CountryForSave country = GetDataForSave();
             if (country == null)
                 return;
-            if (daoManager.SaveCountry(country))
+            try
             {
+                daoManager.SaveCountry(country);
                 MessageBox.Show("Sikeresen elmentve.");
                 Close();
+            }
+            catch (DuplicateItemNameException)
+            {
+                MessageBox.Show("Már van elmentve ilyen nevű ország.", "Hiba");
+                nameBox.Focus();
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
             }
         }
         

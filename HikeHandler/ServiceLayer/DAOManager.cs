@@ -78,138 +78,43 @@ namespace HikeHandler.ServiceLayer
 
         #region Country Methods
 
-        public bool SaveCountry(CountryForSave country)
+        public void SaveCountry(CountryForSave country)
         {
-            try
+            if (countryDao.IsDuplicateName(country.Name))
             {
-                if (countryDao.IsDuplicateName(country.Name))
-                {
-                    MessageBox.Show("Már van elmentve ilyen nevű ország.", "Hiba");
-                    return false;
-                }
-                countryDao.SaveCountry(country);
-                return true;
+                throw new DuplicateItemNameException();
             }
-            catch (NoDBConnectionException)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-            }
-            catch (DBErrorException ex)
-            {
-                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-            }
-            return false;
+            countryDao.SaveCountry(country);
         }
 
         public List<NameAndID> GetAllCountryNames()
         {
-            List<NameAndID> result = countryDao.GetCountryNames();
-            return result;
-
-            /*catch (NoDBConnectionException)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return null;
-            }
-            catch (DBErrorException ex)
-            {
-                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
-                return null;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-                return null;
-            }*/
+            return countryDao.GetCountryNames();
         }
 
         public List<CountryForView> SearchCountry(CountryForSearch country)
         {
-            List<CountryForView> resultList = countryDao.SearchCountry(country);
-                return resultList;
-            
-            /*catch (NoDBConnectionException)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return null;
-            }
-            catch (DBErrorException ex)
-            {
-                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
-                return null;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-                return null;
-            }*/
+            return countryDao.SearchCountry(country);
         }
 
         public CountryForView SearchCountry(int countryID)
         {
-            try
-            {
-                CountryForView country = countryDao.GetCountryData(countryID);
-                if (country == null)
-                {
-                    MessageBox.Show("Nem található a keresett ország.", "Hiba");
-                }
-                return country;
-            }
-            catch (NoDBConnectionException)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return null;
-            }
-            catch (DBErrorException ex)
-            {
-                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
-                return null;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-                return null;
-            }
+            return countryDao.GetCountryData(countryID);
         }
 
-        public bool UpdateCountry(CountryForUpdate country)
+        public void UpdateCountry(CountryForUpdate country)
         {
-            try
+            if (country.NewName != country.OldName)
             {
-                if (country.NewName != country.OldName)
+                if (countryDao.IsDuplicateName(country.NewName))
                 {
-                    if (countryDao.IsDuplicateName(country.NewName))
-                    {
-                        MessageBox.Show("Már van elmentve ilyen nevű ország.");
-                        return false;
-                    }
+                    throw new DuplicateItemNameException();
                 }
-                countryDao.UpdateCountry(country);
-                return true;
             }
-            catch (NoDBConnectionException)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return false;
-            }
-            catch (DBErrorException ex)
-            {
-                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
-                return false;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-                return false;
-            }
+            countryDao.UpdateCountry(country);
         }
 
-        public bool DeleteCountry(int countryID)
+        public void DeleteCountry(int countryID)
         {
             // asking for confirmation
             string message = "Biztosan törli?";
@@ -217,33 +122,13 @@ namespace HikeHandler.ServiceLayer
             MessageBoxButtons buttons = MessageBoxButtons.YesNo;
             DialogResult result = MessageBox.Show(message, caption, buttons);
             if (result == DialogResult.No)
-                return false;
+                return;
 
-            try
+            if (!countryDao.IsDeletable(countryID))
             {
-                if (!countryDao.IsDeletable(countryID))
-                {
-                    MessageBox.Show("Csak olyan ország törölhető, amihez nem tartozik tájegység, checkpoint vagy túra.");
-                    return false;
-                }
-                countryDao.DeleteCountry(countryID);
-                return true;
+                throw new NotDeletableException();
             }
-            catch (NoDBConnectionException)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return false;
-            }
-            catch (DBErrorException ex)
-            {
-                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
-                return false;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-                return false;
-            }
+            countryDao.DeleteCountry(countryID);
         }
 
         #endregion

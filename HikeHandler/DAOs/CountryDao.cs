@@ -246,7 +246,7 @@ VALUES (@name, 0, 0, 0, @description);";
                 adapter.Fill(table);
                 if (table.Rows.Count == 0)
                 {
-                    return null; 
+                    throw new NoItemFoundException();
                 }
                 if (table.Rows.Count > 1)
                 {

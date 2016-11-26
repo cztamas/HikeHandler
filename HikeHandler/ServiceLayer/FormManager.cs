@@ -44,7 +44,7 @@ namespace HikeHandler.ServiceLayer
 
         private bool CreateConnection(LoginData loginData)
         {
-            string connectionString = "server=localhost; database=hikehandler; uid=" + loginData.username + "; pwd=" + loginData.password + ";";
+            string connectionString = "server=localhost; database=hikehandler; uid=" + loginData.Username + "; pwd=" + loginData.Password + ";";
             MySqlConnection connection = new MySqlConnection(connectionString);
             try
             {

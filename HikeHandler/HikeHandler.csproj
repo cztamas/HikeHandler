@@ -48,11 +48,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModelObjects\CP\CPType.cs" />
+    <Compile Include="ModelObjects\Hike\HikeType.cs" />
+    <Compile Include="ModelObjects\Intervals\DateInterval.cs" />
+    <Compile Include="ModelObjects\Intervals\DatePile.cs" />
+    <Compile Include="ModelObjects\Intervals\IntInterval.cs" />
+    <Compile Include="ModelObjects\Intervals\IntPile.cs" />
+    <Compile Include="ModelObjects\LoginData.cs" />
     <Compile Include="ModelObjects\NameAndID.cs" />
     <Compile Include="Other\Exceptions\DuplicateDateException.cs" />
     <Compile Include="Other\Exceptions\DuplicateItemNameException.cs" />
     <Compile Include="Other\Exceptions\NoItemFoundException.cs" />
     <Compile Include="Other\Exceptions\NotDeletableException.cs" />
+    <Compile Include="Other\Interfaces\IDAOManager.cs" />
     <Compile Include="UI\Controls\HikeDescriptionBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -89,11 +97,6 @@
     <Compile Include="UI\Controls\CPHandler.Designer.cs">
       <DependentUpon>CPHandler.cs</DependentUpon>
     </Compile>
-    <Compile Include="Other\Interfaces\ICountryDao.cs" />
-    <Compile Include="Other\Interfaces\ICPDao.cs" />
-    <Compile Include="Other\Interfaces\IHikeDao.cs" />
-    <Compile Include="Other\Interfaces\IRegionDao.cs" />
-    <Compile Include="ModelObjects\Miscellaneous.cs" />
     <Compile Include="ModelObjects\HikeRegion\HikeRegionForView.cs" />
     <Compile Include="UI\Forms\AddCountryForm.cs">
       <SubType>Form</SubType>

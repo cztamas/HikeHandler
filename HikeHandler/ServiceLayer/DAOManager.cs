@@ -9,10 +9,11 @@ using MySql.Data.MySqlClient;
 using HikeHandler.DAOs;
 using HikeHandler.ModelObjects;
 using HikeHandler.Exceptions;
+using HikeHandler.Interfaces;
 
 namespace HikeHandler.ServiceLayer
 {
-    public class DAOManager
+    public class DAOManager : IDAOManager
     {
         private CountryDao countryDao;
         private RegionDao regionDao;
@@ -78,13 +79,14 @@ namespace HikeHandler.ServiceLayer
 
         #region Country Methods
 
-        public void SaveCountry(CountryForSave country)
+        public bool SaveCountry(CountryForSave country)
         {
             if (countryDao.IsDuplicateName(country.Name))
             {
                 throw new DuplicateItemNameException();
             }
             countryDao.SaveCountry(country);
+            return true;
         }
 
         public List<NameAndID> GetAllCountryNames()
@@ -102,7 +104,7 @@ namespace HikeHandler.ServiceLayer
             return countryDao.GetCountryData(countryID);
         }
 
-        public void UpdateCountry(CountryForUpdate country)
+        public bool UpdateCountry(CountryForUpdate country)
         {
             if (country.NewName != country.OldName)
             {
@@ -112,23 +114,17 @@ namespace HikeHandler.ServiceLayer
                 }
             }
             countryDao.UpdateCountry(country);
+            return true;
         }
 
-        public void DeleteCountry(int countryID)
+        public bool DeleteCountry(int countryID)
         {
-            // asking for confirmation
-            string message = "Biztosan törli?";
-            string caption = "Ország törlése";
-            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
-            DialogResult result = MessageBox.Show(message, caption, buttons);
-            if (result == DialogResult.No)
-                return;
-
             if (!countryDao.IsDeletable(countryID))
             {
                 throw new NotDeletableException();
             }
             countryDao.DeleteCountry(countryID);
+            return true;
         }
 
         #endregion

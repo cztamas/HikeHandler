@@ -37,7 +37,7 @@ AND cp.name LIKE @name AND c.name LIKE @countryName AND r.name LIKE @regionName"
                 commandText += " AND c.idcountry=" + template.IDCountry;
             if (template.HikeCount != null)
             {
-                if (template.HikeCount.Count() > 0)
+                if (template.HikeCount.Count > 0)
                     commandText += " AND " + template.HikeCount.SqlSearchCondition("cp.hikecount");
             }
             if (template.TypeOfCP != null)

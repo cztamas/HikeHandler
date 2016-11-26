@@ -190,6 +190,15 @@ namespace HikeHandler.UI
 
         private void deleteCountryButton_Click(object sender, EventArgs e)
         {
+            // asking for confirmation
+            string message = "Biztosan törli?";
+            string caption = "Ország törlése";
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            DialogResult result = MessageBox.Show(message, caption, buttons);
+            if (result == DialogResult.No)
+            {
+                return;
+            }
             try
             {
                 daoManager.DeleteCountry(currentCountry.CountryID);

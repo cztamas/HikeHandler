@@ -1,18 +1,17 @@
-﻿using System;
-using System.Data;
-using System.Windows.Forms;
+﻿using HikeHandler.Exceptions;
+using HikeHandler.Interfaces;
 using HikeHandler.ModelObjects;
-using HikeHandler.ServiceLayer;
+using System;
 using System.Collections.Generic;
-using HikeHandler.Exceptions;
+using System.Windows.Forms;
 
 namespace HikeHandler.UI
 {
     public partial class AddRegionForm : Form
     {
-        private DAOManager daoManager;
+        private IDAOManager daoManager;
 
-        public AddRegionForm(DAOManager manager)
+        public AddRegionForm(IDAOManager manager)
         {
             InitializeComponent();
             daoManager = manager;

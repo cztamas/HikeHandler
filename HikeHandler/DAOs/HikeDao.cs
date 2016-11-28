@@ -1,12 +1,9 @@
-﻿using MySql.Data.MySqlClient;
+﻿using HikeHandler.Exceptions;
+using HikeHandler.ModelObjects;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data;
-using HikeHandler.ModelObjects;
-using HikeHandler.Exceptions;
 
 namespace HikeHandler.DAOs
 {
@@ -19,7 +16,7 @@ namespace HikeHandler.DAOs
             sqlConnection = connection;
         }
 
-        private string GetSearchCommandText(HikeForSearch template, bool anyCPOrder)
+        private string GetSearchCommandText(HikeForSearch template)
         {
             string commandText = @"SELECT h.idhike, h.position, h.date, h.idregion, r.name AS 'regionname', h.idcountry, 
 c.name AS 'countryname', h.type, h.description, h.cpstring FROM hike h, region r, country c WHERE h.idcountry=c.idcountry 
@@ -42,14 +39,14 @@ AND h.idregion=r.idregion AND c.name LIKE @countryName AND r.name LIKE @regionNa
             }
             if (template.HikeType != null)
                 commandText += " AND type = @type";
-            if (anyCPOrder)
+            if (template.AnyCPOrder)
             {
                 foreach (int item in template.CPList)
                 {
                     commandText += " AND cpstring LIKE '%." + item.ToString() + ".%'";
                 }
             }
-            if (!anyCPOrder)
+            if (!template.AnyCPOrder)
             {
                 string condition = string.Empty;
                 foreach (int item in template.CPList)
@@ -62,7 +59,7 @@ AND h.idregion=r.idregion AND c.name LIKE @countryName AND r.name LIKE @regionNa
             return commandText;
         }
 
-        public List<HikeForView> SearchHike(HikeForSearch template, bool anyCPOrder)
+        public List<HikeForView> SearchHike(HikeForSearch template)
         {
             if (sqlConnection == null)
             {
@@ -72,7 +69,7 @@ AND h.idregion=r.idregion AND c.name LIKE @countryName AND r.name LIKE @regionNa
             {
                 throw new NoDBConnectionException();
             }
-            string commandText = GetSearchCommandText(template, anyCPOrder);
+            string commandText = GetSearchCommandText(template);
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
                 command.Parameters.AddWithValue("@countryName", "%" + template.CountryName + "%");

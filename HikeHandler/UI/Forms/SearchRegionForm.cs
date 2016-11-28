@@ -1,28 +1,27 @@
-﻿using System;
-using System.Data;
-using System.Windows.Forms;
+﻿using HikeHandler.Exceptions;
+using HikeHandler.Interfaces;
 using HikeHandler.ModelObjects;
-using HikeHandler.ServiceLayer;
+using System;
 using System.Collections.Generic;
-using HikeHandler.Exceptions;
 using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace HikeHandler.UI
 {
     public partial class SearchRegionForm : Form
     {
-        private DAOManager daoManager;
+        private IDAOManager daoManager;
         private HikeRegionForSearch templateToShow;
         private List<HikeRegionForView> resultList;
         
-        public SearchRegionForm(DAOManager manager)
+        public SearchRegionForm(IDAOManager manager)
         {
             InitializeComponent();
             daoManager = manager;
             resultList = new List<HikeRegionForView>();
         }
 
-        public SearchRegionForm(DAOManager manager, HikeRegionForSearch template)
+        public SearchRegionForm(IDAOManager manager, HikeRegionForSearch template)
         {
             InitializeComponent();
             daoManager = manager;

@@ -1,20 +1,19 @@
-﻿using System;
-using System.Data;
-using System.Windows.Forms;
+﻿using HikeHandler.Exceptions;
+using HikeHandler.Interfaces;
 using HikeHandler.ModelObjects;
-using HikeHandler.ServiceLayer;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using HikeHandler.Exceptions;
+using System.Windows.Forms;
 
 namespace HikeHandler.UI
 {
     public partial class SearchCountryForm : Form
     {
-        private DAOManager daoManager;
+        private IDAOManager daoManager;
         List<CountryForView> resultList;
 
-        public SearchCountryForm(DAOManager manager)
+        public SearchCountryForm(IDAOManager manager)
         {
             InitializeComponent();
             daoManager = manager;

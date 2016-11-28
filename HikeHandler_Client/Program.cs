@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using HikeHandler.UI;
+using System;
 using System.Windows.Forms;
 
 namespace HikeHandler_Client
@@ -16,7 +14,8 @@ namespace HikeHandler_Client
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            ClientDaoManager manager = new ClientDaoManager();
+            Application.Run(new BaseForm(manager));
         }
     }
 }

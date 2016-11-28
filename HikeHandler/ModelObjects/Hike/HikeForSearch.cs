@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace HikeHandler.ModelObjects
 {
@@ -16,9 +15,11 @@ namespace HikeHandler.ModelObjects
         public HikeType? HikeType { get; set; }
         public List<int> CPList { get; set; }
 
-        public HikeForSearch()
+        public bool AnyCPOrder { get; set; }
+
+        /*public HikeForSearch()
         {
             CPList = new List<int>();
-        }
+        }*/
     }
 }

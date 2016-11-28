@@ -1,25 +1,25 @@
-﻿using System;
+﻿using HikeHandler.Exceptions;
+using HikeHandler.Interfaces;
+using HikeHandler.ModelObjects;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
-using HikeHandler.ModelObjects;
-using HikeHandler.ServiceLayer;
-using HikeHandler.Exceptions;
 
 namespace HikeHandler.UI
 {
     public partial class SearchCPForm : Form
     {
-        private DAOManager daoManager;
+        private IDAOManager daoManager;
         private CPForSearch templateToShow;
 
-        public SearchCPForm(DAOManager manager)
+        public SearchCPForm(IDAOManager manager)
         {
             InitializeComponent();
             daoManager = manager;
         }
 
-        public SearchCPForm(DAOManager manager, CPForSearch template)
+        public SearchCPForm(IDAOManager manager, CPForSearch template)
         {
             InitializeComponent();
             daoManager = manager;

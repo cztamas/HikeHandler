@@ -2,14 +2,12 @@
 using HikeHandler.Interfaces;
 using HikeHandler.ModelObjects;
 using HikeHandler.ServiceLayer;
-using Newtonsoft.Json;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Web;
 using System.Web.Http;
 
 namespace HikeHandlerWebApi.Controllers
@@ -18,6 +16,19 @@ namespace HikeHandlerWebApi.Controllers
     public class DaoController : ApiController, IDAOManager
     {
         private IDAOManager daoManager;
+
+        public DaoController()
+        {
+            string connectionString = "server=localhost; database=test; uid=test; pwd=testonly;";
+            MySqlConnection connection = new MySqlConnection(connectionString);
+            try
+            {
+                connection.Open();
+                daoManager = new DAOManager(connection);
+            }
+            catch (Exception)
+            { }
+        }
 
         public DaoController(IDAOManager manager)
         {
@@ -345,11 +356,11 @@ namespace HikeHandlerWebApi.Controllers
 
         [Route("SearchHike")]
         [HttpGet]
-        public List<HikeForView> SearchHike(HikeForSearch hike, bool anyCPOrder)
+        public List<HikeForView> SearchHike(HikeForSearch hike)
         {
             try
             {
-                return daoManager.SearchHike(hike, anyCPOrder);
+                return daoManager.SearchHike(hike);
             }
             catch (Exception ex)
             {

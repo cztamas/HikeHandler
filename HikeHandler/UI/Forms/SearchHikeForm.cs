@@ -1,25 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Windows.Forms;
+﻿using HikeHandler.Exceptions;
+using HikeHandler.Interfaces;
 using HikeHandler.ModelObjects;
-using HikeHandler.ServiceLayer;
-using HikeHandler.Exceptions;
+using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace HikeHandler.UI
 {
     public partial class SearchHikeForm : Form
     {
-        private DAOManager daoManager;
+        private IDAOManager daoManager;
         private HikeForSearch templateToShow;
 
-        public SearchHikeForm(DAOManager manager)
+        public SearchHikeForm(IDAOManager manager)
         {
             InitializeComponent();
             daoManager = manager;
         }
 
-        public SearchHikeForm(DAOManager manager, HikeForSearch template)
+        public SearchHikeForm(IDAOManager manager, HikeForSearch template)
         {
             InitializeComponent();
             daoManager = manager;
@@ -136,7 +135,7 @@ namespace HikeHandler.UI
         {
             try
             {
-                List<HikeForView> resultList = daoManager.SearchHike(template, checkPointHandler.AnyCPOrder);
+                List<HikeForView> resultList = daoManager.SearchHike(template);
                 resultView.DataSource = resultList;
                 resultView.Columns["HikeID"].Visible = false;
                 resultView.Columns["Position"].HeaderText = "Sorszám";
@@ -193,6 +192,7 @@ namespace HikeHandler.UI
             template.Position = hikePositionBox.Text.ToIntPile();
             template.HikeDate = dateBox.Text.ToDatePile();
             template.CPList = checkPointHandler.CPList;
+            template.AnyCPOrder = checkPointHandler.AnyCPOrder;
             return template;
         }
 

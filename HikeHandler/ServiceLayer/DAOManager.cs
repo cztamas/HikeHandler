@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using MySql.Data.MySqlClient;
-using HikeHandler.DAOs;
-using HikeHandler.ModelObjects;
+﻿using HikeHandler.DAOs;
 using HikeHandler.Exceptions;
 using HikeHandler.Interfaces;
+using HikeHandler.ModelObjects;
+using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace HikeHandler.ServiceLayer
 {
@@ -283,9 +279,9 @@ namespace HikeHandler.ServiceLayer
             return true;
         }
 
-        public List<HikeForView> SearchHike(HikeForSearch hike, bool anyCPOrder)
+        public List<HikeForView> SearchHike(HikeForSearch hike)
         {
-            return hikeDao.SearchHike(hike, anyCPOrder);
+            return hikeDao.SearchHike(hike);
         }
 
         public HikeForView SearchHike(int hikeID)

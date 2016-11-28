@@ -1,6 +1,6 @@
 ﻿using HikeHandler.Exceptions;
+using HikeHandler.Interfaces;
 using HikeHandler.ModelObjects;
-using HikeHandler.ServiceLayer;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -10,9 +10,9 @@ namespace HikeHandler.UI
     public partial class ViewHikeForm : Form
     {
         private HikeForView currentHike;
-        private DAOManager daoManager;
+        private IDAOManager daoManager;
 
-        public ViewHikeForm(DAOManager manager, int hikeID)
+        public ViewHikeForm(IDAOManager manager, int hikeID)
         {
             InitializeComponent();
             daoManager = manager;

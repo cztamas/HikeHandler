@@ -26,7 +26,7 @@ namespace HikeHandler.Interfaces
         CPForView SearchCP(int cpID);
         List<CPForView> SearchCP(CPForSearch cp);
         HikeForView SearchHike(int hikeID);
-        List<HikeForView> SearchHike(HikeForSearch hike, bool anyCPOrder);
+        List<HikeForView> SearchHike(HikeForSearch hike);
         HikeRegionForView SearchRegion(int regionID);
         List<HikeRegionForView> SearchRegion(HikeRegionForSearch region);
         bool UpdateCountry(CountryForUpdate country);

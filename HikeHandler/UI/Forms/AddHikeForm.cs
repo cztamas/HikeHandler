@@ -1,23 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using HikeHandler.Exceptions;
+using HikeHandler.Interfaces;
 using HikeHandler.ModelObjects;
-using HikeHandler.ServiceLayer;
-using HikeHandler.Exceptions;
+using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace HikeHandler.UI
 {
     public partial class AddHikeForm : Form
     {
-        private DAOManager daoManager;
+        private IDAOManager daoManager;
 
-        public AddHikeForm(DAOManager manager)
+        public AddHikeForm(IDAOManager manager)
         {
             InitializeComponent();
             daoManager = manager;

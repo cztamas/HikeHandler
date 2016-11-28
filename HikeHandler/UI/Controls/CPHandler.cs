@@ -1,17 +1,16 @@
-﻿using System;
+﻿using HikeHandler.Exceptions;
+using HikeHandler.Interfaces;
+using HikeHandler.ModelObjects;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Windows.Forms;
-using HikeHandler.ServiceLayer;
-using HikeHandler.ModelObjects;
-using HikeHandler.Exceptions;
 
 namespace HikeHandler.UI
 {
     public partial class CPHandler : UserControl
     {
-        private DAOManager daoManager;
+        private IDAOManager daoManager;
         private BindingList<NameAndID> cpNameList;
         public int RegionID { get; set; }
         public bool AnyCPOrder
@@ -55,7 +54,7 @@ namespace HikeHandler.UI
             InitializeComponent();
         }        
 
-        public void Init(DAOManager manager, CPHandlerStyle style)
+        public void Init(IDAOManager manager, CPHandlerStyle style)
         {
             daoManager = manager;
             switch (style)

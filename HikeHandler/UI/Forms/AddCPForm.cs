@@ -1,19 +1,17 @@
-﻿using System;
-using System.Data;
-using System.Windows.Forms;
+﻿using HikeHandler.Exceptions;
+using HikeHandler.Interfaces;
 using HikeHandler.ModelObjects;
-using HikeHandler.ServiceLayer;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using HikeHandler.Exceptions;
+using System.Windows.Forms;
 
 namespace HikeHandler.UI
 {
     public partial class AddCPForm : Form
     {
-        private DAOManager daoManager;
+        private IDAOManager daoManager;
 
-        public AddCPForm(DAOManager manager)
+        public AddCPForm(IDAOManager manager)
         {
             InitializeComponent();
             daoManager = manager;

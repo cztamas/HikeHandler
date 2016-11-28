@@ -238,7 +238,17 @@ namespace HikeHandler_Client
 
         public List<CPForView> SearchCP(CPForSearch cp)
         {
-            throw new NotImplementedException();
+            HttpRequestMessage request = new HttpRequestMessage();
+            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/SearchCP");
+            request.Content = new StringContent(JsonConvert.SerializeObject(cp), Encoding.UTF8, "application/json");
+            request.Method = new HttpMethod("GET");
+
+            HttpResponseMessage response = httpClient.SendAsync(request).Result;
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                throw new Exception(response.Content.ReadAsStringAsync().Result);
+            }
+            return JsonConvert.DeserializeObject<List<CPForView>>(response.Content.ReadAsStringAsync().Result);
         }
 
         public CPForView SearchCP(int cpID)
@@ -258,7 +268,17 @@ namespace HikeHandler_Client
 
         public List<HikeRegionForView> SearchRegion(HikeRegionForSearch region)
         {
-            throw new NotImplementedException();
+            HttpRequestMessage request = new HttpRequestMessage();
+            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/SearchRegion");
+            request.Content = new StringContent(JsonConvert.SerializeObject(region), Encoding.UTF8, "application/json");
+            request.Method = new HttpMethod("GET");
+
+            HttpResponseMessage response = httpClient.SendAsync(request).Result;
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                throw new Exception(response.Content.ReadAsStringAsync().Result);
+            }
+            return JsonConvert.DeserializeObject<List<HikeRegionForView>>(response.Content.ReadAsStringAsync().Result);
         }
 
         public HikeRegionForView SearchRegion(int regionID)

@@ -176,8 +176,8 @@ namespace HikeHandler.UI
         {
             try
             {
-                List<NameAndID> table = daoManager.GetAllCPsOfRegion(regionID);
-                cpNameComboBox.DataSource = table;
+                List<NameAndID> list = daoManager.GetAllCPsOfRegion(regionID);
+                cpNameComboBox.DataSource = list;
                 cpNameComboBox.ValueMember = "ID";
                 cpNameComboBox.DisplayMember = "Name";
             }

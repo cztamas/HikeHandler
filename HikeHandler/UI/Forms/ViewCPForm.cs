@@ -4,6 +4,7 @@ using System.Data;
 using System.Windows.Forms;
 using HikeHandler.ModelObjects;
 using HikeHandler.ServiceLayer;
+using HikeHandler.Exceptions;
 
 namespace HikeHandler.UI
 {    
@@ -70,11 +71,28 @@ namespace HikeHandler.UI
 
         private void RefreshCPData()
         {
-            currentCP = daoManager.SearchCP(currentCP.CPID);
-            if (currentCP == null)
+            try
             {
-                Close();
+                currentCP = daoManager.SearchCP(currentCP.CPID);
+                return;
             }
+            catch (NoItemFoundException)
+            {
+                MessageBox.Show("Nem található a keresett checkpoint.", "Hiba");
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+            }
+            Close();
         }
 
         private void GetCPTypes()
@@ -152,11 +170,30 @@ namespace HikeHandler.UI
             CPForUpdate cp = GetDataForUpdate();
             if (cp == null)
                 return;
-            if (daoManager.UpdateCP(cp))
+            try
             {
-                MakeUneditable();
-                RefreshCPData();
-                RefreshForm();
+                if (daoManager.UpdateCP(cp))
+                {
+                    MakeUneditable();
+                    RefreshCPData();
+                    RefreshForm();
+                }
+            }
+            catch (DuplicateItemNameException)
+            {
+                MessageBox.Show("Már van elmentve ilyen nevű checkpoint.");
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
             }
         }
 
@@ -170,10 +207,38 @@ namespace HikeHandler.UI
 
         private void deleteCPbutton_Click(object sender, EventArgs e)
         {
-            if (daoManager.DeleteCP(currentCP))
+            // asking for confirmation
+            string message = "Biztosan törli?";
+            string caption = "Ország törlése";
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            DialogResult result = MessageBox.Show(message, caption, buttons);
+            if (result == DialogResult.No)
             {
-                MessageBox.Show("Törölve.");
-                Close();
+                return;
+            }
+            try
+            {
+                if (daoManager.DeleteCP(currentCP))
+                {
+                    MessageBox.Show("Törölve.");
+                    Close();
+                }
+            }
+            catch (NotDeletableException)
+            {
+                MessageBox.Show("Csak olyan checkpoint törölhető, amihez nem tartozik túra.");
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
             }
         }
 

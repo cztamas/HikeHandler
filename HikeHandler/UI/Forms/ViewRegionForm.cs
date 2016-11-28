@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using HikeHandler.ModelObjects;
 using HikeHandler.ServiceLayer;
+using HikeHandler.Exceptions;
 
 namespace HikeHandler.UI
 {
@@ -61,11 +62,28 @@ namespace HikeHandler.UI
 
         private void RefreshRegionData()
         {
-            currentRegion = daoManager.SearchRegion(currentRegion.RegionID);
-            if (currentRegion == null)
+            try
             {
-                Close();
+                currentRegion = daoManager.SearchRegion(currentRegion.RegionID);
+                return;
             }
+            catch (NoItemFoundException)
+            {
+                MessageBox.Show("Nem található a keresett tájegység.", "Hiba");
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+            }
+            Close();
         }
 
         private HikeRegionForUpdate GetDataForUpdate()
@@ -117,11 +135,30 @@ namespace HikeHandler.UI
             {
                 return;
             }
-            if (daoManager.UpdateRegion(region))
+            try
             {
-                RefreshRegionData();
-                RefreshForm();
-                MakeUneditable();
+                if (daoManager.UpdateRegion(region))
+                {
+                    RefreshRegionData();
+                    RefreshForm();
+                    MakeUneditable();
+                }
+            }
+            catch (DuplicateItemNameException)
+            {
+                MessageBox.Show("Már van elmentve ilyen nevű tájegység.");
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
             }
         }
 
@@ -145,10 +182,38 @@ namespace HikeHandler.UI
 
         private void deleteButton_Click(object sender, EventArgs e)
         {
-            if (daoManager.DeleteRegion(currentRegion))
+            // asking for confirmation
+            string message = "Biztosan törli?";
+            string caption = "Tájegység törlése";
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            DialogResult result = MessageBox.Show(message, caption, buttons);
+            if (result == DialogResult.No)
             {
-                MessageBox.Show("Törölve");
-                Close();
+                return;
+            }
+            try
+            {
+                if (daoManager.DeleteRegion(currentRegion))
+                {
+                    MessageBox.Show("Törölve");
+                    Close();
+                }
+            }
+            catch (NotDeletableException)
+            {
+                MessageBox.Show("Csak olyan tájegység törölhető, amihez nem tartozik checkpoint vagy túra.");
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
             }
         }
 

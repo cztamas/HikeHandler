@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Windows.Forms;
+﻿using HikeHandler.Exceptions;
 using HikeHandler.ModelObjects;
 using HikeHandler.ServiceLayer;
+using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace HikeHandler.UI
 {
@@ -79,11 +79,28 @@ namespace HikeHandler.UI
 
         private void RefreshHikeData()
         {
-            currentHike = daoManager.SearchHike(currentHike.HikeID);
-            if (currentHike == null)
+            try
             {
-                Close();
+                currentHike = daoManager.SearchHike(currentHike.HikeID);
+                return;
             }
+            catch (NoItemFoundException)
+            {
+                MessageBox.Show("Nem található a keresett ország.", "Hiba");
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+            }
+            Close();
         }
 
         private void GetHikeTypes()
@@ -153,20 +170,67 @@ namespace HikeHandler.UI
         private void saveEditButton_Click(object sender, EventArgs e)
         {
             HikeForUpdate hike = GetDataForUpdate();
-            if (daoManager.UpdateHike(hike))
+            if (hike == null)
             {
-                RefreshHikeData();
-                RefreshForm();
-                MakeUneditable();
+                return;
+            }
+            try
+            {
+                if (daoManager.UpdateHike(hike))
+                {
+                    RefreshHikeData();
+                    RefreshForm();
+                    MakeUneditable();
+                }
+            }
+            catch (DuplicateDateException)
+            {
+                MessageBox.Show("Ezzel a dátummal már van elmentve túra", "Hiba");
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
             }
         }
 
         private void deleteHikeButton_Click(object sender, EventArgs e)
         {
-            if (daoManager.DeleteHike(currentHike))
+            // asking for confirmation
+            string message = "Biztosan törli?";
+            string caption = "Ország törlése";
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            DialogResult result = MessageBox.Show(message, caption, buttons);
+            if (result == DialogResult.No)
             {
-                MessageBox.Show("Törölve");
-                Close();
+                return;
+            }
+            try
+            {
+                if (daoManager.DeleteHike(currentHike))
+                {
+                    MessageBox.Show("Törölve");
+                    Close();
+                }
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
             }
         }
 

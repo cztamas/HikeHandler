@@ -134,136 +134,52 @@ namespace HikeHandler.ServiceLayer
         // Returns in a datatable the names and ids of every region of the given country.
         public List<NameAndID> GetAllRegionsOfCountry(int countryID)
         {
-                List<NameAndID> regions = regionDao.GetRegionNames(countryID);
-                return regions;
+                return regionDao.GetRegionNames(countryID);
         }
 
         public bool SaveRegion(HikeRegionForSave region)
         {
-            try
+            if (regionDao.IsDuplicateName(region.Name))
             {
-                if (regionDao.IsDuplicateName(region.Name))
-                {
-                    MessageBox.Show("Már van elmentve ilyen nevű tájegység.", "Hiba");
-                    return false;
-                }
-                regionDao.SaveRegion(region);
-                countryDao.UpdateRegionCount(region.CountryID);
-                return true;
+                throw new DuplicateItemNameException();
             }
-            catch (NoDBConnectionException)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-            }
-            return false;
+            regionDao.SaveRegion(region);
+            countryDao.UpdateRegionCount(region.CountryID);
+            return true;
         }
 
         public List<HikeRegionForView> SearchRegion(HikeRegionForSearch region)
         {
-            List<HikeRegionForView> result = regionDao.SearchRegion(region);
-            return result;
+            return regionDao.SearchRegion(region);
         }
 
         public HikeRegionForView SearchRegion(int regionID)
         {
-            try
-            {
-                HikeRegionForView region = regionDao.GetRegionData(regionID);
-                if (region == null)
-                {
-                    MessageBox.Show("Nem található a keresett tájegység.", "Hiba");
-                }
-                return region;
-            }
-            catch (NoDBConnectionException)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return null;
-            }
-            catch (DBErrorException ex)
-            {
-                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
-                return null;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-                return null;
-            }
+            return regionDao.GetRegionData(regionID);
         }
 
         public bool UpdateRegion(HikeRegionForUpdate region)
         {
-            try
+            if (region.NewName != region.OldName)
             {
-                if (region.NewName != region.OldName)
+                if (regionDao.IsDuplicateName(region.NewName))
                 {
-                    if (regionDao.IsDuplicateName(region.NewName))
-                    {
-                        MessageBox.Show("Már van elmentve ilyen nevű tájegység.");
-                        return false;
-                    }
+                    throw new DuplicateItemNameException();
                 }
-                regionDao.UpdateRegion(region);
-                return true;
             }
-            catch (NoDBConnectionException)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return false;
-            }
-            catch (DBErrorException ex)
-            {
-                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
-                return false;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-                return false;
-            }
+            regionDao.UpdateRegion(region);
+            return true;
         }
 
         public bool DeleteRegion(HikeRegionForView region)
         {
-            // asking for confirmation
-            string message = "Biztosan törli?";
-            string caption = "Tájegység törlése";
-            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
-            DialogResult result = MessageBox.Show(message, caption, buttons);
-            if (result == DialogResult.No)
-                return false;
-
-            try
+            if (!regionDao.IsDeletable(region.RegionID))
             {
-                if (!regionDao.IsDeletable(region.RegionID))
-                {
-                    MessageBox.Show("Csak olyan tájegység törölhető, amihez nem tartozik checkpoint vagy túra.");
-                    return false;
-                }
-                regionDao.DeleteRegion(region.RegionID);
-                countryDao.UpdateRegionCount(region.CountryID);
-                return true;
+                throw new NotDeletableException();
             }
-            catch (NoDBConnectionException)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return false;
-            }
-            catch (DBErrorException ex)
-            {
-                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
-                return false;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-                return false;
-            }
+            regionDao.DeleteRegion(region.RegionID);
+            countryDao.UpdateRegionCount(region.CountryID);
+            return true;
         }
 
         #endregion
@@ -275,106 +191,32 @@ namespace HikeHandler.ServiceLayer
             return cpDao.GetCPTypes();
         }
 
-        // Returns in a datatable the names and ids of every cp of the given region.
+        // Returns in a list the names and ids of every cp of the given region.
         public List<NameAndID> GetAllCPsOfRegion(int regionID)
         {
-            try
-            {
-                List<NameAndID> result = cpDao.GetCPNameTable(regionID);
-                return result;
-            }
-            catch (NoDBConnectionException)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return null;
-            }
-            catch (DBErrorException ex)
-            {
-                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
-                return null;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-                return null;
-            }
+            return cpDao.GetCPNameTable(regionID);
         }
 
         public List<NameAndID> GetAllCPs()
         {
-            try
-            {
-                List<NameAndID> result = cpDao.GetCPNameTable();
-                return result;
-            }
-            catch (NoDBConnectionException)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return null;
-            }
-            catch (DBErrorException ex)
-            {
-                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
-                return null;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-                return null;
-            }
+            return cpDao.GetCPNameTable();
         }
 
         public List<NameAndID> GetCPsFromList(List<int> cpIDList)
         {
-            try
-            {
-                List<NameAndID> result = cpDao.GetCPNameTable(cpIDList);
-                return result;
-            }
-            catch (NoDBConnectionException)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return null;
-            }
-            catch (DBErrorException ex)
-            {
-                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
-                return null;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-                return null;
-            }
+            return cpDao.GetCPNameTable(cpIDList);
         }
 
         public bool SaveCP(CPForSave cp)
         {
-            try
+            if (cpDao.IsDuplicateName(cp.Name))
             {
-                if (cpDao.IsDuplicateName(cp.Name))
-                {
-                    MessageBox.Show("Már van elmentve ilyen nevű checkpoint.", "Hiba");
-                    return false;
-                }
-                cpDao.SaveCP(cp);
-                countryDao.UpdateCPCount(cp.CountryID);
-                regionDao.UpdateCPCount(cp.RegionID);
-                return true;
+                throw new DuplicateItemNameException();
             }
-            catch (NoDBConnectionException)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-            }
-            catch (DBErrorException ex)
-            {
-                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-            }
-            return false;
+            cpDao.SaveCP(cp);
+            countryDao.UpdateCPCount(cp.CountryID);
+            regionDao.UpdateCPCount(cp.RegionID);
+            return true;
         }
 
         public List<CPForView> SearchCP(CPForSearch cp)
@@ -384,101 +226,32 @@ namespace HikeHandler.ServiceLayer
 
         public CPForView SearchCP(int cpID)
         {
-            try
-            {
-                CPForView cp = cpDao.GetCPData(cpID);
-                if (cp == null)
-                {
-                    MessageBox.Show("Nem található a keresett checkpoint.", "Hiba");
-                }
-                return cp;
-            }
-            catch (NoDBConnectionException)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return null;
-            }
-            catch (DBErrorException ex)
-            {
-                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
-                return null;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-                return null;
-            }
+            return cpDao.GetCPData(cpID);
         }
 
         public bool UpdateCP(CPForUpdate cp)
         {
-            try
+            if (cp.NewName != cp.OldName)
             {
-                if (cp.NewName != cp.OldName)
+                if (cpDao.IsDuplicateName(cp.NewName))
                 {
-                    if (cpDao.IsDuplicateName(cp.NewName))
-                    {
-                        MessageBox.Show("Már van elmentve ilyen nevű checkpoint.");
-                        return false;
-                    }
+                    throw new DuplicateItemNameException();
                 }
-                cpDao.UpdateCP(cp);
-                return true;
             }
-            catch (NoDBConnectionException)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return false;
-            }
-            catch (DBErrorException ex)
-            {
-                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
-                return false;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-                return false;
-            }
+            cpDao.UpdateCP(cp);
+            return true;
         }
 
         public bool DeleteCP(CPForView cp)
         {
-            // asking for confirmation
-            string message = "Biztosan törli?";
-            string caption = "Ország törlése";
-            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
-            DialogResult result = MessageBox.Show(message, caption, buttons);
-            if (result == DialogResult.No)
-                return false;
-
-            try
+            if (!cpDao.IsDeletable(cp.CPID))
             {
-                if (!cpDao.IsDeletable(cp.CPID))
-                {
-                    MessageBox.Show("Csak olyan checkpoint törölhető, amihez nem tartozik túra.");
-                    return false;
-                }
-                cpDao.DeleteCP(cp.CPID);
-                regionDao.UpdateCPCount(cp.RegionID);
-                countryDao.UpdateCPCount(cp.CountryID);
-                return true;
+                throw new NotDeletableException();
             }
-            catch (NoDBConnectionException)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return false;
-            }
-            catch (DBErrorException ex)
-            {
-                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
-                return false;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-                return false;
-            }
+            cpDao.DeleteCP(cp.CPID);
+            regionDao.UpdateCPCount(cp.RegionID);
+            countryDao.UpdateCPCount(cp.CountryID);
+            return true;
         }
 
         #endregion
@@ -492,39 +265,22 @@ namespace HikeHandler.ServiceLayer
 
         public bool SaveHike(HikeForSave hike)
         {
-            try
+            if (hikeDao.IsDuplicateDate(hike.HikeDate))
             {
-                if (hikeDao.IsDuplicateDate(hike.HikeDate))
+                throw new DuplicateDateException();
+            }
+            hikeDao.SaveHike(hike);
+            if (hike.HikeType == HikeType.túra)
+            {
+                hikeDao.InsertIntoPositionList(hike.HikeDate);
+                countryDao.UpdateHikeCount(hike.CountryID);
+                regionDao.UpdateHikeCount(hike.RegionID);
+                foreach (int item in hike.CPList)
                 {
-                    MessageBox.Show("Ezzel a dátummal már van elmentve túra.", "Hiba");
-                    return false;
+                    cpDao.UpdateHikeCount(item);
                 }
-                hikeDao.SaveHike(hike);
-                if (hike.HikeType == HikeType.túra)
-                {
-                    hikeDao.InsertIntoPositionList(hike.HikeDate);
-                    countryDao.UpdateHikeCount(hike.CountryID);
-                    regionDao.UpdateHikeCount(hike.RegionID);
-                    foreach (int item in hike.CPList)
-                    {
-                        cpDao.UpdateHikeCount(item);
-                    }
-                }
-                return true;
             }
-            catch (NoDBConnectionException)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-            }
-            catch (DBErrorException ex)
-            {
-                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-            }
-            return false;
+            return true;
         }
 
         public List<HikeForView> SearchHike(HikeForSearch hike, bool anyCPOrder)
@@ -534,116 +290,49 @@ namespace HikeHandler.ServiceLayer
 
         public HikeForView SearchHike(int hikeID)
         {
-            try
-            {
-                HikeForView hike = hikeDao.GetHikeData(hikeID);
-                if (hike == null)
-                {
-                    MessageBox.Show("Nem található a keresett ország.", "Hiba");
-                }
-                return hike;
-            }
-            catch (NoDBConnectionException)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return null;
-            }
-            catch (DBErrorException ex)
-            {
-                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
-                return null;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-                return null;
-            }
+            return hikeDao.GetHikeData(hikeID);
         }
 
         public bool UpdateHike(HikeForUpdate hike)
         {
-            try
+            bool dateChanged = (hike.OldHikeDate != hike.NewHikeDate);
+            bool typeChanged = (hike.OldHikeType != hike.NewHikeType);
+            if (dateChanged && hikeDao.IsDuplicateDate(hike.NewHikeDate))
             {
-                bool dateChanged = (hike.OldHikeDate != hike.NewHikeDate);
-                bool typeChanged = (hike.OldHikeType != hike.NewHikeType);
-                if (dateChanged && hikeDao.IsDuplicateDate(hike.NewHikeDate))
-                {
-                    MessageBox.Show("Ezzel a dátummal már van elmentve túra", "Hiba");
-                }
-                hikeDao.UpdateHike(hike);
-                if ((typeChanged || dateChanged) && hike.OldHikeType == HikeType.túra)
-                {
-                    hikeDao.RemoveFromPositionList(hike.HikeID, hike.OldHikeDate);
-                }
-                if ((typeChanged || dateChanged) && hike.NewHikeType == HikeType.túra)
-                {
-                    hikeDao.InsertIntoPositionList(hike.NewHikeDate);
-                }
-                if (typeChanged)
-                {
-                    countryDao.UpdateHikeCount(hike.CountryID);
-                    regionDao.UpdateHikeCount(hike.RegionID);
-                }
-                foreach (int item in hike.OldCPList)
-                    cpDao.UpdateHikeCount(item);
-                foreach (int item in hike.NewCPList)
-                    cpDao.UpdateHikeCount(item);
-                return true;
+                throw new DuplicateDateException();
             }
-            catch (NoDBConnectionException)
+            hikeDao.UpdateHike(hike);
+            if ((typeChanged || dateChanged) && hike.OldHikeType == HikeType.túra)
             {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return false;
+                hikeDao.RemoveFromPositionList(hike.HikeID, hike.OldHikeDate);
             }
-            catch (DBErrorException ex)
+            if ((typeChanged || dateChanged) && hike.NewHikeType == HikeType.túra)
             {
-                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
-                return false;
+                hikeDao.InsertIntoPositionList(hike.NewHikeDate);
             }
-            catch (Exception ex)
+            if (typeChanged)
             {
-                MessageBox.Show(ex.Message, "Hiba");
-                return false;
+                countryDao.UpdateHikeCount(hike.CountryID);
+                regionDao.UpdateHikeCount(hike.RegionID);
             }
+            foreach (int item in hike.OldCPList)
+                cpDao.UpdateHikeCount(item);
+            foreach (int item in hike.NewCPList)
+                cpDao.UpdateHikeCount(item);
+            return true;
         }
 
         public bool DeleteHike(HikeForView hike)
         {
-            // asking for confirmation
-            string message = "Biztosan törli?";
-            string caption = "Ország törlése";
-            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
-            DialogResult result = MessageBox.Show(message, caption, buttons);
-            if (result == DialogResult.No)
-                return false;
-
-            try
+            hikeDao.DeleteHike(hike);
+            hikeDao.MovePositions(hike.HikeDate, false);
+            foreach (int item in hike.CPList)
             {
-                hikeDao.DeleteHike(hike);
-                hikeDao.MovePositions(hike.HikeDate, false);
-                foreach (int item in hike.CPList)
-                {
-                    cpDao.UpdateHikeCount(item);
-                }
-                regionDao.UpdateHikeCount(hike.RegionID);
-                countryDao.UpdateHikeCount(hike.CountryID);
-                return true;
+                cpDao.UpdateHikeCount(item);
             }
-            catch (NoDBConnectionException)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return false;
-            }
-            catch (DBErrorException ex)
-            {
-                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
-                return false;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-                return false;
-            }
+            regionDao.UpdateHikeCount(hike.RegionID);
+            countryDao.UpdateHikeCount(hike.CountryID);
+            return true;
         }
 
         #endregion

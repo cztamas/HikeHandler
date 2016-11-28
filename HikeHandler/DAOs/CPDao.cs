@@ -181,7 +181,7 @@ c.name AS countryname FROM cp, region r, country c WHERE cp.idregion=r.idregion 
                 adapter.Fill(table);
                 if (table.Rows.Count == 0)
                 {
-                    return null;
+                    throw new NoItemFoundException();
                 }
                 if (table.Rows.Count > 1)
                 {

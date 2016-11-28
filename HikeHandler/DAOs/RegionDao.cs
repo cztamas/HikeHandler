@@ -211,7 +211,7 @@ FROM region r, country c WHERE c.idcountry=r.idcountry AND r.idregion=@idregion;
                 adapter.Fill(table);
                 if (table.Rows.Count == 0)
                 {
-                    return null;
+                    throw new NoItemFoundException();
                 }
                 if (table.Rows.Count > 1)
                 {

@@ -144,7 +144,7 @@ r.name AS regionname, c.name AS countryname FROM hike, region r, country c WHERE
                 adapter.Fill(table);
                 if (table.Rows.Count == 0)
                 {
-                    return null;
+                    throw new NoItemFoundException();
                 }
                 if (table.Rows.Count > 1)
                 {

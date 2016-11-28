@@ -169,10 +169,29 @@ namespace HikeHandler.UI
             {
                 return;
             }
-            if (daoManager.SaveCP(cp))
+            try
             {
-                MessageBox.Show("Sikeresen elmentve.");
-                Close();
+                if (daoManager.SaveCP(cp))
+                {
+                    MessageBox.Show("Sikeresen elmentve.");
+                    Close();
+                }
+            }
+            catch (DuplicateItemNameException)
+            {
+                MessageBox.Show("Már van elmentve ilyen nevű checkpoint.", "Hiba");
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
             }
         }
 

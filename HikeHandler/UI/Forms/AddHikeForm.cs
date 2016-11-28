@@ -166,10 +166,33 @@ namespace HikeHandler.UI
         private void addHikeButton_Click(object sender, EventArgs e)
         {
             HikeForSave hike = GetDataForSave();
-            if (daoManager.SaveHike(hike))
+            if (hike == null)
             {
-                MessageBox.Show("Sikeresen elmentve.");
-                Close();
+                return;
+            }
+            try
+            {
+                if (daoManager.SaveHike(hike))
+                {
+                    MessageBox.Show("Sikeresen elmentve.");
+                    Close();
+                }
+            }
+            catch (DuplicateDateException)
+            {
+                MessageBox.Show("Ezzel a dátummal már van elmentve túra.", "Hiba");
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
             }
         }
 

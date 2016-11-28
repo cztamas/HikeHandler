@@ -92,10 +92,26 @@ namespace HikeHandler.UI
             {
                 return;
             }
-            if (daoManager.SaveRegion(region))
+            try
             {
-                MessageBox.Show("Sikeresen elmentve");
-                Close();
+                if (daoManager.SaveRegion(region))
+                {
+                    MessageBox.Show("Sikeresen elmentve");
+                    Close();
+                }
+            }
+            catch (DuplicateItemNameException)
+            {
+                MessageBox.Show("Már van elmentve ilyen nevű tájegység.", "Hiba");
+                nameBox.Focus();
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
             }
         }
 

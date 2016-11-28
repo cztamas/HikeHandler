@@ -167,7 +167,7 @@ namespace HikeHandlerWebApi.Controllers
             }
         }
 
-        [Route("GetAllCPsOfRegion")]
+        [Route("GetAllCPsOfRegion/{regionID}")]
         [HttpGet]
         public List<NameAndID> GetAllCPsOfRegion(int regionID)
         {
@@ -184,7 +184,7 @@ namespace HikeHandlerWebApi.Controllers
             }
         }
 
-        [Route("GetAllRegionsOfCountry")]
+        [Route("GetAllRegionsOfCountry/{countryID}")]
         [HttpGet]
         public List<NameAndID> GetAllRegionsOfCountry(int countryID)
         {
@@ -219,7 +219,7 @@ namespace HikeHandlerWebApi.Controllers
         }
 
         [Route("GetCPsFromList")]
-        [HttpGet]
+        [HttpPost]
         public List<NameAndID> GetCPsFromList(List<int> cpIDList)
         {
             try
@@ -270,7 +270,7 @@ namespace HikeHandlerWebApi.Controllers
         }
 
         [Route("SearchCountry")]
-        [HttpGet]
+        [HttpPost]
         public List<CountryForView> SearchCountry(CountryForSearch country)
         {
             try
@@ -286,7 +286,7 @@ namespace HikeHandlerWebApi.Controllers
             }
         }
 
-        [Route("SearchCountry")]
+        [Route("SearchCountry/{countryID}")]
         [HttpGet]
         public CountryForView SearchCountry(int countryID)
         {
@@ -304,7 +304,7 @@ namespace HikeHandlerWebApi.Controllers
         }
 
         [Route("SearchCP")]
-        [HttpGet]
+        [HttpPost]
         public List<CPForView> SearchCP(CPForSearch cp)
         {
             try
@@ -320,7 +320,7 @@ namespace HikeHandlerWebApi.Controllers
             }
         }
 
-        [Route("SearchCP")]
+        [Route("SearchCP/{cpID}")]
         [HttpGet]
         public CPForView SearchCP(int cpID)
         {
@@ -337,7 +337,7 @@ namespace HikeHandlerWebApi.Controllers
             }
         }
 
-        [Route("SearchHike")]
+        [Route("SearchHike/{hikeID}")]
         [HttpGet]
         public HikeForView SearchHike(int hikeID)
         {
@@ -355,7 +355,7 @@ namespace HikeHandlerWebApi.Controllers
         }
 
         [Route("SearchHike")]
-        [HttpGet]
+        [HttpPost]
         public List<HikeForView> SearchHike(HikeForSearch hike)
         {
             try
@@ -372,7 +372,7 @@ namespace HikeHandlerWebApi.Controllers
         }
 
         [Route("SearchRegion")]
-        [HttpGet]
+        [HttpPost]
         public List<HikeRegionForView> SearchRegion(HikeRegionForSearch region)
         {
             try
@@ -388,7 +388,7 @@ namespace HikeHandlerWebApi.Controllers
             }
         }
 
-        [Route("SearchRegion")]
+        [Route("SearchRegion/{regionID}")]
         [HttpGet]
         public HikeRegionForView SearchRegion(int regionID)
         {

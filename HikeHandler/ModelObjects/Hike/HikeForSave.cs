@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HikeHandler.ModelObjects
 {
@@ -28,6 +26,7 @@ namespace HikeHandler.ModelObjects
             }
         }
 
+        [JsonConstructor]
         public HikeForSave(int countryID, int regionID, HikeType hikeType, DateTime hikeDate, List<int> cpList, string description)
         {
             CountryID = countryID;

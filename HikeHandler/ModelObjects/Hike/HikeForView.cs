@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace HikeHandler.ModelObjects
@@ -39,6 +40,7 @@ namespace HikeHandler.ModelObjects
             CPList = new List<int>();
         }
 
+        [JsonConstructor]
         public HikeForView(int hikeID, int countryID, int regionID, int position, string countryName, string regionName, string description, 
             DateTime hikeDate, HikeType hikeType, List<int> cpList)
         {

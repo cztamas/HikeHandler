@@ -17,9 +17,9 @@ namespace HikeHandler.ModelObjects
 
         public bool AnyCPOrder { get; set; }
 
-        /*public HikeForSearch()
+        public HikeForSearch()
         {
             CPList = new List<int>();
-        }*/
+        }
     }
 }

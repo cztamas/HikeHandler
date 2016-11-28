@@ -132,8 +132,8 @@ namespace HikeHandler_Client
         public List<NameAndID> GetAllCPsOfRegion(int regionID)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/GetAllCPsOfRegion");
-            request.Content = new StringContent(regionID.ToString());
+            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/GetAllCPsOfRegion/" + regionID);
+            //request.Content = new StringContent(JsonConvert.SerializeObject(regionID), Encoding.UTF8, "application/json");
             request.Method = new HttpMethod("GET");
 
             HttpResponseMessage response = httpClient.SendAsync(request).Result;
@@ -147,8 +147,8 @@ namespace HikeHandler_Client
         public List<NameAndID> GetAllRegionsOfCountry(int countryID)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/GetAllRegionsOfCountry");
-            request.Content = new StringContent(countryID.ToString());
+            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/GetAllRegionsOfCountry/" + countryID);
+            //request.Content = new StringContent(JsonConvert.SerializeObject(countryID), Encoding.UTF8, "application/json");
             request.Method = new HttpMethod("GET");
 
             HttpResponseMessage response = httpClient.SendAsync(request).Result;
@@ -178,7 +178,7 @@ namespace HikeHandler_Client
             HttpRequestMessage request = new HttpRequestMessage();
             request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/GetCPsFromList");
             request.Content = new StringContent(JsonConvert.SerializeObject(cpIDList), Encoding.UTF8, "application/json");
-            request.Method = new HttpMethod("GET");
+            request.Method = new HttpMethod("POST");
 
             HttpResponseMessage response = httpClient.SendAsync(request).Result;
             if (response.StatusCode != HttpStatusCode.OK)
@@ -221,7 +221,7 @@ namespace HikeHandler_Client
             HttpRequestMessage request = new HttpRequestMessage();
             request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/SearchCountry");
             request.Content = new StringContent(JsonConvert.SerializeObject(country), Encoding.UTF8, "application/json");
-            request.Method = new HttpMethod("GET");
+            request.Method = new HttpMethod("POST");
 
             HttpResponseMessage response = httpClient.SendAsync(request).Result;
             if (response.StatusCode != HttpStatusCode.OK)
@@ -234,8 +234,8 @@ namespace HikeHandler_Client
         public CountryForView SearchCountry(int countryID)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/SearchCountry");
-            request.Content = new StringContent(countryID.ToString());
+            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/SearchCountry/" + countryID);
+            //request.Content = new StringContent(countryID.ToString());
             request.Method = new HttpMethod("GET");
 
             HttpResponseMessage response = httpClient.SendAsync(request).Result;
@@ -251,7 +251,7 @@ namespace HikeHandler_Client
             HttpRequestMessage request = new HttpRequestMessage();
             request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/SearchCP");
             request.Content = new StringContent(JsonConvert.SerializeObject(cp), Encoding.UTF8, "application/json");
-            request.Method = new HttpMethod("GET");
+            request.Method = new HttpMethod("POST");
 
             HttpResponseMessage response = httpClient.SendAsync(request).Result;
             if (response.StatusCode != HttpStatusCode.OK)
@@ -264,7 +264,7 @@ namespace HikeHandler_Client
         public CPForView SearchCP(int cpID)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/SearchCP");
+            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/SearchCP/" + cpID);
             request.Content = new StringContent(cpID.ToString());
             request.Method = new HttpMethod("GET");
 
@@ -279,8 +279,8 @@ namespace HikeHandler_Client
         public HikeForView SearchHike(int hikeID)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/SearchHike");
-            request.Content = new StringContent(hikeID.ToString());
+            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/SearchHike/" + hikeID);
+            //request.Content = new StringContent(hikeID.ToString());
             request.Method = new HttpMethod("GET");
 
             HttpResponseMessage response = httpClient.SendAsync(request).Result;
@@ -296,7 +296,7 @@ namespace HikeHandler_Client
             HttpRequestMessage request = new HttpRequestMessage();
             request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/SearchHike");
             request.Content = new StringContent(JsonConvert.SerializeObject(hike), Encoding.UTF8, "application/json");
-            request.Method = new HttpMethod("GET");
+            request.Method = new HttpMethod("POST");
 
             HttpResponseMessage response = httpClient.SendAsync(request).Result;
             if (response.StatusCode != HttpStatusCode.OK)
@@ -311,7 +311,7 @@ namespace HikeHandler_Client
             HttpRequestMessage request = new HttpRequestMessage();
             request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/SearchRegion");
             request.Content = new StringContent(JsonConvert.SerializeObject(region), Encoding.UTF8, "application/json");
-            request.Method = new HttpMethod("GET");
+            request.Method = new HttpMethod("POST");
 
             HttpResponseMessage response = httpClient.SendAsync(request).Result;
             if (response.StatusCode != HttpStatusCode.OK)
@@ -324,8 +324,8 @@ namespace HikeHandler_Client
         public HikeRegionForView SearchRegion(int regionID)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/SearchRegion");
-            request.Content = new StringContent(regionID.ToString());
+            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/SearchRegion/" + regionID);
+            //request.Content = new StringContent(regionID.ToString());
             request.Method = new HttpMethod("GET");
 
             HttpResponseMessage response = httpClient.SendAsync(request).Result;

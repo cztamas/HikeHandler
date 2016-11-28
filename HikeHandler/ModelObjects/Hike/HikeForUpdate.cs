@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace HikeHandler.ModelObjects
@@ -29,6 +30,7 @@ namespace HikeHandler.ModelObjects
             }
         }
 
+        [JsonConstructor]
         public HikeForUpdate(int hikeID, int countryID, int regionID, string description, DateTime oldHikeDate, DateTime newHikeDate, 
             HikeType oldHikeType, HikeType newHikeType, List<int> oldCPList, List<int> newCPList)
         {

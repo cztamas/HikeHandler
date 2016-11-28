@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
 
 namespace HikeHandler.ModelObjects
 {
@@ -14,6 +10,7 @@ namespace HikeHandler.ModelObjects
         public string Description { get; set; }
         public CPType TypeOfCP { get; set; }
 
+        [JsonConstructor]
         public CPForUpdate(int cpID, string oldName, string newName, CPType typeOfCP, string description)
         {
             CPID = cpID;

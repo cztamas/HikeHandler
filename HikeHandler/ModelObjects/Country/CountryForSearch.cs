@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
 
 namespace HikeHandler.ModelObjects
 {
@@ -10,6 +9,7 @@ namespace HikeHandler.ModelObjects
         public IntPile CPCount { get; set; }
         public IntPile RegionCount { get; set; }
 
+        [JsonConstructor]
         public CountryForSearch(string countryName, IntPile hikePile, IntPile cpCount, IntPile regionCount)
         {
             HikeCount = hikePile;

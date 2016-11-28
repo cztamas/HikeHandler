@@ -13,6 +13,7 @@ namespace HikeHandler_Client
     public class ClientDaoManager : IDAOManager
     {
         private HttpClient httpClient;
+        private string host = "localhost:54786";  //"192.168.0.180:54786";
 
         public ClientDaoManager()
         {
@@ -24,7 +25,7 @@ namespace HikeHandler_Client
         public bool DeleteCountry(int countryID)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/DeleteCountry");
+            request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/DeleteCountry");
             request.Content = new StringContent(countryID.ToString());
             request.Method = new HttpMethod("DELETE");
 
@@ -43,7 +44,7 @@ namespace HikeHandler_Client
         public bool DeleteCP(CPForView cp)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/DeleteCP");
+            request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/DeleteCP");
             request.Content = new StringContent(JsonConvert.SerializeObject(cp), Encoding.UTF8, "application/json");
             request.Method = new HttpMethod("DELETE");
 
@@ -62,7 +63,7 @@ namespace HikeHandler_Client
         public bool DeleteHike(HikeForView hike)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/DeleteHike");
+            request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/DeleteHike");
             request.Content = new StringContent(JsonConvert.SerializeObject(hike), Encoding.UTF8, "application/json");
             request.Method = new HttpMethod("DELETE");
 
@@ -81,7 +82,7 @@ namespace HikeHandler_Client
         public bool DeleteRegion(HikeRegionForView region)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/DeleteRegion");
+            request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/DeleteRegion");
             request.Content = new StringContent(JsonConvert.SerializeObject(region), Encoding.UTF8, "application/json");
             request.Method = new HttpMethod("DELETE");
 
@@ -104,7 +105,7 @@ namespace HikeHandler_Client
         public List<NameAndID> GetAllCountryNames()
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/GetAllCountryNames");
+            request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/GetAllCountryNames");
             request.Method = new HttpMethod("GET");
 
             HttpResponseMessage response = httpClient.SendAsync(request).Result;
@@ -118,7 +119,7 @@ namespace HikeHandler_Client
         public List<NameAndID> GetAllCPs()
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/GetAllCPs");
+            request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/GetAllCPs");
             request.Method = new HttpMethod("GET");
 
             HttpResponseMessage response = httpClient.SendAsync(request).Result;
@@ -132,7 +133,7 @@ namespace HikeHandler_Client
         public List<NameAndID> GetAllCPsOfRegion(int regionID)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/GetAllCPsOfRegion/" + regionID);
+            request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/GetAllCPsOfRegion/" + regionID);
             //request.Content = new StringContent(JsonConvert.SerializeObject(regionID), Encoding.UTF8, "application/json");
             request.Method = new HttpMethod("GET");
 
@@ -147,7 +148,7 @@ namespace HikeHandler_Client
         public List<NameAndID> GetAllRegionsOfCountry(int countryID)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/GetAllRegionsOfCountry/" + countryID);
+            request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/GetAllRegionsOfCountry/" + countryID);
             //request.Content = new StringContent(JsonConvert.SerializeObject(countryID), Encoding.UTF8, "application/json");
             request.Method = new HttpMethod("GET");
 
@@ -162,7 +163,7 @@ namespace HikeHandler_Client
         public BaseFormSummary GetBaseFormSummary()
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/GetBaseFormSummary");
+            request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/GetBaseFormSummary");
             request.Method = new HttpMethod("GET");
 
             HttpResponseMessage response = httpClient.SendAsync(request).Result;
@@ -176,7 +177,7 @@ namespace HikeHandler_Client
         public List<NameAndID> GetCPsFromList(List<int> cpIDList)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/GetCPsFromList");
+            request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/GetCPsFromList");
             request.Content = new StringContent(JsonConvert.SerializeObject(cpIDList), Encoding.UTF8, "application/json");
             request.Method = new HttpMethod("POST");
 
@@ -191,7 +192,7 @@ namespace HikeHandler_Client
         public List<NameAndID> GetCPTypes()
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/GetCPTypes");
+            request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/GetCPTypes");
             request.Method = new HttpMethod("GET");
 
             HttpResponseMessage response = httpClient.SendAsync(request).Result;
@@ -205,7 +206,7 @@ namespace HikeHandler_Client
         public List<NameAndID> GetHikeTypes()
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/GetHikeTypes");
+            request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/GetHikeTypes");
             request.Method = new HttpMethod("GET");
 
             HttpResponseMessage response = httpClient.SendAsync(request).Result;
@@ -219,7 +220,7 @@ namespace HikeHandler_Client
         public List<CountryForView> SearchCountry(CountryForSearch country)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/SearchCountry");
+            request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/SearchCountry");
             request.Content = new StringContent(JsonConvert.SerializeObject(country), Encoding.UTF8, "application/json");
             request.Method = new HttpMethod("POST");
 
@@ -234,7 +235,7 @@ namespace HikeHandler_Client
         public CountryForView SearchCountry(int countryID)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/SearchCountry/" + countryID);
+            request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/SearchCountry/" + countryID);
             //request.Content = new StringContent(countryID.ToString());
             request.Method = new HttpMethod("GET");
 
@@ -249,7 +250,7 @@ namespace HikeHandler_Client
         public List<CPForView> SearchCP(CPForSearch cp)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/SearchCP");
+            request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/SearchCP");
             request.Content = new StringContent(JsonConvert.SerializeObject(cp), Encoding.UTF8, "application/json");
             request.Method = new HttpMethod("POST");
 
@@ -264,7 +265,7 @@ namespace HikeHandler_Client
         public CPForView SearchCP(int cpID)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/SearchCP/" + cpID);
+            request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/SearchCP/" + cpID);
             request.Content = new StringContent(cpID.ToString());
             request.Method = new HttpMethod("GET");
 
@@ -279,7 +280,7 @@ namespace HikeHandler_Client
         public HikeForView SearchHike(int hikeID)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/SearchHike/" + hikeID);
+            request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/SearchHike/" + hikeID);
             //request.Content = new StringContent(hikeID.ToString());
             request.Method = new HttpMethod("GET");
 
@@ -294,7 +295,7 @@ namespace HikeHandler_Client
         public List<HikeForView> SearchHike(HikeForSearch hike)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/SearchHike");
+            request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/SearchHike");
             request.Content = new StringContent(JsonConvert.SerializeObject(hike), Encoding.UTF8, "application/json");
             request.Method = new HttpMethod("POST");
 
@@ -309,7 +310,7 @@ namespace HikeHandler_Client
         public List<HikeRegionForView> SearchRegion(HikeRegionForSearch region)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/SearchRegion");
+            request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/SearchRegion");
             request.Content = new StringContent(JsonConvert.SerializeObject(region), Encoding.UTF8, "application/json");
             request.Method = new HttpMethod("POST");
 
@@ -324,7 +325,7 @@ namespace HikeHandler_Client
         public HikeRegionForView SearchRegion(int regionID)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/SearchRegion/" + regionID);
+            request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/SearchRegion/" + regionID);
             //request.Content = new StringContent(regionID.ToString());
             request.Method = new HttpMethod("GET");
 
@@ -343,7 +344,7 @@ namespace HikeHandler_Client
         public bool SaveCountry(CountryForSave country)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/SaveCountry");
+            request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/SaveCountry");
             request.Content = new StringContent(JsonConvert.SerializeObject(country), Encoding.UTF8, "application/json");
             request.Method = new HttpMethod("POST");
 
@@ -358,7 +359,7 @@ namespace HikeHandler_Client
         public bool SaveCP(CPForSave cp)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/SaveCP");
+            request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/SaveCP");
             request.Content = new StringContent(JsonConvert.SerializeObject(cp), Encoding.UTF8, "application/json");
             request.Method = new HttpMethod("POST");
 
@@ -373,7 +374,7 @@ namespace HikeHandler_Client
         public bool SaveHike(HikeForSave hike)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/SaveHike");
+            request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/SaveHike");
             request.Content = new StringContent(JsonConvert.SerializeObject(hike), Encoding.UTF8, "application/json");
             request.Method = new HttpMethod("POST");
 
@@ -388,7 +389,7 @@ namespace HikeHandler_Client
         public bool SaveRegion(HikeRegionForSave region)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/SaveRegion");
+            request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/SaveRegion");
             request.Content = new StringContent(JsonConvert.SerializeObject(region), Encoding.UTF8, "application/json");
             request.Method = new HttpMethod("POST");
 
@@ -407,7 +408,7 @@ namespace HikeHandler_Client
         public bool UpdateCountry(CountryForUpdate country)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/UpdateCountry");
+            request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/UpdateCountry");
             request.Content = new StringContent(JsonConvert.SerializeObject(country), Encoding.UTF8, "application/json");
             request.Method = new HttpMethod("PUT");
 
@@ -422,7 +423,7 @@ namespace HikeHandler_Client
         public bool UpdateCP(CPForUpdate cp)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/UpdateCP");
+            request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/UpdateCP");
             request.Content = new StringContent(JsonConvert.SerializeObject(cp), Encoding.UTF8, "application/json");
             request.Method = new HttpMethod("PUT");
 
@@ -437,7 +438,7 @@ namespace HikeHandler_Client
         public bool UpdateHike(HikeForUpdate hike)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/UpdateHike");
+            request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/UpdateHike");
             request.Content = new StringContent(JsonConvert.SerializeObject(hike), Encoding.UTF8, "application/json");
             request.Method = new HttpMethod("PUT");
 
@@ -452,7 +453,7 @@ namespace HikeHandler_Client
         public bool UpdateRegion(HikeRegionForUpdate region)
         {
             HttpRequestMessage request = new HttpRequestMessage();
-            request.RequestUri = new Uri("http://localhost:54786/hikehandler/Data/UpdateRegion");
+            request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/UpdateRegion");
             request.Content = new StringContent(JsonConvert.SerializeObject(region), Encoding.UTF8, "application/json");
             request.Method = new HttpMethod("PUT");
 

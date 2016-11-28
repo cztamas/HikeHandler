@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using HikeHandler.ModelObjects;
 using HikeHandler.Exceptions;
+using System.Windows.Forms;
 
 namespace HikeHandler.DAOs
 {
@@ -328,6 +329,7 @@ VALUES (@name, 0, 0, 0, @description);";
             if (regionCountCondition != String.Empty)
                 commandText += (" AND " + regionCountCondition);
             commandText += " ORDER BY name ASC;";
+
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
                 command.Parameters.AddWithValue("@name", "%" + template.Name + "%");

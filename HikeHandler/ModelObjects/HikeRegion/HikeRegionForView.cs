@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 
 namespace HikeHandler.ModelObjects
 {
@@ -17,6 +17,7 @@ namespace HikeHandler.ModelObjects
             RegionID = regionID;
         }
 
+        [JsonConstructor]
         public HikeRegionForView(int regionID, int countryID, string name, string countryName, int hikeCount, int cpCount, string description)
         {
             RegionID = regionID;

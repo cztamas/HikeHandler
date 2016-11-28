@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 
 namespace HikeHandler.ModelObjects
 {
@@ -19,6 +19,7 @@ namespace HikeHandler.ModelObjects
             CPID = idCP;
         }
 
+        [JsonConstructor]
         public CPForView(int cpID, int countryID, int regionID, string name, string countryName, string regionName, CPType typeOfCP, 
             int hikeCount, string description)
         {

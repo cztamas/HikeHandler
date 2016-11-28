@@ -129,15 +129,9 @@ namespace HikeHandler.UI
             DateTime newHikeDate = dateBox.Value.Date;
             HikeType oldHikeType = currentHike.HikeType;
             HikeType newHikeType;
-            if (typeComboBox.SelectedItem == null)
+            if (!Enum.TryParse(typeComboBox.Text, out newHikeType))
             {
                 MessageBox.Show("Nincs megadva a túra típusa.", "Hiba");
-                typeComboBox.Focus();
-                return null;
-            }
-            if (!Enum.TryParse(typeComboBox.SelectedItem.ToString(), out newHikeType))
-            {
-                MessageBox.Show("Nem sikerült elmenteni a túrát.", "Hiba");
                 typeComboBox.Focus();
                 return null;
             }

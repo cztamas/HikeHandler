@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data;
+﻿using Newtonsoft.Json;
 
 namespace HikeHandler.ModelObjects
 {
@@ -21,6 +16,7 @@ namespace HikeHandler.ModelObjects
             CountryID = countryID;
         }
 
+        [JsonConstructor]
         public CountryForView(int countryID, string name, int hikeCount, int regionCount, int cpCount, string description)
         {
             CountryID = countryID;

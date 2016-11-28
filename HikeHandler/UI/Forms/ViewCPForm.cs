@@ -123,15 +123,9 @@ namespace HikeHandler.UI
             string newName = nameBox.Text;
             string description = descriptionBox.Text;
             CPType cpType;
-            if (typeComboBox.SelectedItem == null)
+            if (!Enum.TryParse(typeComboBox.Text, out cpType))
             {
-                MessageBox.Show("A checkpoint típusa nincs megadva.");
-                typeComboBox.Focus();
-                return null;
-            }
-            if (!Enum.TryParse(typeComboBox.SelectedItem.ToString(), out cpType))
-            {
-                MessageBox.Show("Nem sikerült elmenteni az adatokat.", "Hiba");
+                MessageBox.Show("A checkpoint típusa nincs megadva.", "Hiba");
                 typeComboBox.Focus();
                 return null;
             }

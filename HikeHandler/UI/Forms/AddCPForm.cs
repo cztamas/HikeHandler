@@ -62,7 +62,7 @@ namespace HikeHandler.UI
                 return null;
             }
             CPType typeOfCP;
-            if (!Enum.TryParse(typeComboBox.SelectedItem.ToString(), out typeOfCP))
+            if (!Enum.TryParse(typeComboBox.Text, out typeOfCP))
             {
                 MessageBox.Show("Nincs megadva a checkpoint típusa.", "Hiba");
                 typeComboBox.Focus();

@@ -47,30 +47,12 @@ namespace HikeHandler.ServiceLayer
         // Returns the summary of DB content to be shown on the BaseForm.
         public BaseFormSummary GetBaseFormSummary()
         {
-            try
-            {
-                int countries = countryDao.GetCountOfCountries();
-                int regions = regionDao.GetCountOfRegions();
-                int cps = cpDao.GetCountOfCPs();
-                int hikes = hikeDao.GetCountOfHikes();
-                BaseFormSummary summary = new BaseFormSummary(countries, regions, cps, hikes);
-                return summary;
-            }
-            catch (NoDBConnectionException)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-                return null;
-            }
-            catch (DBErrorException ex)
-            {
-                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
-                return null;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-                return null;
-            }
+            int countries = countryDao.GetCountOfCountries();
+            int regions = regionDao.GetCountOfRegions();
+            int cps = cpDao.GetCountOfCPs();
+            int hikes = hikeDao.GetCountOfHikes();
+            BaseFormSummary summary = new BaseFormSummary(countries, regions, cps, hikes);
+            return summary;
         }
 
         #region Country Methods

@@ -105,7 +105,7 @@ namespace HikeHandler.UI
             }
             if (!int.TryParse(countryComboBox.SelectedValue.ToString(), out countryID))
             {
-                MessageBox.Show("Nem sikerült elmenteni a túrát.", "Hiba");
+                MessageBox.Show("Az ország nincs megadva.", "Hiba");
                 countryComboBox.Focus();
                 return null;
             }
@@ -118,20 +118,14 @@ namespace HikeHandler.UI
             }
             if (!int.TryParse(regionComboBox.SelectedValue.ToString(), out regionID))
             {
-                MessageBox.Show("Nem sikerült elmenteni a túrát.", "Hiba");
+                MessageBox.Show("A tájegység nincs megadva.", "Hiba");
                 regionComboBox.Focus();
                 return null;
             }
             HikeType hikeType;
-            if (typeComboBox.SelectedValue == null)
+            if (!Enum.TryParse(typeComboBox.Text, out hikeType))
             {
                 MessageBox.Show("Nincs megadva a túra típusa.", "Hiba");
-                typeComboBox.Focus();
-                return null;
-            }
-            if (!Enum.TryParse(regionComboBox.SelectedItem.ToString(), out hikeType))
-            {
-                MessageBox.Show("Nem sikerült elmenteni a túrát.", "Hiba");
                 typeComboBox.Focus();
                 return null;
             }

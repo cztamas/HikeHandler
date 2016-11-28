@@ -1,29 +1,32 @@
-﻿namespace HikeHandler.ModelObjects
+﻿using Newtonsoft.Json;
+
+namespace HikeHandler.ModelObjects
 {
     public class IntInterval
     {
-        private int min;
-        private int max;
+        public int Min { get; set; }
+        public int Max { get; set; }
 
-        public IntInterval(int minValue, int maxValue)
+        [JsonConstructor]
+        public IntInterval(int min, int max)
         {
-            min = minValue;
-            max = maxValue;
+            Min = min;
+            Max = max;
         }
 
-        public IntInterval()
+        /*public IntInterval()
         {
-            min = 0;
-            max = 0;
-        }
+            Min = 0;
+            Max = 0;
+        }*/
 
         public string SqlSnippet(string variable)
         {
-            if (max > 0)
-                return "(" + variable + " BETWEEN " + min + " AND " + max + ")";
-            if (max == 0 && min == 0)
-                return "(" + variable + "=0" + ")";
-            return "(" + variable + " >= " + min + ")";
+            if (Max > 0)
+                return "(" + variable + " BETWEEN " + Min + " AND " + Max + ")";
+            if (Max == 0 && Min == 0)
+                return "(" + variable + " = 0" + ")";
+            return "(" + variable + " >= " + Min + ")";
         }
     }
 }

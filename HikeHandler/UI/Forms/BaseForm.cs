@@ -1,4 +1,5 @@
-﻿using HikeHandler.Interfaces;
+﻿using HikeHandler.Exceptions;
+using HikeHandler.Interfaces;
 using HikeHandler.ModelObjects;
 using System;
 using System.Windows.Forms;
@@ -22,15 +23,28 @@ namespace HikeHandler.UI
         
         private void GetSummary()
         {
-            BaseFormSummary summary = daoManager.GetBaseFormSummary();
-            if (summary == null)
+            try
             {
-                Close();
+                BaseFormSummary summary = daoManager.GetBaseFormSummary();
+                hikeLabel.Text = summary.HikeCount.ToString();
+                regionLabel.Text = summary.RegionCount.ToString();
+                cpLabel.Text = summary.CPCount.ToString();
+                countryLabel.Text = summary.CountryCount.ToString();
+                return;
             }
-            hikeLabel.Text = summary.HikeCount.ToString();
-            regionLabel.Text = summary.RegionCount.ToString();
-            cpLabel.Text = summary.CPCount.ToString();
-            countryLabel.Text = summary.CountryCount.ToString();
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+            }
+            Close();
         }
 
         private void searchHikeButton_Click(object sender, EventArgs e)

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
 
 namespace HikeHandler.ModelObjects
 {
@@ -13,6 +9,7 @@ namespace HikeHandler.ModelObjects
         public string NewName { get; set; }
         public string Description { get; set; }
 
+        [JsonConstructor]
         public HikeRegionForUpdate(int regionID, string oldName, string newName, string description)
         {
             RegionID = regionID;

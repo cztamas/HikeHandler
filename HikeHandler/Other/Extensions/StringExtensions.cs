@@ -178,9 +178,9 @@ namespace HikeHandler
                     date = new DateTime(year, month, day);
                 }
                 if (Regex.IsMatch(text, @"-$"))
-                    interval = new DateInterval(date, false);
+                    interval = new DateInterval(begin: date);
                 if (Regex.IsMatch(text, @"^-"))
-                    interval = new DateInterval(date, true);
+                    interval = new DateInterval(end: date);
                 if (!Regex.IsMatch(text, @"-"))
                     interval = new DateInterval(date, date);
                 return interval;

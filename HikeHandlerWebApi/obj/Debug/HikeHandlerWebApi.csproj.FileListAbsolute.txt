@@ -92,3 +92,8 @@ C:\prog\c#\HikeHandler\HikeHandlerWebApi\obj\Debug\HikeHandlerWebApi.dll
 C:\prog\c#\HikeHandler\HikeHandlerWebApi\obj\Debug\HikeHandlerWebApi.pdb
 C:\prog\c#\HikeHandler\HikeHandlerWebApi\bin\HikeHandler.exe
 C:\prog\c#\HikeHandler\HikeHandlerWebApi\bin\HikeHandler.pdb
+C:\prog\c#\HikeHandler\HikeHandlerWebApi\bin\Microsoft.Azure.AppService.ApiApps.Service.dll
+C:\prog\c#\HikeHandler\HikeHandlerWebApi\bin\Swashbuckle.Core.dll
+C:\prog\c#\HikeHandler\HikeHandlerWebApi\bin\System.IdentityModel.Tokens.Jwt.dll
+C:\prog\c#\HikeHandler\HikeHandlerWebApi\bin\WebActivatorEx.dll
+C:\prog\c#\HikeHandler\HikeHandlerWebApi\bin\System.IdentityModel.Tokens.Jwt.xml

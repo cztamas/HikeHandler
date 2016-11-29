@@ -14,12 +14,6 @@ namespace HikeHandler.ModelObjects
             Max = max;
         }
 
-        /*public IntInterval()
-        {
-            Min = 0;
-            Max = 0;
-        }*/
-
         public string SqlSnippet(string variable)
         {
             if (Max > 0)

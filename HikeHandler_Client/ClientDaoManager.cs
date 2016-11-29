@@ -13,7 +13,7 @@ namespace HikeHandler_Client
     public class ClientDaoManager : IDAOManager
     {
         private HttpClient httpClient;
-        private string host = "localhost:54786";  //"192.168.0.180:54786";
+        private string host = "localhost:54786/"; //"192.168.0.180/hikehandler";  
 
         public ClientDaoManager()
         {

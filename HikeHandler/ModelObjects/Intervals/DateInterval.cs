@@ -1,41 +1,29 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace HikeHandler.ModelObjects
 {
     public class DateInterval
     {
-        private DateTime? min;
-        private DateTime? max;
+        public DateTime? Begin;
+        public DateTime? End;
 
-        public DateInterval(DateTime begin, DateTime end)
+        [JsonConstructor]
+        public DateInterval(DateTime? begin = null, DateTime? end = null)
         {
-            min = begin;
-            max = end;
+            Begin = begin;
+            End = end;
         }
-
-        public DateInterval(DateTime date, bool isMax)
-        {
-            if (isMax)
-            {
-                min = null;
-                max = date;
-            }
-            if (!isMax)
-            {
-                min = date;
-                max = null;
-            }
-        }
-
+        
         public string SqlSnippet(string variable)
         {
-            if (min != null && max != null)
-                return "('" + ((DateTime)min).ToString("yyyy-MM-dd") + "' <= " + variable + " AND "
-                    + variable + " <= '" + ((DateTime)max).ToString("yyyy-MM-dd") + "')";
-            if (min == null && max != null)
-                return variable + " <= '" + ((DateTime)max).ToString("yyyy-MM-dd") + "' ";
-            if (min != null && max == null)
-                return variable + " >= '" + ((DateTime)min).ToString("yyyy-MM-dd") + "' ";
+            if (Begin != null && End != null)
+                return "('" + ((DateTime)Begin).ToString("yyyy-MM-dd") + "' <= " + variable + " AND "
+                    + variable + " <= '" + ((DateTime)End).ToString("yyyy-MM-dd") + "')";
+            if (Begin == null && End != null)
+                return variable + " <= '" + ((DateTime)End).ToString("yyyy-MM-dd") + "' ";
+            if (Begin != null && End == null)
+                return variable + " >= '" + ((DateTime)Begin).ToString("yyyy-MM-dd") + "' ";
             return string.Empty;
         }
     }

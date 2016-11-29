@@ -1,0 +1,14 @@
+C:\prog\c#\HikeHandler\HikeHandler_Client\bin\Release\HikeHandler_Client.exe.config
+C:\prog\c#\HikeHandler\HikeHandler_Client\bin\Release\HikeHandler_Client.exe
+C:\prog\c#\HikeHandler\HikeHandler_Client\bin\Release\HikeHandler_Client.pdb
+C:\prog\c#\HikeHandler\HikeHandler_Client\bin\Release\HikeHandler.exe
+C:\prog\c#\HikeHandler\HikeHandler_Client\bin\Release\Newtonsoft.Json.dll
+C:\prog\c#\HikeHandler\HikeHandler_Client\bin\Release\MySql.Data.dll
+C:\prog\c#\HikeHandler\HikeHandler_Client\bin\Release\HikeHandler.pdb
+C:\prog\c#\HikeHandler\HikeHandler_Client\bin\Release\Newtonsoft.Json.xml
+C:\prog\c#\HikeHandler\HikeHandler_Client\bin\Release\MySql.Data.xml
+C:\prog\c#\HikeHandler\HikeHandler_Client\obj\Release\HikeHandler_Client.csprojResolveAssemblyReference.cache
+C:\prog\c#\HikeHandler\HikeHandler_Client\obj\Release\HikeHandler_Client.Properties.Resources.resources
+C:\prog\c#\HikeHandler\HikeHandler_Client\obj\Release\HikeHandler_Client.csproj.GenerateResource.Cache
+C:\prog\c#\HikeHandler\HikeHandler_Client\obj\Release\HikeHandler_Client.exe
+C:\prog\c#\HikeHandler\HikeHandler_Client\obj\Release\HikeHandler_Client.pdb

@@ -20,10 +20,6 @@ namespace HikeHandler.ModelObjects
 
         public CPForSearch()
         { }
-
-        public CPForSearch(int id)
-        {
-            CPID = id;
-        }     
+          
     }
 }

@@ -13,7 +13,7 @@ namespace HikeHandler_Client
     public class ClientDaoManager : IDAOManager
     {
         private HttpClient httpClient;
-        private string host = "localhost:54786/"; //"192.168.0.180/hikehandler";  
+        private string host = /*"localhost:54786/";*/ "192.168.0.180/hikehandler";  
 
         public ClientDaoManager()
         {
@@ -266,7 +266,7 @@ namespace HikeHandler_Client
         {
             HttpRequestMessage request = new HttpRequestMessage();
             request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/SearchCP/" + cpID);
-            request.Content = new StringContent(cpID.ToString());
+            //request.Content = new StringContent(cpID.ToString());
             request.Method = new HttpMethod("GET");
 
             HttpResponseMessage response = httpClient.SendAsync(request).Result;

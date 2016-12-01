@@ -290,7 +290,7 @@ FROM region r, country c WHERE c.idcountry=r.idcountry AND r.idregion=@idregion;
             {
                 throw new NoDBConnectionException();
             }
-            string commandText = "SELECT COUNT(*) FROM country WHERE name=@name;";
+            string commandText = "SELECT COUNT(*) FROM region WHERE name=@name;";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
                 command.Parameters.AddWithValue("@name", regionName);

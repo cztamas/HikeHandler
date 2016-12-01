@@ -25,3 +25,4 @@ C:\prog\c#\HikeHandler\HikeHandler\obj\Release\HikeHandler.Properties.Resources.
 C:\prog\c#\HikeHandler\HikeHandler\obj\Release\HikeHandler.csproj.GenerateResource.Cache
 C:\prog\c#\HikeHandler\HikeHandler\obj\Release\HikeHandler.exe
 C:\prog\c#\HikeHandler\HikeHandler\obj\Release\HikeHandler.pdb
+C:\prog\c#\HikeHandler\HikeHandler\obj\Release\HikeHandler.csprojResolveAssemblyReference.cache

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MySql.Data.MySqlClient;
-using System.Data;
+﻿using HikeHandler.Exceptions;
 using HikeHandler.ModelObjects;
-using HikeHandler.Exceptions;
+using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
+using System.Data;
 
 namespace HikeHandler.DAOs
 {
@@ -116,15 +113,11 @@ WHERE r.idcountry=c.idcountry AND r.name LIKE @name AND c.name LIKE @cname";
         // Returns the updated value of the hikecount.
         public int UpdateHikeCount(int regionID)
         {
-            if (sqlConnection == null)
+            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
             {
                 throw new NoDBConnectionException();
             }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                throw new NoDBConnectionException();
-            }
-            string commandText = "SELECT COUNT(*) AS count FROM hike WHERE idregion=" + regionID + ";";
+            string commandText = "SELECT COUNT(*) AS count FROM hike WHERE idregion=" + regionID + " AND type='túra';";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
                 object result = command.ExecuteScalar();

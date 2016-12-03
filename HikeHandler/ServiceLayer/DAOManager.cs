@@ -50,7 +50,7 @@ namespace HikeHandler.ServiceLayer
             int countries = countryDao.GetCountOfCountries();
             int regions = regionDao.GetCountOfRegions();
             int cps = cpDao.GetCountOfCPs();
-            int hikes = hikeDao.GetCountOfHikes();
+            int hikes = hikeDao.GetCountOfHikes(true);
             BaseFormSummary summary = new BaseFormSummary(countries, regions, cps, hikes);
             return summary;
         }

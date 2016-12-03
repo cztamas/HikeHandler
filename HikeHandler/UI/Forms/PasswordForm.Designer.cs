@@ -54,18 +54,17 @@
             this.userBox.Enabled = false;
             this.userBox.Location = new System.Drawing.Point(78, 19);
             this.userBox.Name = "userBox";
-            this.userBox.Size = new System.Drawing.Size(109, 20);
+            this.userBox.Size = new System.Drawing.Size(138, 20);
             this.userBox.TabIndex = 1;
             this.userBox.Text = "HikeHandler";
             // 
             // okButton
             // 
-            this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.okButton.Location = new System.Drawing.Point(12, 85);
+            this.okButton.Location = new System.Drawing.Point(9, 85);
             this.okButton.Name = "okButton";
-            this.okButton.Size = new System.Drawing.Size(88, 23);
+            this.okButton.Size = new System.Drawing.Size(106, 23);
             this.okButton.TabIndex = 2;
             this.okButton.Text = "OK";
             this.okButton.UseVisualStyleBackColor = true;
@@ -76,25 +75,23 @@
             this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(106, 85);
+            this.cancelButton.Location = new System.Drawing.Point(121, 85);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(84, 23);
+            this.cancelButton.Size = new System.Drawing.Size(95, 23);
             this.cancelButton.TabIndex = 3;
             this.cancelButton.Text = "Mégse";
             this.cancelButton.UseVisualStyleBackColor = true;
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.pwdBox);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.userBox);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(3, 0);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(196, 80);
+            this.groupBox1.Size = new System.Drawing.Size(225, 80);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             // 
@@ -105,7 +102,7 @@
             this.pwdBox.Location = new System.Drawing.Point(78, 45);
             this.pwdBox.Name = "pwdBox";
             this.pwdBox.PasswordChar = '*';
-            this.pwdBox.Size = new System.Drawing.Size(109, 20);
+            this.pwdBox.Size = new System.Drawing.Size(138, 20);
             this.pwdBox.TabIndex = 3;
             // 
             // label2
@@ -123,7 +120,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(201, 120);
+            this.ClientSize = new System.Drawing.Size(225, 120);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.okButton);

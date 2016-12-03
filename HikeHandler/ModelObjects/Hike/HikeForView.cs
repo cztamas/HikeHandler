@@ -9,7 +9,7 @@ namespace HikeHandler.ModelObjects
         public int HikeID { get; set; }
         public int CountryID { get; set; }
         public int RegionID { get; set; }
-        public int Position { get; set; }
+        public int? Position { get; set; }
         public string CountryName { get; set; }
         public string RegionName { get; set; }
         public string Description { get; set; }
@@ -41,7 +41,7 @@ namespace HikeHandler.ModelObjects
         }
 
         [JsonConstructor]
-        public HikeForView(int hikeID, int countryID, int regionID, int position, string countryName, string regionName, string description, 
+        public HikeForView(int hikeID, int countryID, int regionID, int? position, string countryName, string regionName, string description, 
             DateTime hikeDate, HikeType hikeType, List<int> cpList)
         {
             HikeID = hikeID;
@@ -56,7 +56,7 @@ namespace HikeHandler.ModelObjects
             CPList = cpList;
         }
 
-        public HikeForView(int hikeID, int countryID, int regionID, int position, string countryName, string regionName, string description,
+        public HikeForView(int hikeID, int countryID, int regionID, int? position, string countryName, string regionName, string description,
             DateTime hikeDate, HikeType hikeType, string cpString)
         {
             HikeID = hikeID;

@@ -88,7 +88,12 @@ AND h.idregion=r.idregion AND c.name LIKE @countryName AND r.name LIKE @regionNa
                             int hikeID = reader.GetInt32("idhike");
                             int countryID = reader.GetInt32("idcountry");
                             int regionID = reader.GetInt32("idregion");
-                            int position = reader.GetInt32("position");
+                            // Position entry in DB may be Null.
+                            int? position = null;
+                            if (!reader.IsDBNull(reader.GetOrdinal("position")))
+                            {
+                                position = reader.GetInt32("position");
+                            }
                             string countryName = reader.GetString("countryname");
                             string regionName = reader.GetString("regionname");
                             string description = reader.GetString("description");
@@ -123,11 +128,7 @@ AND h.idregion=r.idregion AND c.name LIKE @countryName AND r.name LIKE @regionNa
             {
                 throw new ArgumentException("hikeID parameter should be positive.", "cpID");
             }
-            if (sqlConnection == null)
-            {
-                throw new NoDBConnectionException();
-            }
-            if (sqlConnection.State != ConnectionState.Open)
+            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
             {
                 throw new NoDBConnectionException();
             }
@@ -434,18 +435,18 @@ VALUES (@date, @idregion, @idcountry, @type, @description, @cpstring)";
         }
 
         // Returns the number of hikes in the DB.
-        public int GetCountOfHikes()
+        public int GetCountOfHikes(bool hikeOnly)
         {
-            if (sqlConnection == null)
-            {
-                throw new NoDBConnectionException();
-            }
-            if (sqlConnection.State != ConnectionState.Open)
+            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
             {
                 throw new NoDBConnectionException();
             }
             int count;
             string commandText = "SELECT COUNT(*) FROM hike;";
+            if (hikeOnly)
+            {
+                commandText = "SELECT COUNT(*) FROM hike WHERE type='túra';";
+            }
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
                 object result = command.ExecuteScalar();

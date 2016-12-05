@@ -23,9 +23,15 @@ namespace HikeHandler.UI
         {
             GetHikeTypes();
             checkPointHandler.Init(daoManager, CPHandlerStyle.View);
-            RefreshHikeData();
-            RefreshForm();
-            MakeUneditable();
+            if (RefreshHikeData())
+            {
+                RefreshForm();
+                MakeUneditable();
+            }
+            else
+            {
+                Close();
+            }
         }
 
         #region Auxiliary Methods
@@ -60,29 +66,43 @@ namespace HikeHandler.UI
 
         private void RefreshForm()
         {
-            countryBox.Text = currentHike.CountryName;
-            regionBox.Text = currentHike.RegionName;
-            typeComboBox.SelectedValue = (int)currentHike.HikeType;
-            dateBox.Value = currentHike.HikeDate;
-            descriptionBox.Text = currentHike.Description;
+            try
+            {
+                countryBox.Text = currentHike.CountryName;
+                regionBox.Text = currentHike.RegionName;
+                typeComboBox.SelectedValue = (int)currentHike.HikeType;
+                dateBox.Value = currentHike.HikeDate;
+                descriptionBox.Text = currentHike.Description;
 
-            checkPointHandler.RegionID = currentHike.RegionID;
-            checkPointHandler.LoadCPs(currentHike.CPList);
-            checkPointHandler.RefreshControl();
+                checkPointHandler.RegionID = currentHike.RegionID;
+                checkPointHandler.LoadCPs(currentHike.CPList);
+                checkPointHandler.RefreshControl();
 
-            if (currentHike.HikeType == HikeType.túra)
-                Text = currentHike.Position.ToString() + ". túra adatai";
-            if (currentHike.HikeType == HikeType.séta)
-                Text = "Séta adatai";
-            positionBox.Text = currentHike.Position.ToString();
+                if (currentHike.HikeType == HikeType.túra)
+                    Text = currentHike.Position.ToString() + ". túra adatai";
+                if (currentHike.HikeType == HikeType.séta)
+                    Text = "Séta adatai";
+                if (currentHike.Position != null)
+                {
+                    positionBox.Text = currentHike.Position.ToString();
+                }
+                else
+                {
+                    positionBox.Text = string.Empty;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
-        private void RefreshHikeData()
+        private bool RefreshHikeData()
         {
             try
             {
                 currentHike = daoManager.SearchHike(currentHike.HikeID);
-                return;
+                return true;
             }
             catch (NoItemFoundException)
             {
@@ -100,7 +120,7 @@ namespace HikeHandler.UI
             {
                 MessageBox.Show(ex.Message, "Hiba");
             }
-            Close();
+            return false;
         }
 
         private void GetHikeTypes()

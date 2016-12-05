@@ -19,7 +19,8 @@ namespace HikeHandlerWebApi.Controllers
 
         public DaoController()
         {
-            string connectionString = "server=localhost; database=test; uid=test; pwd=testonly;";
+            string connectionString = "server=localhost; database=hikehandler; uid=HikeHandler; pwd=szilvasunicum;";
+            //string connectionString = "server=localhost; database=test; uid=test; pwd=testonly;";
             MySqlConnection connection = new MySqlConnection(connectionString);
             try
             {

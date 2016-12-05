@@ -118,15 +118,11 @@ AND cp.name LIKE @name AND c.name LIKE @countryName AND r.name LIKE @regionName"
         // Returns the updated value of the hikecount.
         public int UpdateHikeCount(int idCP)
         {
-            if (sqlConnection == null)
+            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
             {
                 throw new NoDBConnectionException();
             }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                throw new NoDBConnectionException();
-            }
-            string commandText = "SELECT COUNT(*) AS count FROM hike WHERE cpstring LIKE '%." + idCP + ".%';";
+            string commandText = "SELECT COUNT(*) AS count FROM hike WHERE cpstring LIKE '%." + idCP + ".%' AND type='túra';";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
                 object result = command.ExecuteScalar();

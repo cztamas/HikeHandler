@@ -1,13 +1,9 @@
-﻿using System;
+﻿using HikeHandler.Exceptions;
+using HikeHandler.ModelObjects;
+using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MySql.Data.MySqlClient;
-using HikeHandler.ModelObjects;
-using HikeHandler.Exceptions;
-using System.Windows.Forms;
 
 namespace HikeHandler.DAOs
 {
@@ -53,15 +49,11 @@ namespace HikeHandler.DAOs
         // Returns the updated value of hikecount.
         public int UpdateHikeCount(int idCountry)
         {
-            if (sqlConnection == null)
+            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
             {
                 throw new NoDBConnectionException();
             }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                throw new NoDBConnectionException();
-            }
-            string commandText = "SELECT COUNT(*) AS count FROM hike WHERE idcountry=" + idCountry + ";";
+            string commandText = "SELECT COUNT(*) AS count FROM hike WHERE idcountry=" + idCountry + " AND type='túra';";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
                 object result = command.ExecuteScalar();

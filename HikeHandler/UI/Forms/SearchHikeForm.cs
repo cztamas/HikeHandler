@@ -140,11 +140,13 @@ namespace HikeHandler.UI
                 resultView.Columns["HikeID"].Visible = false;
                 resultView.Columns["Position"].HeaderText = "Sorszám";
                 resultView.Columns["HikeDate"].HeaderText = "Dátum";
+                resultView.Columns["HikeDate"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 resultView.Columns["RegionID"].Visible = false;
                 resultView.Columns["CountryID"].Visible = false;
                 resultView.Columns["RegionName"].HeaderText = "Tájegység";
                 resultView.Columns["RegionName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 resultView.Columns["CountryName"].HeaderText = "Ország";
+                resultView.Columns["CountryName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 resultView.Columns["HikeType"].HeaderText = "Típus";
                 resultView.Columns["Description"].Visible = false;
                 resultView.Columns["CPString"].Visible = false;
@@ -183,11 +185,10 @@ namespace HikeHandler.UI
             HikeForSearch template = new HikeForSearch();
             template.CountryName = countryComboBox.Text;
             template.RegionName = regionComboBox.Text;
-            if (typeComboBox.SelectedItem != null)
+            HikeType hikeType;
+            if (Enum.TryParse(typeComboBox.Text, out hikeType))
             {
-                HikeType hikeType;
-                if (Enum.TryParse(typeComboBox.SelectedItem.ToString(), out hikeType))
-                    template.HikeType = hikeType;
+                template.HikeType = hikeType;
             }
             template.Position = hikePositionBox.Text.ToIntPile();
             template.HikeDate = dateBox.Text.ToDatePile();

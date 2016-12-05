@@ -1,4 +1,5 @@
-﻿using HikeHandler.Exceptions;
+﻿using Equin.ApplicationFramework;
+using HikeHandler.Exceptions;
 using HikeHandler.Interfaces;
 using HikeHandler.ModelObjects;
 using System;
@@ -146,9 +147,8 @@ namespace HikeHandler.UI
             try
             {
                 List<CPForView> resultList = daoManager.SearchCP(template);
-                if (resultList == null)
-                    return;
-                resultView.DataSource = resultList;
+                BindingListView<CPForView> bindingView = new BindingListView<CPForView>(resultList);
+                resultView.DataSource = bindingView;
                 resultView.Columns["CPID"].Visible = false;
                 resultView.Columns["CountryID"].Visible = false;
                 resultView.Columns["RegionID"].Visible = false;

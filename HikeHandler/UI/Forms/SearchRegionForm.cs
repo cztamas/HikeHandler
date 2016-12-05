@@ -1,4 +1,5 @@
-﻿using HikeHandler.Exceptions;
+﻿using Equin.ApplicationFramework;
+using HikeHandler.Exceptions;
 using HikeHandler.Interfaces;
 using HikeHandler.ModelObjects;
 using System;
@@ -86,9 +87,8 @@ namespace HikeHandler.UI
             try
             {
                 resultList = daoManager.SearchRegion(template);
-                BindingList<HikeRegionForView> bindingList = new BindingList<HikeRegionForView>();
-                BindingSource source = new BindingSource(bindingList, null);
-                resultView.DataSource = resultList;
+                BindingListView<HikeRegionForView> bindingView = new BindingListView<HikeRegionForView>(resultList);
+                resultView.DataSource = bindingView;
                 resultView.Columns["RegionID"].Visible = false;
                 resultView.Columns["CountryID"].Visible = false;
                 resultView.Columns["Name"].HeaderText = "Név";
@@ -97,10 +97,10 @@ namespace HikeHandler.UI
                 resultView.Columns["CountryName"].HeaderText = "Ország";
                 resultView.Columns["Description"].Visible = false;
                 resultGroupBox.Text = "Találatok száma: " + resultList.Count;
-                foreach (DataGridViewColumn column in resultView.Columns)
+                /*foreach (DataGridViewColumn column in resultView.Columns)
                 {
                     column.SortMode = DataGridViewColumnSortMode.Automatic;
-                }
+                }*/
                 return;
             }
             catch (NoDBConnectionException)

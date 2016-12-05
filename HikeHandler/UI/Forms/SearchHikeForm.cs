@@ -1,4 +1,5 @@
-﻿using HikeHandler.Exceptions;
+﻿using Equin.ApplicationFramework;
+using HikeHandler.Exceptions;
 using HikeHandler.Interfaces;
 using HikeHandler.ModelObjects;
 using System;
@@ -136,7 +137,8 @@ namespace HikeHandler.UI
             try
             {
                 List<HikeForView> resultList = daoManager.SearchHike(template);
-                resultView.DataSource = resultList;
+                BindingListView<HikeForView> bindingView = new BindingListView<HikeForView>(resultList);
+                resultView.DataSource = bindingView;
                 resultView.Columns["HikeID"].Visible = false;
                 resultView.Columns["Position"].HeaderText = "Sorszám";
                 resultView.Columns["HikeDate"].HeaderText = "Dátum";

@@ -1,4 +1,5 @@
-﻿using HikeHandler.Exceptions;
+﻿using Equin.ApplicationFramework;
+using HikeHandler.Exceptions;
 using HikeHandler.Interfaces;
 using HikeHandler.ModelObjects;
 using System;
@@ -89,9 +90,10 @@ namespace HikeHandler.UI
             {
                 resultList.Clear();
                 resultList = daoManager.SearchCountry(template);
-                BindingList<CountryForView> bindingList = new BindingList<CountryForView>(resultList);
-                BindingSource source = new BindingSource(bindingList, null);
-                resultView.DataSource = source;
+                BindingListView<CountryForView> bindingView = new BindingListView<CountryForView>(resultList);
+                //BindingList<CountryForView> bindingList = new BindingList<CountryForView>(resultList);
+                //BindingSource source = new BindingSource(bindingList, null);
+                resultView.DataSource = bindingView;
                 resultView.Columns["CountryID"].Visible = false;
                 resultView.Columns["Name"].HeaderText = "Név";
                 resultView.Columns["HikeCount"].HeaderText = "Túrák";

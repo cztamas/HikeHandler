@@ -4,6 +4,7 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Windows.Forms;
 
 namespace HikeHandler.DAOs
 {
@@ -135,62 +136,55 @@ AND h.idregion=r.idregion AND c.name LIKE @countryName AND r.name LIKE @regionNa
 
             string commandText = @"SELECT hike.idregion, hike.idcountry, hike.date, hike.position, hike.cpstring, hike.type, hike.description, 
 r.name AS regionname, c.name AS countryname FROM hike, region r, country c WHERE hike.idregion=r.idregion AND hike.idcountry=c.idcountry AND hike.idhike=@idhike;";
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
+            using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
-                adapter.SelectCommand.Parameters.AddWithValue("@idhike", hikeID);
-                DataTable table = new DataTable();
-                adapter.Fill(table);
-                if (table.Rows.Count == 0)
+                command.Parameters.AddWithValue("@idhike", hikeID);
+                using (MySqlDataReader reader = command.ExecuteReader())
                 {
+                    if (!reader.HasRows)
+                    {
+                        throw new NoItemFoundException();
+                    }
+                    bool isFirstItem = true;
+                    while (reader.Read())
+                    {
+                        if (!isFirstItem)
+                        {
+                            throw new DBErrorException("More than one hike found with the given id.");
+                        }
+                        isFirstItem = false;
+                        
+                        int countryID = reader.GetInt32("idcountry");
+                        int regionID = reader.GetInt32("idregion");
+                        // Position entry in DB may be Null.
+                        int? position = null;
+                        if (!reader.IsDBNull(reader.GetOrdinal("position")))
+                        {
+                            position = reader.GetInt32("position");
+                        }
+                        string countryName = reader.GetString("countryname");
+                        string regionName = reader.GetString("regionname");
+                        string description = reader.GetString("description");
+                        string cpString = reader.GetString("cpstring");
+                        HikeType hikeType;
+                        if (!Enum.TryParse(reader.GetString("type"), out hikeType))
+                        {
+                            throw new DBErrorException("Invalid hiketype found.");
+                        }
+                        DateTime hikeDate;
+                        if (!DateTime.TryParse(reader.GetString("date"), out hikeDate))
+                        {
+                            throw new DBErrorException("Invalid date format.");
+                        }
+                        if (!cpString.IsCPString())
+                        {
+                            throw new DBErrorException("'hike.cpstring' value not valid.");
+                        }
+                        return new HikeForView(hikeID, countryID, regionID, position, countryName, regionName,
+                            description, hikeDate, hikeType, cpString);
+                    }
                     throw new NoItemFoundException();
                 }
-                if (table.Rows.Count > 1)
-                {
-                    throw new DBErrorException("More than one hike found with the given id.");
-                }
-                DataRow row = table.Rows[0];
-
-                string countryName;
-                string regionName;
-                string description;
-                string cpString;
-                int countryID;
-                int regionID;
-                int position;
-                HikeType hikeType;
-                DateTime hikeDate;
-
-                if (!int.TryParse(row["position"].ToString(), out position))
-                {
-                    throw new DBErrorException("'hike.position' should be an integer.");
-                }
-                if (!int.TryParse(row["idregion"].ToString(), out regionID))
-                {
-                    throw new DBErrorException("'hike.idregion' should be an integer.");
-                }
-                if (!int.TryParse(row["idcountry"].ToString(), out countryID))
-                {
-                    throw new DBErrorException("'hike.idcountry' should be an integer.");
-                }
-                if (!Enum.TryParse<HikeType>(row["type"].ToString(), out hikeType))
-                {
-                    throw new DBErrorException("'hike.type' value not valid.");
-                }
-                if (!DateTime.TryParse(row["date"].ToString(), out hikeDate))
-                {
-                    throw new DBErrorException("'hike.date' value not valid.");
-                }
-                description = row["description"].ToString();
-                countryName = row["countryname"].ToString();
-                regionName = row["regionname"].ToString();
-                cpString = row["cpString"].ToString();
-
-                if (!cpString.IsCPString())
-                {
-                    throw new DBErrorException("'hike.cpstring' value not valid.");
-                }
-                return new HikeForView(hikeID, countryID, regionID, position, countryName, regionName, 
-                    description, hikeDate, hikeType, cpString);
             }
         }
 

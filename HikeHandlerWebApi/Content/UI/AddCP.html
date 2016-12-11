@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+    <link rel="stylesheet" href="C:\prog\HikeHandler\HikeHandlerWebApi\Content\bootstrap.min.css" />
+    <script src="C:\prog\HikeHandler\HikeHandlerWebApi\Scripts\bootstrap.min.js"></script>
+    <link rel="stylesheet" href="C:\prog\HikeHandler\HikeHandlerWebApi\Content\bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="C:\prog\HikeHandler\HikeHandlerWebApi\Content\UIpage.css" />
+</head>
+<body>
+    <form class="form-horizontal">
+        <fieldset>
+
+            <!-- Form Name -->
+            <legend>CheckPoint mentése</legend>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="nameBox">Név</label>
+                <div class="col-md-4">
+                    <input id="nameBox" name="nameBox" type="text" placeholder="" class="form-control input-md" required="">
+
+                </div>
+            </div>
+
+            <!-- Select Basic -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="typeBox">Típus</label>
+                <div class="col-md-4">
+                    <select id="typeBox" name="typeBox" class="form-control" required=""></select>
+                </div>
+            </div>
+
+            <!-- Select Basic -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="countryBox">Ország</label>
+                <div class="col-md-4">
+                    <select id="countryBox" name="countryBox" class="form-control" required=""></select>
+                </div>
+            </div>
+
+            <!-- Select Basic -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="regionBox">Tájegység</label>
+                <div class="col-md-4">
+                    <select id="regionBox" name="regionBox" class="form-control" required=""></select>
+                </div>
+            </div>
+
+            <!-- Textarea -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="descriptionBox">Leírás</label>
+                <div class="col-md-4">
+                    <textarea class="form-control" id="descriptionBox" name="descriptionBox"></textarea>
+                </div>
+            </div>
+
+            <!-- Button (Double) -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="saveCPButton"></label>
+                <div class="col-md-8">
+                    <button id="saveCPButton" name="saveCPButton" class="btn btn-primary">Mentés</button>
+                    <button id="cancelButton" name="cancelButton" class="btn btn-default">Mégse</button>
+                </div>
+            </div>
+
+        </fieldset>
+    </form>
+
+</body>
+</html>

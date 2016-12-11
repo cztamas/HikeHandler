@@ -105,3 +105,6 @@ C:\prog\c#\HikeHandler\HikeHandler\obj\Debug\HikeHandler.UI.BaseForm.resources
 C:\prog\c#\HikeHandler\HikeHandler\bin\Debug\Newtonsoft.Json.dll
 C:\prog\c#\HikeHandler\HikeHandler\bin\Debug\Newtonsoft.Json.xml
 C:\prog\c#\HikeHandler\HikeHandler\bin\Debug\Equin.ApplicationFramework.BindingListView.dll
+C:\prog\HikeHandler\HikeHandler\bin\Debug\HikeHandler.exe.config
+C:\prog\HikeHandler\HikeHandler\obj\Debug\HikeHandler.exe
+C:\prog\HikeHandler\HikeHandler\obj\Debug\HikeHandler.pdb

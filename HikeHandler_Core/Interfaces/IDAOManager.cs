@@ -12,6 +12,7 @@ namespace HikeHandler.Interfaces
         List<NameAndID> GetAllCountryNames();
         List<NameAndID> GetAllCPs();
         List<NameAndID> GetAllCPsOfRegion(int regionID);
+        List<NameAndID> GetAllRegions();
         List<NameAndID> GetAllRegionsOfCountry(int countryID);
         BaseFormSummary GetBaseFormSummary();
         List<NameAndID> GetCPsFromList(List<int> cpIDList);

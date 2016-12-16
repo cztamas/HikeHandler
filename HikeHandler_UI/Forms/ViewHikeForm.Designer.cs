@@ -157,9 +157,9 @@
             // 
             // editButton
             // 
-            this.editButton.Location = new System.Drawing.Point(260, 230);
+            this.editButton.Location = new System.Drawing.Point(260, 254);
             this.editButton.Name = "editButton";
-            this.editButton.Size = new System.Drawing.Size(164, 23);
+            this.editButton.Size = new System.Drawing.Size(185, 23);
             this.editButton.TabIndex = 12;
             this.editButton.Text = "Szerkesztés...";
             this.editButton.UseVisualStyleBackColor = true;
@@ -168,9 +168,9 @@
             // closeButton
             // 
             this.closeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.closeButton.Location = new System.Drawing.Point(430, 259);
+            this.closeButton.Location = new System.Drawing.Point(451, 283);
             this.closeButton.Name = "closeButton";
-            this.closeButton.Size = new System.Drawing.Size(88, 23);
+            this.closeButton.Size = new System.Drawing.Size(103, 23);
             this.closeButton.TabIndex = 13;
             this.closeButton.Text = "Bezárás";
             this.closeButton.UseVisualStyleBackColor = true;
@@ -178,9 +178,9 @@
             // 
             // saveEditButton
             // 
-            this.saveEditButton.Location = new System.Drawing.Point(260, 230);
+            this.saveEditButton.Location = new System.Drawing.Point(260, 254);
             this.saveEditButton.Name = "saveEditButton";
-            this.saveEditButton.Size = new System.Drawing.Size(164, 23);
+            this.saveEditButton.Size = new System.Drawing.Size(185, 23);
             this.saveEditButton.TabIndex = 14;
             this.saveEditButton.Text = "Változások mentése";
             this.saveEditButton.UseVisualStyleBackColor = true;
@@ -188,9 +188,9 @@
             // 
             // cancelEditButton
             // 
-            this.cancelEditButton.Location = new System.Drawing.Point(430, 230);
+            this.cancelEditButton.Location = new System.Drawing.Point(451, 254);
             this.cancelEditButton.Name = "cancelEditButton";
-            this.cancelEditButton.Size = new System.Drawing.Size(88, 23);
+            this.cancelEditButton.Size = new System.Drawing.Size(103, 23);
             this.cancelEditButton.TabIndex = 15;
             this.cancelEditButton.Text = "Mégse";
             this.cancelEditButton.UseVisualStyleBackColor = true;
@@ -198,9 +198,9 @@
             // 
             // deleteHikeButton
             // 
-            this.deleteHikeButton.Location = new System.Drawing.Point(260, 259);
+            this.deleteHikeButton.Location = new System.Drawing.Point(260, 283);
             this.deleteHikeButton.Name = "deleteHikeButton";
-            this.deleteHikeButton.Size = new System.Drawing.Size(164, 23);
+            this.deleteHikeButton.Size = new System.Drawing.Size(185, 23);
             this.deleteHikeButton.TabIndex = 9;
             this.deleteHikeButton.Text = "Túra törlése...";
             this.deleteHikeButton.UseVisualStyleBackColor = true;
@@ -211,7 +211,7 @@
             this.descriptionBox.Label = "Leírás";
             this.descriptionBox.Location = new System.Drawing.Point(12, 146);
             this.descriptionBox.Name = "descriptionBox";
-            this.descriptionBox.Size = new System.Drawing.Size(242, 136);
+            this.descriptionBox.Size = new System.Drawing.Size(242, 160);
             this.descriptionBox.TabIndex = 17;
             // 
             // checkPointHandler
@@ -219,7 +219,7 @@
             this.checkPointHandler.Location = new System.Drawing.Point(260, 12);
             this.checkPointHandler.Name = "checkPointHandler";
             this.checkPointHandler.RegionID = 0;
-            this.checkPointHandler.Size = new System.Drawing.Size(269, 212);
+            this.checkPointHandler.Size = new System.Drawing.Size(299, 236);
             this.checkPointHandler.TabIndex = 16;
             // 
             // ViewHikeForm
@@ -227,7 +227,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.closeButton;
-            this.ClientSize = new System.Drawing.Size(536, 289);
+            this.ClientSize = new System.Drawing.Size(566, 314);
             this.Controls.Add(this.descriptionBox);
             this.Controls.Add(this.checkPointHandler);
             this.Controls.Add(this.deleteHikeButton);

@@ -138,9 +138,9 @@
             // 
             // addHikeButton
             // 
-            this.addHikeButton.Location = new System.Drawing.Point(238, 250);
+            this.addHikeButton.Location = new System.Drawing.Point(238, 257);
             this.addHikeButton.Name = "addHikeButton";
-            this.addHikeButton.Size = new System.Drawing.Size(148, 23);
+            this.addHikeButton.Size = new System.Drawing.Size(187, 23);
             this.addHikeButton.TabIndex = 1;
             this.addHikeButton.Text = "Túra hozzáadása";
             this.addHikeButton.UseVisualStyleBackColor = true;
@@ -149,9 +149,9 @@
             // cancelButton
             // 
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(392, 250);
+            this.cancelButton.Location = new System.Drawing.Point(431, 257);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(89, 23);
+            this.cancelButton.Size = new System.Drawing.Size(106, 23);
             this.cancelButton.TabIndex = 2;
             this.cancelButton.Text = "Mégse";
             this.cancelButton.UseVisualStyleBackColor = true;
@@ -162,7 +162,7 @@
             this.descriptionBox.Label = "Leírás";
             this.descriptionBox.Location = new System.Drawing.Point(12, 146);
             this.descriptionBox.Name = "descriptionBox";
-            this.descriptionBox.Size = new System.Drawing.Size(220, 133);
+            this.descriptionBox.Size = new System.Drawing.Size(220, 134);
             this.descriptionBox.TabIndex = 12;
             this.descriptionBox.TextBoxFocusEnter += new System.EventHandler(this.descriptionBox_TextBoxFocusEnter);
             this.descriptionBox.TextBoxFocusLeave += new System.EventHandler(this.descriptionBox_TextBoxFocusLeave);
@@ -173,7 +173,7 @@
             this.checkPointHandler.Location = new System.Drawing.Point(238, 12);
             this.checkPointHandler.Name = "checkPointHandler";
             this.checkPointHandler.RegionID = 0;
-            this.checkPointHandler.Size = new System.Drawing.Size(254, 232);
+            this.checkPointHandler.Size = new System.Drawing.Size(299, 239);
             this.checkPointHandler.TabIndex = 11;
             // 
             // AddHikeForm
@@ -182,7 +182,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(499, 291);
+            this.ClientSize = new System.Drawing.Size(545, 287);
             this.Controls.Add(this.descriptionBox);
             this.Controls.Add(this.checkPointHandler);
             this.Controls.Add(this.cancelButton);

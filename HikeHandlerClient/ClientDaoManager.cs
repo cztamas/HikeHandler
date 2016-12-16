@@ -130,6 +130,20 @@ namespace HikeHandler_Client
             return JsonConvert.DeserializeObject<List<NameAndID>>(response.Content.ReadAsStringAsync().Result);
         }
 
+        public List<NameAndID> GetAllRegions()
+        {
+            HttpRequestMessage request = new HttpRequestMessage();
+            request.RequestUri = new Uri("http://" + host + "/hikehandler/Data/GetAllRegions");
+            request.Method = new HttpMethod("GET");
+
+            HttpResponseMessage response = httpClient.SendAsync(request).Result;
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                throw new Exception(response.Content.ReadAsStringAsync().Result);
+            }
+            return JsonConvert.DeserializeObject<List<NameAndID>>(response.Content.ReadAsStringAsync().Result);
+        }
+
         public List<NameAndID> GetAllCPsOfRegion(int regionID)
         {
             HttpRequestMessage request = new HttpRequestMessage();

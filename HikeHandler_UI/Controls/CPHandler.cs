@@ -13,6 +13,7 @@ namespace HikeHandler.UI
         private IDAOManager daoManager;
         private BindingList<NameAndID> cpNameList;
         public int RegionID { get; set; }
+        private int tempRegionID;
         public bool AnyCPOrder
         {
             get
@@ -26,7 +27,7 @@ namespace HikeHandler.UI
             {
                 if (cpNameList == null)
                 {
-                    return null;
+                    return new List<int>();
                 }
                 List<int> cpList = new List<int>();
                 foreach (NameAndID item in cpNameList)
@@ -40,6 +41,10 @@ namespace HikeHandler.UI
         {
             get
             {
+                if (cpNameList == null)
+                {
+                    return string.Empty;
+                }
                 string cpString = string.Empty;
                 foreach (NameAndID item in cpNameList)
                 {
@@ -57,6 +62,7 @@ namespace HikeHandler.UI
         public void Init(IDAOManager manager, CPHandlerStyle style)
         {
             daoManager = manager;
+            GetRegions();
             switch (style)
             {
                 case CPHandlerStyle.Add:
@@ -67,12 +73,13 @@ namespace HikeHandler.UI
                 case CPHandlerStyle.Search:
                     RefreshButton.Enabled = false;
                     RefreshButton.Visible = false;
+                    newCPButton.Enabled = false;
+                    newCPButton.Visible = false;
                     InitCPGridView();
                     break;
                 case CPHandlerStyle.View:
                     anyOrderCheckBox.Visible = false;
                     anyOrderCheckBox.Enabled = false;
-                    //RefreshControl();
                     MakeUneditable();
                     break;
             }            
@@ -87,9 +94,10 @@ namespace HikeHandler.UI
             moveDownButton.Enabled = true;
             moveUpButton.Enabled = true;
             cpNameComboBox.Enabled = true;
-            allRegionCheckBox.Enabled = true;
-            allRegionCheckBox.Visible = true;
+            otherRegionCheckBox.Enabled = true;
+            otherRegionCheckBox.Visible = true;
             RefreshButton.Enabled = true;
+            newCPButton.Enabled = true;
         }
 
         public void MakeUneditable()
@@ -99,9 +107,11 @@ namespace HikeHandler.UI
             moveDownButton.Enabled = false;
             moveUpButton.Enabled = false;
             cpNameComboBox.Enabled = false;
-            allRegionCheckBox.Enabled = false;
-            allRegionCheckBox.Visible = false;
+            otherRegionCheckBox.Enabled = false;
+            otherRegionCheckBox.Visible = false;
             RefreshButton.Enabled = false;
+            newCPButton.Enabled = false;
+            regionComboBox.Enabled = false;
         }
 
         private void InitCPGridView()
@@ -131,7 +141,7 @@ namespace HikeHandler.UI
 
                 cpGridView.Columns["ID"].Visible = false;
                 cpGridView.Columns["Name"].HeaderText = "CheckPoint neve";
-                RefreshCPList();
+                RefreshControl();
             }
             catch (NoDBConnectionException)
             {
@@ -146,31 +156,7 @@ namespace HikeHandler.UI
                 MessageBox.Show(ex.Message, "Hiba");
             }
         }
-
-        private void GetCPList()
-        {
-            try
-            {
-                List<NameAndID> cps = daoManager.GetAllCPs();
-                cpNameComboBox.DataSource = cps;
-                cpNameComboBox.ValueMember = "ID";
-                cpNameComboBox.DisplayMember = "Name";
-                return;
-            }
-            catch (NoDBConnectionException)
-            {
-                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
-            }
-            catch (DBErrorException ex)
-            {
-                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Hiba");
-            }
-        }
-
+        
         private void GetCPList(int regionID)
         {
             try
@@ -194,50 +180,70 @@ namespace HikeHandler.UI
             }
         }
         
+        private void GetRegions()
+        {
+            try
+            {
+                List<NameAndID> list = daoManager.GetAllRegions();
+                regionComboBox.DataSource = list;
+                regionComboBox.ValueMember = "ID";
+                regionComboBox.DisplayMember = "Name";
+                return;
+            }
+            catch (NoDBConnectionException)
+            {
+                MessageBox.Show("Nincs kapcsolat az adatbázissal.", "Hiba");
+            }
+            catch (DBErrorException ex)
+            {
+                MessageBox.Show("Hiba az adatbázisban: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+            }
+        }
+
         public void RefreshControl()
         {
-            if (allRegionCheckBox.Checked)
+            if (!otherRegionCheckBox.Checked)
             {
-                GetCPList();
+                GetCPList(RegionID);
             }
             else
             {
-                GetCPList(RegionID);
+                GetCPList(tempRegionID);
             }
         }
-        
-        private void RefreshCPList()
-        {
-            if (allRegionCheckBox.Checked)
-            {
-                GetCPList();
-                return;
-            }
-            if (!allRegionCheckBox.Checked)
-            {
-                if (RegionID == 0)
-                    return;
-                GetCPList(RegionID);
-            }
-        }
-        
+                
         #endregion
 
         #region Eventhandler Methods
 
         public void Region_Refreshed(object sender, EventArgs e)
         {
-            if (allRegionCheckBox.Checked)
-                return;
-            ComboBox regionComboBox = sender as ComboBox;
-            if (regionComboBox == null)
+            ComboBox senderRegionBox = sender as ComboBox;
+            if (senderRegionBox == null)
                 return;
             int id;
-            if (regionComboBox.SelectedValue == null)
+            if (senderRegionBox.SelectedValue == null)
                 return;
-            if (!int.TryParse(regionComboBox.SelectedValue.ToString(), out id))
+            if (!int.TryParse(senderRegionBox.SelectedValue.ToString(), out id))
                 return;
             RegionID = id;
+            if (otherRegionCheckBox.Checked)
+            {
+                return;
+            }
+            try
+            {
+                regionComboBox.SelectedValue = RegionID;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Hiba");
+            }
+            cpNameComboBox.Text = string.Empty;
             GetCPList(RegionID);
         }
 
@@ -299,9 +305,40 @@ namespace HikeHandler.UI
             cpGridView.Rows[index + 1].Selected = true;
         }
         
-        private void allRegionCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void otherRegionCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            RefreshCPList();
+            if (!otherRegionCheckBox.Checked)
+            {
+                try
+                {
+                    regionComboBox.SelectedValue = RegionID;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Hiba");
+                }
+                regionComboBox.Enabled = false;
+                RefreshControl();
+            }
+            else
+            {
+                regionComboBox.Enabled = true;
+            }
+        }
+        
+        private void newCPButton_Click(object sender, EventArgs e)
+        {
+            AddCPForm addCPForm = new AddCPForm(daoManager);
+            addCPForm.Show();
+        }
+
+        private void regionComboBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (regionComboBox.SelectedValue == null || !int.TryParse(regionComboBox.SelectedValue.ToString(), out tempRegionID))
+            {
+                return;
+            }
+            RefreshControl();
         }
 
         #endregion

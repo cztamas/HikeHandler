@@ -81,8 +81,8 @@ namespace HikeHandler.UI
         {
             try
             {
-                List<NameAndID> table = daoManager.GetAllRegionsOfCountry(countryID);
-                regionComboBox.DataSource = table;
+                List<NameAndID> list = daoManager.GetAllRegionsOfCountry(countryID);
+                regionComboBox.DataSource = list;
                 regionComboBox.ValueMember = "ID";
                 regionComboBox.DisplayMember = "Name";
                 return;

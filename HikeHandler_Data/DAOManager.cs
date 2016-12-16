@@ -4,6 +4,7 @@ using HikeHandler.Interfaces;
 using HikeHandler.ModelObjects;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
+using System;
 
 namespace HikeHandler.ServiceLayer
 {
@@ -100,6 +101,11 @@ namespace HikeHandler.ServiceLayer
         public List<NameAndID> GetAllRegionsOfCountry(int countryID)
         {
                 return regionDao.GetRegionNames(countryID);
+        }
+
+        public List<NameAndID> GetAllRegions()
+        {
+            return regionDao.GetRegionNames();
         }
 
         public bool SaveRegion(HikeRegionForSave region)
@@ -299,7 +305,7 @@ namespace HikeHandler.ServiceLayer
             countryDao.UpdateHikeCount(hike.CountryID);
             return true;
         }
-
+        
         #endregion
     }
 }

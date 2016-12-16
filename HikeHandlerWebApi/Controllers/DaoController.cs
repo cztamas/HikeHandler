@@ -186,6 +186,23 @@ namespace HikeHandlerWebApi.Controllers
             }
         }
 
+        [Route("GetAllRegions")]
+        [HttpGet]
+        public List<NameAndID> GetAllRegions()
+        {
+            try
+            {
+                return daoManager.GetAllRegions();
+            }
+            catch (Exception ex)
+            {
+                HttpResponseMessage errorResponse = new HttpResponseMessage();
+                errorResponse.Content = new StringContent(ex.Message, Encoding.UTF8, "application/json");
+                errorResponse.StatusCode = HttpStatusCode.InternalServerError;
+                throw new HttpResponseException(errorResponse);
+            }
+        }
+
         [Route("GetAllRegionsOfCountry/{countryID}")]
         [HttpGet]
         public List<NameAndID> GetAllRegionsOfCountry(int countryID)

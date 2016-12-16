@@ -239,7 +239,7 @@ FROM region r, country c WHERE c.idcountry=r.idcountry AND r.idregion=@idregion;
             }
         }
 
-        // Returns in a datatable the names and ids of every region of the given country
+        // Returns in a list with the names and ids of every region of the given country.
         public List<NameAndID> GetRegionNames(int countryID)
         {
             if (sqlConnection == null)
@@ -255,6 +255,39 @@ FROM region r, country c WHERE c.idcountry=r.idcountry AND r.idregion=@idregion;
             {
                 List<NameAndID> result = new List<NameAndID>();
                 command.Parameters.AddWithValue("@idcountry", countryID);
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            int id = reader.GetInt32("idregion");
+                            string name = reader.GetString("name");
+                            result.Add(new NameAndID(name, id));
+                        }
+                    }
+                    else
+                        return result;
+                }
+                return result;
+            }
+        }
+
+        // Returns in a list with the names and ids of every region in the DB.
+        public List<NameAndID> GetRegionNames()
+        {
+            if (sqlConnection == null)
+            {
+                throw new NoDBConnectionException();
+            }
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                throw new NoDBConnectionException();
+            }
+            string commandText = "SELECT idregion, name FROM region ORDER BY name ASC;";
+            using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
+            {
+                List<NameAndID> result = new List<NameAndID>();
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {
                     if (reader.HasRows)

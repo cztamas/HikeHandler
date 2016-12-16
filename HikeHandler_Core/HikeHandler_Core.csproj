@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AB1F4B08-2005-4489-996A-A6817068F9F0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HikeHandler_Core</RootNamespace>
+    <AssemblyName>HikeHandler_Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Exceptions\DBErrorException.cs" />
+    <Compile Include="Exceptions\DuplicateDateException.cs" />
+    <Compile Include="Exceptions\DuplicateItemNameException.cs" />
+    <Compile Include="Exceptions\NoDBConnectionException.cs" />
+    <Compile Include="Exceptions\NoItemFoundException.cs" />
+    <Compile Include="Exceptions\NotDeletableException.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Interfaces\IDAOManager.cs" />
+    <Compile Include="ModelObjects\BaseFormSummary.cs" />
+    <Compile Include="ModelObjects\Country\CountryForSave.cs" />
+    <Compile Include="ModelObjects\Country\CountryForSearch.cs" />
+    <Compile Include="ModelObjects\Country\CountryForUpdate.cs" />
+    <Compile Include="ModelObjects\Country\CountryForView.cs" />
+    <Compile Include="ModelObjects\CP\CPForSave.cs" />
+    <Compile Include="ModelObjects\CP\CPForSearch.cs" />
+    <Compile Include="ModelObjects\CP\CPForUpdate.cs" />
+    <Compile Include="ModelObjects\CP\CPForView.cs" />
+    <Compile Include="ModelObjects\CP\CPType.cs" />
+    <Compile Include="ModelObjects\HikeRegion\HikeRegionForSave.cs" />
+    <Compile Include="ModelObjects\HikeRegion\HikeRegionForSearch.cs" />
+    <Compile Include="ModelObjects\HikeRegion\HikeRegionForUpdate.cs" />
+    <Compile Include="ModelObjects\HikeRegion\HikeRegionForView.cs" />
+    <Compile Include="ModelObjects\Hike\HikeForSave.cs" />
+    <Compile Include="ModelObjects\Hike\HikeForSearch.cs" />
+    <Compile Include="ModelObjects\Hike\HikeForUpdate.cs" />
+    <Compile Include="ModelObjects\Hike\HikeForView.cs" />
+    <Compile Include="ModelObjects\Hike\HikeType.cs" />
+    <Compile Include="ModelObjects\Intervals\DateInterval.cs" />
+    <Compile Include="ModelObjects\Intervals\DatePile.cs" />
+    <Compile Include="ModelObjects\Intervals\IntInterval.cs" />
+    <Compile Include="ModelObjects\Intervals\IntPile.cs" />
+    <Compile Include="ModelObjects\LoginData.cs" />
+    <Compile Include="ModelObjects\NameAndID.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

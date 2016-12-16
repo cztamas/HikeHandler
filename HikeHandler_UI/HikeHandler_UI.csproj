@@ -1,0 +1,214 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B908E955-67D3-43F7-A312-5BD4ED258629}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HikeHandler_UI</RootNamespace>
+    <AssemblyName>HikeHandler_UI</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Equin.ApplicationFramework.BindingListView, Version=1.4.5222.35545, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Equin.ApplicationFramework.BindingListView.1.4.5222.35545\lib\net40-Client\Equin.ApplicationFramework.BindingListView.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controls\CPHandler.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CPHandler.Designer.cs">
+      <DependentUpon>CPHandler.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\HikeDescriptionBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\HikeDescriptionBox.Designer.cs">
+      <DependentUpon>HikeDescriptionBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AddCountryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AddCountryForm.Designer.cs">
+      <DependentUpon>AddCountryForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AddCPForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AddCPForm.Designer.cs">
+      <DependentUpon>AddCPForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AddHikeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AddHikeForm.Designer.cs">
+      <DependentUpon>AddHikeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AddRegionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AddRegionForm.Designer.cs">
+      <DependentUpon>AddRegionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\BaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\BaseForm.Designer.cs">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\PasswordForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PasswordForm.Designer.cs">
+      <DependentUpon>PasswordForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SearchCountryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SearchCountryForm.Designer.cs">
+      <DependentUpon>SearchCountryForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SearchCPForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SearchCPForm.Designer.cs">
+      <DependentUpon>SearchCPForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SearchHikeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SearchHikeForm.Designer.cs">
+      <DependentUpon>SearchHikeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SearchRegionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SearchRegionForm.Designer.cs">
+      <DependentUpon>SearchRegionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ViewCountryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ViewCountryForm.Designer.cs">
+      <DependentUpon>ViewCountryForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ViewCPForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ViewCPForm.Designer.cs">
+      <DependentUpon>ViewCPForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ViewHikeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ViewHikeForm.Designer.cs">
+      <DependentUpon>ViewHikeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ViewRegionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ViewRegionForm.Designer.cs">
+      <DependentUpon>ViewRegionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\CPHandler.resx">
+      <DependentUpon>CPHandler.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\HikeDescriptionBox.resx">
+      <DependentUpon>HikeDescriptionBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AddCountryForm.resx">
+      <DependentUpon>AddCountryForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AddCPForm.resx">
+      <DependentUpon>AddCPForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AddHikeForm.resx">
+      <DependentUpon>AddHikeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AddRegionForm.resx">
+      <DependentUpon>AddRegionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\BaseForm.resx">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PasswordForm.resx">
+      <DependentUpon>PasswordForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SearchCountryForm.resx">
+      <DependentUpon>SearchCountryForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SearchCPForm.resx">
+      <DependentUpon>SearchCPForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SearchHikeForm.resx">
+      <DependentUpon>SearchHikeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SearchRegionForm.resx">
+      <DependentUpon>SearchRegionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ViewCountryForm.resx">
+      <DependentUpon>ViewCountryForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ViewCPForm.resx">
+      <DependentUpon>ViewCPForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ViewHikeForm.resx">
+      <DependentUpon>ViewHikeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ViewRegionForm.resx">
+      <DependentUpon>ViewRegionForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HikeHandler_Core\HikeHandler_Core.csproj">
+      <Project>{ab1f4b08-2005-4489-996a-a6817068f9f0}</Project>
+      <Name>HikeHandler_Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -2,6 +2,7 @@
 using HikeHandler.Interfaces;
 using HikeHandler.ModelObjects;
 using HikeHandler.ServiceLayer;
+using HikeHandlerWebApi.Filters;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -204,6 +205,7 @@ namespace HikeHandlerWebApi.Controllers
 
         [Route("GetBaseFormSummary")]
         [HttpGet]
+        [CustomAuthenticationFilter]
         public BaseFormSummary GetBaseFormSummary()
         {
             try

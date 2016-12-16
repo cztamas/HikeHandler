@@ -256,6 +256,7 @@
     <Compile Include="Controllers\DaoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Filters\CustomAuthenticationFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -360,9 +361,13 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HikeHandler\HikeHandler.csproj">
-      <Project>{ef14a9dd-697f-4ada-8282-546f32f1e2b1}</Project>
-      <Name>HikeHandler</Name>
+    <ProjectReference Include="..\HikeHandler_Core\HikeHandler_Core.csproj">
+      <Project>{ab1f4b08-2005-4489-996a-a6817068f9f0}</Project>
+      <Name>HikeHandler_Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HikeHandler_Data\HikeHandler_Data.csproj">
+      <Project>{588960b0-5d0d-40d5-9576-be2243eb70d4}</Project>
+      <Name>HikeHandler_Data</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

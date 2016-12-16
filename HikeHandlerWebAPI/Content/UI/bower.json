@@ -1,0 +1,21 @@
+{
+  "name": "HikeHandler",
+  "authors": [
+    "cztamas <tamas.czank@gmail.com>"
+  ],
+  "description": "A tool to track hikes",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}

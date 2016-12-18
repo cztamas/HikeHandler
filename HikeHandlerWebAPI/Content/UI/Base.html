@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8" />
+    <link rel="stylesheet" href="/Content/UI/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/Content/UI/bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="/Content/UI/bower_components/bootstrap/dist/css/bootstrap-theme.css" />
+    <link rel="stylesheet" href="/Content/UI/bower_components/bootstrap/dist/css/bootstrap-theme.min.css" />
+    <script src="/Content/UI/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="/Content/UI/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/Content/UI/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/Content/Scripts/BaseHandler.js"></script>
+</head>
+<body>
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<ul class="nav nav-pills" id="horizontalNav">
+				<li role="presentation" id="searchButton" onClick="BaseHandler.searchClicked()" class="active"><a href="#">Keresés</a></li>
+				<li role="presentation" id="addButton" onClick="BaseHandler.addClicked()"><a href="#">Hozzáadás</a></li>
+				<li role="presentation" id="statButton" onClick="BaseHandler.statClicked()"><a href="#">Statisztika</a>	</li>
+			</ul>
+		</div>
+	</nav>
+	<div class="row">
+		<div class="col-sm-2">
+			<ul class="nav nav-pills nav-stacked" id="verticalNav">
+				<li role="presentation" id="hikeButton" onClick="BaseHandler.hikeClicked()" class="active"><a href="#">Túra</a></li>
+				<li role="presentation" id="countryButton" onClick="BaseHandler.countryClicked()"><a href="#">Ország</a></li>
+				<li role="presentation" id="regionButton" onClick="BaseHandler.regionClicked()"><a href="#">Tájegység</a></li>
+				<li role="presentation" id="cpButton" onClick="BaseHandler.cpClicked()"><a href="#">CheckPoint</a></li>
+			</ul>
+		</div>
+		<div class="col-sm-10">
+			<div>
+				<iframe id="frame" width="100%" height="1000px" src="/Content/UI/AddHike.html"></iframe>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

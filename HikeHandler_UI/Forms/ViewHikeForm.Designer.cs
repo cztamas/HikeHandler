@@ -44,7 +44,7 @@
             this.saveEditButton = new System.Windows.Forms.Button();
             this.cancelEditButton = new System.Windows.Forms.Button();
             this.deleteHikeButton = new System.Windows.Forms.Button();
-            this.descriptionBox = new HikeHandler.Controls.HikeDescriptionBox();
+            this.descriptionBox = new HikeHandler.UI.HikeDescriptionBox();
             this.checkPointHandler = new HikeHandler.UI.CPHandler();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -266,6 +266,6 @@
         private System.Windows.Forms.TextBox positionBox;
         private System.Windows.Forms.Label label5;
         private CPHandler checkPointHandler;
-        private HikeHandler.Controls.HikeDescriptionBox descriptionBox;
+        private HikeDescriptionBox descriptionBox;
     }
 }

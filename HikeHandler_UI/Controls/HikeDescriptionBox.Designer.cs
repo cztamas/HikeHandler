@@ -1,4 +1,4 @@
-﻿namespace HikeHandler.Controls
+﻿namespace HikeHandler.UI
 {
     partial class HikeDescriptionBox
     {
@@ -124,8 +124,8 @@
             // 
             // descriptionBox
             // 
-            this.descriptionBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.descriptionBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.descriptionBox.Location = new System.Drawing.Point(3, 41);
             this.descriptionBox.Name = "descriptionBox";

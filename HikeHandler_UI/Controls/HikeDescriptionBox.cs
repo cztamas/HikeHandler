@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace HikeHandler.Controls
+namespace HikeHandler.UI
 {
     public partial class HikeDescriptionBox : UserControl
     {

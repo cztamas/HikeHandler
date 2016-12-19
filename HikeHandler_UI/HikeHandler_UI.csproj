@@ -58,6 +58,9 @@
     <Compile Include="Controls\HikeDescriptionBox.Designer.cs">
       <DependentUpon>HikeDescriptionBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\MultiValueTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Forms\AddCountryForm.cs">
       <SubType>Form</SubType>
     </Compile>

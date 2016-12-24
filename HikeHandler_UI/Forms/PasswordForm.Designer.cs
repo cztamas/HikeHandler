@@ -55,7 +55,7 @@
             this.userBox.Location = new System.Drawing.Point(78, 19);
             this.userBox.Name = "userBox";
             this.userBox.Size = new System.Drawing.Size(138, 20);
-            this.userBox.TabIndex = 1;
+            this.userBox.TabIndex = 2;
             this.userBox.Text = "HikeHandler";
             // 
             // okButton
@@ -65,7 +65,7 @@
             this.okButton.Location = new System.Drawing.Point(9, 85);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(106, 23);
-            this.okButton.TabIndex = 2;
+            this.okButton.TabIndex = 3;
             this.okButton.Text = "OK";
             this.okButton.UseVisualStyleBackColor = true;
             this.okButton.Click += new System.EventHandler(this.okButton_Click);
@@ -78,7 +78,7 @@
             this.cancelButton.Location = new System.Drawing.Point(121, 85);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(95, 23);
-            this.cancelButton.TabIndex = 3;
+            this.cancelButton.TabIndex = 4;
             this.cancelButton.Text = "Mégse";
             this.cancelButton.UseVisualStyleBackColor = true;
             // 
@@ -92,7 +92,7 @@
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(225, 80);
-            this.groupBox1.TabIndex = 4;
+            this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             // 
             // pwdBox
@@ -103,7 +103,7 @@
             this.pwdBox.Name = "pwdBox";
             this.pwdBox.PasswordChar = '*';
             this.pwdBox.Size = new System.Drawing.Size(138, 20);
-            this.pwdBox.TabIndex = 3;
+            this.pwdBox.TabIndex = 1;
             // 
             // label2
             // 

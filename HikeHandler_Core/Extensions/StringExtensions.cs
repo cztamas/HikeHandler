@@ -223,5 +223,15 @@ namespace HikeHandler.ModelObjects
             }
             return pile;
         }
+
+        public static List<int> IndexesOf(this string text, string term)
+        {
+            List<int> result = new List<int>();
+            for (int i = text.IndexOf(term); i > -1; i = text.IndexOf(term, i + 1))
+            {
+                result.Add(i);
+            }
+            return result;
+        }
     }
 }

@@ -141,7 +141,7 @@
             this.addHikeButton.Location = new System.Drawing.Point(238, 257);
             this.addHikeButton.Name = "addHikeButton";
             this.addHikeButton.Size = new System.Drawing.Size(187, 23);
-            this.addHikeButton.TabIndex = 1;
+            this.addHikeButton.TabIndex = 7;
             this.addHikeButton.Text = "Túra hozzáadása";
             this.addHikeButton.UseVisualStyleBackColor = true;
             this.addHikeButton.Click += new System.EventHandler(this.addHikeButton_Click);
@@ -152,7 +152,7 @@
             this.cancelButton.Location = new System.Drawing.Point(431, 257);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(106, 23);
-            this.cancelButton.TabIndex = 2;
+            this.cancelButton.TabIndex = 8;
             this.cancelButton.Text = "Mégse";
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
@@ -163,7 +163,7 @@
             this.descriptionBox.Location = new System.Drawing.Point(12, 146);
             this.descriptionBox.Name = "descriptionBox";
             this.descriptionBox.Size = new System.Drawing.Size(220, 134);
-            this.descriptionBox.TabIndex = 12;
+            this.descriptionBox.TabIndex = 5;
             this.descriptionBox.TextBoxFocusEnter += new System.EventHandler(this.descriptionBox_TextBoxFocusEnter);
             this.descriptionBox.TextBoxFocusLeave += new System.EventHandler(this.descriptionBox_TextBoxFocusLeave);
             this.descriptionBox.Leave += new System.EventHandler(this.descriptionBox_Leave);
@@ -174,7 +174,7 @@
             this.checkPointHandler.Name = "checkPointHandler";
             this.checkPointHandler.RegionID = 0;
             this.checkPointHandler.Size = new System.Drawing.Size(299, 239);
-            this.checkPointHandler.TabIndex = 11;
+            this.checkPointHandler.TabIndex = 6;
             // 
             // AddHikeForm
             // 

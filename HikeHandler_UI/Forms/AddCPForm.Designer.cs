@@ -106,7 +106,7 @@
             this.countryComboBox.Location = new System.Drawing.Point(56, 45);
             this.countryComboBox.Name = "countryComboBox";
             this.countryComboBox.Size = new System.Drawing.Size(121, 21);
-            this.countryComboBox.TabIndex = 7;
+            this.countryComboBox.TabIndex = 3;
             this.countryComboBox.SelectedValueChanged += new System.EventHandler(this.countryComboBox_SelectedValueChanged);
             // 
             // regionComboBox
@@ -117,7 +117,7 @@
             this.regionComboBox.Location = new System.Drawing.Point(248, 45);
             this.regionComboBox.Name = "regionComboBox";
             this.regionComboBox.Size = new System.Drawing.Size(121, 21);
-            this.regionComboBox.TabIndex = 6;
+            this.regionComboBox.TabIndex = 4;
             // 
             // typeComboBox
             // 
@@ -127,14 +127,14 @@
             this.typeComboBox.Location = new System.Drawing.Point(248, 18);
             this.typeComboBox.Name = "typeComboBox";
             this.typeComboBox.Size = new System.Drawing.Size(121, 21);
-            this.typeComboBox.TabIndex = 5;
+            this.typeComboBox.TabIndex = 2;
             // 
             // nameBox
             // 
             this.nameBox.Location = new System.Drawing.Point(56, 19);
             this.nameBox.Name = "nameBox";
             this.nameBox.Size = new System.Drawing.Size(121, 20);
-            this.nameBox.TabIndex = 4;
+            this.nameBox.TabIndex = 1;
             // 
             // descriptionBox
             // 
@@ -152,7 +152,7 @@
             this.saveCPButton.Location = new System.Drawing.Point(12, 192);
             this.saveCPButton.Name = "saveCPButton";
             this.saveCPButton.Size = new System.Drawing.Size(221, 23);
-            this.saveCPButton.TabIndex = 7;
+            this.saveCPButton.TabIndex = 6;
             this.saveCPButton.Text = "CheckPoint mentése";
             this.saveCPButton.UseVisualStyleBackColor = true;
             this.saveCPButton.Click += new System.EventHandler(this.saveCPButton_Click);
@@ -163,7 +163,7 @@
             this.cancelButton.Location = new System.Drawing.Point(239, 192);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(149, 23);
-            this.cancelButton.TabIndex = 8;
+            this.cancelButton.TabIndex = 7;
             this.cancelButton.Text = "Mégse";
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
@@ -174,7 +174,7 @@
             this.groupBox2.Location = new System.Drawing.Point(12, 92);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(376, 94);
-            this.groupBox2.TabIndex = 9;
+            this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Leírás";
             // 

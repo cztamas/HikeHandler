@@ -1,4 +1,5 @@
 ﻿using HikeHandler.Exceptions;
+using HikeHandler.Extensions;
 using HikeHandler.Interfaces;
 using HikeHandler.ModelObjects;
 using System;
@@ -60,8 +61,8 @@ namespace HikeHandler.UI
         private void RefreshForm()
         {
             nameBox.Text = currentCP.Name;
-            regionBox.Text = currentCP.RegionName;
-            countryBox.Text = currentCP.CountryName;
+            regionBox.Text = currentCP.RegionNames.ToCommaSeparatedList();
+            countryBox.Text = currentCP.CountryNames.ToCommaSeparatedList();
             hikeCountBox.Text = currentCP.HikeCount.ToString();
             descriptionBox.Text = currentCP.Description;
             typeComboBox.Text = currentCP.TypeOfCP.ToString();

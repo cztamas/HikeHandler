@@ -1,15 +1,16 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace HikeHandler.ModelObjects
 {
     public class CPForView
     {
         public int CPID { get; set; }
-        public int CountryID { get; set; }
-        public int RegionID { get; set; }
+        public List<int> CountryID { get; set; }
+        public List<int> RegionID { get; set; }
         public string Name { get; set; }
-        public string CountryName { get; set; }
-        public string RegionName { get; set; }
+        public List<string> CountryNames { get; set; }
+        public List<string> RegionNames { get; set; }
         public CPType TypeOfCP { get; set; }
         public string Description { get; set; }
         public int HikeCount { get; set; }
@@ -20,15 +21,15 @@ namespace HikeHandler.ModelObjects
         }
 
         [JsonConstructor]
-        public CPForView(int cpID, int countryID, int regionID, string name, string countryName, string regionName, CPType typeOfCP, 
-            int hikeCount, string description)
+        public CPForView(int cpID, List<int> countryID, List<int> regionID, string name, List<string> countryNames, 
+            List<string> regionNames, CPType typeOfCP, int hikeCount, string description)
         {
             CPID = cpID;
             CountryID = countryID;
             RegionID = regionID;
             Name = name;
-            CountryName = countryName;
-            RegionName = regionName;
+            CountryNames = countryNames;
+            RegionNames = regionNames;
             TypeOfCP = typeOfCP;
             HikeCount = hikeCount;
             Description = description;

@@ -1,4 +1,5 @@
 ﻿using HikeHandler.Exceptions;
+using HikeHandler.Extensions;
 using HikeHandler.ModelObjects;
 using MySql.Data.MySqlClient;
 using System;
@@ -61,11 +62,7 @@ AND h.idregion=r.idregion AND c.name LIKE @countryName AND r.name LIKE @regionNa
 
         public List<HikeForView> SearchHike(HikeForSearch template)
         {
-            if (sqlConnection == null)
-            {
-                throw new NoDBConnectionException();
-            }
-            if (sqlConnection.State != ConnectionState.Open)
+            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
             {
                 throw new NoDBConnectionException();
             }
@@ -175,7 +172,7 @@ r.name AS regionname, c.name AS countryname FROM hike, region r, country c WHERE
                         {
                             throw new DBErrorException("Invalid date format.");
                         }
-                        if (!cpString.IsCPString())
+                        if (!cpString.IsIntString())
                         {
                             throw new DBErrorException("'hike.cpstring' value not valid.");
                         }

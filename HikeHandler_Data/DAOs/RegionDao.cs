@@ -168,6 +168,14 @@ WHERE r.idcountry=c.idcountry AND r.name LIKE @name AND c.name LIKE @cname";
             }
         }
 
+        public void UpdateCPCount(List<int> regionIDs)
+        {
+            foreach (int item in regionIDs)
+            {
+                UpdateCPCount(item);
+            }
+        }
+
         // Checks whether the given region can be deleted.
         // Deletable only if no CP or hike belongs to it.
         public bool IsDeletable(int regionID)

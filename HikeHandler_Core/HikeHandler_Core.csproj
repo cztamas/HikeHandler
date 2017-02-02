@@ -50,6 +50,7 @@
     <Compile Include="Exceptions\NoDBConnectionException.cs" />
     <Compile Include="Exceptions\NoItemFoundException.cs" />
     <Compile Include="Exceptions\NotDeletableException.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Interfaces\IDAOManager.cs" />
     <Compile Include="ModelObjects\BaseFormSummary.cs" />

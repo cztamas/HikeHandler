@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using HikeHandler.Extensions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -30,7 +31,7 @@ namespace HikeHandler.ModelObjects
             }
             set
             {
-                CPList = value.ToCPList();
+                CPList = value.ToIntList();
             }
         }
 

@@ -103,15 +103,19 @@ namespace HikeHandler.DAOs
             }
         }
 
+        public void UpdateRegionCount(List<int> countryIDs)
+        {
+            foreach (int id in countryIDs)
+            {
+                UpdateRegionCount(id);
+            }
+        }
+
         // Finds the correct cp count, and stores it in the DB.
         // Returns the updated value of cpcount.
         public int UpdateCPCount(int idCountry)
         {
-            if (sqlConnection == null)
-            {
-                throw new NoDBConnectionException();
-            }
-            if (sqlConnection.State != ConnectionState.Open)
+            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
             {
                 throw new NoDBConnectionException();
             }
@@ -132,6 +136,14 @@ namespace HikeHandler.DAOs
                     updateCommand.ExecuteNonQuery();
                     return count;
                 }
+            }
+        }
+
+        public void UpdateCPCount(List<int> countryIDs)
+        {
+            foreach (int id in countryIDs)
+            {
+                UpdateCPCount(id);
             }
         }
 

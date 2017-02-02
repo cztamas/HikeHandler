@@ -58,12 +58,6 @@
     <Compile Include="Controls\HikeDescriptionBox.Designer.cs">
       <DependentUpon>HikeDescriptionBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\MultipleComboBox.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\MultipleComboBox.Designer.cs">
-      <DependentUpon>MultipleComboBox.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\AddCountryForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -156,9 +150,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\HikeDescriptionBox.resx">
       <DependentUpon>HikeDescriptionBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\MultipleComboBox.resx">
-      <DependentUpon>MultipleComboBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AddCountryForm.resx">
       <DependentUpon>AddCountryForm.cs</DependentUpon>

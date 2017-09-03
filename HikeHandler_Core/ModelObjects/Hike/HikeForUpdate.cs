@@ -4,46 +4,30 @@ using System.Collections.Generic;
 
 namespace HikeHandler.ModelObjects
 {
-    public class HikeForUpdate
+    public struct HikeForUpdate
     {
-        public int HikeID { get; set; }
-        public int CountryID { get; set; }
-        public int RegionID { get; set; }
-        public string Description { get; set; }
-        public DateTime OldHikeDate { get; set; }
-        public DateTime NewHikeDate { get; set; }
-        public HikeType OldHikeType { get; set; }
-        public HikeType NewHikeType { get; set; }
-        public List<int> OldCPList { get; set; }
-        public List<int> NewCPList { get; set; }
-        // Returns the NewCPList in string format
-        public string NewCPString
-        {
-            get
-            {
-                string cpString = string.Empty;
-                foreach (int item in NewCPList)
-                {
-                    cpString += "." + item + ".";
-                }
-                return cpString;
-            }
-        }
+        public int hikeID, oldHikeType, newHikeType;
+        public string description;
+        public DateTime oldHikeDate, newHikeDate;
+        public List<int> oldRegionIDs, newRegionIDs, oldCountryIDs, newCountryIDs, oldCPList, newCPList;
 
         [JsonConstructor]
         public HikeForUpdate(int hikeID, int countryID, int regionID, string description, DateTime oldHikeDate, DateTime newHikeDate, 
-            HikeType oldHikeType, HikeType newHikeType, List<int> oldCPList, List<int> newCPList)
+            int oldHikeType, int newHikeType, List<int> oldCPList, List<int> newCPList, List<int> oldRegionIDs,
+            List<int> newRegionIDs, List<int> oldCountryIDs, List<int> newCountryIDs)
         {
-            HikeID = hikeID;
-            CountryID = countryID;
-            RegionID = regionID;
-            Description = description;
-            OldHikeDate = oldHikeDate;
-            NewHikeDate = newHikeDate;
-            OldHikeType = oldHikeType;
-            NewHikeType = newHikeType;
-            OldCPList = oldCPList;
-            NewCPList = newCPList;
+            this.hikeID = hikeID;
+            this.description = description;
+            this.oldHikeDate = oldHikeDate;
+            this.newHikeDate = newHikeDate;
+            this.oldHikeType = oldHikeType;
+            this.newHikeType = newHikeType;
+            this.oldCPList = oldCPList;
+            this.newCPList = newCPList;
+            this.oldRegionIDs = oldRegionIDs;
+            this.newRegionIDs = newRegionIDs;
+            this.oldCountryIDs = oldCountryIDs;
+            this.newCountryIDs = newCountryIDs;
         }
     }
 }

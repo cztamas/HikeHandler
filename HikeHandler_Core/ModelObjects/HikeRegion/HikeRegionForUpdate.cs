@@ -1,21 +1,24 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace HikeHandler.ModelObjects
 {
-    public class HikeRegionForUpdate
+    public struct HikeRegionForUpdate
     {
-        public int RegionID { get; set; }
-        public string OldName { get; set; }
-        public string NewName { get; set; }
-        public string Description { get; set; }
+        public int regionID;
+        public string oldName, newName, description;
+        public List<int> oldCountryIDs, newCountryIDs;
 
         [JsonConstructor]
-        public HikeRegionForUpdate(int regionID, string oldName, string newName, string description)
+        public HikeRegionForUpdate(int regionID, string oldName, string newName, string description,
+            List<int> oldCountryIDs, List<int> newCountryIDs)
         {
-            RegionID = regionID;
-            OldName = oldName;
-            NewName = newName;
-            Description = description;
+            this.regionID = regionID;
+            this.oldName = oldName;
+            this.newName = newName;
+            this.description = description;
+            this.oldCountryIDs = oldCountryIDs;
+            this.newCountryIDs = newCountryIDs;
         }
     }
 }

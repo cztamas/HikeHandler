@@ -3,36 +3,27 @@ using System.Collections.Generic;
 
 namespace HikeHandler.ModelObjects
 {
-    public class CPForView
+    public struct CPForView
     {
-        public int CPID { get; set; }
-        public List<int> CountryID { get; set; }
-        public List<int> RegionID { get; set; }
-        public string Name { get; set; }
-        public List<string> CountryNames { get; set; }
-        public List<string> RegionNames { get; set; }
-        public CPType TypeOfCP { get; set; }
-        public string Description { get; set; }
-        public int HikeCount { get; set; }
-
-        public CPForView(int idCP)
-        {
-            CPID = idCP;
-        }
+        public int cpID, hikeCount, cpType;
+        public string name, description, cpTypeName;
+        public List<int> countryIDs, regionIDs;
+        public List<string> countryNames, regionNames;
 
         [JsonConstructor]
-        public CPForView(int cpID, List<int> countryID, List<int> regionID, string name, List<string> countryNames, 
-            List<string> regionNames, CPType typeOfCP, int hikeCount, string description)
+        public CPForView(int cpID, string name, List<int> countryIDs, List<int> regionIDs, List<string> countryNames, 
+            List<string> regionNames, int hikeCount, string description, int cpType, string cpTypeName)
         {
-            CPID = cpID;
-            CountryID = countryID;
-            RegionID = regionID;
-            Name = name;
-            CountryNames = countryNames;
-            RegionNames = regionNames;
-            TypeOfCP = typeOfCP;
-            HikeCount = hikeCount;
-            Description = description;
+            this.cpID = cpID;
+            this.countryIDs = countryIDs;
+            this.regionIDs = regionIDs;
+            this.name = name;
+            this.countryNames = countryNames;
+            this.regionNames = regionNames;
+            this.cpType = cpType;
+            this.cpTypeName = cpTypeName;
+            this.hikeCount = hikeCount;
+            this.description = description;
         }
     }
 }

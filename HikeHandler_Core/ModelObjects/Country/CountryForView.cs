@@ -2,29 +2,20 @@
 
 namespace HikeHandler.ModelObjects
 {
-    public class CountryForView
+    public struct CountryForView
     {
-        public int CountryID { get; set; }
-        public string Name { get; set; }
-        public int HikeCount { get; set; }
-        public int RegionCount { get; set; }
-        public int CPCount { get; set; }
-        public string Description { get; set; }
-        
-        public CountryForView(int countryID)
-        {
-            CountryID = countryID;
-        }
+        public int countryID, hikeCount, regionCount, cpCount;
+        public string name, description;
 
         [JsonConstructor]
         public CountryForView(int countryID, string name, int hikeCount, int regionCount, int cpCount, string description)
         {
-            CountryID = countryID;
-            HikeCount = hikeCount;
-            RegionCount = regionCount;
-            CPCount = cpCount;
-            Name = name;
-            Description = description;
+            this.countryID = countryID;
+            this.hikeCount = hikeCount;
+            this.regionCount = regionCount;
+            this.cpCount = cpCount;
+            this.name = name;
+            this.description = description;
         }
     }
 }

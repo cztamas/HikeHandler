@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
 
 namespace HikeHandler.ModelObjects
 {
-    public class CountryForSave
+    public struct CountryForSave
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public string name, description;
 
+        [JsonConstructor]
         public CountryForSave(string name, string description)
         {
-            Name = name;
-            Description = description;
+            this.name = name;
+            this.description = description;
         }
     }
 }

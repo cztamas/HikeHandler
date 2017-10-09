@@ -57,7 +57,7 @@ namespace HikeHandler.ServiceLayer
 
         public List<NameAndID> GetAllCountryNames()
         {
-            return countryDao.GetCountryNames();
+            return countryDao.GetAllCountryNames();
         }
 
         public List<CountryForView> SearchCountry(CountryForSearch country)
@@ -67,7 +67,7 @@ namespace HikeHandler.ServiceLayer
 
         public CountryForView SearchCountry(int countryID)
         {
-            return countryDao.GetCountryData(countryID);
+            return countryDao.GetCountryByID(countryID);
         }
 
         public bool UpdateCountry(CountryForUpdate country)

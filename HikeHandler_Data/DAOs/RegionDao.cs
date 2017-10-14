@@ -351,7 +351,7 @@ VALUES (@name, 0, 0, @description);";
             using (MySqlCommand command = new MySqlCommand(addCommandText, sqlConnection))
             {
                 List<string> valueList = countryIDs.Select(countryID => "(" + regionID + "," + countryID + ")").ToList();
-                string values = String.Join(",", valueList);
+                string values = String.Join(" , ", valueList);
                 command.Parameters.AddWithValue("@values", values);
                 command.ExecuteNonQuery();
             }

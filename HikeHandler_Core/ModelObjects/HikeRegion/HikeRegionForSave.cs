@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace HikeHandler.ModelObjects
 {
-    public struct HikeRegionForSave
+    public class HikeRegionForSave
     {
         public List<int> countryIDs;
         public string name, description;

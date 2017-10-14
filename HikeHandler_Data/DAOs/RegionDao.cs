@@ -4,6 +4,7 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace HikeHandler.DAOs
 {
@@ -73,13 +74,12 @@ AND r.name LIKE @name AND c.name LIKE @cname AND r.description LIKE @description
                         HikeRegionForView item;
                         if (dictionary.TryGetValue(regionID, out item))
                         {
-                            item.countryIDs.Add(countryID);
-                            item.countryNames.Add(countryName);
+                            item.countries.Add(new NameAndID(countryName, countryID));
                         }
                         else
                         {
                             HikeRegionForView newRegion = new HikeRegionForView(
-                                regionID, name, new List<int> { countryID }, new List<string> { countryName }, hikeCount, cpCount, description);
+                                regionID, name, new HashSet<NameAndID> { new NameAndID(countryName, countryID) }, hikeCount, cpCount, description);
                             dictionary.Add(regionID, newRegion);
                         }
                     }
@@ -90,10 +90,6 @@ AND r.name LIKE @name AND c.name LIKE @cname AND r.description LIKE @description
         
         public HikeRegionForView GetRegionByID(int regionID)
         {
-            if (regionID <= 0)
-            {
-                throw new ArgumentException("regionID parameter should be positive.", "regionID");
-            }
             if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
             {
                 throw new NoDBConnectionException();
@@ -111,8 +107,7 @@ WHERE r.regionID = @regionID AND rc.regionID = r.regionID AND rc.countryID = c.c
                     {
                         throw new NoItemFoundException();
                     }
-                    var countryIDs = new List<int>();
-                    var countryNames = new List<string>();
+                    var countries = new HashSet<NameAndID>();
                     int hikeCount = 0;
                     int cpCount = 0;
                     string name = String.Empty;
@@ -120,43 +115,38 @@ WHERE r.regionID = @regionID AND rc.regionID = r.regionID AND rc.countryID = c.c
                     while (reader.Read())
                     {
                         int countryID = reader.GetInt32("countryID");
-                        countryIDs.Add(countryID);
                         string countryName = reader.GetString("countryname");
-                        countryNames.Add(countryName);
+                        countries.Add(new NameAndID(countryName, countryID));
                         name = reader.GetString("name");
                         description = reader.GetString("description");
                         hikeCount = reader.GetInt32("hikecount");
                         cpCount = reader.GetInt32("cpcount");
                     }
-                    return new HikeRegionForView(regionID, name, countryIDs, countryNames, hikeCount, cpCount, description);
+                    return new HikeRegionForView(regionID, name, countries, hikeCount, cpCount, description);
                 }
             }
         }
 
-        // Recalculates the hike count of every region in the DB.
+        // Recalculates the hike and cp count of every region in the DB.
         // Only for correcting erroneous data in the DB.
         public void RecalculateRegionData()
         {
-            if (sqlConnection == null)
-            {
-                throw new NoDBConnectionException();
-            }
-            if (sqlConnection.State != ConnectionState.Open)
+            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
             {
                 throw new NoDBConnectionException();
             }
             DataTable table = new DataTable();
             int id;
-            string commandText = "SELECT idregion FROM region;";
+            string commandText = "SELECT regionID FROM region;";
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
             {
                 adapter.Fill(table);
             }
             foreach (DataRow row in table.Rows)
             {
-                if (!int.TryParse(row["idregion"].ToString(), out id))
+                if (!int.TryParse(row["regionID"].ToString(), out id))
                 {
-                    throw new DBErrorException("'idregion' value should be an integer.");
+                    throw new DBErrorException("'regionID' value should be an integer.");
                 }
                 UpdateHikeCount(id);
                 UpdateCPCount(id);
@@ -171,19 +161,22 @@ WHERE r.regionID = @regionID AND rc.regionID = r.regionID AND rc.countryID = c.c
             {
                 throw new NoDBConnectionException();
             }
-            string commandText = "SELECT COUNT(*) AS count FROM hike WHERE idregion=" + regionID + " AND type='túra';";
+            string commandText = @"SELECT SUM(hr.counts) AS count FROM hike_region hr, hike h 
+WHERE hr.regionID = @regionID AND hr.hikeID = h.hikeID AND h.type='hike';";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
+                command.Parameters.AddWithValue("@regionID", regionID);
                 object result = command.ExecuteScalar();
                 int count;
                 if (!int.TryParse(result.ToString(), out count))
-                    throw new DBErrorException("SELECT COUNT return value should be integer.");
-
-                commandText = "UPDATE region SET hikecount=@hikecount WHERE idregion=@idregion;";
+                {
+                    throw new DBErrorException("SELECT SUM(counts) return value should be integer.");
+                }
+                commandText = "UPDATE region SET hikecount = @hikecount WHERE regionID = @regionID;";
                 using (MySqlCommand updateCommand = new MySqlCommand(commandText, sqlConnection))
                 {
                     updateCommand.Parameters.AddWithValue("@hikecount", count);
-                    updateCommand.Parameters.AddWithValue("@idregion", regionID);
+                    updateCommand.Parameters.AddWithValue("@regionID", regionID);
                     updateCommand.ExecuteNonQuery();
                     return count;
                 }
@@ -194,15 +187,11 @@ WHERE r.regionID = @regionID AND rc.regionID = r.regionID AND rc.countryID = c.c
         // Returns the updated value of cpcount.
         public int UpdateCPCount(int regionID)
         {
-            if (sqlConnection == null)
+            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
             {
                 throw new NoDBConnectionException();
             }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                throw new NoDBConnectionException();
-            }
-            string commandText = "SELECT COUNT(*) AS count FROM cp WHERE idregion=@regionID;";
+            string commandText = "SELECT COUNT(*) AS count FROM cp_region WHERE regionID = @regionID;";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
                 command.Parameters.AddWithValue("@regionID", regionID);
@@ -211,7 +200,7 @@ WHERE r.regionID = @regionID AND rc.regionID = r.regionID AND rc.countryID = c.c
                 if (!int.TryParse(result.ToString(), out count))
                     throw new DBErrorException("'SELECT COUNT' return value should be an integer.");
 
-                commandText = "UPDATE region SET cpcount=@cpcount WHERE idregion=@regionID;";
+                commandText = "UPDATE region SET cpcount=@cpcount WHERE regionID=@regionID;";
                 using (MySqlCommand updateCommand = new MySqlCommand(commandText, sqlConnection))
                 {
                     updateCommand.Parameters.AddWithValue("@cpcount", count);
@@ -234,135 +223,38 @@ WHERE r.regionID = @regionID AND rc.regionID = r.regionID AND rc.countryID = c.c
         // Deletable only if no CP or hike belongs to it.
         public bool IsDeletable(int regionID)
         {
-            HikeRegionForView region = GetRegionData(regionID);
-            if (region.HikeCount > 0 || region.CPCount > 0)
+            HikeRegionForView region = GetRegionByID(regionID);
+            if (region.hikeCount > 0 || region.cpCount > 0)
+            {
                 return false;
-            else
-                return true;
+            }
+            return true;
         }
-
-        // Returns the data of the region with the given id.
-        public HikeRegionForView GetRegionData(int regionID)
-        {
-            if (regionID <= 0)
-            {
-                throw new ArgumentException("regionID parameter should be positive.", "regionID");
-            }
-            if (sqlConnection == null)
-            {
-                throw new NoDBConnectionException();
-            }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                throw new NoDBConnectionException();
-            }
-
-            string commandText = @"SELECT r.idcountry, r.name, r.hikecount, r.cpcount, r.description, c.name AS countryname 
-FROM region r, country c WHERE c.idcountry=r.idcountry AND r.idregion=@idregion;";
-            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
-            {
-                adapter.SelectCommand.Parameters.AddWithValue("@idregion", regionID);
-                DataTable table = new DataTable();
-                adapter.Fill(table);
-                if (table.Rows.Count == 0)
-                {
-                    throw new NoItemFoundException();
-                }
-                if (table.Rows.Count > 1)
-                {
-                    throw new DBErrorException("More than one region found with the given id.");
-                }
-                DataRow row = table.Rows[0];
-
-                string name;
-                string countryName;
-                string description;
-                int countryID;
-                int hikeCount;
-                int cpCount;
-
-                if (!int.TryParse(row["hikecount"].ToString(), out hikeCount))
-                {
-                    throw new DBErrorException("'region.hikecount' should be an integer.");
-                }
-                if (!int.TryParse(row["cpcount"].ToString(), out cpCount))
-                {
-                    throw new DBErrorException("'region.cpcount' should be an integer.");
-                }
-                if (!int.TryParse(row["idcountry"].ToString(), out countryID))
-                {
-                    throw new DBErrorException("'region.idcountry' should be an integer.");
-                }
-                name = row["name"].ToString();
-                description = row["description"].ToString();
-                countryName = row["countryname"].ToString();
-
-                return new HikeRegionForView(regionID, countryID, name, countryName, hikeCount, cpCount, description);
-            }
-        }
-
+        
         // Returns in a list with the names and ids of every region of the given country.
-        public List<NameAndID> GetRegionNames(int countryID)
+        public List<NameAndID> GetRegionsOfCountry(int countryID)
         {
-            if (sqlConnection == null)
+            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
             {
                 throw new NoDBConnectionException();
             }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                throw new NoDBConnectionException();
-            }
-            string commandText = "SELECT idregion, name FROM region WHERE idcountry=@idcountry ORDER BY name ASC;";
+            string commandText = "SELECT r.regionID, r.name FROM region r, region_country rc WHERE rc.countryID = @countryID AND r.regionID = rc.regionID ORDER BY name ASC;";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
                 List<NameAndID> result = new List<NameAndID>();
-                command.Parameters.AddWithValue("@idcountry", countryID);
+                command.Parameters.AddWithValue("@countryID", countryID);
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {
-                    if (reader.HasRows)
+                    if (!reader.HasRows)
                     {
-                        while (reader.Read())
-                        {
-                            int id = reader.GetInt32("idregion");
-                            string name = reader.GetString("name");
-                            result.Add(new NameAndID(name, id));
-                        }
-                    }
-                    else
                         return result;
-                }
-                return result;
-            }
-        }
-
-        // Returns in a list with the names and ids of every region in the DB.
-        public List<NameAndID> GetRegionNames()
-        {
-            if (sqlConnection == null)
-            {
-                throw new NoDBConnectionException();
-            }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                throw new NoDBConnectionException();
-            }
-            string commandText = "SELECT idregion, name FROM region ORDER BY name ASC;";
-            using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
-            {
-                List<NameAndID> result = new List<NameAndID>();
-                using (MySqlDataReader reader = command.ExecuteReader())
-                {
-                    if (reader.HasRows)
+                    }
+                    while (reader.Read())
                     {
-                        while (reader.Read())
-                        {
-                            int id = reader.GetInt32("idregion");
-                            string name = reader.GetString("name");
-                            result.Add(new NameAndID(name, id));
-                        }
+                        int id = reader.GetInt32("regionID");
+                        string name = reader.GetString("name");
+                        result.Add(new NameAndID(name, id));
                     }
-                    else
-                        return result;
                 }
                 return result;
             }
@@ -370,15 +262,11 @@ FROM region r, country c WHERE c.idcountry=r.idcountry AND r.idregion=@idregion;
 
         public bool IsDuplicateName(string regionName)
         {
-            if (sqlConnection == null)
+            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
             {
                 throw new NoDBConnectionException();
             }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                throw new NoDBConnectionException();
-            }
-            string commandText = "SELECT COUNT(*) FROM region WHERE name=@name;";
+            string commandText = "SELECT COUNT(*) FROM region WHERE name = @name;";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
                 command.Parameters.AddWithValue("@name", regionName);
@@ -398,59 +286,73 @@ FROM region r, country c WHERE c.idcountry=r.idcountry AND r.idregion=@idregion;
 
         public void DeleteRegion(int regionID)
         {
-            if (sqlConnection == null)
+            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
             {
                 throw new NoDBConnectionException();
             }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                throw new NoDBConnectionException();
-            }
-            string commandText = "DELETE FROM region WHERE idregion=@idregion";
+            string commandText = "DELETE FROM region WHERE regionID = @regionID";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
-                command.Parameters.AddWithValue("@idregion", regionID);
+                command.Parameters.AddWithValue("@regionID", regionID);
                 command.ExecuteNonQuery();
             }
         }
 
         public void UpdateRegion(HikeRegionForUpdate regionData)
         {
-            if (sqlConnection == null)
+            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
             {
                 throw new NoDBConnectionException();
             }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                throw new NoDBConnectionException();
-            }
-            string commandText = "UPDATE region SET name=@name, description=@description WHERE idregion=@idregion;";
+            string commandText = "UPDATE region SET name=@name, description = @description WHERE regionID = @regionID;";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
-                command.Parameters.AddWithValue("@name", regionData.NewName);
-                command.Parameters.AddWithValue("@idregion", regionData.RegionID);
-                command.Parameters.AddWithValue("@description", regionData.Description);
+                command.Parameters.AddWithValue("@name", regionData.newName);
+                command.Parameters.AddWithValue("@regionID", regionData.regionID);
+                command.Parameters.AddWithValue("@description", regionData.description);
                 command.ExecuteNonQuery();
             }
         }
 
         public void SaveRegion(HikeRegionForSave regionData)
         {
-            if (sqlConnection == null)
+            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
             {
                 throw new NoDBConnectionException();
             }
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                throw new NoDBConnectionException();
-            }
-            string commandText = @"INSERT INTO region (name, idcountry, hikecount, cpcount, description) 
-VALUES (@name, @idCountry, 0, 0, @description);";
+            string commandText = @"INSERT INTO region (name, hikecount, cpcount, description) 
+VALUES (@name, 0, 0, @description);";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
-                command.Parameters.AddWithValue("@name", regionData.Name);
-                command.Parameters.AddWithValue("@idCountry", regionData.CountryID);
-                command.Parameters.AddWithValue("@description", regionData.Description);
+                command.Parameters.AddWithValue("@name", regionData.name);
+                command.Parameters.AddWithValue("@description", regionData.description);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public void deleteCountryIDs(int regionID)
+        {
+            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
+            {
+                throw new NoDBConnectionException();
+            }
+            string deleteCommandText = "DELETE FROM region_country WHERE regionID = @regionID";
+            using (MySqlCommand command = new MySqlCommand(deleteCommandText, sqlConnection))
+            {
+                command.Parameters.AddWithValue("@regionID", regionID);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public void UpdateCountryIDs(int regionID, List<int> countryIDs)
+        {
+            deleteCountryIDs(regionID);
+            string addCommandText = "INSERT INTO region_country (regionID, countryID) VALUES @values;";
+            using (MySqlCommand command = new MySqlCommand(addCommandText, sqlConnection))
+            {
+                List<string> valueList = countryIDs.Select(countryID => "(" + regionID + "," + countryID + ")").ToList();
+                string values = String.Join(",", valueList);
+                command.Parameters.AddWithValue("@values", values);
                 command.ExecuteNonQuery();
             }
         }
@@ -458,11 +360,7 @@ VALUES (@name, @idCountry, 0, 0, @description);";
         // Returns the number of regions in the DB.
         public int GetCountOfRegions()
         {
-            if (sqlConnection == null)
-            {
-                throw new NoDBConnectionException();
-            }
-            if (sqlConnection.State != ConnectionState.Open)
+            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
             {
                 throw new NoDBConnectionException();
             }

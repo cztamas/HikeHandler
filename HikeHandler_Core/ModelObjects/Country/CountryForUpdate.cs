@@ -2,7 +2,7 @@
 
 namespace HikeHandler.ModelObjects
 {
-    public struct CountryForUpdate
+    public class CountryForUpdate
     {
         public int countryID;
         public string newName, oldName, description;

@@ -100,7 +100,7 @@ namespace HikeHandler.ServiceLayer
         // Returns in a datatable the names and ids of every region of the given country.
         public List<NameAndID> GetAllRegionsOfCountry(int countryID)
         {
-                return regionDao.GetRegionNames(countryID);
+                return regionDao.GetRegionsOfCountry(countryID);
         }
 
         public List<NameAndID> GetAllRegions()

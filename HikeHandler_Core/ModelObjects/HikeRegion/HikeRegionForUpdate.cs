@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace HikeHandler.ModelObjects
 {
-    public struct HikeRegionForUpdate
+    public class HikeRegionForUpdate
     {
         public int regionID;
         public string oldName, newName, description;

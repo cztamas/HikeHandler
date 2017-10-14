@@ -2,7 +2,7 @@
 
 namespace HikeHandler.ModelObjects
 {
-    public struct HikeRegionForSearch
+    public class HikeRegionForSearch
     {
         public string name, countryName, description;
         public IntPile hikeCount, cpCount;

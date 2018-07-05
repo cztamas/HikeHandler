@@ -1,22 +1,31 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace HikeHandler.ModelObjects
 {
     public class HikeRegionForSearch
     {
-        public string name, countryName, description;
-        public IntPile hikeCount, cpCount;
-        public int? countryID;
+        public int? IDRegion { get; set; }
+        public int? IDcountry { get; set; }
+        public string CountryName { get; set; }
+        public IntPile HikeCount { get; set; }
+        public string Name { get; set; }
 
-        [JsonConstructor]
-        public HikeRegionForSearch(string name, string description, string countryName, IntPile hikeCount, IntPile cpCount, int? countryID = null)
+        public HikeRegionForSearch() { }
+
+        public HikeRegionForSearch(int regionID)
         {
-            this.name = name;
-            this.description = description;
-            this.countryName = countryName;
-            this.hikeCount = hikeCount;
-            this.cpCount = cpCount;
-            this.countryID = countryID;
+            IDRegion = regionID;
+        }
+
+        public HikeRegionForSearch(string nameOfCountry, string regionName, IntPile hikeNumber)
+        {
+            CountryName = nameOfCountry;
+            Name = regionName;
+            HikeCount = hikeNumber;
         }
     }
 }

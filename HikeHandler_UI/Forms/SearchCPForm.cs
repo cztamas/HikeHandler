@@ -1,6 +1,5 @@
 ﻿using Equin.ApplicationFramework;
 using HikeHandler.Exceptions;
-using HikeHandler.Extensions;
 using HikeHandler.Interfaces;
 using HikeHandler.ModelObjects;
 using System;

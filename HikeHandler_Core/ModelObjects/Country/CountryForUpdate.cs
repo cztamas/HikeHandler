@@ -4,16 +4,18 @@ namespace HikeHandler.ModelObjects
 {
     public class CountryForUpdate
     {
-        public int countryID;
-        public string newName, oldName, description;
+        public int CountryID { get; set; }
+        public string OldName { get; set; }
+        public string NewName { get; set; }
+        public string Description { get; set; }
 
         [JsonConstructor]
-        public CountryForUpdate(int countryID, string newName, string oldName, string description)
+        public CountryForUpdate(int countryID, string oldName, string newName, string description)
         {
-            this.countryID = countryID;
-            this.newName = newName;
-            this.oldName = oldName;
-            this.description = description;
+            CountryID = countryID;
+            OldName = oldName;
+            NewName = newName;
+            Description = description;
         }
     }
 }

@@ -17,25 +17,28 @@ namespace HikeHandler.DAOs
         }
 
         // Recalculates the hike, region and cp count of every country in the DB.
-        // Only for correcting erroneous hikecount data in the DB.
+        // Only for correcting erroneous data in the DB.
         public void RecalculateCountryData()
         {
-            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
+            if (sqlConnection == null)
             {
                 throw new NoDBConnectionException();
             }
-
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                throw new NoDBConnectionException();
+            }
             DataTable table = new DataTable();
             int id;
-            string commandText = "SELECT countryID FROM country;";
+            string commandText = "SELECT idcountry FROM country;";
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
             {
                 adapter.Fill(table);
             }
             foreach (DataRow row in table.Rows)
             {
-                if (!int.TryParse(row["countryID"].ToString(), out id))
-                    throw new DBErrorException("'countryID' value should be an integer.");
+                if (!int.TryParse(row["idcountry"].ToString(), out id))
+                    throw new DBErrorException("'idcountry' value should be an integer.");
                 UpdateHikeCount(id);
                 UpdateRegionCount(id);
                 UpdateCPCount(id);
@@ -44,25 +47,24 @@ namespace HikeHandler.DAOs
 
         // Finds the correct hikecount, and stores it in the DB.
         // Returns the updated value of hikecount.
-        public int UpdateHikeCount(int countryID)
+        public int UpdateHikeCount(int idCountry)
         {
             if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
             {
                 throw new NoDBConnectionException();
             }
-            string commandText = "SELECT SUM(counts) AS count FROM hike_country WHERE countryID=@countryID;";
+            string commandText = "SELECT COUNT(*) AS count FROM hike WHERE idcountry=" + idCountry + " AND type='túra';";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
-                command.Parameters.AddWithValue("@countryID", countryID);
                 object result = command.ExecuteScalar();
                 int count;
                 if (!int.TryParse(result.ToString(), out count))
-                    throw new DBErrorException("SELECT SUM(counts) return value should be integer.");
-                commandText = "UPDATE country SET hikecount=@hikecount WHERE countryID=@countryID;";
+                    throw new DBErrorException("SELECT COUNT return value should be integer.");
+                commandText = "UPDATE country SET hikecount=@hikecount WHERE idcountry=@idcountry;";
                 using (MySqlCommand updateCommand = new MySqlCommand(commandText, sqlConnection))
                 {
                     updateCommand.Parameters.AddWithValue("@hikecount", count);
-                    updateCommand.Parameters.AddWithValue("@countryID", countryID);
+                    updateCommand.Parameters.AddWithValue("@idcountry", idCountry);
                     updateCommand.ExecuteNonQuery();
                     return count;
                 }
@@ -71,73 +73,65 @@ namespace HikeHandler.DAOs
 
         // Finds the correct region count, and stores it in the DB.
         // Returns the updated value of regioncount.
-        public int UpdateRegionCount(int countryID)
+        public int UpdateRegionCount(int idCountry)
         {
-            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
+            if (sqlConnection == null)
             {
                 throw new NoDBConnectionException();
             }
-            string commandText = "SELECT SUM(*) AS count FROM region_country WHERE countryID=@countryID;";
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                throw new NoDBConnectionException();
+            }
+            string commandText = "SELECT COUNT(*) AS count FROM region WHERE idcountry=@idCountry;";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
-                command.Parameters.AddWithValue("@countryID", countryID);
+                command.Parameters.AddWithValue("@idcountry", idCountry);
                 object result = command.ExecuteScalar();
                 int count;
                 if (!int.TryParse(result.ToString(), out count))
                     throw new DBErrorException("SELECT COUNT return value should be integer.");
 
-                commandText = "UPDATE country SET regioncount=@regioncount WHERE countryID=@countryID;";
+                commandText = "UPDATE country SET regioncount=@regioncount WHERE idcountry=@idcountry;";
                 using (MySqlCommand updateCommand = new MySqlCommand(commandText, sqlConnection))
                 {
                     updateCommand.Parameters.AddWithValue("@regioncount", count);
-                    updateCommand.Parameters.AddWithValue("@idcountry", countryID);
+                    updateCommand.Parameters.AddWithValue("@idcountry", idCountry);
                     updateCommand.ExecuteNonQuery();
                     return count;
                 }
-            }
-        }
-
-        public void UpdateRegionCount(List<int> countryIDs)
-        {
-            foreach (int id in countryIDs)
-            {
-                UpdateRegionCount(id);
             }
         }
 
         // Finds the correct cp count, and stores it in the DB.
         // Returns the updated value of cpcount.
-        public int UpdateCPCount(int countryID)
+        public int UpdateCPCount(int idCountry)
         {
-            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
+            if (sqlConnection == null)
             {
                 throw new NoDBConnectionException();
             }
-            string commandText = "SELECT COUNT(*) AS count FROM cp_country WHERE countryID=@countryID;";
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                throw new NoDBConnectionException();
+            }
+            string commandText = "SELECT COUNT(*) AS count FROM cp WHERE idcountry=@idCountry;";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
-                command.Parameters.AddWithValue("@countryID", countryID);
+                command.Parameters.AddWithValue("@idcountry", idCountry);
                 object result = command.ExecuteScalar();
                 int count;
                 if (!int.TryParse(result.ToString(), out count))
                     throw new DBErrorException("SELECT COUNT return value should be integer.");
 
-                commandText = "UPDATE country SET cpcount=@cpcount WHERE countryID=@countryID;";
+                commandText = "UPDATE country SET cpcount=@cpcount WHERE idcountry=@idcountry;";
                 using (MySqlCommand updateCommand = new MySqlCommand(commandText, sqlConnection))
                 {
                     updateCommand.Parameters.AddWithValue("@cpcount", count);
-                    updateCommand.Parameters.AddWithValue("@countryID", countryID);
+                    updateCommand.Parameters.AddWithValue("@idcountry", idCountry);
                     updateCommand.ExecuteNonQuery();
                     return count;
                 }
-            }
-        }
-
-        public void UpdateCPCount(List<int> countryIDs)
-        {
-            foreach (int id in countryIDs)
-            {
-                UpdateCPCount(id);
             }
         }
 
@@ -145,7 +139,11 @@ namespace HikeHandler.DAOs
         // Returns true if there is.
         public bool IsDuplicateName(string countryName)
         {
-            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
+            if (sqlConnection == null)
+            {
+                throw new NoDBConnectionException();
+            }
+            if (sqlConnection.State != ConnectionState.Open)
             {
                 throw new NoDBConnectionException();
             }
@@ -168,27 +166,30 @@ namespace HikeHandler.DAOs
 
         // Checks whether the given country can be deleted.
         // Deletable only if no region, CP or hike belongs to it.
-        public bool IsDeletable(int countryID)
+        public bool IsDeletable(int idCountry)
         {
-            CountryForView country = GetCountryByID(countryID);
-            if (country.hikeCount > 0 || country.regionCount > 0 || country.cpCount > 0)
-            {
+            CountryForView country = GetCountryData(idCountry);
+            if (country.HikeCount > 0 || country.RegionCount > 0 || country.CPCount > 0)
                 return false;
-            }
-            return true;
+            else
+                return true;
         }
 
         // Deletes the given country from DB.
-        public void DeleteCountry(int countryID)
+        public void DeleteCountry(int idCountry)
         {
-            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
+            if (sqlConnection == null)
             {
                 throw new NoDBConnectionException();
             }
-            string commandText = "DELETE FROM country WHERE countryID=@countryID";
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                throw new NoDBConnectionException();
+            }
+            string commandText = "DELETE FROM country WHERE idcountry=@idcountry";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
-                command.Parameters.AddWithValue("@countryID", countryID);
+                command.Parameters.AddWithValue("@idcountry", idCountry);
                 command.ExecuteNonQuery();
             }
         }
@@ -196,7 +197,11 @@ namespace HikeHandler.DAOs
         // Saves country data to DB.
         public void SaveCountry (CountryForSave country)
         {
-            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
+            if (sqlConnection == null)
+            {
+                throw new NoDBConnectionException();
+            }
+            if (sqlConnection.State != ConnectionState.Open)
             {
                 throw new NoDBConnectionException();
             }
@@ -204,28 +209,32 @@ namespace HikeHandler.DAOs
 VALUES (@name, 0, 0, 0, @description);";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
-                command.Parameters.AddWithValue("@name", country.name);
-                command.Parameters.AddWithValue("@description", country.description);
+                command.Parameters.AddWithValue("@name", country.Name);
+                command.Parameters.AddWithValue("@description", country.Description);
                 command.ExecuteNonQuery();
             }
         }
 
         // Returns the data of the country with the given id.
-        public CountryForView GetCountryByID(int countryID)
+        public CountryForView GetCountryData(int countryID)
         {
             if (countryID <= 0)
             {
                 throw new ArgumentException("countryID parameter should be positive.", "countryID");
             }
-            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
+            if (sqlConnection == null)
+            {
+                throw new NoDBConnectionException();
+            }
+            if (sqlConnection.State != ConnectionState.Open)
             {
                 throw new NoDBConnectionException();
             }
 
-            string commandText = "SELECT name, description, hikecount, cpcount, regioncount FROM country WHERE countryID=@countryID;";
+            string commandText = "SELECT name, description, hikecount, cpcount, regioncount FROM country WHERE idcountry=@id;";
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
             {
-                adapter.SelectCommand.Parameters.AddWithValue("@countryID", countryID);
+                adapter.SelectCommand.Parameters.AddWithValue("@id", countryID);
                 DataTable table = new DataTable();
                 adapter.Fill(table);
                 if (table.Rows.Count == 0)
@@ -234,7 +243,7 @@ VALUES (@name, 0, 0, 0, @description);";
                 }
                 if (table.Rows.Count > 1)
                 {
-                    throw new DBErrorException("More than one country found with the given ID.");
+                    throw new DBErrorException("More than one country found with the given id.");
                 }
                 DataRow row = table.Rows[0];
 
@@ -259,23 +268,30 @@ VALUES (@name, 0, 0, 0, @description);";
                 name = row["name"].ToString();
                 description = row["description"].ToString();
 
-                return new CountryForView(countryID, name, hikeCount, regionCount, cpCount, description);
+                CountryForView countryData =
+                    new CountryForView(countryID, name, hikeCount, regionCount, cpCount, description);
+                return countryData;
             }
         }
 
         // Updates the DB with data in the country object.
         public void UpdateCountry(CountryForUpdate country)
         {
-            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
+            if (sqlConnection == null)
             {
                 throw new NoDBConnectionException();
             }
-            string commandText = "UPDATE country SET name=@name, description=@description WHERE countryID=@countryID;";
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                throw new NoDBConnectionException();
+            }
+            string commandText = 
+                "UPDATE country SET NAME=@name, DESCRIPTION=@description WHERE IDCOUNTRY=@id;";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
-                command.Parameters.AddWithValue("@name", country.newName);
-                command.Parameters.AddWithValue("@description", country.description);
-                command.Parameters.AddWithValue("@countryID", country.countryID);
+                command.Parameters.AddWithValue("@name", country.NewName);
+                command.Parameters.AddWithValue("@description", country.Description);
+                command.Parameters.AddWithValue("@id", country.CountryID);
 
                 command.ExecuteNonQuery();
             }
@@ -284,35 +300,31 @@ VALUES (@name, 0, 0, 0, @description);";
         // Performs a search in DB
         public List<CountryForView> SearchCountry(CountryForSearch template)
         {
-            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
+            if (sqlConnection == null)
             {
                 throw new NoDBConnectionException();
             }
-            string commandText = 
-                "SELECT countryID, name, hikecount, regioncount, cpcount, description FROM country WHERE name LIKE @name AND description LIKE @description";
-            string hikeCountCondition = template.hikeCount.SqlSearchCondition("hikeCount");
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                throw new NoDBConnectionException();
+            }
+            string commandText = "SELECT idcountry, name, hikecount, regioncount, cpcount, description FROM country WHERE name LIKE @name";
+            string hikeCountCondition = template.HikeCount.SqlSearchCondition("hikeCount");
             if (hikeCountCondition != String.Empty)
-            {
                 commandText += (" AND " + hikeCountCondition);
-            }
 
-            string cpCountCondition = template.cpCount.SqlSearchCondition("cpCount");
+            string cpCountCondition = template.CPCount.SqlSearchCondition("cpCount");
             if (cpCountCondition != String.Empty)
-            {
                 commandText += (" AND " + cpCountCondition);
-            }
 
-            string regionCountCondition = template.regionCount.SqlSearchCondition("regionCount");
+            string regionCountCondition = template.RegionCount.SqlSearchCondition("regionCount");
             if (regionCountCondition != String.Empty)
-            {
                 commandText += (" AND " + regionCountCondition);
-            }
             commandText += " ORDER BY name ASC;";
 
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
-                command.Parameters.AddWithValue("@name", "%" + template.name + "%");
-                command.Parameters.AddWithValue("@description", "%" + template.description + "%");
+                command.Parameters.AddWithValue("@name", "%" + template.Name + "%");
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {
                     List<CountryForView> resultList = new List<CountryForView>();
@@ -320,7 +332,7 @@ VALUES (@name, 0, 0, 0, @description);";
                     {
                         while (reader.Read())
                         {
-                            int countryID = reader.GetInt32("countryID");
+                            int countryID = reader.GetInt32("idcountry");
                             int hikeCount = reader.GetInt32("hikecount");
                             int cpCount = reader.GetInt32("cpcount");
                             int regionCount = reader.GetInt32("regioncount");
@@ -329,20 +341,27 @@ VALUES (@name, 0, 0, 0, @description);";
                             resultList.Add(new CountryForView(countryID, name, hikeCount, regionCount, cpCount, description));
                         }
                     }
+                    else
+                    {
+                        return resultList;
+                    }
                     return resultList;
                 }
             }
         }
         
         // Gets the names and ids of all countries.
-        public List<NameAndID> GetAllCountryNames()
+        public List<NameAndID> GetCountryNames()
         {
-            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
+            if (sqlConnection == null)
             {
                 throw new NoDBConnectionException();
             }
-
-            string commandText = "SELECT countryID, name FROM country ORDER BY name ASC;";
+            if (sqlConnection.State != ConnectionState.Open)
+            {
+                throw new NoDBConnectionException();
+            }
+            string commandText = "SELECT idcountry, name FROM country ORDER BY name ASC;";
             using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
             {
                 List<NameAndID> result = new List<NameAndID>();
@@ -352,11 +371,13 @@ VALUES (@name, 0, 0, 0, @description);";
                     {
                         while (reader.Read())
                         {
-                            int countryID = reader.GetInt32("countryID");
+                            int id = reader.GetInt32("idcountry");
                             string name = reader.GetString("name");
-                            result.Add(new NameAndID(name, countryID));
+                            result.Add(new NameAndID(name, id));
                         }
                     }
+                    else
+                        return result;
                 }
                 return result;
             }
@@ -365,7 +386,11 @@ VALUES (@name, 0, 0, 0, @description);";
         // Returns the number of countries in the DB.
         public int GetCountOfCountries()
         {
-            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
+            if (sqlConnection == null)
+            {
+                throw new NoDBConnectionException();
+            }
+            if (sqlConnection.State != ConnectionState.Open)
             {
                 throw new NoDBConnectionException();
             }

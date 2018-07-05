@@ -4,23 +4,37 @@ using System.Collections.Generic;
 
 namespace HikeHandler.ModelObjects
 {
-    public struct HikeForSave
+    public class HikeForSave
     {
-        public List<int> regionIDs, countryIDs, cpList;
-        public int hikeType;
-        public DateTime hikeDate;
-        public string description;
+        public int RegionID { get; set; }
+        public int CountryID { get; set; }
+        public HikeType HikeType { get; set; }
+        public DateTime HikeDate { get; set; }
+        public List<int> CPList { get; set; }
+        public string Description { get; set; }
+        // Returns the CPList in string format
+        public string CPString
+        {
+            get
+            {
+                string cpString = string.Empty;
+                foreach (int item in CPList)
+                {
+                    cpString += "." + item + ".";
+                }
+                return cpString;
+            }
+        }
 
         [JsonConstructor]
-        public HikeForSave(List<int> countryIDs, List<int> regionIDs, int hikeType, DateTime hikeDate,
-            List<int> cpList, string description)
+        public HikeForSave(int countryID, int regionID, HikeType hikeType, DateTime hikeDate, List<int> cpList, string description)
         {
-            this.countryIDs = countryIDs;
-            this.regionIDs = regionIDs;
-            this.hikeType = hikeType;
-            this.hikeDate = hikeDate;
-            this.cpList = cpList;
-            this.description = description;
+            CountryID = countryID;
+            RegionID = regionID;
+            HikeType = hikeType;
+            HikeDate = hikeDate;
+            CPList = cpList;
+            Description = description;
         }
     }
 }

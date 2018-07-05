@@ -57,7 +57,7 @@ namespace HikeHandler.ServiceLayer
 
         public List<NameAndID> GetAllCountryNames()
         {
-            return countryDao.GetAllCountryNames();
+            return countryDao.GetCountryNames();
         }
 
         public List<CountryForView> SearchCountry(CountryForSearch country)
@@ -67,7 +67,7 @@ namespace HikeHandler.ServiceLayer
 
         public CountryForView SearchCountry(int countryID)
         {
-            return countryDao.GetCountryByID(countryID);
+            return countryDao.GetCountryData(countryID);
         }
 
         public bool UpdateCountry(CountryForUpdate country)
@@ -100,7 +100,7 @@ namespace HikeHandler.ServiceLayer
         // Returns in a datatable the names and ids of every region of the given country.
         public List<NameAndID> GetAllRegionsOfCountry(int countryID)
         {
-                return regionDao.GetRegionsOfCountry(countryID);
+                return regionDao.GetRegionNames(countryID);
         }
 
         public List<NameAndID> GetAllRegions()

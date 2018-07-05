@@ -1,21 +1,20 @@
-﻿using HikeHandler.ModelObjects;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace HikeHandler.Extensions
+namespace HikeHandler.ModelObjects
 {
     public static class StringExtensions
     {
-        public static bool IsIntString(this string text)
+        public static bool IsCPString(this string text)
         {            
             return Regex.IsMatch(text, @"^(\.\d+\.)*$");
         }
 
-        public static List<int> ToIntList(this string text)
+        public static List<int> ToCPList(this string text)
         {
-            if (!IsIntString(text))
+            if (!IsCPString(text))
             {
                 throw new ArgumentException("Invalid cpstring.", "text");
             }
@@ -32,7 +31,7 @@ namespace HikeHandler.Extensions
             return cpList;
         }
 
-        public static bool IsIntPile(this string text)
+         public static bool IsIntPile(this string text)
         {
             text = Regex.Replace(text, @"\s+", "");
             return Regex.IsMatch(text, @"^(\d*-?\d*,+)*(\d*-?\d*)?$");

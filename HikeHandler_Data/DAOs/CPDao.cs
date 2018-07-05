@@ -4,7 +4,6 @@ using System.Data;
 using MySql.Data.MySqlClient;
 using HikeHandler.ModelObjects;
 using HikeHandler.Exceptions;
-using HikeHandler.Extensions;
 
 namespace HikeHandler.DAOs
 {
@@ -16,16 +15,20 @@ namespace HikeHandler.DAOs
         {
             sqlConnection = connection;
         }
-        
+
         public List<CPForView> SearchCP(CPForSearch template)
         {
-            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
+            if (sqlConnection == null)
+            {
+                throw new NoDBConnectionException();
+            }
+            if (sqlConnection.State != ConnectionState.Open)
             {
                 throw new NoDBConnectionException();
             }
             string commandText = @"SELECT cp.idcp, cp.name, cp.type, cp.hikecount, cp.idregion, cp.idcountry, r.name AS regionname, 
-c.name AS countryname, cp.description FROM cp, region r, country c WHERE cp.idregion LIKE concat('%.', r.idregion, '.%') AND 
-cp.idcountry LIKE concat('%.', c.idcountry, '.%') AND cp.name LIKE @name AND c.name LIKE @countryName AND r.name LIKE @regionName";
+c.name AS countryname, cp.description FROM cp, region r, country c WHERE cp.idregion=r.idregion AND cp.idcountry=c.idcountry
+AND cp.name LIKE @name AND c.name LIKE @countryName AND r.name LIKE @regionName";
             if (template.CPID != null)
                 commandText += " AND cp.idcp=" + template.CPID;
             if (template.IDRegion != null)
@@ -57,31 +60,12 @@ cp.idcountry LIKE concat('%.', c.idcountry, '.%') AND cp.name LIKE @name AND c.n
                         while (reader.Read())
                         {
                             int cpID = reader.GetInt32("idcp");
-                            string countryName = reader.GetString("countryname");
-                            string regionName = reader.GetString("regionname");
-                            // Check if we already has this cp in the resultList...
-                            int indexInList = resultList.FindIndex(x => x.CPID == cpID); 
-                            if (indexInList != -1)
-                            {
-                                if (!resultList[indexInList].CountryNames.Contains(countryName))
-                                {
-                                    resultList[indexInList].CountryNames.Add(countryName);
-                                }
-                                if (!resultList[indexInList].RegionNames.Contains(regionName))
-                                {
-                                    resultList[indexInList].RegionNames.Add(regionName);
-                                }
-                                continue;
-                            }
-                            // Otherwise, we add it as a new listitem...
-                            List<string> countryNames = new List<string>();
-                            countryNames.Add(countryName);
-                            List<string> regionNames = new List<string>();
-                            regionNames.Add(regionName);
-                            string countryID = reader.GetString("idcountry");
-                            string regionID = reader.GetString("idregion");
+                            int countryID = reader.GetInt32("idcountry");
+                            int regionID = reader.GetInt32("idregion");
                             int hikeCount = reader.GetInt32("hikecount");
                             string name = reader.GetString("name");
+                            string countryName = reader.GetString("countryname");
+                            string regionName = reader.GetString("regionname");
                             string description = reader.GetString("description");
                             CPType typeOfCP;
                             if (!Enum.TryParse(reader.GetString("type"), out typeOfCP))
@@ -89,7 +73,7 @@ cp.idcountry LIKE concat('%.', c.idcountry, '.%') AND cp.name LIKE @name AND c.n
                                 throw new DBErrorException("Invalid CheckPoint type found.");
                             }
                             resultList.Add(new CPForView(
-                                cpID, countryID.ToIntList(), regionID.ToIntList(), name, countryNames, regionNames, typeOfCP, hikeCount, description));
+                                cpID, countryID, regionID, name, countryName, regionName, typeOfCP, hikeCount, description));
                         }
                     }
                     else
@@ -105,7 +89,11 @@ cp.idcountry LIKE concat('%.', c.idcountry, '.%') AND cp.name LIKE @name AND c.n
         // Only for correcting erroneous data in the DB.
         public void RecalculateHikeCounts()
         {
-            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
+            if (sqlConnection == null)
+            {
+                throw new NoDBConnectionException();
+            }
+            if (sqlConnection.State != ConnectionState.Open)
             {
                 throw new NoDBConnectionException();
             }
@@ -171,68 +159,63 @@ cp.idcountry LIKE concat('%.', c.idcountry, '.%') AND cp.name LIKE @name AND c.n
             {
                 throw new ArgumentException("cpID parameter should be positive.", "cpID");
             }
-            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
+            if (sqlConnection == null)
+            {
+                throw new NoDBConnectionException();
+            }
+            if (sqlConnection.State != ConnectionState.Open)
             {
                 throw new NoDBConnectionException();
             }
 
-            string commandText = @"SELECT cp.idregion, cp.idcountry, cp.name, cp.type, cp.hikecount, cp.description, 
-r.name AS regionname, c.name AS countryname FROM cp, region r, country c WHERE cp.idregion LIKE CONCAT('%.', r.idregion, '.%') 
-AND cp.idcountry LIKE CONCAT('%.', c.idcountry, '.%') AND cp.idcp=@idcp;";
-            using (MySqlCommand command = new MySqlCommand(commandText, sqlConnection))
+            string commandText = @"SELECT cp.idregion, cp.idcountry, cp.name, cp.type, cp.hikecount, cp.description, r.name AS regionname, 
+c.name AS countryname FROM cp, region r, country c WHERE cp.idregion=r.idregion AND cp.idcountry=c.idcountry AND cp.idcp=@idcp;";
+            using (MySqlDataAdapter adapter = new MySqlDataAdapter(commandText, sqlConnection))
             {
-                command.Parameters.AddWithValue("@idcp", cpID);
-                using (MySqlDataReader reader = command.ExecuteReader())
+                adapter.SelectCommand.Parameters.AddWithValue("@idcp", cpID);
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                if (table.Rows.Count == 0)
                 {
-                    string name = string.Empty;
-                    List<string> countryNames = new List<string>();
-                    List<string> regionNames = new List<string>();
-                    List<int> countryID = new List<int>();
-                    List<int> regionID = new List<int>();
-                    string description = string.Empty;
-                    int hikeCount = 0;
-                    CPType typeOfCP = CPType.egyéb;
-
-                    if (!reader.HasRows)
-                    {
-                        throw new NoItemFoundException();
-                    }
-                    while (reader.Read())
-                    {
-                        if (name == string.Empty)
-                        {
-                            name = reader.GetString("name");
-                            description = reader.GetString("description");
-                            countryID = reader.GetString("idcountry").ToIntList();
-                            regionID = reader.GetString("idregion").ToIntList();
-                            hikeCount = reader.GetInt32("hikecount");
-                            if (!Enum.TryParse<CPType>(reader.GetString("type"), out typeOfCP))
-                            {
-                                throw new DBErrorException("'cp.cptype' value not valid.");
-                            }
-                            countryNames.Add(reader.GetString("countryname"));
-                            regionNames.Add(reader.GetString("regionnames"));
-                        }
-                        else
-                        {
-                            if (name != reader.GetString("name"))
-                            {
-                                throw new DBErrorException("More than one checkpoint found with the given id.");
-                            }
-                            string countryName = reader.GetString("countryname");
-                            if (!countryNames.Contains(countryName))
-                            {
-                                countryNames.Add(countryName);
-                            }
-                            string regionName = reader.GetString("regionname");
-                            if (!regionNames.Contains(regionName))
-                            {
-                                regionNames.Add(regionName);
-                            }
-                        }
-                    }
-                    return new CPForView(cpID, countryID, regionID, name, countryNames, regionNames, typeOfCP, hikeCount, description);
+                    throw new NoItemFoundException();
                 }
+                if (table.Rows.Count > 1)
+                {
+                    throw new DBErrorException("More than one checkpoint found with the given id.");
+                }
+                DataRow row = table.Rows[0];
+
+                string name;
+                string countryName;
+                string regionName;
+                string description;
+                int countryID;
+                int regionID;
+                int hikeCount;
+                CPType typeOfCP;
+
+                if (!int.TryParse(row["hikecount"].ToString(), out hikeCount))
+                {
+                    throw new DBErrorException("'cp.hikecount' should be an integer.");
+                }
+                if (!int.TryParse(row["idregion"].ToString(), out regionID))
+                {
+                    throw new DBErrorException("'cp.idregion' should be an integer.");
+                }
+                if (!int.TryParse(row["idcountry"].ToString(), out countryID))
+                {
+                    throw new DBErrorException("'cp.idcountry' should be an integer.");
+                }
+                if (!Enum.TryParse<CPType>(row["type"].ToString(), out typeOfCP))
+                {
+                    throw new DBErrorException("'cp.cptype' value not valid.");
+                }
+                name = row["name"].ToString();
+                description = row["description"].ToString();
+                countryName = row["countryname"].ToString();
+                regionName = row["regionname"].ToString();
+
+                return new CPForView(cpID, countryID, regionID, name, countryName, regionName, typeOfCP, hikeCount, description);
             }
         }
 
@@ -368,7 +351,11 @@ AND cp.idcountry LIKE CONCAT('%.', c.idcountry, '.%') AND cp.idcp=@idcp;";
 
         public bool IsDuplicateName(string name)
         {
-            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
+            if (sqlConnection == null)
+            {
+                throw new NoDBConnectionException();
+            }
+            if (sqlConnection.State != ConnectionState.Open)
             {
                 throw new NoDBConnectionException();
             }
@@ -413,7 +400,11 @@ AND cp.idcountry LIKE CONCAT('%.', c.idcountry, '.%') AND cp.idcp=@idcp;";
 
         public void SaveCP(CPForSave cpData)
         {
-            if (sqlConnection == null || sqlConnection.State != ConnectionState.Open)
+            if (sqlConnection == null)
+            {
+                throw new NoDBConnectionException();
+            }
+            if (sqlConnection.State != ConnectionState.Open)
             {
                 throw new NoDBConnectionException();
             }

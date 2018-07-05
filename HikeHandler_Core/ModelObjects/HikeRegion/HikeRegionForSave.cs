@@ -1,19 +1,22 @@
-﻿using Newtonsoft.Json;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace HikeHandler.ModelObjects
 {
     public class HikeRegionForSave
     {
-        public List<int> countryIDs;
-        public string name, description;
+        public int CountryID { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
 
-        [JsonConstructor]
-        public HikeRegionForSave(List<int> countryIDs, string name, string description)
+        public HikeRegionForSave(int countryID, string name, string description)
         {
-            this.countryIDs = countryIDs;
-            this.name = name;
-            this.description = description;
+            CountryID = countryID;
+            Name = name;
+            Description = description;
         }
     }
 }

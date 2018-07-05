@@ -1,29 +1,25 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace HikeHandler.ModelObjects
 {
-    public struct HikeForSearch
+    public class HikeForSearch
     {
-        public int? countryID, regionID, hikeType;
-        public IntPile position;
-        public string description, countryName, regionName;
-        public List<int> cpList;
-        public bool anyCPOrder;
+        public int? IDHike { get; set; }
+        public int? IDCountry { get; set; }
+        public int? IDRegion { get; set; }
+        public IntPile Position { get; set; }
+        public string CountryName { get; set; }
+        public string RegionName { get; set; }
+        //public string Description { get; set; }
+        public DatePile HikeDate { get; set; }
+        public HikeType? HikeType { get; set; }
+        public List<int> CPList { get; set; }
 
-        [JsonConstructor]
-        public HikeForSearch(string description, string countryName, string regionName, IntPile position,
-            List<int> cpList, bool anyCPOrder, int? countryID = null, int? regionID = null, int? hikeType = null)
+        public bool AnyCPOrder { get; set; }
+
+        public HikeForSearch()
         {
-            this.description = description;
-            this.countryName = countryName;
-            this.regionName = regionName;
-            this.hikeType = hikeType;
-            this.countryID = countryID;
-            this.regionID = regionID;
-            this.position = position;
-            this.cpList = cpList;
-            this.anyCPOrder = anyCPOrder;
+            CPList = new List<int>();
         }
     }
 }

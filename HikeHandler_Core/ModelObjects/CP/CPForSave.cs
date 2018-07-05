@@ -1,22 +1,20 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
-
-namespace HikeHandler.ModelObjects
+﻿namespace HikeHandler.ModelObjects
 {
-    public struct CPForSave
+    public class CPForSave
     {
-        public List<int> countryIDs, regionIDs;
-        public string name, description;
-        public int cpType;
+        public int CountryID { get; set; }
+        public int RegionID { get; set; }
+        public string Name { get; set; }
+        public CPType TypeOfCP { get; set; }
+        public string Description { get; set; }
 
-        [JsonConstructor]
-        public CPForSave(List<int> countryIDs, List<int> regionIDs, string name, string description, int cpType)
+        public CPForSave(int countryID, int regionID, string name, CPType typeOfCP, string description)
         {
-            this.countryIDs = countryIDs;
-            this.regionIDs = regionIDs;
-            this.name = name;
-            this.description = description;
-            this.cpType = cpType;
+            CountryID = countryID;
+            RegionID = regionID;
+            Name = name;
+            Description = description;
+            TypeOfCP = typeOfCP;
         }
     }
 }
